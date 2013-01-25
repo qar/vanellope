@@ -1,0 +1,611 @@
+
+
+/*** LEVEL I ***/
+*{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}
+
+html{
+	height: 100%;
+}
+
+body{
+	margin: auto;
+	height: 100%; /*overlap footer*/
+	overflow: auto;
+	background-color: #e3e3e3;
+	text-align: center;
+	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: #555555;
+	line-height: 18px;
+}
+
+a{
+	text-decoration: none;
+}
+
+
+#logo{
+	float: left;
+	color: silver;
+	font-size: 30px;
+	margin-top: 8px;
+}
+
+/*** LEVEL II ***/
+#header-wrapper{ /* including the header background */
+	width: 960px;
+	margin: 0px auto;
+	height: 35px;
+	background-color: transparent;
+}
+
+#header{
+	height: 35px;
+	background-color: #3A4040;
+}
+
+#wrapper{ /* content wrapper */
+	min-height: 100%;
+	height: auto ! important;
+	width: 960px;
+	margin: 30px auto;
+	margin-bottom: 30px;
+	text-align: left;
+	background-color: transparent;
+	overflow: hidden;
+}
+
+
+#footer{ /* contains #footer-wrapper  */
+	height: 80px;
+	background-color: white;
+	color: #868686;
+}
+
+#footer-wrapper{ /* wrap footer content */
+	width: 960px;
+	height: 80px;
+	margin: 0px auto;
+	background-color: transparent;
+}
+
+/*** LEVEL III ***/
+#primary, div.widgets{
+	height: auto;
+	background-color: #ffffff;
+	border-radius: 4px;
+    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
+    overflow: hidden; 
+}
+
+#primary{ /* style specific */
+	width:676px;
+	margin-bottom: 50px;
+	float: left;
+}
+
+.primary-item-container{ /* #primary's general items style */
+	margin: 20px;
+}
+
+div.primary-item-sep{
+	width: 100%;
+	height: 20px;
+	float: left;
+}
+
+div.widgets{ /* collection of widgets */ /* style specific */
+/*
+**	" div.widgets "	 is the right column of the screen.
+**	it includes one or more widget compnents wrapped by ".widget-container", 
+**	which supply margins around the wrapped compnents.
+**  up to now, it includs these compnents:
+**		ul.archive-newest;	ul.catalogue;	
+**/
+	width: 267px;
+	margin-right: 2px; /* leave space for border*/
+	margin-left: 15px;  /* gap between #primary and #secondary */
+	margin-bottom: 20px;
+	float: right;
+	background-color: #FFFFFF;
+}
+
+.widget-container{
+	width: auto;
+	height: auto;
+	margin: 10px;
+}
+
+.widget-inner-sep{
+	width: 100%;
+	height: 10px;
+	float: left;
+	background-color: transparent;
+}
+
+div.widget-outer-sep{
+	width: 307px;
+	height: 10px;
+	float: right;
+	background-color: transparent;
+}
+
+span.widget-caption{
+	width: 100%;
+	height: 13px;
+	border-bottom: 1px solid silver;
+	font-size: 14px;
+	color: #999999;
+	float: left;
+	padding: 0px 0px 5px 5px;
+}
+
+ul.archive{
+	list-style-type: none;
+}
+
+li.archive{
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+}
+
+a.archive{
+	width: 229px;
+	display: block;
+	float: right;
+	color: #666666;
+}
+
+a.archive:hover{
+	text-decoration: underline;
+}
+
+
+
+
+
+/** #primary components **/
+form.article-editor{
+	width: 100%;
+	height: auto;
+	float: left;	
+	overflow: visible;
+}
+
+input.article-title{
+	border: 1px solid silver;
+	width: 100%;
+	height:30px;
+	float: left;
+}
+
+textarea.article-content{
+	width: 100%;
+	max-width: 100%;
+	min-height: 200px;
+	height: auto;
+	border: 1px solid silver;
+}
+
+input.article-title:focus, textarea.article-content:focus{
+	outline: 0;
+	border-color: rgba(82, 168, 236, 0.8) ;
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
+}
+
+
+/*** #primary.article ***/
+
+div.article-intro{ /* display on index page */
+	padding:9px 0px 28px 0px;
+	margin-bottom: 29px;
+	overflow: hidden;
+}
+
+img.article-intro{
+	width: 192px;
+	height: 108px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	float: left;
+	overflow: hidden;
+	border-radius: 6px;
+	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
+}
+
+img.article-img{
+	max-width:400px;
+	max-height: 200px;
+	overflow: hidden;
+}
+
+h2.article-intro-title{
+	font-size: 19px;
+	line-height: 25px;
+	color: #0061a1;
+	display: inline;
+}
+
+h1.article-title{
+	font-size: 25px;
+	line-height: 30px;
+	font-weight: normal;
+	color: #0061a1;
+}
+
+span.article-intro-subtitle{
+	font-size: 14px;
+	line-height: 18px;
+	display: block; /* start a new line */
+	color: #8E8E8E;
+}
+
+
+span.article-subtitle{
+	font-size: 14px;
+	line-height: 18px;
+	display: block; /* start a new line */
+	color: #8E8E8E;
+}
+
+div.article-content{
+	margin: 30px 0px 20px 0px;
+	float: left;
+	color: #3E3E3E;
+	font-size: 16px;
+	line-height: 23px;
+}
+
+div.article-status{
+	height: 15px;
+	width: 100%;
+	float: left;
+	padding: 8px 0px;
+}
+
+ul.article-status{
+	display: inline;
+	list-style-type: none;
+}
+
+li.article-status{
+	display: inline;
+	margin: 0px 10px;
+	float: left;
+}
+.article-pic{
+	margin: 30px auto;
+	display: block;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+
+/*** Register Form ***/
+
+
+form#regist-form{
+	width:260px;
+	height: 100%;
+	margin-right:7px; 
+	padding: 20px 20px 20px 20px;
+	margin-bottom: 50px;
+	float: left;
+	overflow: hidden;
+	background-color: #FFFFFF;
+}
+div.input-prepend{
+	height: 31px;
+	width: auto;
+	margin-bottom: 10px;
+}
+
+span.add-on{
+	padding: 4px;
+	height: 21px;
+	min-width: 21px;
+	width: auto;
+
+	border-radius: 3px 0px 0px 3px;
+	border: 1px solid #DDDDDD;
+	float: left;
+	background-color: #dddddd;
+	text-align: center;
+	vertical-align: middle;
+}
+span.add-on-blank{
+	padding: 0px;
+	border: 1px solid silver;
+	border-radius: 0px 3px 3px 0px;
+	height: 29px;
+	width: 150px;
+	float: left;
+	font-size: 12px;
+}
+ 
+input.span2{
+	padding: 2px;
+	border: 1px solid silver;
+	border-radius: 0px 3px 3px 0px;
+	height: 25px;
+	width: 180px;
+	float: left;
+	font-size: 12px;
+	vertical-align: middle;
+}
+
+input.span2:focus{
+	outline: 0;
+	border-color: rgba(82, 168, 236, 0.8) ;
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
+}
+
+input.regist-radio{
+	line-height: 13px;
+	margin: 6px 0px 6px 5px;
+}
+
+input.btn{
+	width: 100px;
+	height: 35px;
+	border-radius: 5px;
+	border: 1px solid silver;
+	padding: 10px;
+	box-shadow: rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(0,0,0,0.25);
+	text-shadow: 0 1px 1px rgba(255,255,255,0.75)
+}
+/*
+span.regist{
+	width: 60px;
+	height:22px;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	float: left;
+}
+
+input.regist-box{
+	width: 200px;
+	height:22px;
+	border: 1px solid rgba(132,153,153,1);
+	padding-left: 10px;
+	margin: 0px 10px 20px 8px;
+	border-radius: 5px;
+	box-shadow: 1px 0.5px 2px rgba(153,153,153,0.3) inset;
+}
+
+input.regist-box:focus{
+	border: 1px solid rgba(102,153,153,0.5);
+	outline: none;
+	box-shadow: 1px 0.5px 2px rgba(41,124,207,0.8) inset;
+}
+
+p.regist{
+	width: 150px;
+	float: left;
+	display: block;
+}
+
+
+
+
+input.button{
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	border: 0px;
+	background-color: #DDDDDD;
+	box-shadow: 0px 13px 20px rgba(50, 50, 50, 0.3) inset;
+}
+
+div.err{
+	width:auto;
+	height: auto;
+	padding: 5px;
+	background-color: #cc0000;
+	color: #ffcc00;
+}
+
+*/
+
+
+
+
+
+
+
+div.author{
+}
+
+img.avatar{
+	border-radius: 6px;
+	overflow: hidden;
+	float: left;
+}
+
+ul.author{
+	margin-left: 10px;
+	padding: 0px;
+	list-style-type: none;
+	float: left;
+	font-size: 15px;
+}
+
+
+
+/*** widgets.inputbox **/
+
+textarea.inputbox{
+	width: 226px;
+	height: 100px;
+	padding: 10px;
+	border: 1px solid rgba(102,153,153,0.5);
+	float: right;
+	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 18px;
+
+	resize:none;
+	border-radius: 4px;
+	box-shadow: 1px 1.5px 1px rgba(102,153,153,0.4) inset;
+}
+textarea.inputbox:focus{
+	border: 1px solid rgba(102,153,153,0.5);
+	outline: none;
+	box-shadow: 1px 2px 2px rgba(122,153,153,0.7) inset;
+}
+
+input.inputbox{
+	float: right;
+	margin: 10px 0px 5px 0px;
+	padding:3px;
+	width: 50px;
+}
+input.inputbox:hover{
+	box-shadow: 1px 2px 2px rgba(152,153,153,0.7) inset;
+}  /*** end of widget inputbox ***/
+
+
+
+/*** Others ***/
+ul.nav{
+	list-style-type: none;
+	float: right;
+	margin: 10px 10px;
+	padding: 0px 0px;	
+}
+
+li.nav{
+	display: inline;
+	padding:0px;
+	margin: 0px 0px ;
+}
+
+a.nav{
+	color: white;
+	padding: 5px 8px;
+	margin: 0px;
+	border-radius: 4px;
+}
+
+a.nav:hover{
+	background-color: silver;
+	color: #404040;
+}
+
+/***  common  ***/
+
+
+
+.post { /* container of post information */
+	min-height: 50px;
+	border-radius: 4px;
+	background-color: #FFFFFF;
+	height: auto;
+	width: auto;
+	margin: 0px 0px 20px 0px ;
+	border:0px;
+	padding: 0px;
+	float: left;
+	display: inline;
+}
+
+.avatar{ /* user's avatar image */
+	display: inline;
+	float: left;
+	margin-right: 10px;
+}
+
+.post-content{
+	min-height: 40px;
+	border-radius: 4px;
+	width: 550px;
+	float: right;
+	margin: 0px;
+	padding: 8px 10px 10px 10px;
+	display: block;
+	box-shadow: 0.5px 1.5px 2px rgba(102,153,153,0.5);
+
+}
+
+
+
+/***  widget "tool-list" ***/
+ul.tools-list{
+	width: 248px;
+	height: auto;
+	list-style-type: none;
+}
+
+a.tools-list{
+	color: #555555;
+}
+
+li.tools-list{
+	
+}
+
+
+div.tool-btn{
+	width: 130px;
+	height: 30px;
+	border-radius: 5px;
+	border: 1px solid silver;
+}
+
+div.tool-icon{
+	padding: 5px;
+	height: 20px;
+	width: 20px;
+
+	border-radius: 3px 0px 0px 3px;
+	border-right: 0px;
+	float: left;
+	background-color: #dddddd;
+	text-align: center;
+	vertical-align: middle;
+}
+
+div.tool-caption{
+	padding: 7px 0px;
+	border-left: 0px;
+	border-radius: 0px 3px 3px 0px;
+	height: 16px;
+	width: 100px;
+	float: left;
+	text-align: center;
+	background-color: #dddddd;
+}
+
+span.tool-caption{
+	height: 15px;
+	font-size: 16px;
+	
+	overflow: hidden;
+}
+
+
+/***#################### footer ##############**/
+ul.special-thanks{
+	float: left;
+	text-align: left;
+	list-style-type: none;
+
+}
+
+li.special-thanks{
+	font-size: 12px;
+	margin: 5px 0px;
+}
+
+a.special-thanks{
+	color: #868686;
+}
+
+a.special-thanks:hover{
+	text-decoration: underline;
+}

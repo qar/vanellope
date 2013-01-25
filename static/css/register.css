@@ -1,0 +1,136 @@
+
+
+
+
+
+
+#footer-wrapper{
+	width: 960px;
+	height: 80px;
+	margin: 0px auto;
+	background-color: transparent;
+}
+
+
+/*** LEVEL III ***/
+
+
+#primary{
+	min-height: 100%;
+	width:636px;
+	margin-right:7px; 
+	padding: 20px;
+	float: left;
+	overflow: hidden;
+	background-color: #ffffff;
+}
+
+#widgets{ /* collection of widget */
+	min-height: 100%;
+	width: 268px;
+	margin-right: 2px;
+	margin-left: 7px;
+	padding: 0px;
+	float: right;
+	background-color: transparent;
+}
+
+
+/*** Others ***/
+ul.nav{
+	list-style-type: none;
+	float: right;
+	margin: 10px 10px;
+	padding: 0px 0px;	
+}
+
+li.nav{
+	display: inline;
+	padding:0px;
+	margin: 0px 0px ;
+}
+
+a.nav{
+	color: white;
+	padding: 5px 8px;
+	margin: 0px;
+	border-radius: 4px;
+}
+
+a.nav:hover{
+	background-color: silver;
+	color: #404040;
+}
+
+/***  common  ***/
+
+#primary, #widgets{
+	border-radius: 4px;
+    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5);  
+}
+
+
+/*** Register Form ***/
+form#regist-form{
+	width: 606px;
+	height: 500px;
+	padding-top: 30px;
+	padding-left: 30px;
+
+	border: 0px;
+}
+
+
+span.regist{
+	width: 60px;
+	height:22px;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	float: left;
+}
+
+
+
+input.regist-box{
+	width: 200px;
+	height:22px;
+	border: 1px solid rgba(132,153,153,1);
+	padding-left: 10px;
+	margin: 0px 10px 20px 8px;
+	border-radius: 5px;
+	box-shadow: 1px 0.5px 2px rgba(153,153,153,0.3) inset;
+}
+
+input.regist-box:focus{
+	border: 1px solid rgba(102,153,153,0.5);
+	outline: none;
+	box-shadow: 1px 0.5px 2px rgba(41,124,207,0.8) inset;
+}
+
+p.regist{
+	width: 150px;
+	float: left;
+	display: block;
+}
+
+input.regist-radio{
+	margin:20px 10px 30px 20px;
+}
+
+
+input.btn{
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	border: 0px;
+	background-color: #DDDDDD;
+	box-shadow: 0px 13px 20px rgba(50, 50, 50, 0.3) inset;
+}
+
+div.err{
+	width:auto;
+	height: auto;
+	padding: 5px;
+	background-color: #cc0000;
+	color: #ffcc00;
+}

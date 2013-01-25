@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block "primary" %}
+
+		<div class="primary-item-container">
+		{% if tpl_values['errors'] %}
+			{% for error in tpl_values['errors'] %}
+				<p style="color:red">{{ error }}</p>
+			{% end %}
+		{% end %}
+		<form id="regist-form" action="/register" method="post">
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-user"></i></span>
+				<input class="span2" type="text" name="uname" placeholder="ID" autofocus>
+			</div><!-- end of "input-prepend"-->
+
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-key"></i></span>
+				<input class="span2" type="password" name="pwd" placeholder="Password">
+			</div><!-- end of "input-prepend"-->
+
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-key"></i></span>
+				<input class="span2" type="password" name="cpwd" placeholder="Repeat your password">
+			</div><!-- end of "input-prepend"-->
+
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span>
+				<input class="span2" type="text" name="email" placeholder="Email">
+			</div><!-- end of "input-prepend"-->
+
+		<input class="btn" type="submit" value="提交">
+		</form>
+		</div>
+{% end %}
+
+
+{% block "widgets" %}
+	<!-- widgets collection -->
+	<div id="widgets">
+
+	</div>
+{% end %}
+
