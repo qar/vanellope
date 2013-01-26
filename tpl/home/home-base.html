@@ -33,14 +33,22 @@
     {% block "primary" %}{% end %}
     </div> <!-- end of "primary" -->
 
+
+
+    <div class="widgets-wrapper">
      <!-- ##########widgets collection - REUSED MODULE ##########-->
     <div class="widgets"><div class="widget-container"><!-- reused manytimes  -->
             <span class="widget-caption">i-ZONE</span>
             <!-- display the articles as different catalogue -->
             <div class="widget-inner-sep"></div>
             <!-- ##### below content differ each time ######-->
-                <div class="user-info">
-                </div>
+                <div class="member">
+                <a class="member" href="/u/{{ tpl_values['name_l'] }}"><img class="avatar" src="/static/img/avatar/anran.jpg" alt="anran" width="50" height="50px"></a>
+                <ul class="member">
+                    <li class="member"><a class="member" href="/u/{{ tpl_values['name_l'] }}">{{ tpl_values['name'] }}</a></li>
+                    <li class="member"><span class="member">a lovely boy</li>
+                </ul>
+            </div><!-- end of "author" -->
             <!-- ##### ###### -->
             <div class="widget-inner-sep"></div>
     </div></div><!-- closing of widget and ".widget-container" -->
@@ -54,11 +62,16 @@
             <!-- ##### below content differ each time ######-->
                 <ul class="tools-list">
                     <li class="tools-list"><a class="tools-list" href="/home/write"><i class="icon-pencil"></i>Write a Article</li>
-                    <li class="tools-list"></li>
+                    <li class="tools-list"><a class="tools-list" href="/home/manage"><i class="icon-list"></i>Articles You've Wrote</li>
+                    <li class="tools-list"><a class="tools-list" href="/home/setting"><i class="icon-list"></i>Modify personal data</li>
                 </ul>
             <!-- ##### ###### -->
             <div class="widget-inner-sep"></div>
     </div></div><!-- closing of widget and ".widget-container" -->
+
+
+
+</div><!-- Closing of widgets-wrapper -->
 
 
 </div> <!-- Closing of wrapper -->

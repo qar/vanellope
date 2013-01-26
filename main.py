@@ -19,12 +19,14 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/",                  IndexHandler),
             (r"/register",          RegisterHandler),
-            (r"/archive/([0-9]+)",  ArchiveHandler),
-            (r"/archive",           ArchiveHandler),
-            (r"/home/([a-z]*)",     HomeHandler),
+            (r"/archive/([0-9]+.*)",ArchiveHandler),
+            (r"/article",           ArticleHandler),
+            (r"/home",              HomeHandler),
+            (r"/home/(.*)",         HomeHandler),
             (r"/u/(.*)",            UserHandler),
             (r"/login",             LoginHandler),
-            (r"/logout",            LogoutHandler),]
+            (r"/logout",            LogoutHandler),
+            (r"/test",              TestHandler),]
         
         settings = dict(
             static_path = os.path.join(os.path.dirname(__file__), "static"),
@@ -36,10 +38,14 @@ class Application(tornado.web.Application):
 
         tornado.web.Application.__init__(self, handlers, **settings)
 
+class TestHandler(tornado.web.RequestHandler):
+    def get(self):
+        name = self.request.arguments
+        self.write('hello, %s' % name)
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        db_user     =   self.application.db['user']
+        db_member     =   self.application.db.member
         template    =   "index.html"
         tpl_values  =   {
             'auth'     :   False,
@@ -49,18 +55,15 @@ class IndexHandler(tornado.web.RequestHandler):
 
         try:     
             cookie_auth =   self.get_cookie("auth")
-            cookie_id   =   self.get_cookie("id")
-            user        =   db_user.find_one({'id':  cookie_id})
-            if user:
-                if cookie_auth == user['auth']:
-                    tpl_values['auth']   =   True
-                    tpl_values['name']   =   user['uname']
-                    tpl_values['name_l'] =   user['uname_lower']  
+            #cookie_id   =   self.get_cookie("id")
+            member        =   db_member.find_one({'auth':  cookie_auth})
+            if member:
+                tpl_values['auth']   =   True
+                tpl_values['name']   =   member['name']
+                tpl_values['name_l'] =   member['name_low']  
         except:
             pass
         self.render(template, tpl_values=tpl_values)
-
-
 
 
 class RegisterHandler(tornado.web.RequestHandler):
@@ -76,17 +79,17 @@ class RegisterHandler(tornado.web.RequestHandler):
         self.render(template, tpl_values=tpl_values)
 
     def post(self):
-        db_user     =    self.application.db['user']
-        user        =    {}
+        db_member     =    self.application.db['member']
+        member       =    {}
 
         tpl_values  =   {
             'auth'     :   False,
             'title'    :   "INDEX",
             'name'     :   "",
             'name_l'   :   "",
-            'errors'   :   [],}
+            'errors'   :   [],}                        
 
-        post_values = ['uname','pwd','cpwd','email']
+        post_values = ['name','pwd','cpwd','email']
         args = {}
         for v in post_values:
             try:
@@ -96,23 +99,22 @@ class RegisterHandler(tornado.web.RequestHandler):
                 template = "register.html"
                 self.render(template, tpl_values=tpl_values)
 
-
         # authentication uname
         UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-        m = re.match(UID_PATT, args['uname'])
+        m = re.match(UID_PATT, args['name'])
         if m:
-            found = db_user.find_one({'uname_lower': args['uname'].lower()})
+            found = db_member.find_one({'name_low': args['name'].lower()})
             if found:
                 tpl_values['errors'].append("uname exist")
             else:
-                user['uname']       = args['uname']
-                user['uname_lower'] = args['uname'].lower()
+                member['name']       = args['name']
+                member['name_low'] = args['name'].lower()
         else:
             tpl_values['errors'].append("illegal character")
 
         # authentication password
         if args['pwd'] and (args['pwd'] == args['cpwd']):
-            user['pwd'] = hashlib.sha512(args['pwd']).hexdigest()
+            member['pwd'] = hashlib.sha512(args['pwd']).hexdigest()
         else:
             tpl_values['errors'].append("password different")
 
@@ -122,11 +124,11 @@ class RegisterHandler(tornado.web.RequestHandler):
         if args['email']:
             m = re.match(EMAIL_PATT, args['email'].lower())
             if m:
-                found = db_user.find_one({"email": args['email'].lower()})
+                found = db_member.find_one({"email": args['email'].lower()})
                 if found:
                     tpl_values['errors'].append("email already being used")
                 else:
-                    user['email'] = args['email'].lower()
+                    member['email'] = args['email'].lower()
             else:
                 tpl_values['errors'].append("illegal email address")
         else:
@@ -136,12 +138,12 @@ class RegisterHandler(tornado.web.RequestHandler):
             template = "register.html"
             self.render(template, tpl_values=tpl_values)
         else:
-            user['date'] = datetime.datetime.utcnow()
-            user['id'] = str(db_user.count() + 1)
-            user['auth'] = hashlib.sha512(user['uname_lower'] + user['pwd']).hexdigest()
-            self.set_cookie(name="auth",    value=user['auth'], expires_days=1)
-            self.set_cookie(name="id",      value=user['id'],   expires_days=1)
-            db_user.insert(user)
+            member['date'] = datetime.datetime.utcnow()
+            member['nid'] = str(db_member.count() + 1)
+            member['auth'] = hashlib.sha512(member['name_low'] + member['pwd']).hexdigest()
+            self.set_cookie(name="auth",    value=member['auth'], expires_days=1)
+            self.set_cookie(name="nid",      value=member['nid'],   expires_days=1)
+            db_member.insert(member)
             self.redirect('/')
 
 class LoginHandler(tornado.web.RequestHandler):
@@ -156,7 +158,7 @@ class LoginHandler(tornado.web.RequestHandler):
         self.render(template, tpl_values=tpl_values)
 
     def post(self):
-        db_user = self.application.db.user
+        db_member = self.application.db.member
         template    =   "login.html"
         tpl_values  =   {
             'auth'     :   False,
@@ -165,7 +167,7 @@ class LoginHandler(tornado.web.RequestHandler):
             'name_l'   :   "",
             'errors'   :   [],}
 
-        post_values = ['uname','pwd']
+        post_values = ['name','pwd']
         args = {}
         for v in post_values:
             try:
@@ -175,13 +177,13 @@ class LoginHandler(tornado.web.RequestHandler):
                 self.render(template, tpl_values=tpl_values)
         
         try:
-            user = db_user.find_one({'uname_lower':args['uname'].lower()})
-            if user:
+            member = db_member.find_one({'name_low':args['name'].lower()})
+            if member:
                 try:
-                    input_auth = hashlib.sha512(args['uname'].lower() + hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
-                    if user['auth'] == input_auth:
-                        self.set_cookie(name="auth",    value=user['auth'], expires_days=1)
-                        self.set_cookie(name="id",      value=user['id'],   expires_days=1)
+                    input_auth = hashlib.sha512(args['name'].lower() + hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
+                    if member['auth'] == input_auth:
+                        self.set_cookie(name="auth",    value=member['auth'], expires_days=1)
+                        self.set_cookie(name="nid",      value=member['nid'],   expires_days=1)
                         self.redirect('/')
                     else:
                         tpl_values['errors'].append("error with id or password")
@@ -203,35 +205,36 @@ class LogoutHandler(tornado.web.RequestHandler):
 
 
 class HomeHandler(tornado.web.RequestHandler):
-    def get(self, section):
-        db_user     =   self.application.db['user']
-        template    =   "home/%s.html" % section
+    def get(self, page="index"):
+        pages = ('write', 'manage', 'setting', 'index')
+        db_member     =   self.application.db.member
+        db_article  =   self.application.db.article
+        template    =   "home/%s.html" % (page,)
+        print page
         tpl_values  =   {
-            'auth'     :   False,
-            'title'    :   "ANRAN",
-            'name'     :   "",
-            'name_l'   :   "",}
+                'auth'     :   False,
+                'title'    :   "ANRAN",
+                'name'     :   "",
+                'name_l'   :   "",}
 
         try:     
-            cookie_auth =   self.get_cookie("auth")
-            cookie_id   =   self.get_cookie("id")
-            user        =   db_user.find_one({'id':  cookie_id})
-            if user:
-                if cookie_auth == user['auth']:
-                    tpl_values['auth']   =   True
-                    tpl_values['name']   =   user['uname']
-                    tpl_values['name_l'] =   user['uname_lower']  
-                    self.render(template, tpl_values=tpl_values)
+            cookie_auth     =   self.get_cookie("auth")
+            member        =   db_member.find_one({'auth':  cookie_auth})
+            if not member:
+                self.send_error(401)
+            if page in pages:
+                tpl_values['auth']   =   True
+                tpl_values['name']   =   member['name']
+                tpl_values['name_l'] =   member['name_low']  
+                self.render(template, tpl_values=tpl_values)
             else:
-                self.set_status(404)
-                self.write('you have not authorized')
+                self.send_error(404)    
         except:
-            pass
-       
+            self.send_error(500)
 
 class ArchiveHandler(tornado.web.RequestHandler):
     def get(self, archive_sn):
-        db_user = self.application.db.user
+        db_member = self.application.db.member
 
         template    =   "archive.html"
         tpl_values  =   {
@@ -243,29 +246,30 @@ class ArchiveHandler(tornado.web.RequestHandler):
 
         try:     
             cookie_auth =   self.get_cookie("auth")
-            cookie_id   =   self.get_cookie("id")
-            user        =   db_user.find_one({'id':  cookie_id})
-            if user:
-                if cookie_auth == user['auth']:
-                    tpl_values['auth']   =   True
-                    tpl_values['name']   =   user['uname']
-                    tpl_values['name_l'] =   user['uname_lower']  
+            #cookie_id   =   self.get_cookie("id")
+            member        =   db_member.find_one({'auth':  cookie_auth})
+            if member:
+                tpl_values['auth']   =   True
+                tpl_values['name']   =   member['name']
+                tpl_values['name_l'] =   member['name_low']  
         except:
             pass
         self.render(template, tpl_values=tpl_values)
 
+class ArticleHandler(tornado.web.RequestHandler):
     def post(self):
-        db_arhive = self.application.db.arhive 
-        db_user = self.application.db.user  
+        db_article = self.application.db.article
+        db_member = self.application.db.member
 
-        archive = {
+        article = {
             'sn'        :   None,   # seril number
             'title'     :   '',
             'subtitle'  :   '',
+            'content'   :   '',
             'author'    :   '',
             'heat'      :   0,
-            'links'     :   [],
-            'imgs'      :   [], #imgs[0] should be intro-image
+            'link'      :   {}, # name are captions of the related link
+            'img'       :   [], #imgs[0] should be intro-image
         }
         post_values = ['title','subtitle','intro-img','imgs','links']
         args = {}
@@ -274,19 +278,21 @@ class ArchiveHandler(tornado.web.RequestHandler):
                 args[v] = self.get_argument(v)
             except:
                 pass
-        archive['sn'] = str(db_arhive.count())
-        archive['title'] = args['title']
-        archive['subtitle'] = args['subtitle']
-        upload_file = self.request.files['intro-img']
-        print upload_file
+        article['sn'] = str(db_article.count())
+        article['title'] = args['title']
+        article['subtitle'] = args['subtitle']
+        upload_file = self.request.files['intro-img'][0]
+        fpath = 'static/img/article/%s-intro.%s' % (article['sn'], upload_file['filename'].split('.')[-1])
+        fp =  open(fpath, 'wb')
+        fp.write(upload_file['body'])
+        fp.close()
         try:     
             cookie_auth =   self.get_cookie("auth")
-            cookie_id   =   self.get_cookie("id")
-            user        =   db_user.find_one({'id':  cookie_id})
-            if user:
-                if cookie_auth == user['auth']:
-                    archive['author'] =   user['uname_lower']  
-                    self.write("hello")
+            #cookie_id   =   self.get_cookie("nid")
+            member        =   db_member.find_one({'auth':  cookie_auth})
+            if member:
+                article['author'] =   member['name_low']  
+                self.write("hello")
         except:
             pass
         pass
