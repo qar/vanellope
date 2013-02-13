@@ -1,0 +1,38 @@
+{% include "common/header.html" %}
+
+<div id="wrapper">
+	<div id="article" class="primary" >
+		<div class="primary-item-container">
+			<div class="primary-item-sep"></div>
+		<h1 class="article-title">{{ article['title'] }}</h1><!-- end of "article-title" -->
+			<div class="primary-item-sep"></div>
+		<span class="article-subtitle">{{ article['subtitle'] }}</span>
+			<div class="primary-item-sep"></div>
+
+		<div class="article-content" id="content">
+			<!-- {% for i in article['content'].split('\n') %}
+				<p> {{ i }}</p><br />
+			{% end %}
+		-->
+			{% raw article['content'] %}
+
+		</div>
+
+
+	</div> <!-- end of ".primary-item-container" -->
+	</div> <!-- end of "#primary" -->
+
+
+	<div class="widgets-wrapper">
+		
+		{% include "widgets/article-author.html" %}
+		
+		{% if tpl_values['isauthor'] %}
+			{% include "widgets/author-options.html" %}
+		{% end %}
+		
+		{% include "widgets/article-status.html" %}
+	</div> <!-- Closing of widgets-wrapper -->
+</div> <!-- Closing of wrapper -->
+
+{% include "common/footer.html" %}

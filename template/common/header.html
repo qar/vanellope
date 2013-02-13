@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ tpl_values['title'] }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" />
+       <link rel="shortcut icon" href="/static/img/favicon.ico" />
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.bpopup-0.8.0.min.js"></script>
+   <script src="/static/js/page302.js"></script>
+    <script src="/static/js/markdown.js"></script>
+</head>
+
+<body>
+
+<div id="header">
+    <div id="header-wrapper">
+        <a id="logo" href="/">PAGE302</a>
+        <ul class="nav">
+            {% if tpl_values['auth'] %}
+            <li class="nav"><a class="nav" href="/home">{{ tpl_values['name'] }}</a></li>
+            <li class="nav"><a class="nav" href="/logout ">登出</a></li>
+            {% else %}
+            <li class="nav"><a class="nav" href="/login">登录</a></li>
+            <li class="nav"><a class="nav" href="/register">注册</a></li>
+            {% end %}
+        </ul>
+    </div><!-- end of heaer-wrapper -->
+</div> <!-- end of header -->

@@ -1,0 +1,10 @@
+<div class="widgets">
+    <span class="widget-caption">最热文章</span>
+         <div class="widget-inner-sep"></div>
+    <ul class="archive">
+    	{% for article in newest %}
+        <li class="archive"><i class="icon-leaf"></i><a class="archive" href="/archive/{{ article[0] }}">{{ article[1]}}</a></li>
+            <div class="widget-inner-sep"></div>
+        {% end %}
+    </ul>
+</div><!-- closing of ".widgets" -->
