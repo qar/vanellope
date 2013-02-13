@@ -20,23 +20,25 @@ body{
 	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	color: #555555;
-	line-height: 18px;
 }
 
 a{
 	text-decoration: none;
 }
 
+
 ul{
 	list-style-type: none;
 }
 
-
+.inputbox{
+	padding: 2px;
+	border: 1px solid silver;
+}
 #logo{
 	float: left;
 	color: silver;
 	font-size: 30px;
-	margin-top: 8px;
 }
 
 /*** LEVEL II ***/
@@ -50,6 +52,7 @@ ul{
 #header{
 	height: 35px;
 	background-color: #3A4040;
+	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);
 }
 
 #wrapper{ /* content wrapper */
@@ -78,7 +81,7 @@ ul{
 }
 
 /*** LEVEL III ***/
-#primary, div.widgets{
+div.primary, div.widgets{
 	height: auto;
 	background-color: #ffffff;
 	border-radius: 4px;
@@ -86,7 +89,7 @@ ul{
     overflow: hidden; 
 }
 
-#primary{ /* style specific */
+div.primary{ /* style specific */
 	width:676px;
 	margin-bottom: 50px;
 	float: left;
@@ -95,6 +98,8 @@ ul{
 
 div.widgets-wrapper{
 	width: 267px;
+	margin-left: 15px;  /* gap between #primary and #secondary */
+	margin-right: 2px; /* leave space for border*/
 	min-height: 100%;
 	height: auto;
 	float: right;
@@ -118,18 +123,12 @@ div.widgets{ /* collection of widgets */ /* style specific */
 **  up to now, it includs these compnents:
 **		ul.archive-newest;	ul.catalogue;	
 **/
-	width: 267px;
-	margin-right: 2px; /* leave space for border*/
-	margin-left: 15px;  /* gap between #primary and #secondary */
+	width: 100%;
+	max-width: 247px;
+	padding: 10px;
 	margin-bottom: 20px;
-	float: right;
 	background-color: #FFFFFF;
-}
-
-.widget-container{
-	width: auto;
-	height: auto;
-	margin: 10px;
+	float: right;
 }
 
 .widget-inner-sep{
@@ -178,25 +177,21 @@ a.archive:hover{
 }
 
 
-
-
-
 /** #primary components **/
-form.article-editor{
+form{
 	width: 100%;
 	height: auto;
 	float: left;	
 	overflow: visible;
 }
 
-input.article-title{
-	border: 1px solid silver;
-	width: 100%;
+input.article{
+	width: 632px;
 	height:30px;
 	float: left;
 }
 
-textarea.article-content{
+textarea.article{
 	width: 100%;
 	max-width: 100%;
 	min-height: 200px;
@@ -204,11 +199,6 @@ textarea.article-content{
 	border: 1px solid silver;
 }
 
-input.article-title:focus, textarea.article-content:focus{
-	outline: 0;
-	border-color: rgba(82, 168, 236, 0.8) ;
-	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
-}
 
 
 /*** #primary.article ***/
@@ -250,7 +240,7 @@ h1.article-title{
 	color: #0061a1;
 }
 
-span.article-intro-subtitle{
+span.article-brief{
 	font-size: 14px;
 	line-height: 18px;
 	display: block; /* start a new line */
@@ -269,8 +259,7 @@ div.article-content{
 	margin: 30px 0px 20px 0px;
 	float: left;
 	color: #3E3E3E;
-	font-size: 16px;
-	line-height: 23px;
+	font-size: 15px;
 }
 
 div.article-status{
@@ -341,8 +330,6 @@ span.add-on-blank{
 }
  
 input.span2{
-	padding: 2px;
-	border: 1px solid silver;
 	border-radius: 0px 3px 3px 0px;
 	height: 25px;
 	width: 180px;
@@ -351,7 +338,7 @@ input.span2{
 	vertical-align: middle;
 }
 
-input.span2:focus{
+.inputbox:focus{
 	outline: 0;
 	border-color: rgba(82, 168, 236, 0.8) ;
 	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
@@ -371,39 +358,6 @@ input.btn{
 	box-shadow: rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(0,0,0,0.25);
 	text-shadow: 0 1px 1px rgba(255,255,255,0.75)
 }
-/*
-span.regist{
-	width: 60px;
-	height:22px;
-	margin-top: 4px;
-	margin-bottom: 10px;
-	float: left;
-}
-
-input.regist-box{
-	width: 200px;
-	height:22px;
-	border: 1px solid rgba(132,153,153,1);
-	padding-left: 10px;
-	margin: 0px 10px 20px 8px;
-	border-radius: 5px;
-	box-shadow: 1px 0.5px 2px rgba(153,153,153,0.3) inset;
-}
-
-input.regist-box:focus{
-	border: 1px solid rgba(102,153,153,0.5);
-	outline: none;
-	box-shadow: 1px 0.5px 2px rgba(41,124,207,0.8) inset;
-}
-
-p.regist{
-	width: 150px;
-	float: left;
-	display: block;
-}
-
-
-
 
 input.button{
 	width: 80px;
@@ -424,7 +378,7 @@ div.err{
 
 */
 /**##01-HED  /home/manage  ****/
-div.article-specific{
+div.article-list{
 	width: 100%;
 	height: 20px;
 	background-color: transparent;
@@ -432,19 +386,19 @@ div.article-specific{
 	border: 1px solid silver;
 }
 
-ul.article-specific{
+ul.article-list{
 	list-style-type: none;
 
 }
 
-li.article-specific-caption{
+li.article-list-caption{
 	display: inline;
 	float: left;
 	max-width: 450px;
 	overflow: hidden;
 }
 
-li.article-specific{
+li.article-list{
 	display: inline;
 	float: right;
 	margin: 0px 5px 
@@ -467,41 +421,6 @@ ul.member{
 	float: left;
 	font-size: 15px;
 }
-
-
-
-/*** widgets.inputbox **/
-
-textarea.inputbox{
-	width: 226px;
-	height: 100px;
-	padding: 10px;
-	border: 1px solid rgba(102,153,153,0.5);
-	float: right;
-	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
-	line-height: 18px;
-
-	resize:none;
-	border-radius: 4px;
-	box-shadow: 1px 1.5px 1px rgba(102,153,153,0.4) inset;
-}
-textarea.inputbox:focus{
-	border: 1px solid rgba(102,153,153,0.5);
-	outline: none;
-	box-shadow: 1px 2px 2px rgba(122,153,153,0.7) inset;
-}
-
-input.inputbox{
-	float: right;
-	margin: 10px 0px 5px 0px;
-	padding:3px;
-	width: 50px;
-}
-input.inputbox:hover{
-	box-shadow: 1px 2px 2px rgba(152,153,153,0.7) inset;
-}  /*** end of widget inputbox ***/
-
 
 
 /*** Others ***/
@@ -643,3 +562,36 @@ a.special-thanks{
 a.special-thanks:hover{
 	text-decoration: underline;
 }
+
+div.member-info{
+	margin: 20px;
+	width: auto;
+	height: 150px;
+}
+
+img.member-info{
+	float: left;
+	width:150px;
+	height: 150px;
+	border-radius: 5px;
+}
+
+div.member-info-container{
+	width: 461px;
+	padding: 0px 0px 0px 15px;
+	float: right;
+	height: auto;
+}
+
+h2.member-info, p.member-info{
+	height: auto;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+#epiceditor{
+	width: 100%;
+	height: 300px;	
+}
+
+
