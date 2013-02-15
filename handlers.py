@@ -71,8 +71,8 @@ class ArticleHandler(tornado.web.RequestHandler):
                 'title': None,
                 'brief': None,
                 'body': None,
-                'date': datetime.datetime.now(),
-                'review': datetime.datetime.now(),
+                'date': datetime.datetime.utcnow(),
+                'review': datetime.datetime.utcnow(),
         }
 
         # deal with uploaded file 
@@ -118,7 +118,7 @@ class UpdateHandler(tornado.web.RequestHandler):
             article['title']  = args['title']
             article['brief'] = args['brief']
             article['body'] = args['content']
-            article['review'] = datetime.datetime.now()
+            article['review'] = datetime.datetime.utcnow()
             db_article.update({"sn":article_id}, article)
             self.redirect("/archive/%s" % article_id)
         else:
@@ -191,7 +191,7 @@ class RegisterHandler(tornado.web.RequestHandler):
             self.render(template, title=title, 
                         errors = errors, member = None)
         else:
-            member['date'] = datetime.datetime.now()
+            member['date'] = datetime.datetime.utcnow()
             member['nid'] = str(db_member.count() + 1)
             member['auth'] = hashlib.sha512(member['name_low'] + 
                              member['pwd']).hexdigest()
