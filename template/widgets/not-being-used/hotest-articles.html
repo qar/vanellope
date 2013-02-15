@@ -1,0 +1,11 @@
+<div class="widgets">
+	<!-- TOP 10 Hotest Articles -->
+    <span class="widget-caption">TOP 10 Hotest</span>
+         <div class="widget-inner-sep"></div>
+    <ul class="archive">
+    	{% for article in hotest %}
+        <li class="archive"><i class="icon-leaf"></i><a class="archive" href="/archive/{{ article['sn'] }}">{{ article['title']}}</a></li>
+            <div class="widget-inner-sep"></div>
+        {% end %}
+    </ul>
+</div>

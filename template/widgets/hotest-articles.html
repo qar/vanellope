@@ -1,10 +1,10 @@
+<div class="widget-caption">最火十篇</div>
 <div class="widgets">
-    <span class="widget-caption">最热文章</span>
-         <div class="widget-inner-sep"></div>
+	<!-- TOP 10 Hotest Articles -->
     <ul class="archive">
-    	{% for article in newest %}
-        <li class="archive"><i class="icon-leaf"></i><a class="archive" href="/archive/{{ article[0] }}">{{ article[1]}}</a></li>
+    	{% for article in hotest %}
+        <li class="archive"><span class="icon"><i class="icon-fire"></i>{{ article['heat']}}°</span><a class="archive" href="/archive/{{ article['sn'] }}">{{ article['title']}}</a></li>
             <div class="widget-inner-sep"></div>
         {% end %}
     </ul>
-</div><!-- closing of ".widgets" -->
+</div>

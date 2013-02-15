@@ -8,22 +8,20 @@
 
   <div class="primary-caption">
     <span class="primary-caption-icon"><i class="icon-pencil  icon-2x"></i></span>
-    <span class="primary-caption-words">写文章</span>
+    <span class="primary-caption-words">修改文章</span>
   </div><!-- end of  "primary-caption" -->
 
     <div class="primary-item-sep"></div>
 
-  <form class="article" id="myform" action="/article" enctype="multipart/form-data" method="post">
+  <form class="article" id="myform" action="/update/{{ article['sn'] }}" enctype="multipart/form-data" method="post">
 
-    <input type="file" id="intro-img" name="intro-img" value="选择图片"><span>展示在首页，图片大小应选择192x108px</span>
+    <input class="article inputbox" type="text" name="title" value="{{ escape(article['title']) }}" >
       <div class="primary-item-sep"></div>
-    <input class="article inputbox" type="text" name="title" placeholder="标题" autofocus>
+    <textarea class="article inputbox" name="brief" style="min-height:100px">{{ article['brief'] }}</textarea>
       <div class="primary-item-sep"></div>
-    <textarea class="article inputbox" name="brief" placeholder="简介" style="min-height:100px"></textarea>
+    <textarea class="article inputbox" id="text-input" name="content">{{ article['body'] }}</textarea>    
       <div class="primary-item-sep"></div>
-    <textarea class="article inputbox" id="text-input" name="content" placeholder="正文"></textarea>    
-      <div class="primary-item-sep"></div>
-    <input class="btn" type="submit" value="发表">
+    <input class="btn" type="submit" value="提交更改">
       <div class="primary-item-sep"></div>
   </form><!-- end of "article-editor" -->
 	</div>

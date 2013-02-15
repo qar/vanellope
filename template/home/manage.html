@@ -15,9 +15,9 @@
             {% for article in articles %}
             <div class="article-list">
                 <ul class="article-list">
-                    <li class="article-list-caption"><a href="/archive/{{ article[0]}}" title="{{ article[1]}}">{{ article[1]}}</a></li>
-                    <li class="article-list"><a href="/home/manage" onclick="delArticle({{ article[0]}})">Delet</a></li>
-                    <li class="article-list"><a href="/archive/0?m=edit">Edit</a></li>
+                    <li class="article-list-caption"><a href="/archive/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a></li>
+                    <li class="article-list"><a href="/home/manage" onclick="delArticle({{ article['sn']}})">Delet</a></li>
+                    <li class="article-list"><a href="/archive/{{ article['sn']}}?m=modify">Edit</a></li>
                 </ul>
             </div>
             <div class="primary-item-sep"></div>

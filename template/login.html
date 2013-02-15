@@ -3,8 +3,8 @@
 	<div class="primary" >
 
 		<div class="primary-item-container">
-			{% if tpl_values['errors'] %}
-				{% for error in tpl_values['errors'] %}
+			{% if errors %}
+				{% for error in errors %}
 					<p style="color:red">{{ error }}</p>
 				{% end %}
 			{% end %}

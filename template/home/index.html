@@ -1,16 +1,12 @@
-
 {% include "../common/header.html" %}
-
-<!-- body content wrapper -->
 <div id="wrapper">
-
   <div class="primary" >
-          <div class="primary-item-sep"></div>
-        <div class="member-info">
-          <img class="member-info" src="/static/img/avatar/CherryGirl.jpg">
+    <div class="primary-item-sep"></div>
+    <div class="member-info">
+          <img class="member-info" src="{{ member['avatar'] }}">
           <div class="member-info-container">
-            <h2 class="member-info">Anran</h2>
-            <p class="member-info">qar@outlook.com</p>
+            <h2 class="member-info">{{ member['name'] }}</h2>
+            <p class="member-info">{{ member['email'] }}</p>
             <p class="member-info">A Simple Man</p>
           </div>
         </div> <!-- end of ".member-info" -->      

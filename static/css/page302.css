@@ -1,0 +1,610 @@
+
+/*** LEVEL I ***/
+*{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}
+
+html{
+	height: 100%;
+}
+
+body{
+	margin: auto;
+	height: 100%;
+	overflow: auto;
+	background-color: #e3e3e3;
+	text-align: center;
+	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: #555555;
+}
+
+p{
+	font-size: 17px;
+	line-height: 25px;
+}
+
+a{
+	text-decoration: none;
+}
+
+/* link color */
+a.member{
+	color: #666666;
+}
+
+ul{
+	list-style-type: none;
+}
+
+.inputbox{
+	padding: 2px;
+	border: 1px solid silver;
+}
+#logo{
+	float: left;
+	color: silver;
+	font-size: 30px;
+}
+
+/*** LEVEL II ***/
+#header-wrapper{ /* including the header background */
+	width: 960px;
+	margin: 0px auto;
+	height: 35px;
+	background-color: transparent;
+}
+
+#header{
+	height: 35px;
+	background-color: #3A4040;
+	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);
+}
+
+#wrapper{ /* content wrapper */
+	min-height: 100%;
+	height: auto ! important;
+	width: 960px;
+	margin: 30px auto;
+	margin-bottom: 30px;
+	text-align: left;
+	background-color: transparent;
+	overflow: hidden;
+}
+
+
+#footer{ /* contains #footer-wrapper  */
+	height: 60px;
+	background-color: white;
+	color: #868686;
+}
+
+#footer-wrapper{ /* wrap footer content */
+	width: 960px;
+	height: 60px;
+	margin: 0px auto;
+	background-color: transparent;
+}
+
+/*** LEVEL III ***/
+div.primary, div.widgets {
+	height: auto;
+	background-color: #ffffff;
+	border-radius: 4px;
+    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
+    overflow: hidden; 
+}
+div.widgets {
+	border-radius: 0px 0px 4px 4px;
+}
+
+div.primary{ /* style specific */
+	width:676px;
+	margin-bottom: 50px;
+	float: left;
+}
+
+div#comments{
+	height:100px;
+	background-color: blue;
+}
+
+
+div.widgets-wrapper{
+	width: 267px;
+	margin-left: 15px;  /* gap between #primary and #secondary */
+	margin-right: 2px; /* leave space for border*/
+	min-height: 100%;
+	height: auto;
+	float: right;
+
+}
+.primary-item-container{ /* #primary's general items style */
+	margin: 20px;
+}
+
+div.primary-item-sep{
+	width: 100%;
+	height: 20px;
+	float: left;
+}
+
+div.widgets{ /* collection of widgets */ /* style specific */
+/*
+**	" div.widgets "	 is the right column of the screen.
+**	it includes one or more widget compnents wrapped by ".widget-container", 
+**	which supply margins around the wrapped compnents.
+**  up to now, it includs these compnents:
+**		ul.archive-newest;	ul.catalogue;	
+**/
+	width: 100%;
+	max-width: 247px;
+	padding: 10px;
+	margin-bottom: 20px;
+	background-color: #FFFFFF;
+	float: right;
+}
+
+.widget-inner-sep{
+	width: 100%;
+	height: 10px;
+	float: left;
+	background-color: transparent;
+}
+
+div.widget-outer-sep{
+	width: 307px;
+	height: 10px;
+	float: right;
+	background-color: transparent;
+}
+
+div.widget-caption{
+	width: 262px;
+	height: 20px;
+	float: left;
+	padding: 3px 0px 0px 5px;
+	border-radius: 4px 4px 0px 0px;
+	box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
+    overflow: hidden; 
+	background-color: #cccccc;
+}
+span.widget-caption{
+	width: 100%;
+	height: 13px;
+	border-bottom: 1px solid silver;
+	font-size: 14px;
+	color: #999999;
+	float: left;
+}
+
+ul.archive{
+	list-style-type: none;
+}
+
+li.archive{
+	width: 100%;
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+	margin-bottom: 8px;
+}
+span.icon{
+	float: left;
+	margin-right: 10px;
+}
+
+a.archive{
+	width: auto;
+	float: left;
+	color: #666666;
+	padding-left: 5px;
+}
+
+a.archive:hover{
+	text-decoration: underline;
+}
+
+
+/** #primary components **/
+form{
+	width: 100%;
+	height: auto;
+	float: left;	
+	overflow: visible;
+}
+
+input.article{
+	width: 632px;
+	height:30px;
+	float: left;
+}
+
+textarea.article{
+	width: 100%;
+	max-width: 100%;
+	min-height: 200px;
+	height: auto;
+	border: 1px solid silver;
+}
+
+
+
+/*** #primary.article ***/
+
+div.article-intro{ /* display on index page */
+	padding:9px 0px 28px 0px;
+	margin-bottom: 29px;
+	overflow: hidden;
+}
+
+img.article-intro{
+	width: 192px;
+	height: 108px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	float: left;
+	overflow: hidden;
+	border-radius: 6px;
+	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
+}
+
+img.article-img{
+	max-width:400px;
+	max-height: 200px;
+	overflow: hidden;
+}
+
+h2.article-intro-title{
+	font-size: 19px;
+	line-height: 25px;
+	color: #0061a1;
+	display: inline;
+}
+
+h1.article-title{
+	font-size: 25px;
+	line-height: 30px;
+	font-weight: normal;
+	color: #0061a1;
+}
+
+span.article-brief{
+	font-size: 14px;
+	line-height: 18px;
+	display: block; /* start a new line */
+	color: #8E8E8E;
+}
+
+
+div.article-content{
+	margin: 30px 0px 20px 0px;
+	float: left;
+	color: #3E3E3E;
+	font-size: 15px;
+}
+
+div.article-status{
+	height: 15px;
+	width: 100%;
+	float: left;
+	padding: 8px 0px;
+}
+
+ul.article-status{
+	display: inline;
+	list-style-type: none;
+}
+
+li.article-status{
+	display: inline;
+	margin: 0px 10px;
+	float: left;
+}
+.article-pic{
+	margin: 30px auto;
+	display: block;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+
+/*** Register Form ***/
+
+
+form#regist-form{
+	width:260px;
+	height: 100%;
+	margin-right:7px; 
+	padding: 20px 20px 20px 20px;
+	margin-bottom: 50px;
+	float: left;
+	overflow: hidden;
+	background-color: #FFFFFF;
+}
+div.input-prepend{
+	height: 31px;
+	width: auto;
+	margin-bottom: 10px;
+}
+
+span.add-on{
+	padding: 4px;
+	height: 21px;
+	min-width: 21px;
+	width: auto;
+
+	border-radius: 3px 0px 0px 3px;
+	border: 1px solid #DDDDDD;
+	float: left;
+	background-color: #dddddd;
+	text-align: center;
+	vertical-align: middle;
+}
+span.add-on-blank{
+	padding: 0px;
+	border: 1px solid silver;
+	border-radius: 0px 3px 3px 0px;
+	height: 29px;
+	width: 150px;
+	float: left;
+	font-size: 12px;
+}
+ 
+input.span2{
+	border-radius: 0px 3px 3px 0px;
+	height: 25px;
+	width: 180px;
+	float: left;
+	font-size: 12px;
+	vertical-align: middle;
+}
+
+.inputbox:focus{
+	outline: 0;
+	border-color: rgba(82, 168, 236, 0.8) ;
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
+}
+
+input.regist-radio{
+	line-height: 13px;
+	margin: 6px 0px 6px 5px;
+}
+
+input.btn{
+	width: 100px;
+	height: 35px;
+	border-radius: 5px;
+	border: 1px solid silver;
+	padding: 10px;
+	box-shadow: rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(0,0,0,0.25);
+	text-shadow: 0 1px 1px rgba(255,255,255,0.75)
+}
+
+input.button{
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	background-color: #DDDDDD;
+	box-shadow: 0px 13px 20px rgba(50, 50, 50, 0.3) inset;
+}
+
+div.err{
+	width:auto;
+	height: auto;
+	padding: 5px;
+	background-color: #cc0000;
+	color: #ffcc00;
+}
+
+*/
+/**##01-HED  /home/manage  ****/
+div.article-list{
+	width: 100%;
+	height: 20px;
+	background-color: transparent;
+	float: left;
+	border: 1px solid silver;
+}
+
+ul.article-list{
+	list-style-type: none;
+
+}
+
+li.article-list-caption{
+	display: inline;
+	float: left;
+	max-width: 450px;
+	overflow: hidden;
+}
+
+li.article-list{
+	display: inline;
+	float: right;
+	margin: 0px 5px 
+}
+/**##01-END /home/manage  ****/
+
+div.member{
+}
+
+img.member{
+	border-radius: 6px;
+	overflow: hidden;
+	float: left;
+}
+
+ul.member{
+	list-style-type: none;
+	float: left;
+	font-size: 15px;
+}
+
+
+/*** Others ***/
+ul.nav{
+	list-style-type: none;
+	float: right;
+	margin: 10px 10px;
+}
+
+li.nav{
+	display: inline;
+}
+
+a.nav{
+	color: white;
+	padding: 5px 8px;
+	border-radius: 4px;
+}
+
+a.nav:hover{
+	background-color: silver;
+	color: #404040;
+}
+
+/***  common  ***/
+
+
+
+.post { /* container of post information */
+	min-height: 50px;
+	border-radius: 4px;
+	background-color: #FFFFFF;
+	height: auto;
+	width: auto;
+	margin: 0px 0px 20px 0px ;
+	float: left;
+	display: inline;
+}
+
+.avatar{ /* user's avatar image */
+	display: inline;
+	float: left;
+	margin-right: 10px;
+	border-radius: 4px;
+
+}
+
+.post-content{
+	min-height: 40px;
+	border-radius: 4px;
+	width: 550px;
+	float: right;
+	padding: 8px 10px 10px 10px;
+	display: block;
+	box-shadow: 0.5px 1.5px 2px rgba(102,153,153,0.5);
+
+}
+
+
+
+/***  widget "tool-list" ***/
+ul.tools-list{
+	width: 248px;
+	height: auto;
+	list-style-type: none;
+}
+
+a.tools-list{
+	color: #555555;
+}
+
+li.tools-list{
+	float: left;
+	height: 30px;
+}
+
+
+div.tool-btn{
+	width: 130px;
+	height: 30px;
+	border-radius: 5px;
+	border: 1px solid silver;
+}
+
+div.tool-icon{
+	padding: 5px;
+	height: 20px;
+	width: 20px;
+
+	border-radius: 3px 0px 0px 3px;
+	float: left;
+	background-color: #dddddd;
+	text-align: center;
+	vertical-align: middle;
+}
+
+div.tool-caption{
+	padding: 7px 0px;
+	border-radius: 0px 3px 3px 0px;
+	height: 16px;
+	width: 100px;
+	float: left;
+	text-align: center;
+	background-color: #dddddd;
+}
+
+span.tool-caption{
+	height: 15px;
+	font-size: 16px;
+	
+	overflow: hidden;
+}
+
+
+/***#################### footer ##############**/
+ul.special-thanks{
+	float: left;
+	text-align: left;
+	list-style-type: none;
+
+}
+
+li.special-thanks{
+	font-size: 12px;
+	margin: 5px 0px;
+}
+
+a.special-thanks{
+	color: #868686;
+}
+
+a.special-thanks:hover{
+	text-decoration: underline;
+}
+
+div.member-info{
+	margin: 20px;
+	width: auto;
+	height: 150px;
+}
+
+img.member-info{
+	float: left;
+	width:150px;
+	height: 150px;
+	border-radius: 5px;
+}
+
+div.member-info-container{
+	width: 461px;
+	padding: 0px 0px 0px 15px;
+	float: right;
+	height: auto;
+}
+
+h2.member-info, p.member-info{
+	height: auto;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+#epiceditor{
+	width: 100%;
+	height: 300px;	
+}
+
