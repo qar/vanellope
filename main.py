@@ -18,10 +18,11 @@ import tornado.web
 import tornado.escape
 
 import markdown
+import settings
 
 from handlers import *
 from page302.utility import *
-from page302.security import *
+from page302.security import CheckAuth
 
 
 from tornado.options import define, options
@@ -40,17 +41,21 @@ class Application(tornado.web.Application):
         (r"/home/(.*)", HomeHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
+        (r"/test", TestHandler),
         (r"/update/(.*)", UpdateHandler)]
         
-        settings = dict(
-        static_path = os.path.join(os.path.dirname(__file__), "static"),
-        template_path = os.path.join(os.path.dirname(__file__), "template"),
-        debug = True)
+        self.db = settings.DATABASE
 
-        conn = pymongo.Connection('localhost',27017)
-        self.db = conn['page302']
-        tornado.web.Application.__init__(self, handlers, **settings)
+        SETTINGS = dict(
+        static_path = settings.STATIC_PATH,
+        template_path = settings.TEMPLATE_PATH,
+        debug = settings.DEBUG)
 
+        tornado.web.Application.__init__(self, handlers, **SETTINGS)
+
+class TestHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write("hello, world")
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):

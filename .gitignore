@@ -1,0 +1,6 @@
+*.[oa]
+*~
+static/img/article/
+static/img/avatar/  
+*.pyc
+*.log

@@ -15,9 +15,10 @@ import tornado.web
 import tornado.escape
 
 import markdown
+import settings
 
 from page302.utility import *
-from page302.security import *
+from page302.security import CheckAuth
 
 
 class ArticleHandler(tornado.web.RequestHandler):

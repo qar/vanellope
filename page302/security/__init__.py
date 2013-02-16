@@ -1,17 +1,26 @@
+#! /usr/bin/env python
+# coding=utf-8
+import os
+import sys
+import os.path
 import pymongo
 
-def CheckAuth(cookie_auth):
-    # check authorization
-    conn = pymongo.Connection('localhost',27017)
-    db_member = conn.page302.member
-    member = db_member.find_one({'auth':  cookie_auth})
-    # database return None if no such member
+import settings
+import tornado.web
+        
+
+def CheckAuth(auth_cookie):
+    # take a cookie name that do authentication function
+    db_member = settings.DATABASE['member']
+    member = db_member.find_one({"auth": auth_cookie})
+    print type(member)
     if member:
         return member
     else:
         return None
-        
 
+
+    
 
 
 
