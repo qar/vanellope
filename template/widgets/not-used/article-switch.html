@@ -1,0 +1,21 @@
+<div class="widget">
+	<div class="widget-caption">文章切换</div>
+	<div class="widget-wrapper">
+		{% if pre %}
+			<span id="previous">
+				<a href="/archive/{{ pre }}"><i class="icon-double-angle-left"></i>&nbsp;previous</a>
+			</span>
+		{% else %}
+			<span id="previous">No More</span>
+		{% end %}
+
+		{% if fol %}
+			<span id="following">
+				<a href="/archive/{{ fol }}">following&nbsp;<i class="icon-double-angle-right"></i></a>
+			</span>
+		{% else %}
+			<span id="following">No More</span>
+		{% end %}
+
+</div><!-- closing of ".widgets" -->
+</div>

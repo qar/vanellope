@@ -1,5 +1,6 @@
 {% include "common/header.html" %}
 <div id="wrapper">
+    <div class="primary-wrapper">
     <div class="primary" >
         {% for article in articles %}
             <!-- index content unit -->
@@ -14,10 +15,10 @@
         </div> <!-- end of ".article-intro" and ".primary-item-container" -->
         {% end %}
     </div> <!-- end of "#primary" -->
+    </div>
 
    <div class="widgets-wrapper">
     {% include "widgets/hotest-articles.html" %}
   </div>
-
 </div> <!-- Closing of wrapper -->   
 {% include "common/footer.html" %}

@@ -2,6 +2,7 @@
 {% include "../common/header.html" %}
 <!-- body content wrapper -->
 <div id="wrapper">
+    <div class="primary-wrapper">
     <div class="primary" >
 
 <div class="primary-item-container">
@@ -17,17 +18,18 @@
 
     <input type="file" id="intro-img" name="intro-img" value="选择图片"><span>展示在首页，图片大小应选择192x108px</span>
       <div class="primary-item-sep"></div>
-    <input class="article inputbox" type="text" name="title" placeholder="标题" autofocus>
+    <input class="inputbox" type="text" name="title" placeholder="标题" autofocus>
       <div class="primary-item-sep"></div>
-    <textarea class="article inputbox" name="brief" placeholder="简介" style="min-height:100px"></textarea>
+    <textarea class="inputbox" name="brief" placeholder="简介" style="min-height:100px"></textarea>
       <div class="primary-item-sep"></div>
-    <textarea class="article inputbox" id="text-input" name="content" placeholder="正文"></textarea>    
+    <textarea class="inputbox" name="content" placeholder="正文"></textarea>    
       <div class="primary-item-sep"></div>
-    <input class="btn" type="submit" value="发表">
+    <input type="submit" value="发表">
       <div class="primary-item-sep"></div>
   </form><!-- end of "article-editor" -->
 	</div>
 </div><!-- end of primary -->
+</div>
 
   <div class="widgets-wrapper">
     {% include "../widgets/tools-list.html" %}

@@ -16,37 +16,53 @@ import tornado.escape
 
 import markdown
 import settings
-
+from article import Article
 from page302.utility import *
 from page302.security import CheckAuth
 
+VIDEO_PATT = r"[video](.*)[/video]"
 
 class ArticleHandler(tornado.web.RequestHandler):
     def get(self, article_sn):
         db_article = self.application.db.article
         db_member = self.application.db.member
+        db_comment = self.application.db.comment
+
 
         article = db_article.find_one({'sn': article_sn})
+        comments = db_comment.find({'article_id': article_sn}).sort('date',1)
         author = db_member.find_one({'name_low': article['author'].lower() })
 
         member = CheckAuth(self.get_cookie('auth'))
 
         template = "article.html"
+
+        title ="page302"
+        article['heat'] += 1
+        db_article.save(article)
+
         try:
-            option = self.get_argument('m')
+            pre = db_article.find({'sn': {'$lt': article['sn']}}).sort('sn', -1)
+            pre = pre[0]['sn']
         except:
-            option = None
-        if option == 'modify':
-            template = "home/edit.html"
-            title = "Edit"
-        else:
-            title ="page302"
-            article['heat'] += 1
-            db_article.save(article)
-            md = markdown.Markdown(safe_mode = "escape")
-            article['body'] = md.convert(article['body'])
+            pre = None
+        try:
+            fol = db_article.find({'sn': {'$gt': article['sn']}})
+            fol = fol[0]['sn']
+        except:
+            fol = None
+        md = markdown.Markdown(safe_mode = "escape")
+        article['body'] = md.convert(article['body'])
+        article['date'] += datetime.timedelta(hours=8)
+        article['date'] = article['date'].strftime("%Y-%m-%d %H:%M")
+        article['review'] += datetime.timedelta(hours=8)
+        article['review'] = article['review'].strftime("%Y-%m-%d %H:%M")
+        #article['body'] = markdown.Markdown(article['body'], ['video'])
         self.render(template, 
+                    pre = pre,
+                    fol = fol,
                     member = member,
+                    comments = comments, 
                     title = title,
                     author = author, 
                     article = article)
@@ -62,19 +78,18 @@ class ArticleHandler(tornado.web.RequestHandler):
                 args[v] = self.get_argument(v)
             except:
                 pass
-
         article = { 
-                'sn':  str(int(time.time())),
-                'statue': 0,
-                'img': None,
-                'author': None,
-                'heat': 0,
-                'title': None,
-                'brief': None,
-                'body': None,
-                'date': datetime.datetime.utcnow(),
-                'review': datetime.datetime.utcnow(),
-        }
+        'sn':  str(int(time.time())),
+        'statue': 0,
+        'img': None,
+        'author': None,
+        'heat': 0,
+        'title': None,
+        'brief': None,
+        'body': None,
+        'date': datetime.datetime.utcnow(),
+        'review': datetime.datetime.utcnow(),
+    }
 
         # deal with uploaded file 
         upload = self.request.files['intro-img'][0]
@@ -103,10 +118,30 @@ class ArticleHandler(tornado.web.RequestHandler):
             logging.warning("Unexpecting Error")        
 
 
-class UpdateHandler(tornado.web.RequestHandler):
+class ArticleUpdateHandler(tornado.web.RequestHandler):
+    def get(self, article_sn):
+        db_article = self.application.db.article
+        db_member = self.application.db.member
+        
+
+        article = db_article.find_one({'sn': article_sn})
+        
+        author = db_member.find_one({'name_low': article['author'].lower() })
+
+        member = CheckAuth(self.get_cookie('auth'))
+
+        template = "home/edit.html"
+        title = "Edit"
+        self.render(template, 
+                    member = member,
+                    title = title,
+                    author = author,
+                    article = article)
+
     def post(self, article_id):
         member = CheckAuth(self.get_cookie('auth'))
         db_article = self.application.db.article
+        db_comment = self.application.db.comment
         article = db_article.find_one({"sn":article_id})
         post_values = ['title', 'brief', 'content']
         args = {}
@@ -125,6 +160,30 @@ class UpdateHandler(tornado.web.RequestHandler):
         else:
             self.send_error(403)
 
+class CommentHandler(tornado.web.RequestHandler):
+    def get(self):
+        pass
+
+    def post(self, article_sn):
+        db_article = self.application.db.article
+        db_comment = self.application.db.comment
+        member = CheckAuth(self.get_cookie('auth'))
+        cmt = self.get_argument('comment')
+        comment = {
+            'article_id':None,
+            'member_id': None,
+            'date':None,
+            'comment':None,
+        }
+        if member:
+            comment['member_name'] = member['name']
+            comment['comment'] = cmt
+            comment['article_id'] = article_sn
+            comment['date'] = datetime.datetime.utcnow()
+            db_comment.insert(comment)
+            self.redirect("/archive/%s" % article_sn)
+        else:
+            self.send_error(403)
 
 
 class RegisterHandler(tornado.web.RequestHandler):

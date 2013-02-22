@@ -1,23 +1,50 @@
 {% include "common/header.html" %}
 
 <div id="wrapper">
-	<div id="article" class="primary" >
-		<div class="primary-item-container">
-			<div class="primary-item-sep"></div>
-		<h1 class="article-title">{{ article['title'] }}</h1><!-- end of "article-title" -->
-			<div class="primary-item-sep"></div>
+  <div class="primary-wrapper">
+    <div id="article" class="primary" >
+      <div class="primary-item-container">
+        <h1 class="article-title">{{ article['title'] }}</h1><!-- end of "article-title" -->
+        <div class="article-content" id="content">
+          {% for i in article['body'].splitlines() %}
+          {% raw i %}<br />
+          {% end %}
+        </div>
+      </div>
+    </div>
+  
+  {% if comments %}
+  <div class="primary" id="comments">
+        {% for comment in comments %}
+        <div class="comment primary-item-container">
+          <a class="member" href="/member/anran">
+            <img class="avatar" src="/static/img/avatar/{{ comment['member_name'].lower() }}.jpg" alt="{{ comment['member_name'] }}" width="50" height="50px">
+          </a>
 
-		<div class="article-content" id="content">
-			{% for i in article['body'].splitlines() %}
-			{% raw i %}<br />
-			{% end %}
-		</div>
-	</div> 
-	</div> 
+          <ul class="comment">
+            <li><a href="/member/{{ comment['member_name'].lower() }}">{{ comment['member_name']}}</a></li>
+            <li class="comment-content">{{ comment['comment'] }}</li>
+          </ul>
+        </div>   
+        {% end %}
 
-	<div class="widgets-wrapper">
+  </div>
+  {% end %}
+
+  </div>
+
+
+  <div class="widgets-wrapper">
     {% include "widgets/author-info.html" %}
+
+    {% if member %}
+    {% if member['auth'] == author['auth'] %}
+      {% include "widgets/owner-article-option.html" %}
+    {% end %}
+    {% end %}
+
     {% include "widgets/article-status.html" %}
+    {% include "widgets/comment.html" %}
   </div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->

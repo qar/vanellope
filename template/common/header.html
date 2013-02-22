@@ -18,19 +18,19 @@
 </head>
 
 <body>
-
 <div id="header">
-    <div id="header-wrapper">
-        <a id="logo" href="/">PAGE302</a>
-        <ul class="nav">
-            {% if member %}
-            <li class="nav"><a class="nav" href="/home">{{ member['name'] }}</a></li>
-            <li class="nav"><a class="nav" href="/logout ">退出</a></li>
-            {% else %}
-            <li class="nav"><a class="nav" href="/login">登录</a></li>
-            <li class="nav"><a class="nav" href="/register">注册</a></li>
-            {% end %}
-        </ul>
-    </div><!-- end of heaer-wrapper -->
-</div> <!-- end of header -->
+<div id="header-wrapper">
+  <a id="logo" href="/">PAGE302</a>
+
+  <ul class="nav">
+  {% if member %}
+    <li class="nav"><a class="nav" href="/home">{{ member['name'] }}</a></li>
+    <li class="nav"><a class="nav" href="/logout ">退出</a></li>
+    {% else %}
+    <li class="nav"><a class="nav" href="/login">登录</a></li>
+    <li class="nav"><a class="nav" href="/register">注册</a></li>
+    {% end %}
+  </ul>
+</div><!-- end of heaer -->
+</div> <!-- end of header-wrapper -->
 

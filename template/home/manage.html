@@ -2,8 +2,8 @@
 
 <!-- body content wrapper -->
 <div id="wrapper">
+    <div class="primary-wrapper">
     <div class="primary" >
-        
         <div class="primary-item-container">
             <div class="primary-caption">
             <span class="primary-caption-icon"><i class="icon-list  icon-2x"></i></span>
@@ -17,14 +17,14 @@
                 <ul class="article-list">
                     <li class="article-list-caption"><a href="/archive/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a></li>
                     <li class="article-list"><a href="/home/manage" onclick="delArticle({{ article['sn']}})">Delet</a></li>
-                    <li class="article-list"><a href="/archive/{{ article['sn']}}?m=modify">Edit</a></li>
+                    <li class="article-list"><a href="/update/{{ article['sn']}}">Edit</a></li>
                 </ul>
             </div>
             <div class="primary-item-sep"></div>
             {% end %}    
 
 	   </div>
-
+    </div>
     </div> <!-- end of "primary" --> 
 
 <div class="widgets-wrapper">

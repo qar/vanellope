@@ -27,51 +27,134 @@ p{
 }
 
 a{
+
 	text-decoration: none;
 }
+img{
+	max-width: 636px;
+}
 
-/* link color */
-a.member{
-	color: #666666;
+textarea{
+	width: 100%;
+	max-width: 100%;
+	min-height: 200px;
+	height: auto;
+	border: 1px solid silver;
 }
 
 ul{
 	list-style-type: none;
 }
 
+span.authorname{
+
+}
+
+span.timestamp{
+	
+}
+
 .inputbox{
 	padding: 2px;
 	border: 1px solid silver;
 }
+
+.inputbox:focus{
+	outline: 0;
+	border-color: rgba(82, 168, 236, 0.8) ;
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
+}
+
+.button{
+	border-radius: 4px;
+	width: 100px;
+	height: 25px;
+	background-color: #eeeeee;
+	border: 1px solid silver;
+	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7);
+}
+
+.button:active{
+	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7) inset;
+}
+/*
+input.btn{
+	width: 100px;
+	height: 35px;
+	border-radius: 5px;
+	border: 1px solid silver;
+	padding: 10px;
+	box-shadow: rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(0,0,0,0.25);
+	text-shadow: 0 1px 1px rgba(255,255,255,0.75)
+}
+
+input.button{
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	background-color: #DDDDDD;
+	box-shadow: 0px 13px 20px rgba(50, 50, 50, 0.3) inset;
+}
+
+*/
+
 #logo{
 	float: left;
 	color: silver;
 	font-size: 30px;
 }
 
-/*** LEVEL II ***/
-#header-wrapper{ /* including the header background */
-	width: 960px;
-	margin: 0px auto;
-	height: 35px;
-	background-color: transparent;
+/** add this '.fixed' in div.widget-wrapper's class list make widget fixed
+*** This make the first widget fixed
+**/
+.fixed{
+	position: fixed;
 }
 
+/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
+
+/*** VERSION 1: Fixed Header 
 #header{
-	height: 35px;
+	width: 100%;
+	position: fixed;
+	top: 0px;
 	background-color: #3A4040;
-	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);
+	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);	
 }
+#header-wrapper{ 
+	width: 960px;
+	height: 35px;
+	margin:0px auto;	
+}
+***/
+/*** VERSION 2: Normal Header  ***/
+#header{
+	width: 100%;
+	background-color: #3A4040;
+	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);	
+}
+
+#header-wrapper{ 
+	width: 960px;
+	height: 35px;
+	margin:0px auto;	
+}
+
+
+/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-END ******/
 
 #wrapper{ /* content wrapper */
 	min-height: 100%;
 	height: auto ! important;
 	width: 960px;
 	margin: 30px auto;
-	margin-bottom: 30px;
+	/** if fixed header:
+	margin-top: 65px;	**/
+	
 	text-align: left;
 	background-color: transparent;
 	overflow: hidden;
+
 }
 
 
@@ -89,28 +172,17 @@ ul{
 }
 
 /*** LEVEL III ***/
-div.primary, div.widgets {
+div.primary, div.widget {
 	height: auto;
 	background-color: #ffffff;
 	border-radius: 4px;
     box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
     overflow: hidden; 
 }
-div.widgets {
-	border-radius: 0px 0px 4px 4px;
-}
 
-div.primary{ /* style specific */
-	width:676px;
-	margin-bottom: 50px;
-	float: left;
-}
 
-div#comments{
-	height:100px;
-	background-color: blue;
-}
-
+/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
+/*** WIDGET ***/
 
 div.widgets-wrapper{
 	width: 267px;
@@ -119,33 +191,116 @@ div.widgets-wrapper{
 	min-height: 100%;
 	height: auto;
 	float: right;
+}
+
+div.widget{ 
+	height: auto;
+	width: auto;
+	float:right;
+	margin-bottom: 20px;
+}
+
+div.widget-caption{
+	width: 262px;
+	height: 20px;
+	padding: 3px 0px 0px 5px;
+	border-radius: 4px 4px 0px 0px;
+    overflow: hidden; 
+	float: left;
+	background-color: #cccccc;
+}
+
+div.widget-wrapper{
+	width: 100%;
+	max-width: 247px;
+	float: left;
+	padding: 10px;
+	border-radius: 0px 0px 4px 4px;
+}
+/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-END ******/
+
+/**** widgets specification ****/
+form#comment > textarea{
+	width: 237px;
+	max-width: 237px;
+	min-height: 50px;
+	height: auto;
+	padding:4px;
+}
+
+form#comment > input.button{
+	float: left;
+	margin-top: 6px;
+}
+
+
+#bottom-right{
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	height: 30px;
+	width: 50px;
+	color: white;
+	border-radius: 4px 3px 0px 0px;
+	background-color: rgba(32, 34, 17, 0.6);
 
 }
-.primary-item-container{ /* #primary's general items style */
+
+div.primary-wrapper{
+	float: left;
+	height: auto;
+	width: 676px;
+
+}
+div.primary{ /* style specific */
+	width: 100%;
+	margin-bottom: 50px;
+	float: left;
+}
+
+div#comments{
+	width: 100%;
+	float: left;
+	height:auto;
+	background-color: #FFFFFF;
+}
+
+div.comment{
+	height: auto;
+	width: 100%;
+	float: left;
+	padding-bottom: 15px;
+	box-shadow: 1.5px 2px 2px rgba(0,150, 255, 0.3);
+}
+
+
+ul.comment{
+	float: right;
+}
+
+
+div.comment:first-child{
+	margin-bottom: auto;
+}
+
+li.comment-content{
+	width: 576px;
+}
+
+
+div.primary-item-container{ /* #primary's general items style */
 	margin: 20px;
+	height: auto;
+	width: auto;
 }
 
 div.primary-item-sep{
 	width: 100%;
 	height: 20px;
-	float: left;
-}
-
-div.widgets{ /* collection of widgets */ /* style specific */
-/*
-**	" div.widgets "	 is the right column of the screen.
-**	it includes one or more widget compnents wrapped by ".widget-container", 
-**	which supply margins around the wrapped compnents.
-**  up to now, it includs these compnents:
-**		ul.archive-newest;	ul.catalogue;	
-**/
-	width: 100%;
-	max-width: 247px;
-	padding: 10px;
-	margin-bottom: 20px;
-	background-color: #FFFFFF;
 	float: right;
 }
+
+
 
 .widget-inner-sep{
 	width: 100%;
@@ -161,78 +316,60 @@ div.widget-outer-sep{
 	background-color: transparent;
 }
 
-div.widget-caption{
-	width: 262px;
-	height: 20px;
-	float: left;
-	padding: 3px 0px 0px 5px;
-	border-radius: 4px 4px 0px 0px;
-	box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
-    overflow: hidden; 
-	background-color: #cccccc;
-}
-span.widget-caption{
-	width: 100%;
-	height: 13px;
-	border-bottom: 1px solid silver;
-	font-size: 14px;
-	color: #999999;
-	float: left;
-}
+
+
+
 
 ul.archive{
 	list-style-type: none;
 }
 
-li.archive{
+ul.archive > li{
 	width: 100%;
 	display: inline-block;
 	float: left;
 	overflow: hidden;
 	margin-bottom: 8px;
 }
-span.icon{
-	float: left;
-	margin-right: 10px;
-}
 
-a.archive{
+ul.archive > li > a{
 	width: auto;
 	float: left;
 	color: #666666;
 	padding-left: 5px;
 }
 
-a.archive:hover{
+ul.archive > li > a:hover{
 	text-decoration: underline;
+}
+span.icon{
+	float: left;
+	margin-right: 10px;
 }
 
 
+
+
 /** #primary components **/
-form{
+form.article{
 	width: 100%;
 	height: auto;
 	float: left;	
 	overflow: visible;
 }
 
-input.article{
+form.article > input:not(:last-child){
 	width: 632px;
 	height:30px;
 	float: left;
 }
 
-textarea.article{
-	width: 100%;
-	max-width: 100%;
-	min-height: 200px;
-	height: auto;
-	border: 1px solid silver;
-}
+
 
 
 
 /*** #primary.article ***/
+
 
 div.article-intro{ /* display on index page */
 	padding:9px 0px 28px 0px;
@@ -240,7 +377,7 @@ div.article-intro{ /* display on index page */
 	overflow: hidden;
 }
 
-img.article-intro{
+img.article-intro{ /** display on index page**/
 	width: 192px;
 	height: 108px;
 	margin-right: 10px;
@@ -251,11 +388,13 @@ img.article-intro{
 	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
 }
 
-img.article-img{
+/** this maybe useless, we'll see
+img.article-img{ 
 	max-width:400px;
 	max-height: 200px;
 	overflow: hidden;
 }
+**/
 
 h2.article-intro-title{
 	font-size: 19px;
@@ -287,7 +426,7 @@ div.article-content{
 }
 
 div.article-status{
-	height: 15px;
+	height: auto;
 	width: 100%;
 	float: left;
 	padding: 8px 0px;
@@ -297,12 +436,12 @@ ul.article-status{
 	display: inline;
 	list-style-type: none;
 }
+ ul.article-status > li{
+ 	margin-bottom: 8px;
+ }
 
-li.article-status{
-	display: inline;
-	margin: 0px 10px;
-	float: left;
-}
+
+/** this is maybe useless, we'll see
 .article-pic{
 	margin: 30px auto;
 	display: block;
@@ -310,10 +449,10 @@ li.article-status{
 	overflow: hidden;
 }
 
+**/
+
 
 /*** Register Form ***/
-
-
 form#regist-form{
 	width:260px;
 	height: 100%;
@@ -362,34 +501,8 @@ input.span2{
 	vertical-align: middle;
 }
 
-.inputbox:focus{
-	outline: 0;
-	border-color: rgba(82, 168, 236, 0.8) ;
-	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
-}
 
-input.regist-radio{
-	line-height: 13px;
-	margin: 6px 0px 6px 5px;
-}
 
-input.btn{
-	width: 100px;
-	height: 35px;
-	border-radius: 5px;
-	border: 1px solid silver;
-	padding: 10px;
-	box-shadow: rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(0,0,0,0.25);
-	text-shadow: 0 1px 1px rgba(255,255,255,0.75)
-}
-
-input.button{
-	width: 80px;
-	height: 25px;
-	border-radius: 5px;
-	background-color: #DDDDDD;
-	box-shadow: 0px 13px 20px rgba(50, 50, 50, 0.3) inset;
-}
 
 div.err{
 	width:auto;
@@ -399,7 +512,7 @@ div.err{
 	color: #ffcc00;
 }
 
-*/
+
 /**##01-HED  /home/manage  ****/
 div.article-list{
 	width: 100%;
@@ -411,7 +524,6 @@ div.article-list{
 
 ul.article-list{
 	list-style-type: none;
-
 }
 
 li.article-list-caption{
@@ -424,12 +536,9 @@ li.article-list-caption{
 li.article-list{
 	display: inline;
 	float: right;
-	margin: 0px 5px 
+	margin: 0px 5px;
 }
 /**##01-END /home/manage  ****/
-
-div.member{
-}
 
 img.member{
 	border-radius: 6px;
@@ -437,11 +546,14 @@ img.member{
 	float: left;
 }
 
+/*
 ul.member{
 	list-style-type: none;
 	float: left;
 	font-size: 15px;
 }
+
+*/
 
 
 /*** Others ***/
@@ -506,17 +618,20 @@ a.nav:hover{
 ul.tools-list{
 	width: 248px;
 	height: auto;
-	list-style-type: none;
+	/*list-style-type: none;*/
 }
 
-a.tools-list{
-	color: #555555;
-}
-
-li.tools-list{
+ul.tools-list > li{
+	width: 100%;
 	float: left;
 	height: 30px;
 }
+
+ul.tools-list > li > a{
+	color: #555555;
+}
+
+
 
 
 div.tool-btn{
@@ -608,3 +723,18 @@ h2.member-info, p.member-info{
 	height: 300px;	
 }
 
+
+span#previous, span#following{
+	width: auto;
+
+}
+
+
+
+span#previous{
+	float: left;
+}
+
+span#following{
+	float: right;
+}

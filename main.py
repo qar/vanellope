@@ -20,6 +20,7 @@ import tornado.escape
 import markdown
 import settings
 
+from ajax import AjaxHandler
 from handlers import *
 from page302.utility import *
 from page302.security import CheckAuth
@@ -42,7 +43,9 @@ class Application(tornado.web.Application):
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
         (r"/test", TestHandler),
-        (r"/update/(.*)", UpdateHandler)]
+        (r"/update/(.*)", ArticleUpdateHandler),
+        (r"/comment/(.*)", CommentHandler),
+        (r"/ajax/(.*)", AjaxHandler)]
         
         self.db = settings.DATABASE
 
