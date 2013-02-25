@@ -67,16 +67,16 @@ class MemberHandler(tornado.web.RequestHandler):
     def get(self, uname):
         db_member = self.application.db.member
         db_article =  self.application.db.article
-        template = "memberHomePage.html"
-
         master = CheckAuth(self.get_cookie('auth'))
-        articles = db_article.find({"author": uname}).sort("date",-1)
-        member = db_member.find_one({"name_low": uname})
+
+        template = "memberHomePage.html"
+        author = db_member.find_one({"name_low": uname})
+        articles = db_article.find({"author_id": author['_id']}).sort("date",-1)
         self.render(template,
                     title = "PAGE302",
                     articles = articles,
                     master = master,
-                    author = member)
+                    author = author)
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -99,7 +99,7 @@ class IndexHandler(tornado.web.RequestHandler):
 class LoginHandler(tornado.web.RequestHandler):
     def get(self):
         template = "login.html"
-        self.render(template, title="Login", errors=None, master=None)
+        self.render(template, title="Login", errors=None, master=False)
 
     def post(self):
         db_member = self.application.db.member
@@ -115,32 +115,31 @@ class LoginHandler(tornado.web.RequestHandler):
                 errors.append("complete the blanks")
                 self.render(template, 
                             title="Login", 
-                            member=None, 
+                            master=False, 
                             errors=errors)
         try:
             member = db_member.find_one({'name_low':args['name'].lower()})
             input_auth = hashlib.sha512(args['name'].lower() + 
                         hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
-            if member and (member['auth'] == input_auth):
-                self.set_cookie(name = "auth", 
-                                value = member['auth'], 
-                                expires_days = 365)
-                self.set_cookie(name = "nid", 
-                                value = member['nid'],   
-                                expires_days = 365)
-                self.redirect('/')
-            else:
-                errors.append("error with user name or password") 
-                self.render(template, 
-                            title = "Login", 
-                            member = None, 
-                            errors = errors)
         except:
             errors.append("db error")
             self.render(template, 
                         title = "Login",
-                        member = None, 
+                        master = False, 
                         errors = errors)
+
+        if member and (member['auth'] == input_auth):
+            self.set_cookie(name = "auth", 
+                            value = member['auth'], 
+                            expires_days = 365)
+            self.redirect('/')
+        else:
+            errors.append("error with user name or password") 
+            self.render(template, 
+                        title = "Login", 
+                        master = False, 
+                        errors = errors)
+  
 
 
 class LogoutHandler(tornado.web.RequestHandler):

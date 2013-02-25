@@ -31,7 +31,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         try:
             article = db_article.find_one({'sn': article_sn})
             comments = db_comment.find({'article_id': article_sn}).sort('date',1)
-            author = db_member.find_one({'name_low': article['author'].lower() })
+            author = db_member.find_one({'_id': article['author_id'] })
         except:
             self.send_error(403)
 
@@ -60,7 +60,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         article['date'] = article['date'].strftime("%Y-%m-%d %H:%M")
         article['review'] += datetime.timedelta(hours=8)
         article['review'] = article['review'].strftime("%Y-%m-%d %H:%M")
-        #article['body'] = markdown.Markdown(article['body'], ['video'])
+
         self.render(template, 
                     pre = pre,
                     fol = fol,
@@ -74,6 +74,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         db_article = self.application.db.article
         db_member = self.application.db.member
 
+        # get post arguments
         post_values = ['intro-img', 'title', 'brief', 'content']
         args = {}
         for v in post_values:
@@ -82,6 +83,7 @@ class ArticleHandler(tornado.web.RequestHandler):
             except:
                 pass
 
+        # article databse schema
         article = { 
             'sn':  str(int(time.time())),
             'statue': 0,
@@ -95,16 +97,7 @@ class ArticleHandler(tornado.web.RequestHandler):
             'review': datetime.datetime.utcnow(),
         }
 
-        #try:
-        #    latest = db_article.find({}).sort("sn",-1).limit(1)
-        #    if not latest:
-        #        article['sn'] = 1
-        #    else:
-        #        article['sn'] = latest['sn'] + 1
-        #except:
-        #    self.send_error(500)
-        #    self.finish()
-        # deal with uploaded file 
+        #handler upload picture file
         upload = self.request.files['intro-img'][0]
         md5 = hashlib.md5(upload['body']).hexdigest()
         fpath = ('static/img/article/intro-%s.%s' % 
@@ -135,19 +128,14 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
     def get(self, article_sn):
         db_article = self.application.db.article
         db_member = self.application.db.member
-        
-
-        article = db_article.find_one({'sn': article_sn})
-        
-        author = db_member.find_one({'name_low': article['author'].lower() })
-
         master = CheckAuth(self.get_cookie('auth'))
-
         template = "home/edit.html"
-        title = "Edit"
+        article = db_article.find_one({'sn': article_sn})
+        author = db_member.find_one({'_id': article['author_id']})
+
         self.render(template, 
                     master = master,
-                    title = title,
+                    title = "Edit",
                     author = author,
                     article = article)
 
@@ -155,8 +143,6 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
         db_article = self.application.db.article
         db_comment = self.application.db.comment
 
-        article = db_article.find_one({"sn":article_id})
-        master = CheckAuth(self.get_cookie('auth'))
         post_values = ['title', 'brief', 'content']
         args = {}
         for v in post_values:
@@ -164,6 +150,10 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
                 args[v] = self.get_argument(v)
             except:
                 continue
+
+        master = CheckAuth(self.get_cookie('auth'))
+        article = db_article.find_one({"sn":article_id})
+        
         if master:
             article['title']  = args['title']
             article['brief'] = args['brief']
@@ -181,16 +171,21 @@ class CommentHandler(tornado.web.RequestHandler):
     def post(self, article_sn):
         db_article = self.application.db.article
         db_comment = self.application.db.comment
+
         master = CheckAuth(self.get_cookie('auth'))
+
         cmt = self.get_argument('comment')
+
+        #comment database schema
         comment = {
             'article_id':None,
             'member_id': None,
             'date':None,
             'comment':None,
         }
+
         if master:
-            comment['member_name'] = master['name'].lower()
+            comment['member_name'] = master['name']
             comment['comment'] = cmt
             comment['article_id'] = article_sn
             comment['date'] = datetime.datetime.utcnow()
