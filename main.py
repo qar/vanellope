@@ -17,9 +17,11 @@ import tornado.options
 import tornado.web
 import tornado.escape
 
+
 import markdown
 import settings
 
+from article import Article
 from ajax import AjaxHandler
 from handlers import *
 from page302.utility import *
@@ -27,7 +29,7 @@ from page302.security import CheckAuth
 
 
 from tornado.options import define, options
-options['log_file_prefix'].set("/home/anran/project/geek/page302.log")
+options['log_file_prefix'].set("/home/anran/workspace/vanellope/page302.log")
 define("port", default=8000, help="run on the given port", type=int)
 
 
@@ -36,9 +38,10 @@ class Application(tornado.web.Application):
         handlers = [
         (r"/", IndexHandler),
         (r"/register", RegisterHandler),
-        (r"/archive/([0-9]+.*)", ArticleHandler),
+        (r"/article/([0-9]+.*)", ArticleHandler),
         (r"/article", ArticleHandler),
         (r"/home", HomeHandler),
+        (r"/u/(.*)", MemberHandler),
         (r"/home/(.*)", HomeHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
@@ -60,17 +63,35 @@ class TestHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("hello, world")
 
+class MemberHandler(tornado.web.RequestHandler):
+    def get(self, uname):
+        db_member = self.application.db.member
+        db_article =  self.application.db.article
+        template = "memberHomePage.html"
+
+        master = CheckAuth(self.get_cookie('auth'))
+        articles = db_article.find({"author": uname}).sort("date",-1)
+        member = db_member.find_one({"name_low": uname})
+        self.render(template,
+                    title = "PAGE302",
+                    articles = articles,
+                    master = master,
+                    author = member)
+
+
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         db_member = self.application.db.member
         db_article = self.application.db.article
         template = 'index.html'
+
+        master = CheckAuth(self.get_cookie('auth'))
         articles = db_article.find().sort("date",-1)
-        member = CheckAuth(self.get_cookie('auth'))
         top_x_hotest = db_article.find({}).sort("heat", -1).limit(10)
+
         self.render(template, 
                     title = 'PAGE302',
-                    member = member, 
+                    master = master, 
                     articles = articles,
                     hotest = top_x_hotest)
 
@@ -78,7 +99,7 @@ class IndexHandler(tornado.web.RequestHandler):
 class LoginHandler(tornado.web.RequestHandler):
     def get(self):
         template = "login.html"
-        self.render(template, title="Login", errors=None, member=None)
+        self.render(template, title="Login", errors=None, master=None)
 
     def post(self):
         db_member = self.application.db.member
@@ -134,20 +155,25 @@ class HomeHandler(tornado.web.RequestHandler):
         db_article = self.application.db.article
         pages = ('write', 'manage', 'setting', 'index')
         template = ("home/%s.html" % page)
-        member = CheckAuth(self.get_cookie('auth'))
-        if not member:
+        master = CheckAuth(self.get_cookie('auth'))
+        if not master:
             self.send_error(401)
             self.finish()
         if (page == "manage"):
-            articles = db_article.find({"author":member['name']}).sort("sn",-1)
+            articles = self.get_author_all_articles(master['_id'])
             self.render(template, 
                         title = 'HOME | manage', 
-                        member = member,
+                        master = master,
                         articles = articles)
         else:
             self.render(template, 
                         title="Home",
-                        member = member) 
+                        master = master)
+
+    def get_author_all_articles(self, member_id):
+        articles = self.application.db.article.find(
+                    {"author_id": member_id}).sort("date", -1)
+        return articles
 
 
 

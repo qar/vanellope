@@ -1,7 +1,5 @@
 {# template values:
 ## title: the title of this html page
-## member: member information
-## member['name']
 #} 
 <!DOCTYPE html>
 <html>
@@ -10,21 +8,19 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="/static/css/page302.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" />
-       <link rel="shortcut icon" href="/static/img/favicon.ico" />
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
     <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/jquery.bpopup-0.8.0.min.js"></script>
-   <script src="/static/js/page302.js"></script>
-    <script src="/static/js/markdown.js"></script>
+    <script src="/static/js/page302.js"></script>
 </head>
 
 <body>
-<div id="header">
+<div id="header" class="common-color">
 <div id="header-wrapper">
   <a id="logo" href="/">PAGE302</a>
 
   <ul class="nav">
-  {% if member %}
-    <li class="nav"><a class="nav" href="/home">{{ member['name'] }}</a></li>
+  {% if master %}
+    <li class="nav"><a class="nav" href="/home">{{ master['name'] }}</a></li>
     <li class="nav"><a class="nav" href="/logout ">退出</a></li>
     {% else %}
     <li class="nav"><a class="nav" href="/login">登录</a></li>

@@ -1,0 +1,219 @@
+[E 130224 23:00:29 iostream:314] Uncaught exception, closing connection.
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[E 130224 23:00:29 ioloop:435] Exception in callback <tornado.stack_context._StackContextWrapper object at 0xa071e14>
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/ioloop.py", line 421, in _run_callback
+        callback()
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[I 130224 23:00:58 autoreload:180] /home/anran/workspace/vanellope/handlers.py modified; restarting server
+[I 130224 23:00:59 autoreload:180] /home/anran/workspace/vanellope/handlers.py modified; restarting server
+[E 130224 23:01:03 iostream:314] Uncaught exception, closing connection.
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[E 130224 23:01:03 ioloop:435] Exception in callback <tornado.stack_context._StackContextWrapper object at 0xa17d52c>
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/ioloop.py", line 421, in _run_callback
+        callback()
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[I 130224 23:01:04 web:1462] 304 GET / (127.0.0.1) 19.23ms
+[I 130224 23:01:04 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 4.11ms
+[I 130224 23:01:04 web:1462] 304 GET /static/css/font-awesome.min.css (127.0.0.1) 0.55ms
+[I 130224 23:01:04 web:1462] 304 GET /static/js/jquery.min.js (127.0.0.1) 0.55ms
+[I 130224 23:01:04 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.53ms
+[I 130224 23:01:04 web:1462] 304 GET /static/img/article/intro-10497129574dde4bde1c6f394a4398ea.jpg (127.0.0.1) 0.60ms
+[I 130224 23:01:04 web:1462] 304 GET /static/img/article/intro-5fb1a5536c822d1e24f3ffb800166522.gif (127.0.0.1) 0.52ms
+[I 130224 23:01:04 web:1462] 304 GET /static/img/tornado.png (127.0.0.1) 0.50ms
+[I 130224 23:01:13 autoreload:180] /home/anran/workspace/vanellope/handlers.py modified; restarting server
+[I 130224 23:01:15 web:1462] 304 GET / (127.0.0.1) 13.10ms
+[I 130224 23:01:15 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 3.98ms
+[I 130224 23:01:15 web:1462] 304 GET /static/css/font-awesome.min.css (127.0.0.1) 0.52ms
+[I 130224 23:01:15 web:1462] 304 GET /static/js/jquery.min.js (127.0.0.1) 0.47ms
+[I 130224 23:01:15 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.36ms
+[I 130224 23:01:15 web:1462] 304 GET /static/img/article/intro-10497129574dde4bde1c6f394a4398ea.jpg (127.0.0.1) 0.47ms
+[I 130224 23:01:15 web:1462] 304 GET /static/img/article/intro-5fb1a5536c822d1e24f3ffb800166522.gif (127.0.0.1) 0.45ms
+[I 130224 23:01:15 web:1462] 304 GET /static/img/tornado.png (127.0.0.1) 0.37ms
+[E 130224 23:01:17 iostream:314] Uncaught exception, closing connection.
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[E 130224 23:01:17 ioloop:435] Exception in callback <tornado.stack_context._StackContextWrapper object at 0xa5ee9b4>
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/ioloop.py", line 421, in _run_callback
+        callback()
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[E 130224 23:01:17 iostream:314] Uncaught exception, closing connection.
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[E 130224 23:01:17 ioloop:435] Exception in callback <tornado.stack_context._StackContextWrapper object at 0xa5cb4b4>
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/ioloop.py", line 421, in _run_callback
+        callback()
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[E 130224 23:01:17 iostream:314] Uncaught exception, closing connection.
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[E 130224 23:01:17 ioloop:435] Exception in callback <tornado.stack_context._StackContextWrapper object at 0xa60e84c>
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/ioloop.py", line 421, in _run_callback
+        callback()
+      File "/usr/local/lib/python2.7/dist-packages/tornado/iostream.py", line 311, in wrapper
+        callback(*args)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 268, in _on_headers
+        self.request_callback(self._request)
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1395, in __call__
+        handler = spec.handler_class(self, request, **spec.kwargs)
+    TypeError: __init__() takes exactly 1 argument (3 given)
+[I 130224 23:02:09 autoreload:180] /home/anran/workspace/vanellope/handlers.py modified; restarting server
+[I 130224 23:02:38 autoreload:180] /home/anran/workspace/vanellope/handlers.py modified; restarting server
+[I 130224 23:02:45 autoreload:180] /home/anran/workspace/vanellope/handlers.py modified; restarting server
+[I 130224 23:02:53 autoreload:180] /home/anran/workspace/vanellope/handlers.py modified; restarting server
+[I 130224 23:02:56 web:1462] 200 GET /article/1361717197 (127.0.0.1) 36.94ms
+[I 130224 23:02:56 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 3.94ms
+[I 130224 23:02:56 web:1462] 304 GET /static/css/font-awesome.min.css (127.0.0.1) 0.56ms
+[I 130224 23:02:56 web:1462] 304 GET /static/js/jquery.min.js (127.0.0.1) 0.45ms
+[I 130224 23:02:56 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.43ms
+[I 130224 23:02:56 web:1462] 304 GET /static/img/tornado.png (127.0.0.1) 0.49ms
+[I 130224 23:02:58 web:1462] 304 GET /home (127.0.0.1) 7.97ms
+[I 130224 23:02:58 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 0.54ms
+[I 130224 23:02:58 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.54ms
+[I 130224 23:02:59 web:1462] 304 GET /home/write (127.0.0.1) 6.43ms
+[I 130224 23:02:59 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 0.54ms
+[I 130224 23:02:59 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.55ms
+[I 130224 23:03:09 web:1462] 302 POST /article (127.0.0.1) 3.14ms
+[I 130224 23:03:09 web:1462] 200 GET / (127.0.0.1) 8.47ms
+[I 130224 23:03:09 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 0.48ms
+[I 130224 23:03:09 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.50ms
+[I 130224 23:03:09 web:1462] 304 GET /static/img/article/intro-10497129574dde4bde1c6f394a4398ea.jpg (127.0.0.1) 0.53ms
+[I 130224 23:03:09 web:1462] 304 GET /static/img/article/intro-5fb1a5536c822d1e24f3ffb800166522.gif (127.0.0.1) 0.49ms
+[I 130224 23:03:11 web:1462] 304 GET /home (127.0.0.1) 6.09ms
+[I 130224 23:03:11 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 0.89ms
+[I 130224 23:03:11 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.81ms
+[I 130224 23:03:12 web:1462] 200 GET /home/manage (127.0.0.1) 7.09ms
+[I 130224 23:03:12 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 0.53ms
+[I 130224 23:03:12 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.47ms
+[I 130224 23:06:32 web:1462] 304 GET / (127.0.0.1) 11.42ms
+[I 130224 23:06:32 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 0.51ms
+[I 130224 23:06:32 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.48ms
+[I 130224 23:06:32 web:1462] 304 GET /static/img/article/intro-10497129574dde4bde1c6f394a4398ea.jpg (127.0.0.1) 0.50ms
+[I 130224 23:06:32 web:1462] 304 GET /static/img/article/intro-5fb1a5536c822d1e24f3ffb800166522.gif (127.0.0.1) 0.51ms
+[W 130224 23:06:38 web:1462] 403 GET /article/1361718189 (127.0.0.1) 1.27ms
+[E 130224 23:06:38 web:1085] Uncaught exception GET /article/1361718189 (127.0.0.1)
+    HTTPRequest(protocol='http', host='localhost:8000', method='GET', uri='/article/1361718189', version='HTTP/1.1', remote_ip='127.0.0.1', body='', headers={'Accept-Language': 'zh-CN,zh;q=0.8', 'Accept-Encoding': 'gzip,deflate,sdch', 'Host': 'localhost:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.70 Safari/537.17', 'Accept-Charset': 'GBK,utf-8;q=0.7,*;q=0.3', 'Connection': 'keep-alive', 'Referer': 'http://localhost:8000/', 'Cookie': 'nid=1; auth=788b63fb10f37805b655c7ad2411c78e43e39c7f3861f7a4d15d8aa0a852771b8b48dbc98e7b350b0c8c2089fbaeeb4cd309a35bc1cf699deec42063acc5cfa6'})
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1042, in _execute
+        getattr(self, self.request.method.lower())(*args, **kwargs)
+      File "/home/anran/workspace/vanellope/handlers.py", line 70, in get
+        author = author,
+    UnboundLocalError: local variable 'author' referenced before assignment
+[E 130224 23:06:38 web:739] Cannot send error response after headers written
+[W 130224 23:06:39 web:1462] 404 GET /favicon.ico (127.0.0.1) 0.55ms
+[W 130224 23:06:42 web:1462] 403 GET /article/1361718189 (127.0.0.1) 1.73ms
+[E 130224 23:06:42 web:1085] Uncaught exception GET /article/1361718189 (127.0.0.1)
+    HTTPRequest(protocol='http', host='localhost:8000', method='GET', uri='/article/1361718189', version='HTTP/1.1', remote_ip='127.0.0.1', body='', headers={'Accept-Language': 'zh-CN,zh;q=0.8', 'Accept-Encoding': 'gzip,deflate,sdch', 'Host': 'localhost:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.70 Safari/537.17', 'Accept-Charset': 'GBK,utf-8;q=0.7,*;q=0.3', 'Connection': 'keep-alive', 'Referer': 'http://localhost:8000/', 'Cookie': 'nid=1; auth=788b63fb10f37805b655c7ad2411c78e43e39c7f3861f7a4d15d8aa0a852771b8b48dbc98e7b350b0c8c2089fbaeeb4cd309a35bc1cf699deec42063acc5cfa6'})
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1042, in _execute
+        getattr(self, self.request.method.lower())(*args, **kwargs)
+      File "/home/anran/workspace/vanellope/handlers.py", line 70, in get
+        author = author,
+    UnboundLocalError: local variable 'author' referenced before assignment
+[E 130224 23:06:42 web:739] Cannot send error response after headers written
+[W 130224 23:06:42 web:1462] 404 GET /favicon.ico (127.0.0.1) 0.45ms
+[I 130224 23:06:46 web:1462] 200 GET /article/1361717197 (127.0.0.1) 19.13ms
+[I 130224 23:06:46 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 0.55ms
+[I 130224 23:06:46 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.51ms
+[I 130225 14:41:00 web:1462] 200 GET / (127.0.0.1) 215.08ms
+[I 130225 14:41:00 web:1462] 304 GET /static/css/page302.css (127.0.0.1) 84.62ms
+[I 130225 14:41:00 web:1462] 304 GET /static/js/page302.js (127.0.0.1) 0.49ms
+[I 130225 14:41:01 web:1462] 200 GET /static/img/article/intro-12ce3b53ff889c155af7531d1526f3e1.jpg (127.0.0.1) 49.11ms
+[I 130225 14:41:01 web:1462] 304 GET /static/img/article/intro-5fb1a5536c822d1e24f3ffb800166522.gif (127.0.0.1) 0.55ms
+[I 130225 14:41:01 web:1462] 304 GET /static/img/article/intro-10497129574dde4bde1c6f394a4398ea.jpg (127.0.0.1) 0.48ms
+[W 130225 14:41:06 web:1462] 403 GET /article/1361718189 (127.0.0.1) 1.53ms
+[E 130225 14:41:06 web:1085] Uncaught exception GET /article/1361718189 (127.0.0.1)
+    HTTPRequest(protocol='http', host='localhost:8000', method='GET', uri='/article/1361718189', version='HTTP/1.1', remote_ip='127.0.0.1', body='', headers={'Accept-Language': 'zh-CN,zh;q=0.8', 'Accept-Encoding': 'gzip,deflate,sdch', 'Host': 'localhost:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.70 Safari/537.17', 'Accept-Charset': 'GBK,utf-8;q=0.7,*;q=0.3', 'Connection': 'keep-alive', 'Referer': 'http://localhost:8000/', 'Cookie': 'nid=1; auth=788b63fb10f37805b655c7ad2411c78e43e39c7f3861f7a4d15d8aa0a852771b8b48dbc98e7b350b0c8c2089fbaeeb4cd309a35bc1cf699deec42063acc5cfa6'})
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1042, in _execute
+        getattr(self, self.request.method.lower())(*args, **kwargs)
+      File "/home/anran/workspace/vanellope/handlers.py", line 70, in get
+        author = author,
+    UnboundLocalError: local variable 'author' referenced before assignment
+[E 130225 14:41:06 web:739] Cannot send error response after headers written
+[W 130225 14:41:06 web:1462] 404 GET /favicon.ico (127.0.0.1) 0.47ms
+[I 130225 14:41:09 web:1462] 200 GET /article/1361717197 (127.0.0.1) 141.96ms
+[I 130225 14:41:13 web:1462] 304 GET /home (127.0.0.1) 46.78ms
+[I 130225 14:41:16 web:1462] 304 GET / (127.0.0.1) 9.76ms
+[W 130225 14:42:21 web:1462] 403 GET /article/1361718189 (127.0.0.1) 1.11ms
+[E 130225 14:42:21 web:1085] Uncaught exception GET /article/1361718189 (127.0.0.1)
+    HTTPRequest(protocol='http', host='localhost:8000', method='GET', uri='/article/1361718189', version='HTTP/1.1', remote_ip='127.0.0.1', body='', headers={'Accept-Language': 'zh-CN,zh;q=0.8', 'Accept-Encoding': 'gzip,deflate,sdch', 'Host': 'localhost:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.70 Safari/537.17', 'Accept-Charset': 'GBK,utf-8;q=0.7,*;q=0.3', 'Connection': 'keep-alive', 'Referer': 'http://localhost:8000/', 'Cookie': 'nid=1; auth=788b63fb10f37805b655c7ad2411c78e43e39c7f3861f7a4d15d8aa0a852771b8b48dbc98e7b350b0c8c2089fbaeeb4cd309a35bc1cf699deec42063acc5cfa6'})
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1042, in _execute
+        getattr(self, self.request.method.lower())(*args, **kwargs)
+      File "/home/anran/workspace/vanellope/handlers.py", line 70, in get
+        author = author,
+    UnboundLocalError: local variable 'author' referenced before assignment
+[E 130225 14:42:21 web:739] Cannot send error response after headers written
+[W 130225 14:42:21 web:1462] 404 GET /favicon.ico (127.0.0.1) 0.49ms
+[W 130225 14:42:27 web:1462] 403 GET /article/1361718189 (127.0.0.1) 2.03ms
+[E 130225 14:42:27 web:1085] Uncaught exception GET /article/1361718189 (127.0.0.1)
+    HTTPRequest(protocol='http', host='localhost:8000', method='GET', uri='/article/1361718189', version='HTTP/1.1', remote_ip='127.0.0.1', body='', headers={'Accept-Language': 'zh-CN,zh;q=0.8', 'Accept-Encoding': 'gzip,deflate,sdch', 'Host': 'localhost:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.70 Safari/537.17', 'Accept-Charset': 'GBK,utf-8;q=0.7,*;q=0.3', 'Connection': 'keep-alive', 'Referer': 'http://localhost:8000/', 'Cookie': 'nid=1; auth=788b63fb10f37805b655c7ad2411c78e43e39c7f3861f7a4d15d8aa0a852771b8b48dbc98e7b350b0c8c2089fbaeeb4cd309a35bc1cf699deec42063acc5cfa6'})
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1042, in _execute
+        getattr(self, self.request.method.lower())(*args, **kwargs)
+      File "/home/anran/workspace/vanellope/handlers.py", line 70, in get
+        author = author,
+    UnboundLocalError: local variable 'author' referenced before assignment
+[E 130225 14:42:27 web:739] Cannot send error response after headers written
+[W 130225 14:42:27 web:1462] 404 GET /favicon.ico (127.0.0.1) 0.50ms

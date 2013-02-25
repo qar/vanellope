@@ -1,5 +1,5 @@
 <div class="widget">
-	<div class="widget-caption">关于这篇文章</div>
+	<div class="widget-caption common-color">关于这篇文章</div>
 	<div class="widget-wrapper">
 		<div class="article-status">
 			<ul class="article-status">
@@ -11,7 +11,7 @@
 
 		{% if pre %}
 			<span id="previous">
-				<a href="/archive/{{ pre }}"><i class="icon-double-angle-left"></i>&nbsp;前一篇</a>
+				<a href="/article/{{ pre }}"><i class="icon-double-angle-left"></i>&nbsp;前一篇</a>
 			</span>
 		{% else %}
 			<span id="previous">没了</span>
@@ -19,7 +19,7 @@
 
 		{% if fol %}
 			<span id="following">
-				<a href="/archive/{{ fol }}">后一篇&nbsp;<i class="icon-double-angle-right"></i></a>
+				<a href="/article/{{ fol }}">后一篇&nbsp;<i class="icon-double-angle-right"></i></a>
 			</span>
 		{% else %}
 			<span id="following">没了</span>

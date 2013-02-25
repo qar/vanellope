@@ -1,13 +1,12 @@
 <div class="widget">
-	<div class="widget-caption">最火十篇最火十篇</div>
+	<div class="widget-caption common-color">最火十篇</div>
 	<div class="widget-wrapper">
 		<!-- TOP 10 Hotest Articles -->
-  	<ul class="archive">
+  	<ol class="article">
   		{% for article in hotest %}
-    	<li><span class="icon"><i class="icon-fire"></i>{{ article['heat']}}°</span><a href="/archive/{{ article['sn'] }}">{{ article['title']}}</a></li>
-    	<div class="widget-inner-sep"></div>
+    	<li><a href="/article/{{ article['sn'] }}">{{ article['title']}}</a></li>
     	{% end %}
-  	</ul>
+  	</ol>
 	</div>
 </div>
 

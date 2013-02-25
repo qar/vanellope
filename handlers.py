@@ -28,12 +28,14 @@ class ArticleHandler(tornado.web.RequestHandler):
         db_member = self.application.db.member
         db_comment = self.application.db.comment
 
+        try:
+            article = db_article.find_one({'sn': article_sn})
+            comments = db_comment.find({'article_id': article_sn}).sort('date',1)
+            author = db_member.find_one({'name_low': article['author'].lower() })
+        except:
+            self.send_error(403)
 
-        article = db_article.find_one({'sn': article_sn})
-        comments = db_comment.find({'article_id': article_sn}).sort('date',1)
-        author = db_member.find_one({'name_low': article['author'].lower() })
-
-        member = CheckAuth(self.get_cookie('auth'))
+        master = CheckAuth(self.get_cookie('auth'))
 
         template = "article.html"
 
@@ -51,6 +53,7 @@ class ArticleHandler(tornado.web.RequestHandler):
             fol = fol[0]['sn']
         except:
             fol = None
+
         md = markdown.Markdown(safe_mode = "escape")
         article['body'] = md.convert(article['body'])
         article['date'] += datetime.timedelta(hours=8)
@@ -61,7 +64,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         self.render(template, 
                     pre = pre,
                     fol = fol,
-                    member = member,
+                    master = master,
                     comments = comments, 
                     title = title,
                     author = author, 
@@ -78,19 +81,29 @@ class ArticleHandler(tornado.web.RequestHandler):
                 args[v] = self.get_argument(v)
             except:
                 pass
-        article = { 
-        'sn':  str(int(time.time())),
-        'statue': 0,
-        'img': None,
-        'author': None,
-        'heat': 0,
-        'title': None,
-        'brief': None,
-        'body': None,
-        'date': datetime.datetime.utcnow(),
-        'review': datetime.datetime.utcnow(),
-    }
 
+        article = { 
+            'sn':  str(int(time.time())),
+            'statue': 0,
+            'img': None,
+            'author_id': None,
+            'heat': 0,
+            'title': None,
+            'brief': None,
+            'body': None,
+            'date': datetime.datetime.utcnow(),
+            'review': datetime.datetime.utcnow(),
+        }
+
+        #try:
+        #    latest = db_article.find({}).sort("sn",-1).limit(1)
+        #    if not latest:
+        #        article['sn'] = 1
+        #    else:
+        #        article['sn'] = latest['sn'] + 1
+        #except:
+        #    self.send_error(500)
+        #    self.finish()
         # deal with uploaded file 
         upload = self.request.files['intro-img'][0]
         md5 = hashlib.md5(upload['body']).hexdigest()
@@ -101,15 +114,15 @@ class ArticleHandler(tornado.web.RequestHandler):
         pic.write(upload['body'])
         pic.close()
 
-        article['img'] = fpath
+        article['img'] = ("/%s" % fpath)
         article['title'] = args['title']
         article['brief'] = args['brief']
         article['body'] = args['content']
         try:     
             cookie_auth = self.get_cookie("auth")
-            member = CheckAuth(self.get_cookie('auth'))
-            if member:
-                article['author'] = member['name']
+            master = CheckAuth(self.get_cookie('auth'))
+            if master:
+                article['author_id'] = master['_id']
                 db_article.insert(article)
                 self.redirect('/')
             else:
@@ -128,21 +141,22 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
         
         author = db_member.find_one({'name_low': article['author'].lower() })
 
-        member = CheckAuth(self.get_cookie('auth'))
+        master = CheckAuth(self.get_cookie('auth'))
 
         template = "home/edit.html"
         title = "Edit"
         self.render(template, 
-                    member = member,
+                    master = master,
                     title = title,
                     author = author,
                     article = article)
 
     def post(self, article_id):
-        member = CheckAuth(self.get_cookie('auth'))
         db_article = self.application.db.article
         db_comment = self.application.db.comment
+
         article = db_article.find_one({"sn":article_id})
+        master = CheckAuth(self.get_cookie('auth'))
         post_values = ['title', 'brief', 'content']
         args = {}
         for v in post_values:
@@ -150,13 +164,13 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
                 args[v] = self.get_argument(v)
             except:
                 continue
-        if member:
+        if master:
             article['title']  = args['title']
             article['brief'] = args['brief']
             article['body'] = args['content']
             article['review'] = datetime.datetime.utcnow()
             db_article.update({"sn":article_id}, article)
-            self.redirect("/archive/%s" % article_id)
+            self.redirect("/article/%s" % article_id)
         else:
             self.send_error(403)
 
@@ -167,7 +181,7 @@ class CommentHandler(tornado.web.RequestHandler):
     def post(self, article_sn):
         db_article = self.application.db.article
         db_comment = self.application.db.comment
-        member = CheckAuth(self.get_cookie('auth'))
+        master = CheckAuth(self.get_cookie('auth'))
         cmt = self.get_argument('comment')
         comment = {
             'article_id':None,
@@ -175,13 +189,13 @@ class CommentHandler(tornado.web.RequestHandler):
             'date':None,
             'comment':None,
         }
-        if member:
-            comment['member_name'] = member['name']
+        if master:
+            comment['member_name'] = master['name'].lower()
             comment['comment'] = cmt
             comment['article_id'] = article_sn
             comment['date'] = datetime.datetime.utcnow()
             db_comment.insert(comment)
-            self.redirect("/archive/%s" % article_sn)
+            self.redirect("/article/%s" % article_sn)
         else:
             self.send_error(403)
 
@@ -192,7 +206,7 @@ class RegisterHandler(tornado.web.RequestHandler):
         self.render(template, 
                     title = 'Register',
                     errors = None,
-                    member = None)
+                    master = None)
 
     def post(self):
         db_member = self.application.db['member']
@@ -251,17 +265,18 @@ class RegisterHandler(tornado.web.RequestHandler):
             self.render(template, title=title, 
                         errors = errors, member = None)
         else:
+            member['_id'] = hashlib.md5(member['email']).hexdigest()
             member['date'] = datetime.datetime.utcnow()
-            member['nid'] = str(db_member.count() + 1)
+            #member['nid'] = str(db_member.count() + 1)
             member['auth'] = hashlib.sha512(member['name_low'] + 
                              member['pwd']).hexdigest()
             member['avatar'] = Avatar(member['email'])
             self.set_cookie(name="auth", 
                             value=member['auth'], 
                             expires_days = 365)
-            self.set_cookie(name="nid",      
-                            value=member['nid'],   
-                            expires_days = 365)
+            #self.set_cookie(name="nid",      
+            #                value=member['nid'],   
+            #                expires_days = 365)
             db_member.insert(member)
             self.redirect('/')
 

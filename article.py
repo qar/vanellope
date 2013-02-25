@@ -10,7 +10,8 @@ from datetime import datetime
 from page302.security import CheckAuth
 
 class Article():
-    template = { 
+    def __init__(self):
+        self.template = { 
         'sn':  str(int(time.time())),
         'statue': 0,
         'img': None,
@@ -22,5 +23,12 @@ class Article():
         'date': datetime.utcnow(),
         'review': datetime.utcnow(),
     }
-    def __init__(self):
-        self = template
+        self.db = settings.DATABASE['article']
+
+    def get_author_all_articles(self, member_id):
+        articles = self.db.find({"author_id": member_id}).sort("date", -1)
+        return articles
+
+
+
+        

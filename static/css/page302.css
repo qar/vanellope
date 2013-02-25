@@ -27,9 +27,10 @@ p{
 }
 
 a{
-
+	color: #666666;
 	text-decoration: none;
 }
+
 img{
 	max-width: 636px;
 }
@@ -47,11 +48,9 @@ ul{
 }
 
 span.authorname{
-
 }
 
 span.timestamp{
-	
 }
 
 .inputbox{
@@ -100,7 +99,7 @@ input.button{
 
 #logo{
 	float: left;
-	color: silver;
+	color: #FFFFFF;
 	font-size: 30px;
 }
 
@@ -109,6 +108,10 @@ input.button{
 **/
 .fixed{
 	position: fixed;
+}
+
+.common-color{
+	background-color: #87ac80;
 }
 
 /****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
@@ -130,7 +133,6 @@ input.button{
 /*** VERSION 2: Normal Header  ***/
 #header{
 	width: 100%;
-	background-color: #3A4040;
 	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);	
 }
 
@@ -149,8 +151,7 @@ input.button{
 	width: 960px;
 	margin: 30px auto;
 	/** if fixed header:
-	margin-top: 65px;	**/
-	
+	margin-top: 65px;	**/	
 	text-align: left;
 	background-color: transparent;
 	overflow: hidden;
@@ -180,6 +181,11 @@ div.primary, div.widget {
     overflow: hidden; 
 }
 
+div.primary-item-container{ /* #primary's general items style */
+	margin: 20px;
+	height: auto;
+	width: auto;
+}
 
 /****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
 /*** WIDGET ***/
@@ -201,13 +207,13 @@ div.widget{
 }
 
 div.widget-caption{
+	color: #ffffff;
 	width: 262px;
 	height: 20px;
 	padding: 3px 0px 0px 5px;
 	border-radius: 4px 4px 0px 0px;
     overflow: hidden; 
 	float: left;
-	background-color: #cccccc;
 }
 
 div.widget-wrapper{
@@ -258,41 +264,6 @@ div.primary{ /* style specific */
 	float: left;
 }
 
-div#comments{
-	width: 100%;
-	float: left;
-	height:auto;
-	background-color: #FFFFFF;
-}
-
-div.comment{
-	height: auto;
-	width: 100%;
-	float: left;
-	padding-bottom: 15px;
-	box-shadow: 1.5px 2px 2px rgba(0,150, 255, 0.3);
-}
-
-
-ul.comment{
-	float: right;
-}
-
-
-div.comment:first-child{
-	margin-bottom: auto;
-}
-
-li.comment-content{
-	width: 576px;
-}
-
-
-div.primary-item-container{ /* #primary's general items style */
-	margin: 20px;
-	height: auto;
-	width: auto;
-}
 
 div.primary-item-sep{
 	width: 100%;
@@ -300,7 +271,17 @@ div.primary-item-sep{
 	float: right;
 }
 
+ol{
+	margin-left: 20px;
+}
 
+ol > li{
+	margin-bottom: 10px;
+}
+
+ol > li > a:hover{
+	text-decoration: underline;
+}
 
 .widget-inner-sep{
 	width: 100%;
@@ -315,39 +296,12 @@ div.widget-outer-sep{
 	float: right;
 	background-color: transparent;
 }
-
-
-
-
-
-ul.archive{
-	list-style-type: none;
+/** comment style **/
+div.comment{
+	min-height: 50px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #cdcdcd;
 }
-
-ul.archive > li{
-	width: 100%;
-	display: inline-block;
-	float: left;
-	overflow: hidden;
-	margin-bottom: 8px;
-}
-
-ul.archive > li > a{
-	width: auto;
-	float: left;
-	color: #666666;
-	padding-left: 5px;
-}
-
-ul.archive > li > a:hover{
-	text-decoration: underline;
-}
-span.icon{
-	float: left;
-	margin-right: 10px;
-}
-
-
 
 
 /** #primary components **/
@@ -363,10 +317,6 @@ form.article > input:not(:last-child){
 	height:30px;
 	float: left;
 }
-
-
-
-
 
 /*** #primary.article ***/
 
@@ -388,13 +338,6 @@ img.article-intro{ /** display on index page**/
 	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
 }
 
-/** this maybe useless, we'll see
-img.article-img{ 
-	max-width:400px;
-	max-height: 200px;
-	overflow: hidden;
-}
-**/
 
 h2.article-intro-title{
 	font-size: 19px;
@@ -468,7 +411,7 @@ div.input-prepend{
 	width: auto;
 	margin-bottom: 10px;
 }
-
+ 
 span.add-on{
 	padding: 4px;
 	height: 21px;
@@ -482,6 +425,7 @@ span.add-on{
 	text-align: center;
 	vertical-align: middle;
 }
+
 span.add-on-blank{
 	padding: 0px;
 	border: 1px solid silver;
@@ -500,7 +444,6 @@ input.span2{
 	font-size: 12px;
 	vertical-align: middle;
 }
-
 
 
 
@@ -545,15 +488,6 @@ img.member{
 	overflow: hidden;
 	float: left;
 }
-
-/*
-ul.member{
-	list-style-type: none;
-	float: left;
-	font-size: 15px;
-}
-
-*/
 
 
 /*** Others ***/
@@ -728,8 +662,6 @@ span#previous, span#following{
 	width: auto;
 
 }
-
-
 
 span#previous{
 	float: left;

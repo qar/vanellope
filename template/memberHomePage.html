@@ -1,0 +1,25 @@
+{% include "common/header.html" %}
+<div id="wrapper">
+  <div class="primary-wrapper">
+    <div class="primary" >
+      {% for article in articles %}
+      <!-- index content unit -->
+      <div class="article-intro primary-item-container">
+        <a href="/article/{{ article['sn'] }}">
+          <img class="article-intro" src="{{ article['img'] }}">
+        </a>
+        <a href="/article/{{ article['sn'] }}">
+          <h2 class="article-intro-title" style="width:426px">{{ article['title']}}</h2>
+        </a>
+        <span class="article-brief">{{ article['brief'] }}</span>
+      </div> <!-- end of ".article-intro" and ".primary-item-container" -->
+      {% end %}
+    </div> <!-- end of "#primary" -->
+  </div>
+
+   <div class="widgets-wrapper">
+        {% include "widgets/author-info.html" %}
+  </div>
+  
+</div> <!-- Closing of wrapper -->   
+{% include "common/footer.html" %}

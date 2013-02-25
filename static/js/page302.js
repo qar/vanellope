@@ -9,12 +9,5 @@ $(document).ready(function(){
 	var loc = $(location).attr('pathname')
 	if( loc == '/home'){
 		onHomeIndexLoad();	
-	}
-		
+	}	
 })
-
-function submitComment(){
-	$.ajax(){
-		
-	}
-}

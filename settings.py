@@ -6,7 +6,6 @@ import pymongo
 
 DEBUG = True
 
-
 STATIC_PATH = os.path.join(os.path.dirname(__file__), 'static')
 
 TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), 'template')
