@@ -66,16 +66,21 @@ span.timestamp{
 
 .button{
 	border-radius: 4px;
-	width: 100px;
 	height: 25px;
 	background-color: #eeeeee;
 	border: 1px solid silver;
 	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7);
 }
 
+.submit-button{
+	width: 100px;
+	float: left;
+}
+
 .button:active{
 	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7) inset;
 }
+
 /*
 input.btn{
 	width: 100px;
@@ -234,6 +239,7 @@ form#comment > textarea{
 	padding:4px;
 }
 
+
 form#comment > input.button{
 	float: left;
 	margin-top: 6px;
@@ -312,7 +318,7 @@ form.article{
 	overflow: visible;
 }
 
-form.article > input:not(:last-child){
+input.article, textarea.article{
 	width: 632px;
 	height:30px;
 	float: left;

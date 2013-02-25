@@ -17,7 +17,7 @@
     <div class="primary" id="comments">
       {% for comment in comments %}
       <div class="comment primary-item-container">
-        <a class="member" href="/u/{{ comment['member_name']}}">
+        <a class="member" href="/u/{{ comment['member_name'].lower() }}">
           <img class="avatar" src="/static/img/avatar/{{ comment['member_name'].lower() }}.jpg" alt="{{ comment['member_name'] }}" width="50" height="50px">
         </a>
 
@@ -37,13 +37,16 @@
     {% include "widgets/author-info.html" %}
 
     {% if master %}
-    {% if master['auth'] == author['auth'] %}
-      {% include "widgets/owner-article-option.html" %}
-    {% end %}
+      {% if master['auth'] == author['auth'] %}
+        {% include "widgets/owner-article-option.html" %}
+      {% end %}
     {% end %}
 
     {% include "widgets/article-status.html" %}
-    {% include "widgets/comment.html" %}
+    
+    {% if master %}
+      {% include "widgets/comment.html" %}
+    {% end %}
   </div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->
