@@ -35,8 +35,8 @@ class ArticleHandler(tornado.web.RequestHandler):
         # check whether member logged in
         master = CheckAuth(self.get_cookie('auth'))
 
-        article = self.db_article.find_one({'sn': article_sn})
-        author = self.db_member.find_one({'_id': article['author_id'] })
+        article = self.db_article.find_one({'sn': int(article_sn)})
+        author = self.db_member.find_one({'_id': article['author'] })
         comments_cursor = self.db_comment.find({
                           'article_id': article_sn
                           }).sort('date',1)
@@ -67,7 +67,6 @@ class ArticleHandler(tornado.web.RequestHandler):
         article['date'] = article['date'].strftime("%Y-%m-%d %H:%M")
         article['review'] += datetime.timedelta(hours=8)
         article['review'] = article['review'].strftime("%Y-%m-%d %H:%M")
-        article['sn'] = article['_id']
 
         self.render(template, 
                     pre = pre,
