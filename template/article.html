@@ -18,13 +18,12 @@
       {% for comment in comments %}
       <div class="comment primary-item-container">
         <a class="member" href="/u/{{ comment['member_name'].lower() }}">
-          <img class="avatar" src="/static/img/avatar/{{ comment['member_name'].lower() }}.jpg" alt="{{ comment['member_name'] }}" width="50" height="50px">
+          <img class="avatar" src="{{ comment['member_avatar'] }}" alt="{{ comment['member_name'] }}" width="50px" height="50px">
         </a>
-
-        <ul class="comment">
-          <li><a href="/u/{{ comment['member_name'].lower() }}">{{ comment['member_name']}}</a></li>
-          <li class="comment-content">{{ comment['comment'] }}</li>
-        </ul>
+        <a href="/u/{{ comment['member_name'].lower() }}"><span>{{ comment['member_name']}}</span></a>
+        <span class="timestamp" style="margin-left:10px">{{ comment['date']}}</span>
+        <br/>
+        <p class="comment">{{ comment['comment'] }}</p>
       </div>   
       {% end %}
     </div>

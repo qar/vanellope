@@ -2,11 +2,11 @@
 	<div class="widget-caption common-color">最火十篇</div>
 	<div class="widget-wrapper">
 		<!-- TOP 10 Hotest Articles -->
-  	<ol class="article">
   		{% for article in hotest %}
-    	<li><a href="/article/{{ article['sn'] }}">{{ article['title']}}</a></li>
+  		<div class="article">
+    	<a href="/article/{{ article['sn'] }}">{{ article['title']}}</a>
+    	</div>
     	{% end %}
-  	</ol>
 	</div>
 </div>
 
