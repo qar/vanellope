@@ -137,8 +137,8 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
     def get(self, article_sn):
         master = CheckAuth(self.get_cookie('auth'))
         template = "home/edit.html"
-        article = self.db_article.find_one({'sn': article_sn})
-        author = self.db_member.find_one({'_id': article['author_id']})
+        article = self.db_article.find_one({'sn': int(article_sn)})
+        author = self.db_member.find_one({'_id': article['author']})
 
         self.render(template, 
                     master = master,
@@ -156,14 +156,14 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
                 continue
 
         master = CheckAuth(self.get_cookie('auth'))
-        article = self.db_article.find_one({"sn":article_id})
+        article = self.db_article.find_one({"sn":int(article_id)})
         
         if master:
             article['title']  = args['title']
             article['brief'] = args['brief']
             article['body'] = args['content']
             article['review'] = datetime.datetime.utcnow()
-            self.db_article.update({"sn":article_id}, article)
+            self.db_article.update({"sn":int(article_id)}, article)
             self.redirect("/article/%s" % article_id)
         else:
             self.send_error(403)
@@ -195,7 +195,7 @@ class CommentHandler(tornado.web.RequestHandler):
             comment['member_name'] = master['name']
             comment['member_avatar'] = master['avatar']
             comment['member_id'] = master['_id']
-            comment['article_id'] = article_sn
+            comment['article_id'] = int(article_sn)
             comment['comment'] = cmt
             comment['date'] = datetime.datetime.utcnow()
             self.db_comment.insert(comment)
