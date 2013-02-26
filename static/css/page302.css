@@ -1,235 +1,23 @@
-
-/*** LEVEL I ***/
-*{
-	margin: 0px;
-	border: 0px;
-	padding: 0px;
-}
-
-html{
-	height: 100%;
-}
-
-body{
-	margin: auto;
-	height: 100%;
+/** article.html comment part */
+div.comment{
+	min-height: 50px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #cdcdcd;
 	overflow: auto;
-	background-color: #e3e3e3;
-	text-align: center;
-	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+p.comment{
+	max-width: 576px;
+	float: left;
 	font-size: 14px;
-	color: #555555;
+	line-height: 20px;
 }
 
-p{
-	font-size: 17px;
-	line-height: 25px;
-}
 
-a{
-	color: #666666;
-	text-decoration: none;
-}
-
-img{
-	max-width: 636px;
-}
-
-textarea{
-	width: 100%;
-	max-width: 100%;
-	min-height: 200px;
-	height: auto;
-	border: 1px solid silver;
-}
-
-ul{
-	list-style-type: none;
-}
-
-span.authorname{
-}
 
 span.timestamp{
+	font-size: 12px;
+	color:#888888;
 }
-
-.inputbox{
-	padding: 2px;
-	border: 1px solid silver;
-}
-
-.inputbox:focus{
-	outline: 0;
-	border-color: rgba(82, 168, 236, 0.8) ;
-	box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,0.6);
-}
-
-.button{
-	border-radius: 4px;
-	height: 25px;
-	background-color: #eeeeee;
-	border: 1px solid silver;
-	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7);
-}
-
-.submit-button{
-	width: 100px;
-	float: left;
-}
-
-.button:active{
-	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7) inset;
-}
-
-/*
-input.btn{
-	width: 100px;
-	height: 35px;
-	border-radius: 5px;
-	border: 1px solid silver;
-	padding: 10px;
-	box-shadow: rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(0,0,0,0.25);
-	text-shadow: 0 1px 1px rgba(255,255,255,0.75)
-}
-
-input.button{
-	width: 80px;
-	height: 25px;
-	border-radius: 5px;
-	background-color: #DDDDDD;
-	box-shadow: 0px 13px 20px rgba(50, 50, 50, 0.3) inset;
-}
-
-*/
-
-#logo{
-	float: left;
-	color: #FFFFFF;
-	font-size: 30px;
-}
-
-/** add this '.fixed' in div.widget-wrapper's class list make widget fixed
-*** This make the first widget fixed
-**/
-.fixed{
-	position: fixed;
-}
-
-.common-color{
-	background-color: #87ac80;
-}
-
-/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
-
-/*** VERSION 1: Fixed Header 
-#header{
-	width: 100%;
-	position: fixed;
-	top: 0px;
-	background-color: #3A4040;
-	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);	
-}
-#header-wrapper{ 
-	width: 960px;
-	height: 35px;
-	margin:0px auto;	
-}
-***/
-/*** VERSION 2: Normal Header  ***/
-#header{
-	width: 100%;
-	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);	
-}
-
-#header-wrapper{ 
-	width: 960px;
-	height: 35px;
-	margin:0px auto;	
-}
-
-
-/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-END ******/
-
-#wrapper{ /* content wrapper */
-	min-height: 100%;
-	height: auto ! important;
-	width: 960px;
-	margin: 30px auto;
-	/** if fixed header:
-	margin-top: 65px;	**/	
-	text-align: left;
-	background-color: transparent;
-	overflow: hidden;
-
-}
-
-
-#footer{ /* contains #footer-wrapper  */
-	height: 60px;
-	background-color: white;
-	color: #868686;
-}
-
-#footer-wrapper{ /* wrap footer content */
-	width: 960px;
-	height: 60px;
-	margin: 0px auto;
-	background-color: transparent;
-}
-
-/*** LEVEL III ***/
-div.primary, div.widget {
-	height: auto;
-	background-color: #ffffff;
-	border-radius: 4px;
-    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
-    overflow: hidden; 
-}
-
-div.primary-item-container{ /* #primary's general items style */
-	margin: 20px;
-	height: auto;
-	width: auto;
-}
-
-/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
-/*** WIDGET ***/
-
-div.widgets-wrapper{
-	width: 267px;
-	margin-left: 15px;  /* gap between #primary and #secondary */
-	margin-right: 2px; /* leave space for border*/
-	min-height: 100%;
-	height: auto;
-	float: right;
-}
-
-div.widget{ 
-	height: auto;
-	width: auto;
-	float:right;
-	margin-bottom: 20px;
-}
-
-div.widget-caption{
-	color: #ffffff;
-	width: 262px;
-	height: 20px;
-	padding: 3px 0px 0px 5px;
-	border-radius: 4px 4px 0px 0px;
-    overflow: hidden; 
-	float: left;
-}
-
-div.widget-wrapper{
-	width: 100%;
-	max-width: 247px;
-	float: left;
-	padding: 10px;
-	border-radius: 0px 0px 4px 4px;
-}
-/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-END ******/
-
 /**** widgets specification ****/
 form#comment > textarea{
 	width: 237px;
@@ -243,38 +31,6 @@ form#comment > textarea{
 form#comment > input.button{
 	float: left;
 	margin-top: 6px;
-}
-
-
-#bottom-right{
-	position: fixed;
-	bottom: 0px;
-	right: 0px;
-	height: 30px;
-	width: 50px;
-	color: white;
-	border-radius: 4px 3px 0px 0px;
-	background-color: rgba(32, 34, 17, 0.6);
-
-}
-
-div.primary-wrapper{
-	float: left;
-	height: auto;
-	width: 676px;
-
-}
-div.primary{ /* style specific */
-	width: 100%;
-	margin-bottom: 50px;
-	float: left;
-}
-
-
-div.primary-item-sep{
-	width: 100%;
-	height: 20px;
-	float: right;
 }
 
 ol{
@@ -302,12 +58,7 @@ div.widget-outer-sep{
 	float: right;
 	background-color: transparent;
 }
-/** comment style **/
-div.comment{
-	min-height: 50px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #cdcdcd;
-}
+
 
 
 /** #primary components **/
@@ -318,6 +69,7 @@ form.article{
 	overflow: visible;
 }
 
+
 input.article, textarea.article{
 	width: 632px;
 	height:30px;
@@ -327,31 +79,6 @@ input.article, textarea.article{
 /*** #primary.article ***/
 
 
-div.article-intro{ /* display on index page */
-	padding:9px 0px 28px 0px;
-	margin-bottom: 29px;
-	overflow: hidden;
-}
-
-img.article-intro{ /** display on index page**/
-	width: 192px;
-	height: 108px;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	float: left;
-	overflow: hidden;
-	border-radius: 6px;
-	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
-}
-
-
-h2.article-intro-title{
-	font-size: 19px;
-	line-height: 25px;
-	color: #0061a1;
-	display: inline;
-}
-
 h1.article-title{
 	font-size: 25px;
 	line-height: 30px;
@@ -359,15 +86,11 @@ h1.article-title{
 	color: #0061a1;
 }
 
-span.article-brief{
-	font-size: 14px;
-	line-height: 18px;
-	display: block; /* start a new line */
-	color: #8E8E8E;
-}
+
 
 
 div.article-content{
+	width: 100%;
 	margin: 30px 0px 20px 0px;
 	float: left;
 	color: #3E3E3E;
@@ -495,6 +218,13 @@ img.member{
 	float: left;
 }
 
+div.article{
+	width: 100%;
+	height: 30px;
+	float: left;
+	overflow: hidden;
+
+}
 
 /*** Others ***/
 ul.nav{

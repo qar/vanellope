@@ -17,19 +17,18 @@ import tornado.options
 import tornado.web
 import tornado.escape
 
-
 import markdown
 import settings
 
-from article import Article
-from ajax import AjaxHandler
 from handlers import *
+from article import Article
 from page302.utility import *
 from page302.security import CheckAuth
 
-
 from tornado.options import define, options
-options['log_file_prefix'].set("/home/anran/workspace/vanellope/page302.log")
+
+
+options['log_file_prefix'].set(settings.LOG_LOCATION)
 define("port", default=8000, help="run on the given port", type=int)
 
 
@@ -47,8 +46,7 @@ class Application(tornado.web.Application):
         (r"/logout", LogoutHandler),
         (r"/test", TestHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
-        (r"/comment/(.*)", CommentHandler),
-        (r"/ajax/(.*)", AjaxHandler)]
+        (r"/comment/(.*)", CommentHandler)]
         
         self.db = settings.DATABASE
 

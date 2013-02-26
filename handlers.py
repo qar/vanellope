@@ -9,6 +9,7 @@ import datetime
 import time
 import logging
 import re
+import json
 import pymongo
 
 import tornado.web
@@ -16,40 +17,46 @@ import tornado.escape
 
 import markdown
 import settings
+
 from article import Article
 from page302.utility import *
 from page302.security import CheckAuth
 
-VIDEO_PATT = r"[video](.*)[/video]"
 
 class ArticleHandler(tornado.web.RequestHandler):
+    def __init__(self, *request, **kwargs):
+        super(ArticleHandler,self).__init__(request[0], request[1])
+        self.db_article = self.application.db.article
+        self.db_member = self.application.db.member
+        self.db_comment = self.application.db.comment
+
     def get(self, article_sn):
-        db_article = self.application.db.article
-        db_member = self.application.db.member
-        db_comment = self.application.db.comment
-
-        try:
-            article = db_article.find_one({'sn': article_sn})
-            comments = db_comment.find({'article_id': article_sn}).sort('date',1)
-            author = db_member.find_one({'_id': article['author_id'] })
-        except:
-            self.send_error(403)
-
+        template = "article.html"
+        # check whether member logged in
         master = CheckAuth(self.get_cookie('auth'))
 
-        template = "article.html"
+        article = self.db_article.find_one({'sn': article_sn})
+        author = self.db_member.find_one({'_id': article['author_id'] })
+        comments_cursor = self.db_comment.find({
+                          'article_id': article_sn
+                          }).sort('date',1)
+        comments = []
+        for comment in comments_cursor:
+            comment['date'] += datetime.timedelta(hours=8)
+            comment['date'] = comment['date'].strftime("%Y-%m-%d %H:%M")
+            comments.append(comment)
 
-        title ="page302"
         article['heat'] += 1
-        db_article.save(article)
+        self.db_article.save(article)
 
+        #get previous and next page link
         try:
-            pre = db_article.find({'sn': {'$lt': article['sn']}}).sort('sn', -1)
+            pre = self.db_article.find({'sn': {'$lt': article['sn']}}).sort('sn', -1)
             pre = pre[0]['sn']
         except:
             pre = None
         try:
-            fol = db_article.find({'sn': {'$gt': article['sn']}})
+            fol = self.db_article.find({'sn': {'$gt': article['sn']}})
             fol = fol[0]['sn']
         except:
             fol = None
@@ -60,19 +67,20 @@ class ArticleHandler(tornado.web.RequestHandler):
         article['date'] = article['date'].strftime("%Y-%m-%d %H:%M")
         article['review'] += datetime.timedelta(hours=8)
         article['review'] = article['review'].strftime("%Y-%m-%d %H:%M")
+        article['sn'] = article['_id']
 
         self.render(template, 
                     pre = pre,
                     fol = fol,
                     master = master,
                     comments = comments, 
-                    title = title,
+                    title = article['title'],
                     author = author, 
                     article = article)
         
     def post(self):
-        db_article = self.application.db.article
-        db_member = self.application.db.member
+        self.db_article = self.application.db.article
+        self.db_member = self.application.db.member
 
         # get post arguments
         post_values = ['intro-img', 'title', 'brief', 'content']
@@ -83,55 +91,55 @@ class ArticleHandler(tornado.web.RequestHandler):
             except:
                 pass
 
-        # article databse schema
-        article = { 
-            'sn':  str(int(time.time())),
-            'statue': 0,
-            'img': None,
-            'author_id': None,
-            'heat': 0,
-            'title': None,
-            'brief': None,
-            'body': None,
-            'date': datetime.datetime.utcnow(),
-            'review': datetime.datetime.utcnow(),
-        }
+        article = Article()
+        article.set_title(args['title'])
+        article.set_brief(args['brief'])
+        article.set_content(args['content'])
+        article.set_avatar(self.save_uploaded_avatar())
 
-        #handler upload picture file
-        upload = self.request.files['intro-img'][0]
-        md5 = hashlib.md5(upload['body']).hexdigest()
-        fpath = ('static/img/article/intro-%s.%s' % 
-                (md5, upload['filename'].split('.')[-1]))
-        fp = os.path.join(os.path.dirname(__file__), fpath)
-        pic =  open(fp, 'wb')
-        pic.write(upload['body'])
-        pic.close()
-
-        article['img'] = ("/%s" % fpath)
-        article['title'] = args['title']
-        article['brief'] = args['brief']
-        article['body'] = args['content']
         try:     
             cookie_auth = self.get_cookie("auth")
             master = CheckAuth(self.get_cookie('auth'))
             if master:
-                article['author_id'] = master['_id']
-                db_article.insert(article)
+                article.set_author(master['_id'])
+                article.save()
                 self.redirect('/')
             else:
                 send_error(401)
         except:
-            logging.warning("Unexpecting Error")        
+            logging.warning("Unexpecting Error")
+
+    def save_uploaded_avatar(self, arg="intro-img"):
+        try:
+            uploaded = self.request.files[arg][0]
+            file_md5 = hashlib.md5(uploaded['body']).hexdigest()
+            file_ext = uploaded['filename'].split('.')[-1]
+            file_name = ("intro-%s.%s" % (file_md5, file_ext))
+            url = os.path.join("/", 
+                               os.path.basename(settings.STATIC_PATH),
+                               os.path.basename(settings.IMAGE_PATH),
+                               os.path.basename(settings.ARTICLE_AVATAR_PATH),
+                               file_name)
+            fp = os.path.join(settings.ARTICLE_AVATAR_PATH, file_name)
+            pic =  open(fp, 'wb')
+            pic.write(uploaded['body'])
+            pic.close()
+        except:
+            url = settings.DEFAULE_ARTICLE_AVATAR
+        return url
 
 
 class ArticleUpdateHandler(tornado.web.RequestHandler):
+    def __init__(self, *request, **kwargs):
+        super(ArticleUpdateHandler,self).__init__(request[0], request[1])
+        self.db_article = self.application.db.article
+        self.db_member = self.application.db.member
+
     def get(self, article_sn):
-        db_article = self.application.db.article
-        db_member = self.application.db.member
         master = CheckAuth(self.get_cookie('auth'))
         template = "home/edit.html"
-        article = db_article.find_one({'sn': article_sn})
-        author = db_member.find_one({'_id': article['author_id']})
+        article = self.db_article.find_one({'sn': article_sn})
+        author = self.db_member.find_one({'_id': article['author_id']})
 
         self.render(template, 
                     master = master,
@@ -140,9 +148,6 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
                     article = article)
 
     def post(self, article_id):
-        db_article = self.application.db.article
-        db_comment = self.application.db.comment
-
         post_values = ['title', 'brief', 'content']
         args = {}
         for v in post_values:
@@ -152,44 +157,49 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
                 continue
 
         master = CheckAuth(self.get_cookie('auth'))
-        article = db_article.find_one({"sn":article_id})
+        article = self.db_article.find_one({"sn":article_id})
         
         if master:
             article['title']  = args['title']
             article['brief'] = args['brief']
             article['body'] = args['content']
             article['review'] = datetime.datetime.utcnow()
-            db_article.update({"sn":article_id}, article)
+            self.db_article.update({"sn":article_id}, article)
             self.redirect("/article/%s" % article_id)
         else:
             self.send_error(403)
 
 class CommentHandler(tornado.web.RequestHandler):
+    def __init__(self, *request, **kwargs):
+        super(CommentHandler,self).__init__(request[0], request[1])
+        self.db_article = self.application.db.article
+        self.db_comment = self.application.db.comment
+
     def get(self):
         pass
 
     def post(self, article_sn):
-        db_article = self.application.db.article
-        db_comment = self.application.db.comment
-
         master = CheckAuth(self.get_cookie('auth'))
 
         cmt = self.get_argument('comment')
-
         #comment database schema
         comment = {
-            'article_id':None,
+            'member_name':None,
+            'member_avatar':None,
             'member_id': None,
-            'date':None,
+            'article_id':None,
             'comment':None,
+            'date':None,
         }
 
         if master:
             comment['member_name'] = master['name']
-            comment['comment'] = cmt
+            comment['member_avatar'] = master['avatar']
+            comment['member_id'] = master['_id']
             comment['article_id'] = article_sn
+            comment['comment'] = cmt
             comment['date'] = datetime.datetime.utcnow()
-            db_comment.insert(comment)
+            self.db_comment.insert(comment)
             self.redirect("/article/%s" % article_sn)
         else:
             self.send_error(403)
@@ -204,7 +214,7 @@ class RegisterHandler(tornado.web.RequestHandler):
                     master = None)
 
     def post(self):
-        db_member = self.application.db['member']
+        self.db_member = self.application.db['member']
         template = "register.html"
         title = "Register"
         errors = []
@@ -224,7 +234,7 @@ class RegisterHandler(tornado.web.RequestHandler):
         UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
         m = re.match(UID_PATT, args['name'])
         if m:
-            found = db_member.find_one(
+            found = self.db_member.find_one(
                     {'name_low': args['name'].lower()})
             if found:
                 errors.append("uname exist")
@@ -245,7 +255,7 @@ class RegisterHandler(tornado.web.RequestHandler):
         if args['email']:
             match = re.match(EMAIL_PATT, args['email'].lower())
             if match:
-                exist = db_member.find_one({"email": args['email'].lower()})
+                exist = self.db_member.find_one({"email": args['email'].lower()})
                 if exist:
                     errors.append("email already being used")
                 else:
@@ -262,7 +272,7 @@ class RegisterHandler(tornado.web.RequestHandler):
         else:
             member['_id'] = hashlib.md5(member['email']).hexdigest()
             member['date'] = datetime.datetime.utcnow()
-            #member['nid'] = str(db_member.count() + 1)
+            #member['nid'] = str(self.db_member.count() + 1)
             member['auth'] = hashlib.sha512(member['name_low'] + 
                              member['pwd']).hexdigest()
             member['avatar'] = Avatar(member['email'])
@@ -272,7 +282,7 @@ class RegisterHandler(tornado.web.RequestHandler):
             #self.set_cookie(name="nid",      
             #                value=member['nid'],   
             #                expires_days = 365)
-            db_member.insert(member)
+            self.db_member.insert(member)
             self.redirect('/')
 
 
