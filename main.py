@@ -169,7 +169,7 @@ class HomeHandler(tornado.web.RequestHandler):
 
     def get_author_all_articles(self, member_id):
         articles = self.application.db.article.find(
-                    {"author_id": member_id}).sort("date", -1)
+                    {"author": member_id}).sort("date", -1)
         return articles
 
 
