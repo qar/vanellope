@@ -19,6 +19,7 @@ class Member:
             "auth": None,
             "date": None,
             "avatar": None,
+            "brief":None,
         }
     def check_name(self, name):
         # check whether user with given 'name' already exists.

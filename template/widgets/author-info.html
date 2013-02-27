@@ -7,7 +7,9 @@
 			</a>
 			<ul class="member">
 				<li class="member"><a class="member" href="/u/{{ author['name_safe'] }}">{{ author['name'] }}</a></li>
-				<li class="member"><span class="member"></li>
+				{% if master['brief'] %}
+				<li class="member"><span class="member">{{ master['brief'] }}</li>
+				{% end %}
 			</ul>
 		</div>
 

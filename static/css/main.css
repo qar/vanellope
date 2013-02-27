@@ -36,8 +36,10 @@ form.article{
 }
 input.article, textarea.article{
 	width: 632px;
-	height:30px;
 	float: left;
+}
+textarea.article{
+	height: 200px;
 }
 
 /** index **/
@@ -153,9 +155,7 @@ div.article-list{
 	border: 1px solid silver;
 }
 
-ul.article-list{
-	list-style-type: none;
-}
+ul.article-list{list-style-type: none;}
 
 li.article-list-caption{
 	display: inline;
@@ -194,6 +194,17 @@ h2.member-info, p.member-info{
 	height: auto;
 	width: 100%;
 	margin-bottom: 10px;
+}
+textarea.member-info{
+	width: 100%;
+	min-height: 75px;
+	max-height: 75px;
+}
+#edit-button{
+	color:#888888; 
+	cursor:pointer; 
+	width:120px; 
+	display:block;
 }
 
 /** comments zone **/

@@ -58,8 +58,7 @@ div.widget-wrapper{
 form#comment > textarea{
 	width: 237px;
 	max-width: 237px;
-	min-height: 50px;
-	height: auto;
+	height: 25px;
 	padding:4px;
 }
 form#comment > input.button{
@@ -85,15 +84,9 @@ ul.article-status{
 ul.article-status > li{
  	margin-bottom: 8px;
 }
-span#previous, span#following{
-	width: auto;
-}
-span#previous{
-	float: left;
-}
-span#following{
-	float: right;
-}
+span#previous, span#following{width: auto;}
+span#previous{float: left;}
+span#following{float: right;}
 
 
 /***  widget "tool-list" ***/
@@ -107,6 +100,4 @@ ul.tools-list > li{
 	float: left;
 	height: 30px;
 }
-ul.tools-list > li > a{
-	color: #555555;
-}
+ul.tools-list > li > a{color: #555555;}

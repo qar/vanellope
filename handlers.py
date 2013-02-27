@@ -94,7 +94,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         article.set_title(args['title'])
         article.set_brief(args['brief'])
         article.set_content(args['content'])
-        article.set_avatar(self.save_uploaded_avatar())
+        article.set_avatar(self.__save_uploaded_avatar())
 
         try:     
             cookie_auth = self.get_cookie("auth")
@@ -108,12 +108,16 @@ class ArticleHandler(tornado.web.RequestHandler):
         except:
             logging.warning("Unexpecting Error")
 
-    def save_uploaded_avatar(self, arg="intro-img"):
+    def __save_uploaded_avatar(self, arg="intro-img"):
+        # save uploaded file's binary data on local storage.
+        # data specified by "arg", default value is "intro-img"
+        # when file saved return it's relative link, aka the "url".
+        # if no data with request use default link specified by settings.py file.
         try:
             uploaded = self.request.files[arg][0]
             file_md5 = hashlib.md5(uploaded['body']).hexdigest()
             file_ext = uploaded['filename'].split('.')[-1]
-            file_name = ("intro-%s.%s" % (file_md5, file_ext))
+            file_name = ("intro-%f-%s.%s" % (file_md5, time.time(), file_ext))
             url = os.path.join("/", 
                                os.path.basename(settings.STATIC_PATH),
                                os.path.basename(settings.IMAGE_PATH),

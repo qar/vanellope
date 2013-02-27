@@ -64,14 +64,15 @@ class TestHandler(tornado.web.RequestHandler):
 class MemberHandler(tornado.web.RequestHandler):
     def get(self, uname):
         db_member = self.application.db.member
-        db_article =  self.application.db.article
+        db_article = self.application.db.article
+
         master = CheckAuth(self.get_cookie('auth'))
 
         template = "memberHomePage.html"
-        author = db_member.find_one({"name_low": uname})
-        articles = db_article.find({"author_id": author['_id']}).sort("date",-1)
+        author = db_member.find_one({"name_safe": uname})
+        articles = db_article.find({"author": author['uid']}).sort("date",-1)
         self.render(template,
-                    title = "PAGE302",
+                    title = author['name']+u"专栏",
                     articles = articles,
                     master = master,
                     author = author)
@@ -167,6 +168,17 @@ class HomeHandler(tornado.web.RequestHandler):
             self.render(template, 
                         title="Home",
                         master = master)
+    def post(self):
+        db_member = self.application.db.member
+        master = CheckAuth(self.get_cookie('auth'))
+        if master:
+            brief = self.get_argument('brief', default=None)
+            print brief
+            master['brief'] = brief
+            db_member.update({'uid':master['uid']},master)
+
+
+
 
     def get_author_all_articles(self, member_id):
         articles = self.application.db.article.find(

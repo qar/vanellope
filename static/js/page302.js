@@ -1,13 +1,39 @@
 
-function onHomeIndexLoad(){
-	$('div.member-info p:nth-child(3)').html('hello, world!');
+function editBio(){
+    $('#edit-button').hide();
+    $('span.member-info').hide();
+    $('textarea.member-info, #submit').show();
+    $('textarea.member-info').html($.trim($('span.member-info').text()));
+
+    $('button#submit').click(function(){
+        $('span.member-info').html($.trim($('textarea.member-info').val()));
+        $('textarea.member-info, #submit').hide();
+        $('span.member-info, #edit-button').show();
+        $.ajax({
+            url:"/home",
+            type:"POST",
+            data:{'brief':$.trim($('textarea.member-info').val())},
+        });
+    });
 };
 
 
+function expandCommentBox(){
+    $("textarea.inputbox").css({"height":"100px"});
+};
 
-$(document).ready(function(){
-	var loc = $(location).attr('pathname')
-	if( loc == '/home'){
-		onHomeIndexLoad();	
-	}	
-})
+function sendComment(){
+    //alert($.trim($('textarea.inputbox').val()));
+    if( $.trim( $('textarea.inputbox').val()) ){
+        alert("you did write something, good");
+    }
+    else{
+        alert("you haven't wrote anything, not good");
+    }
+};
+
+function checkCommentContent(event){
+    if($.trim($('textarea.inputbox').val()) == ""){
+        event.preventDefault();
+    }
+}

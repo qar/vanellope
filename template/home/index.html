@@ -4,13 +4,20 @@
   <div class="primary">
     <div class="primary-item-sep"></div>
     <div class="member-info">
-          <img class="member-info" src="{{ master['avatar'] }}">
-          <div class="member-info-container">
-            <h2 class="member-info">{{ master['name'] }}</h2>
-            <p class="member-info">{{ master['email'] }}</p>
-            <p class="member-info"></p>
-          </div>
-        </div> <!-- end of ".member-info" -->      
+      <img class="member-info" src="{{ master['avatar'] }}">
+
+      <div class="member-info-container">
+        <h2 class="member-info">{{ master['name'] }}</h2>
+        <p class="member-info">{{ master['email'] }}</p>
+        
+        <div id="edit-button" onclick="editBio()">[&nbsp;<i class="icon-edit icon-large"></i>编辑个人简介&nbsp;]</div>
+        {% if master['brief'] %}
+        <span class="member-info" style="font-size:15px;line-height:22px;">{{ master['brief'] }}</span>
+        {% end %}
+        <textarea class='inputbox member-info' autofocus style="display:none"></textarea>
+        <button id='submit' class='button submit-button' style="display:none">Submit</button>
+      </div>
+    </div> <!-- end of ".member-info" -->      
           <div class="primary-item-sep"></div>
   </div> <!-- end of "primary" -->
   </div>      

@@ -8,13 +8,17 @@ def simple_content_parser():
 	# 
 	pass
 
-def Avatar(email):
+def Avatar(email, size=128, ):
 	# Using Gravatar
-	default = "static/img/avatar/default.png"
-	size = 128
+	LARGE = 128
 	gravatar_url = ("http://www.gravatar.com/avatar/%s" % 
 					hashlib.md5(email.lower()).hexdigest() + "?")
-	gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+	# use local default avatar
+	#gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+	#default = "static/img/avatar/default.png"
+
+	# use gravatar default img
+	gravatar_url += urllib.urlencode({'s':str(size)})
 	return gravatar_url
 
 
