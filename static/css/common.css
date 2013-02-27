@@ -1,4 +1,4 @@
-/** common  **/
+/** common  tags override **/
 *{
 	margin: 0px;
 	border: 0px;
@@ -47,6 +47,8 @@ ul{
 	list-style-type: none;
 }
 
+
+/**  component base **/
 .inputbox{
 	padding: 2px;
 	border: 1px solid silver;
@@ -67,6 +69,7 @@ ul{
 }
 
 .submit-button{
+
 	width: 100px;
 	float: left;
 }
@@ -75,19 +78,22 @@ ul{
 	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7) inset;
 }
 
+.fixed{
+	position: fixed;
+}
+.common-color{
+	background-color: #87ac80;
+}
+
+/** unique **/
 #logo{
 	float: left;
 	color: #FFFFFF;
 	font-size: 30px;
 }
-
 /** add this '.fixed' in div.widget-wrapper's class list make widget fixed
 *** This make the first widget fixed
 **/
-.fixed{
-	position: fixed;
-}
-
 /****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
 
 /*** VERSION 1: Fixed Header 
@@ -115,15 +121,29 @@ ul{
 	height: 35px;
 	margin:0px auto;	
 }
+/*** Header Nav Bar ***/
+ul.nav{
+	list-style-type: none;
+	float: right;
+	margin: 10px 10px;
+}
 
+li.nav{
+	display: inline;
+}
 
-/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-END ******/
-
-.common-color{
-	background-color: #87ac80;
+a.nav{
+	color: white;
+	padding: 5px 8px;
+	border-radius: 4px;
+}
+a.nav:hover{
+	background-color: silver;
+	color: #404040;
 }
 
 
+/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-END ******/
 
 #wrapper{ /* content wrapper */
 	min-height: 100%;
@@ -136,14 +156,11 @@ ul{
 	background-color: transparent;
 	overflow: hidden;
 }
-
-
 #footer{ /* contains #footer-wrapper  */
 	height: 60px;
 	background-color: white;
 	color: #868686;
 }
-
 #footer-wrapper{ /* wrap footer content */
 	width: 960px;
 	height: 60px;
@@ -151,76 +168,12 @@ ul{
 	background-color: transparent;
 }
 
-/******************************   primary    **********************************************/
-div.primary-wrapper{
+
+.avatar{ /* user's avatar image */
+	display: inline;
 	float: left;
-	height: auto;
-	width: 676px;
-}
-
-div.primary-item-sep{
-	width: 100%;
-	height: 20px;
-	float: right;
-}
-
-div.primary{ /* style specific */
-	height: auto;
-	background-color: #ffffff;
+	margin-right: 10px;
 	border-radius: 4px;
-    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
-    overflow: hidden; 
-	width: 100%;
-	margin-bottom: 50px;
-	float: left;
-}
-
-div.primary-item-container{ /* #primary's general items style */
-	margin: 20px;
-	height: auto;
-	width: auto;
 }
 
 
-/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-HEAD ******/
-/*** WIDGET ***/
-
-div.widgets-wrapper{
-	width: 267px;
-	margin-left: 15px;  /* gap between #primary and #secondary */
-	margin-right: 2px; /* leave space for border*/
-	min-height: 100%;
-	height: auto;
-	float: right;
-}
-
-div.widget{ 
-	height: auto;
-	background-color: #ffffff;
-	border-radius: 4px;
-    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
-    overflow: hidden; 
-	height: auto;
-	width: auto;
-	float:right;
-	margin-bottom: 20px;
-}
-
-div.widget-caption{
-	color: #ffffff;
-	width: 262px;
-	height: 20px;
-	padding: 3px 0px 0px 5px;
-	border-radius: 4px 4px 0px 0px;
-    overflow: hidden; 
-	float: left;
-}
-
-div.widget-wrapper{
-	width: 100%;
-	max-width: 247px;
-	float: left;
-	padding: 10px;
-	border-radius: 0px 0px 4px 4px;
-}
-/****** NOTICE: THIS AREA SHOULD NOT BE CHANGED-END ******/
