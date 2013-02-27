@@ -18,15 +18,23 @@
 
     <input type="file" name="intro-img" value="选择图片"><span>展示在首页，图片大小应选择192x108px</span>
       <div class="primary-item-sep"></div>
-    <input class="inputbox article" type="text" name="title" placeholder="标题" autofocus style="height:25px">
+    <input id="title" class="inputbox article" type="text" name="title" placeholder="标题" autofocus style="height:25px">
       <div class="primary-item-sep"></div>
     <textarea class="inputbox article" name="brief" placeholder="简介" style="height:100px"></textarea>
       <div class="primary-item-sep"></div>
-    <textarea class="inputbox article" name="content" placeholder="正文"></textarea>    
+    <textarea id="body" class="inputbox article" name="content" placeholder="正文"></textarea>    
       <div class="primary-item-sep"></div>
     <input type="submit" class="button submit-button" value="发表">
       <div class="primary-item-sep"></div>
   </form><!-- end of "article-editor" -->
+  <script>
+        $("input.submit-button").click(function(event) {
+          // neither title nor main article conent should be null.
+            if(!$.trim($('#title').val()) || !$.trim($('#body').val())){
+              event.preventDefault();
+            }
+        });
+      </script>
 	</div>
 </div><!-- end of primary -->
 </div>
