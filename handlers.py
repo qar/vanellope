@@ -184,7 +184,12 @@ class CommentHandler(tornado.web.RequestHandler):
     def post(self, article_sn):
         master = CheckAuth(self.get_cookie('auth'))
 
-        cmt = self.get_argument('comment')
+        # if comment has no content then return back silently.
+        try:
+            cmt = self.get_argument('comment')
+        except:
+            self.redirect(self.request.headers['Referer'])
+
         #comment database schema
         comment = {
             'member_name':None,
