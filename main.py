@@ -104,6 +104,7 @@ class LoginHandler(tornado.web.RequestHandler):
         template = "login.html"
         errors = []
         
+
         post_values = ['name','pwd']
         args = {}
         for v in post_values:
@@ -116,8 +117,8 @@ class LoginHandler(tornado.web.RequestHandler):
                             master=False, 
                             errors=errors)
         try:
-            member = db_member.find_one({'name_low':args['name'].lower()})
-            input_auth = hashlib.sha512(args['name'].lower() + 
+            member = db_member.find_one({'name':args['name']})
+            input_auth = hashlib.sha512(args['name'] + 
                         hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
         except:
             errors.append("db error")
@@ -157,7 +158,7 @@ class HomeHandler(tornado.web.RequestHandler):
             self.send_error(401)
             self.finish()
         if (page == "manage"):
-            articles = self.get_author_all_articles(master['_id'])
+            articles = self.get_author_all_articles(master['uid'])
             self.render(template, 
                         title = 'HOME | manage', 
                         master = master,

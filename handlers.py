@@ -19,6 +19,7 @@ import markdown
 import settings
 
 from article import Article
+from member import Member
 from page302.utility import *
 from page302.security import CheckAuth
 
@@ -36,10 +37,9 @@ class ArticleHandler(tornado.web.RequestHandler):
         master = CheckAuth(self.get_cookie('auth'))
 
         article = self.db_article.find_one({'sn': int(article_sn)})
-        author = self.db_member.find_one({'_id': article['author'] })
+        author = self.db_member.find_one({'uid': article['author'] })
         comments_cursor = self.db_comment.find({
-                          'article_id': article_sn
-                          }).sort('date',1)
+                          'article_id': int(article_sn)}).sort('date',1)
         comments = []
         for comment in comments_cursor:
             comment['date'] += datetime.timedelta(hours=8)
@@ -100,7 +100,7 @@ class ArticleHandler(tornado.web.RequestHandler):
             cookie_auth = self.get_cookie("auth")
             master = CheckAuth(self.get_cookie('auth'))
             if master:
-                article.set_author(master['_id'])
+                article.set_author(master['uid'])
                 article.save()
                 self.redirect('/')
             else:
@@ -194,7 +194,7 @@ class CommentHandler(tornado.web.RequestHandler):
         if master:
             comment['member_name'] = master['name']
             comment['member_avatar'] = master['avatar']
-            comment['member_id'] = master['_id']
+            comment['member_id'] = master['uid']
             comment['article_id'] = int(article_sn)
             comment['comment'] = cmt
             comment['date'] = datetime.datetime.utcnow()
@@ -217,7 +217,8 @@ class RegisterHandler(tornado.web.RequestHandler):
         template = "register.html"
         title = "Register"
         errors = []
-        member = {}                       
+
+        member = Member()                       
 
         post_values = ['name','pwd','cpwd','email']
         args = {}
@@ -231,34 +232,30 @@ class RegisterHandler(tornado.web.RequestHandler):
 
         # authentication uname
         UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-        m = re.match(UID_PATT, args['name'])
-        if m:
-            found = self.db_member.find_one(
-                    {'name_low': args['name'].lower()})
+        if re.match(UID_PATT, args['name']):
+            found = member.check_name(args['name'])
             if found:
                 errors.append("uname exist")
             else:
-                member['name'] = args['name']
-                member['name_low'] = args['name'].lower()
+                member.set_name(args['name'])
         else:
             errors.append("illegal character")
 
         # authentication password
         if args['pwd'] and (args['pwd'] == args['cpwd']):
-            member['pwd'] = hashlib.sha512(args['pwd']).hexdigest()
+            member.set_pwd(hashlib.sha512(args['pwd']).hexdigest())
         else:
             errors.append("password different")
 
         # authentication email
         EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
         if args['email']:
-            match = re.match(EMAIL_PATT, args['email'].lower())
-            if match:
-                exist = self.db_member.find_one({"email": args['email'].lower()})
-                if exist:
+            if re.match(EMAIL_PATT, args['email'].lower()):
+                if member.check_email(args['email'].lower()):
+                    # email being using
                     errors.append("email already being used")
                 else:
-                    member['email'] = args['email'].lower()
+                    member.set_email(args['email'].lower())
             else:
                 errors.append("illegal email address")
         else:
@@ -269,19 +266,13 @@ class RegisterHandler(tornado.web.RequestHandler):
             self.render(template, title=title, 
                         errors = errors, member = None)
         else:
-            member['_id'] = hashlib.md5(member['email']).hexdigest()
-            member['date'] = datetime.datetime.utcnow()
-            #member['nid'] = str(self.db_member.count() + 1)
-            member['auth'] = hashlib.sha512(member['name_low'] + 
-                             member['pwd']).hexdigest()
-            member['avatar'] = Avatar(member['email'])
+            member.set_auth(hashlib.sha512(member.template['name']+ 
+                             member.template['pwd']).hexdigest())
+            member.set_avatar(Avatar(member.template['email']))
             self.set_cookie(name="auth", 
-                            value=member['auth'], 
+                            value=member.template['auth'], 
                             expires_days = 365)
-            #self.set_cookie(name="nid",      
-            #                value=member['nid'],   
-            #                expires_days = 365)
-            self.db_member.insert(member)
+            member.save()
             self.redirect('/')
 
 

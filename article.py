@@ -11,7 +11,7 @@ class Article:
     def __init__(self, db=DATABASE.article):
         self.db = db
         self.template = {
-            'sn': self.set_id(),
+            'sn': self.set_sn(),
             'status': 0, # 0 means normal
             'avatar': DEFAULE_ARTICLE_AVATAR,
             'author': None,
@@ -24,7 +24,7 @@ class Article:
             'permalink': None,
         }
 
-    def set_id(self):
+    def set_sn(self):
         #set article unique id.
         #id is a unique number. it's one bigger than 
         # the biggest article id in the article database.
@@ -32,7 +32,7 @@ class Article:
         #  the id may be inconsistent, but it's okay
 
         try:
-            biggest = self.db.find_one({}).sort("_id, -1")[0]['_id']
+            biggest = self.db.find().sort("sn, -1")[0]['sn']
             return biggest+1
         except:
             # 0 is initial article id
@@ -56,7 +56,7 @@ class Article:
         self.template['body'] = content
 
     def set_avatar(self, fp):
-        self.template['img'] = fp
+        self.template['avatar'] = fp
 
     def save(self):
         self.db.insert(self.template)
