@@ -2,72 +2,79 @@
 # coding=utf-8
 import time
 import datetime
-import tornado.escape
-
 from settings import DATABASE
+from settings import DEFAULT_CATEGORY
 from settings import DEFAULE_ARTICLE_AVATAR
+
+from tornado.escape import url_escape
 
 class Article:
     def __init__(self, db=DATABASE.article):
         self.db = db
-        self.template = {
-            'sn': self.set_sn(),
-            'status': 0, # 0 means normal
-            'avatar': DEFAULE_ARTICLE_AVATAR,
-            'author': None,
+        self.article = {
+        # These are part of necessary items.
+            'sn': self.__new_sn(),
+            'status': "normal",
             'heat': 0, 
-            'title': None,
-            'brief': None,
-            'body': None,
+            'avatar': DEFAULE_ARTICLE_AVATAR,
+            'category':DEFAULT_CATEGORY,
             'date': datetime.datetime.utcnow(),
             'review': datetime.datetime.utcnow(),
-            'permalink': None,
         }
 
-    def set_sn(self):
-        #set article unique id.
-        #id is a unique number. it's one bigger than 
-        # the biggest article id in the article database.
-        # When member deleted some articles they owned, 
-        #  the id may be inconsistent, but it's okay
-
+    def __new_sn(self):
+        # set article serial number.
+        # Serial Number(sn) is unique, ascending number.
+        # Roughly it's the generated sequence of articles. It will make it 
+        #  discontinuous if there were articles being deleted.
         try:
-            biggest = self.db.find().sort("sn, -1")[0]['sn']
-            return biggest+1
+            # Find the biggest sn number in the database  and 
+            # the new sn number should be ONE biggest than that.
+            return self.db.find().sort("sn", -1)[0]['sn'] + 1
         except:
-            # 0 is initial article id
+            # 0 is initial article sn number.
             return 0
 
-    def gen_permalink(self, title):
-        self.template['permalink'] = '_'.join(
-            (str(self.template['sn']),tornado.escape.url_escape(title)))
+    # methods called outside
+    def set_title(self, title):
+        # set title and permalink
+        self.article['title'] = title
+        self.article['permalink'] = '_'.join(
+            (str(self.article['sn']), url_escape(title)))
 
     def set_author(self, uid):
-        self.template['author'] = uid
-
-    def set_title(self, title):
-        self.template['title'] = title
-        self.gen_permalink(title)
+        self.article['author'] = uid
 
     def set_brief(self, brief):
-        self.template['brief'] = brief
+        self.article['brief'] = brief
 
     def set_content(self, content):
-        self.template['body'] = content
+        self.article['body'] = content
 
     def set_avatar(self, fp):
-        self.template['avatar'] = fp
+        self.article['avatar'] = fp
 
     def save(self):
-        self.db.insert(self.template)
+        # the tuple below are the other part of necessary items' keys
+        keys = ('author', 'title', 'body', 'brief', 'permalink')
+        if len([x for x in keys if x in self.article.keys()]) == len(keys):
+            self.db.insert(self.article)
+            return True
+        else:
+            return False
 
-    #def fetch_by_id(self, )
-
-    def find_one(self):
-        print self.db.find_one()
-
-
-if __name__ == "__main__":
-    article = Article()
-    print article.find_one()
-    print article.template
+    # readOnly methods
+    def find_adjoins(self, current_date):
+        try:
+            pre = db.find({"status":"normal",
+                          "date": {"$lt": current_date}
+                          }).sort("date",-1)[0]['sn']
+        except:
+            pre = None
+        try:
+            fol = db.find({"status":"normal",
+                           "date": {"$gt": current_date}
+                           }).sort("date", 1)[0]['sn']
+        except:
+            fol = None
+        return (pre, fol)
