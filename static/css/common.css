@@ -142,4 +142,6 @@ a.nav:hover{
 	border-radius: 4px;
 }
 
-
+.option{
+	cursor: pointer;
+}

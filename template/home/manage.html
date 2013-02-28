@@ -16,7 +16,7 @@
             <div class="article-list">
                 <ul class="article-list">
                     <li class="article-list-caption"><a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a></li>
-                    <li class="article-list"><a href="/home/manage" onclick="delArticle({{ article['sn']}})">Delet</a></li>
+                    <li class="article-list"><span class="option" onclick="deleteArticle({{ article['sn']}})">Delet</span></li>
                     <li class="article-list"><a href="/update/{{ article['sn']}}">Edit</a></li>
                 </ul>
             </div>

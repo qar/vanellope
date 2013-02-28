@@ -32,8 +32,11 @@ function sendComment(){
     }
 };
 
-function checkCommentContent(event){
-    if($.trim($('textarea.inputbox').val()) == ""){
-        event.preventDefault();
-    }
-}
+function deleteArticle(article_sn){
+    alert(article_sn);
+    $.ajax({
+        url:"/article/" + article_sn,
+        type:"GET",
+        data:"option=delete",
+    }).done(function() { alert("success"); });
+};

@@ -1,62 +1,95 @@
 #! /usr/bin/env python
 # coding=utf-8
 
+import re
+import urllib
 import hashlib
-import settings
 import datetime
-import tornado.escape
+from settings import DATABASE, ROLE
+
+from urllib import quote_plus as url_escape
+
+def CheckAuth(auth_cookie):
+    # take a cookie name that do authentication function
+    db_member = DATABASE['member']
+    member = db_member.find_one({"auth": auth_cookie})
+    if member:
+        return member
+    else:
+        return None
+
+def Avatar(email, size=128):
+    # Using Gravatar
+    LARGE = 128
+    gravatar_url = ("http://www.gravatar.com/avatar/%s" % 
+                    hashlib.md5(email.lower()).hexdigest() + "?")
+    # use local default avatar
+    #gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+    #default = "static/img/avatar/default.png"
+
+    # use gravatar default img
+    gravatar_url += urllib.urlencode({'s':str(size)})
+    return gravatar_url
 
 class Member:
-    def __init__(self, db=settings.DATABASE.member):
+    def __init__(self, db=DATABASE.member ):
         self.db = db
-        self.template = {
-            "uid": None, # set this when setting email
-            "role": 1,
-            "name": None,
-            "name_safe": None,
-            "email": None, # set email along with uid
-            "pwd": None,
-            "auth": None,
-            "date": None,
-            "avatar": None,
-            "brief":None,
+        self.member = {
+            "role": ROLE,
+            "date": datetime.datetime.utcnow(),
         }
+
     def check_name(self, name):
-        # check whether user with given 'name' already exists.
-        result = self.db.find_one({"name": name})
-        if result:
-            return True
+        # check user input name's usability
+        errors = []
+        UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
+        if re.match(UID_PATT, name):
+            if self.db.find_one({"name": name}):
+                errors.append("uname exist")
+            else:
+                self.member['name'] = name
+                self.member['name_safe'] = url_escape(name.lower())
         else:
-            return False
+            errors.append("illegal character")
+        return errors
+
+    def set_pwd(self, pwd):
+        # authentication password
+        self.member['pwd'] = hashlib.sha512(pwd).hexdigest()
 
     def check_email(self, email):
         # check whether the given email is being using
-        result = self.db.find_one({"email": email.lower()})
-        if result:
+        # authentication email
+        EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
+        errors = []
+        if re.match(EMAIL_PATT, email.lower()):
+            if self.db.find_one({"email": email.lower()}):
+                errors.append("email already being used")
+            else:
+                self.member['email'] = email.lower()
+                self.member['avatar'] = Avatar(self.member['email'])
+                self.member['uid'] = hashlib.md5(email.lower()).hexdigest()
+        else:
+            errors.append("illegal email address")
+        return errors
+
+    def __set_auth(self):
+        auth = hashlib.sha512(self.member['name']+self.member['pwd']).hexdigest()
+        self.member['auth'] = auth
+
+    def get_auth(self):
+        return self.member['auth']
+
+    def save(self):
+         # the tuple below are the other part of necessary items' keys
+        self.__set_auth()
+        keys = ('name', 'name_safe', 'pwd', 'email', 'auth', 'avatar', 'uid')
+        if len([x for x in keys if x in self.member.keys()]) == len(keys):
+            self.db.insert(self.member)
             return True
         else:
             return False
 
-    def set_name(self, name):
-        self.template['name'] = name
-        self.template['name_safe'] = tornado.escape.url_escape(name.lower())
-
-    def set_pwd(self, hashed_pwd):
-        self.template['pwd'] = hashed_pwd
-
-    def set_email(self, email):
-        self.template['email'] = email.lower()
-        self.template['uid'] = hashlib.md5(email.lower()).hexdigest()
-
-    def set_avatar(self, avatar_link):
-        self.template['avatar'] = avatar_link
-
-    def set_auth(self, auth):
-        self.template['auth'] = auth
-
-    def save(self):
-        self.template['date'] = datetime.datetime.utcnow()
-        self.db.insert(self.template)
 
 
 

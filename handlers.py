@@ -19,9 +19,8 @@ import markdown
 import settings
 
 from article import Article
-from member import Member
-from page302.utility import *
-from page302.security import CheckAuth
+from member import Member, CheckAuth, Avatar
+from comment import Comment
 
 
 class ArticleHandler(tornado.web.RequestHandler):
@@ -36,7 +35,20 @@ class ArticleHandler(tornado.web.RequestHandler):
         # check whether member logged in
         master = CheckAuth(self.get_cookie('auth'))
 
-        article = self.db_article.find_one({'sn': int(article_sn)})
+        try:
+            option = self.get_argument("option")
+            if option == "deleted" and master:
+                self.delete_article(article_sn)
+                self.set_status(200)
+                self.finish()
+        except:
+            pass
+
+        article = self.db_article.find_one({"status": "normal", 'sn': int(article_sn)})
+        if not article:
+            self.send_error(404)
+            self.finish()
+
         author = self.db_member.find_one({'uid': article['author'] })
         comments_cursor = self.db_comment.find({
                           'article_id': int(article_sn)}).sort('date',1)
@@ -49,17 +61,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         article['heat'] += 1
         self.db_article.save(article)
 
-        #get previous and next page link
-        try:
-            pre = self.db_article.find({'sn': {'$lt': article['sn']}}).sort('sn', -1)
-            pre = pre[0]['sn']
-        except:
-            pre = None
-        try:
-            fol = self.db_article.find({'sn': {'$gt': article['sn']}})
-            fol = fol[0]['sn']
-        except:
-            fol = None
+        adjoins = self.find_adjoins(article['date'])
 
         md = markdown.Markdown(safe_mode = "escape")
         article['body'] = md.convert(article['body'])
@@ -69,8 +71,8 @@ class ArticleHandler(tornado.web.RequestHandler):
         article['review'] = article['review'].strftime("%Y-%m-%d %H:%M")
 
         self.render(template, 
-                    pre = pre,
-                    fol = fol,
+                    pre = adjoins[0],
+                    fol = adjoins[1],
                     master = master,
                     comments = comments, 
                     title = article['title'],
@@ -78,9 +80,6 @@ class ArticleHandler(tornado.web.RequestHandler):
                     article = article)
         
     def post(self):
-        self.db_article = self.application.db.article
-        self.db_member = self.application.db.member
-
         # get post arguments
         post_values = ['intro-img', 'title', 'brief', 'content']
         args = {}
@@ -94,7 +93,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         article.set_title(args['title'])
         article.set_brief(args['brief'])
         article.set_content(args['content'])
-        article.set_avatar(self.__save_uploaded_avatar())
+        article.set_avatar(self.save_uploaded_avatar())
 
         try:     
             cookie_auth = self.get_cookie("auth")
@@ -108,7 +107,20 @@ class ArticleHandler(tornado.web.RequestHandler):
         except:
             logging.warning("Unexpecting Error")
 
-    def __save_uploaded_avatar(self, arg="intro-img"):
+    def find_adjoins(self, current_date):
+        try:
+            pre = self.db_article.find({'date':
+                {'$lt': current_date}}).sort("date",-1)[0]['sn']
+        except:
+            pre = None
+        try:
+            fol = self.db_article.find({'date': 
+                {"$gt": current_date}}).sort("date", 1)[0]['sn']
+        except:
+            fol = None
+        return (pre, fol)
+
+    def save_uploaded_avatar(self, arg="intro-img"):
         # save uploaded file's binary data on local storage.
         # data specified by "arg", default value is "intro-img"
         # when file saved return it's relative link, aka the "url".
@@ -117,7 +129,7 @@ class ArticleHandler(tornado.web.RequestHandler):
             uploaded = self.request.files[arg][0]
             file_md5 = hashlib.md5(uploaded['body']).hexdigest()
             file_ext = uploaded['filename'].split('.')[-1]
-            file_name = ("intro-%f-%s.%s" % (file_md5, time.time(), file_ext))
+            file_name = ("intro-%f-%s.%s" % (time.time(), file_md5, file_ext))
             url = os.path.join("/", 
                                os.path.basename(settings.STATIC_PATH),
                                os.path.basename(settings.IMAGE_PATH),
@@ -130,6 +142,15 @@ class ArticleHandler(tornado.web.RequestHandler):
         except:
             url = settings.DEFAULE_ARTICLE_AVATAR
         return url
+
+    def delete_article(self, article_sn):
+        self.db_article.update({"sn":article_sn}, {"$set":{"status":"deleted"}})
+
+    def recover_article(self, article_sn):
+        self.db_article.update({"sn":article_sn}, {"$set":{"status":"normal"}})
+
+    def preserve_article(self, article_sn):
+        self.db_article.update({"sn":article_sn}, {"$set":{"status":"preserved"}})
 
 
 class ArticleUpdateHandler(tornado.web.RequestHandler):
@@ -173,41 +194,27 @@ class ArticleUpdateHandler(tornado.web.RequestHandler):
             self.send_error(403)
 
 class CommentHandler(tornado.web.RequestHandler):
-    def __init__(self, *request, **kwargs):
-        super(CommentHandler,self).__init__(request[0], request[1])
-        self.db_article = self.application.db.article
-        self.db_comment = self.application.db.comment
-
-    def get(self):
-        pass
-
     def post(self, article_sn):
         master = CheckAuth(self.get_cookie('auth'))
-
         # if comment has no content then return back silently.
         try:
             cmt = self.get_argument('comment')
         except:
             self.redirect(self.request.headers['Referer'])
 
-        #comment database schema
-        comment = {
-            'member_name':None,
-            'member_avatar':None,
-            'member_id': None,
-            'article_id':None,
-            'comment':None,
-            'date':None,
-        }
+        comment = Comment(int(article_sn))
 
         if master:
-            comment['member_name'] = master['name']
-            comment['member_avatar'] = master['avatar']
-            comment['member_id'] = master['uid']
-            comment['article_id'] = int(article_sn)
-            comment['comment'] = cmt
-            comment['date'] = datetime.datetime.utcnow()
-            self.db_comment.insert(comment)
+            # basic commenter information
+            commenter = {
+                "uid": master['uid'],
+                "name": master['name'],
+                "name_safe": master['name_safe'],
+                "avatar": master['avatar']
+            }
+            comment.set_commenter(commenter)
+            comment.set_content(cmt)
+            comment.save()
             self.redirect("/article/%s" % article_sn)
         else:
             self.send_error(403)
@@ -222,11 +229,7 @@ class RegisterHandler(tornado.web.RequestHandler):
                     master = None)
 
     def post(self):
-        self.db_member = self.application.db['member']
-        template = "register.html"
-        title = "Register"
         errors = []
-
         member = Member()                       
 
         post_values = ['name','pwd','cpwd','email']
@@ -239,49 +242,33 @@ class RegisterHandler(tornado.web.RequestHandler):
                 self.render(template, title = title, 
                             member = member, errors = errors)
 
-        # authentication uname
-        UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-        if re.match(UID_PATT, args['name']):
-            found = member.check_name(args['name'])
-            if found:
-                errors.append("uname exist")
-            else:
-                member.set_name(args['name'])
-        else:
-            errors.append("illegal character")
+        # check and set 'name'. 
+        # If anything went wrong error messages list returned
+        errors += member.check_name(args['name'])
 
-        # authentication password
         if args['pwd'] and (args['pwd'] == args['cpwd']):
-            member.set_pwd(hashlib.sha512(args['pwd']).hexdigest())
+            member.set_pwd(args['pwd'])
         else:
             errors.append("password different")
 
         # authentication email
-        EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
         if args['email']:
-            if re.match(EMAIL_PATT, args['email'].lower()):
-                if member.check_email(args['email'].lower()):
-                    # email being using
-                    errors.append("email already being used")
-                else:
-                    member.set_email(args['email'].lower())
-            else:
-                errors.append("illegal email address")
+            # check and set 'email'. 
+            # If anything went wrong error messages list returned
+            errors += member.check_email(args['email'])
         else:
             errors.append("no email")
 
         if errors:
-            template = "register.html"
-            self.render(template, title=title, 
-                        errors = errors, member = None)
+            self.render("register.html", #template file
+                        title = "Register", # web page title
+                        errors = errors,    
+                        member = None)
         else:
-            member.set_auth(hashlib.sha512(member.template['name']+ 
-                             member.template['pwd']).hexdigest())
-            member.set_avatar(Avatar(member.template['email']))
-            self.set_cookie(name="auth", 
-                            value=member.template['auth'], 
-                            expires_days = 365)
             member.save()
+            self.set_cookie(name="auth", 
+                            value=member.get_auth(), 
+                            expires_days = 365)
             self.redirect('/')
 
 

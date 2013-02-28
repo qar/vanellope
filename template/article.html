@@ -17,13 +17,13 @@
     <div class="primary" id="comments">
       {% for comment in comments %}
       <div class="comment primary-item-container">
-        <a class="member" href="/u/{{ comment['member_name'].lower() }}">
-          <img class="avatar" src="{{ comment['member_avatar'] }}" alt="{{ comment['member_name'] }}" width="50px" height="50px">
+        <a class="member" href="/u/{{ comment['commenter']['name_safe'] }}">
+          <img class="avatar" src="{{ comment['commenter']['avatar'] }}" alt="{{ comment['commenter']['name'] }}" width="50px" height="50px">
         </a>
-        <a href="/u/{{ comment['member_name'].lower() }}"><span>{{ comment['member_name']}}</span></a>
+        <a href="/u/{{ comment['commenter']['name_safe'] }}"><span>{{ comment['commenter']['name']}}</span></a>
         <span class="timestamp" style="margin-left:10px">{{ comment['date']}}</span>
         <br/>
-        <p class="comment">{{ comment['comment'] }}</p>
+        <p class="comment">{{ comment['body'] }}</p>
       </div>   
       {% end %}
     </div>

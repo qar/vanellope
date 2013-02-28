@@ -11,7 +11,7 @@
         <p class="member-info">{{ master['email'] }}</p>
         
         <div id="edit-button" onclick="editBio()">[&nbsp;<i class="icon-edit icon-large"></i>编辑个人简介&nbsp;]</div>
-        {% if master['brief'] %}
+        {% if master.has_key('brief') and master['brief'] %}
         <span class="member-info" style="font-size:15px;line-height:22px;">{{ master['brief'] }}</span>
         {% end %}
         <textarea class='inputbox member-info' autofocus style="display:none"></textarea>

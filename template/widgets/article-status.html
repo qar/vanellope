@@ -6,10 +6,15 @@
 				<li ><i class="icon-fire"></i>{{ article['heat']}}°</li>
 				<li >创建于 {{ article['date'] }}</li>
 				<li >最近更新 {{ article['review'] }}</li>
+				{#
+				{% if article['category'] %}
+				<li >Category {{ article['category'] }}</li>
+				{% end %}
+				#}
 			</ul>
 		</div>
 
-		{% if pre %}
+		{% if pre is not None %}
 			<span id="previous">
 				<a href="/article/{{ pre }}"><i class="icon-double-angle-left"></i>&nbsp;前一篇</a>
 			</span>
@@ -17,7 +22,7 @@
 			<span id="previous">没了</span>
 		{% end %}
 
-		{% if fol %}
+		{% if fol is not None %}
 			<span id="following">
 				<a href="/article/{{ fol }}">后一篇&nbsp;<i class="icon-double-angle-right"></i></a>
 			</span>

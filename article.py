@@ -2,11 +2,10 @@
 # coding=utf-8
 import time
 import datetime
+from urllib import quote_plus as url_escape
 from settings import DATABASE
 from settings import DEFAULT_CATEGORY
 from settings import DEFAULE_ARTICLE_AVATAR
-
-from tornado.escape import url_escape
 
 class Article:
     def __init__(self, db=DATABASE.article):
