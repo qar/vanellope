@@ -1,3 +1,8 @@
-###VANELLOPE
-vanellope 是我的一个学习性的开发项目，目标是一个健全的博客系统。    
+##VANELLOPE
+**VANELLOPE**   是我的一个学习性开发项目，一个集体创作博客平台。    
 
+我的运行环境：    
+python v2.7, [python-markdown](https://pypi.python.org/pypi/Markdown), tornado 2.4.1         
+
+本地运行：    
+```python main.py --port=xxxx```
