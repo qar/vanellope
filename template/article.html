@@ -7,7 +7,7 @@
         <h1 class="article-title">{{ article['title'] }}</h1><!-- end of "article-title" -->
         <div class="article-content" id="content">
           {% for i in article['body'].splitlines() %}
-          {% raw i %}<br />
+          {% raw i %}<br/>
           {% end %}
         </div>
       </div>

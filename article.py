@@ -1,11 +1,41 @@
 #! /usr/bin/env python
 # coding=utf-8
+
 import time
 import datetime
-from urllib import quote_plus as url_escape
+from tornado.escape import url_escape
 from settings import DATABASE
 from settings import DEFAULT_CATEGORY
 from settings import DEFAULE_ARTICLE_AVATAR
+
+
+def delete_article(article_sn):
+    print "delete option goes here"
+    print DATABASE.article.find({"sn":int(article_sn)})
+
+    DATABASE.article.update({"sn":int(article_sn)}, {"$set":{"status":"deleted"}})
+    print "done"
+
+def recover_article(article_sn):
+    DATABASE.article.update({"sn":int(article_sn)}, {"$set":{"status":"normal"}})
+
+def find_adjoins(current_date):
+    try:
+        pre = DATABASE.article.find({"status":"normal",
+                      "date": {"$lt": current_date}
+                      }).sort("date",-1)[0]['sn']
+    except:
+        pre = None
+    try:
+        fol = DATABASE.article.find({"status":"normal",
+                       "date": {"$gt": current_date}
+                       }).sort("date", 1)[0]['sn']
+    except:
+        fol = None
+    return (pre, fol)
+def preserve_article(article_sn):
+    DATABASE.article.update({"sn":int(article_sn)}, {"$set":{"status":"preserved"}})
+
 
 class Article:
     def __init__(self, db=DATABASE.article):
@@ -63,17 +93,3 @@ class Article:
             return False
 
     # readOnly methods
-    def find_adjoins(self, current_date):
-        try:
-            pre = db.find({"status":"normal",
-                          "date": {"$lt": current_date}
-                          }).sort("date",-1)[0]['sn']
-        except:
-            pre = None
-        try:
-            fol = db.find({"status":"normal",
-                           "date": {"$gt": current_date}
-                           }).sort("date", 1)[0]['sn']
-        except:
-            fol = None
-        return (pre, fol)

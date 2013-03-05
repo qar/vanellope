@@ -7,7 +7,7 @@
 			</a>
 			<ul class="member">
 				<li class="member"><a class="member" href="/u/{{ author['name_safe'] }}">{{ author['name'] }}</a></li>
-				{% if author['brief'] %}
+				{% if author.has_key("brief") and author['brief'] %}
 				<li class="member"><span class="member">{{ author['brief'] }}</li>
 				{% end %}
 			</ul>

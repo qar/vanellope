@@ -37,12 +37,13 @@ class Application(tornado.web.Application):
         handlers = [
         (r"/", IndexHandler),
         (r"/register", RegisterHandler),
-        (r"/article/([0-9]+.*)", ArticleHandler),
+        (r"/article/([0-9]+)", ArticleHandler),
         (r"/article", ArticleHandler),
         (r"/home", HomeHandler),
         (r"/u/(.*)", MemberHandler),
         (r"/home/(.*)", HomeHandler),
         (r"/login", LoginHandler),
+        (r"/test/?([^/]*)", TestHandler),
         (r"/logout", LogoutHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
         (r"/comment/(.*)", CommentHandler)]
@@ -53,7 +54,10 @@ class Application(tornado.web.Application):
         debug = settings.DEBUG)
 
         tornado.web.Application.__init__(self, handlers, **SETTINGS)
-        
+
+class TestHandler(tornado.web.RequestHandler):
+    def get(self, slug):
+        self.write("this is test page" + slug)       
 
 class MemberHandler(tornado.web.RequestHandler):
     def get(self, uname):
@@ -65,7 +69,8 @@ class MemberHandler(tornado.web.RequestHandler):
 
         template = "memberHomePage.html"
         author = db_member.find_one({"name_safe": uname})
-        articles = db_article.find({"author": author['uid']}).sort("date",-1)
+        articles = db_article.find({"status":"normal",
+                                    "author": author['uid']}).sort("date",-1)
         self.render(template,
                     title = author['name']+u"专栏",
                     articles = articles,
@@ -81,7 +86,7 @@ class IndexHandler(tornado.web.RequestHandler):
 
         master = CheckAuth(self.get_cookie('auth'))
         #master = member.check_auth(self.get_cookie('auth'))
-        articles = db_article.find().sort("date",-1)
+        articles = db_article.find({"status":"normal"}).sort("date",-1)
         top_x_hotest = db_article.find({"status":"normal"}).sort("heat", -1).limit(10)
 
         self.render(template, 
@@ -101,7 +106,6 @@ class LoginHandler(tornado.web.RequestHandler):
         template = "login.html"
         errors = []
         
-
         post_values = ['name','pwd']
         args = {}
         for v in post_values:
@@ -177,8 +181,7 @@ class HomeHandler(tornado.web.RequestHandler):
 
     def get_author_all_articles(self, owner_id):
         db_article = self.application.db.article
-        return db_article.find(
-                {"author": owner_id}).sort("date", -1)
+        return db_article.find({"author": owner_id}).sort("date", -1)
 
     def normal_articles(self, owner_id):
         db_article = self.application.db.article

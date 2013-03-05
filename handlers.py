@@ -18,9 +18,9 @@ import tornado.escape
 import markdown
 import settings
 
-from article import Article
-from member import Member, CheckAuth, Avatar
-from comment import Comment
+from article import *
+from member import *
+from comment import *
 
 
 class ArticleHandler(tornado.web.RequestHandler):
@@ -31,20 +31,21 @@ class ArticleHandler(tornado.web.RequestHandler):
         self.db_comment = self.application.db.comment
 
     def get(self, article_sn):
-        template = "article.html"
         # check whether member logged in
         master = CheckAuth(self.get_cookie('auth'))
 
         try:
             option = self.get_argument("option")
-            if option == "deleted" and master:
-                self.delete_article(article_sn)
+            if option == "delete" and master:
+                print "option=" + option
+                delete_article(article_sn)
                 self.set_status(200)
                 self.finish()
         except:
             pass
-
-        article = self.db_article.find_one({"status": "normal", 'sn': int(article_sn)})
+            
+        article = self.db_article.find_one(
+                    {"status": "normal", 'sn': int(article_sn)})
         if not article:
             self.send_error(404)
             self.finish()
@@ -61,7 +62,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         article['heat'] += 1
         self.db_article.save(article)
 
-        adjoins = self.find_adjoins(article['date'])
+        adjoins = find_adjoins(article['date'])
 
         md = markdown.Markdown(safe_mode = "escape")
         article['body'] = md.convert(article['body'])
@@ -70,7 +71,7 @@ class ArticleHandler(tornado.web.RequestHandler):
         article['review'] += datetime.timedelta(hours=8)
         article['review'] = article['review'].strftime("%Y-%m-%d %H:%M")
 
-        self.render(template, 
+        self.render("article.html", 
                     pre = adjoins[0],
                     fol = adjoins[1],
                     master = master,
@@ -143,14 +144,7 @@ class ArticleHandler(tornado.web.RequestHandler):
             url = settings.DEFAULE_ARTICLE_AVATAR
         return url
 
-    def delete_article(self, article_sn):
-        self.db_article.update({"sn":article_sn}, {"$set":{"status":"deleted"}})
 
-    def recover_article(self, article_sn):
-        self.db_article.update({"sn":article_sn}, {"$set":{"status":"normal"}})
-
-    def preserve_article(self, article_sn):
-        self.db_article.update({"sn":article_sn}, {"$set":{"status":"preserved"}})
 
 
 class ArticleUpdateHandler(tornado.web.RequestHandler):

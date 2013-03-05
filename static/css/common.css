@@ -145,3 +145,9 @@ a.nav:hover{
 .option{
 	cursor: pointer;
 }
+
+
+code{
+	font-size: 13px;
+	color: gray;
+}

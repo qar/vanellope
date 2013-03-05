@@ -38,5 +38,7 @@ function deleteArticle(article_sn){
         url:"/article/" + article_sn,
         type:"GET",
         data:"option=delete",
-    }).done(function() { alert("success"); });
+    }).success(function() { 
+        location.reload(); 
+    });
 };

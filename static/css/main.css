@@ -38,9 +38,11 @@ input.article, textarea.article{
 	width: 632px;
 	float: left;
 }
+/*
 textarea.article{
 	height: 200px;
 }
+*/
 
 /** index **/
 div.article-intro{ /* display on index page */
