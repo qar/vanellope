@@ -22,18 +22,8 @@ function expandCommentBox(){
     $("textarea.inputbox").css({"height":"100px"});
 };
 
-function sendComment(){
-    //alert($.trim($('textarea.inputbox').val()));
-    if( $.trim( $('textarea.inputbox').val()) ){
-        alert("you did write something, good");
-    }
-    else{
-        alert("you haven't wrote anything, not good");
-    }
-};
 
 function deleteArticle(article_sn){
-    alert(article_sn);
     $.ajax({
         url:"/article/" + article_sn,
         type:"GET",
