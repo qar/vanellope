@@ -4,7 +4,9 @@
   <div class="primary" >
   {% for article in articles %}
     <div class="article-intro primary-item-container">
+      {% if article['avatar'] %}
       <a href="/article/{{ article['sn'] }}"><img class="article-intro" src="{{ article['avatar'] }}"></a>
+      {% end %}
       <a href="/article/{{ article['sn'] }}">
         <h2 class="article-intro-title">{{ article['title']}}</h2>
       </a>
