@@ -45,7 +45,7 @@ class Article:
             'sn': self.__new_sn(),
             'status': "normal",
             'heat': 0, 
-            'avatar': DEFAULE_ARTICLE_AVATAR,
+            'avatar': None,
             'category':DEFAULT_CATEGORY,
             'date': datetime.datetime.utcnow(),
             'review': datetime.datetime.utcnow(),

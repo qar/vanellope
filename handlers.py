@@ -141,7 +141,7 @@ class ArticleHandler(tornado.web.RequestHandler):
             pic.write(uploaded['body'])
             pic.close()
         except:
-            url = settings.DEFAULE_ARTICLE_AVATAR
+            url = None #settings.DEFAULE_ARTICLE_AVATAR
         return url
 
 
