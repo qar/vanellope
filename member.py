@@ -36,6 +36,7 @@ class Member:
         self.db = db
         self.member = {
             "role": ROLE,
+            "verified":False,
             "date": datetime.datetime.utcnow(),
         }
 
