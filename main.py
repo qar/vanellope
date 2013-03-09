@@ -84,14 +84,22 @@ class IndexHandler(tornado.web.RequestHandler):
         db_article = self.application.db.article
         template = 'index.html'
 
+        page = self.get_argument("p", 1)
+        skip_articles = (int(page) -1 )*10
         master = CheckAuth(self.get_cookie('auth'))
         #master = member.check_auth(self.get_cookie('auth'))
-        articles = db_article.find({"status":"normal"}).sort("date",-1)
+        articles = db_article.find({"status":"normal"}).sort("date",-1).skip(skip_articles).limit(10)
         top_x_hotest = db_article.find({"status":"normal"}).sort("heat", -1).limit(10)
+
+        total = db_article.count()
+        pages  = total // 10 + 1
+        if total % 10 > 0:
+            pages += 1
 
         self.render(template, 
                     title = 'PAGE302',
                     master = master, 
+                    pages = pages,
                     articles = articles,
                     hotest = top_x_hotest)
 

@@ -11,6 +11,21 @@
       <span class="article-brief">{{ article['brief'] }}</span>              
     </div>
   {% end %}
+
+  <div class="pages">
+  {% if pages > 10 %}
+      {% for page in range(1, 10) %}
+      <a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
+      {% end %}
+      <a href="/?p=11"><span class="pages">...</span></a>
+  {% else %}
+      {% for page in range(1, pages) %}
+       <a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
+      {% end %}
+  {% end %}
+</div>
+
+
     </div> <!-- end of "#primary" -->
     </div>
 
