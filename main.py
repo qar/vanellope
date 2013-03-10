@@ -55,7 +55,15 @@ class Application(tornado.web.Application):
 
         tornado.web.Application.__init__(self, handlers, **SETTINGS)
 
-class TestHandler(tornado.web.RequestHandler):
+
+class BaseHandler(tornado.web.RequestHandler):
+    def db(self):
+        return self.application.db
+
+    def get(self):
+        pass
+
+class TestHandler(BaseHandler):
     def get(self, slug):
         self.write("this is test page" + slug)       
 
@@ -78,7 +86,7 @@ class MemberHandler(tornado.web.RequestHandler):
                     author = author)
 
 
-class IndexHandler(tornado.web.RequestHandler):
+class IndexHandler(BaseHandler):
     def get(self):
         db_member = self.application.db.member
         db_article = self.application.db.article
