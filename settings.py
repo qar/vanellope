@@ -12,7 +12,7 @@ STATIC_PATH = os.path.join(os.path.dirname(__file__), 'static')
 IMAGE_PATH = os.path.join(STATIC_PATH, 'img')
 
 # tornado.web.Application configuration. template file settings
-TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), 'template')
+TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), 'templates')
 
 
 ARTICLE_AVATAR_PATH = os.path.join(STATIC_PATH, IMAGE_PATH, 'article')
