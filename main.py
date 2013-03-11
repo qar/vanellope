@@ -14,9 +14,9 @@ import pymongo
 import markdown
 import settings
 
-from article import *
-from member import *
-from comment import *
+from vanellope.article import *
+from vanellope.member import *
+from vanellope.comment import *
 
 import tornado.httpserver
 import tornado.ioloop
@@ -25,6 +25,7 @@ import tornado.web
 import tornado.escape
 
 from tornado.options import define, options
+sys.path.append(os.getcwd())
 
 options['log_file_prefix'].set(settings.LOG_LOCATION)
 define("port", default=8000, help="run on the given port", type=int)
