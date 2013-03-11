@@ -26,8 +26,7 @@ function expandCommentBox(){
 function deleteArticle(article_sn){
     $.ajax({
         url:"/article/" + article_sn,
-        type:"GET",
-        data:"option=delete",
+        type:"DELETE",
     }).success(function() { 
         location.reload(); 
     });
