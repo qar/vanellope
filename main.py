@@ -12,11 +12,11 @@ import re
 import pymongo
 
 import markdown
-import settings
 
 from vanellope.article import *
 from vanellope.member import *
 from vanellope.comment import *
+from vanellope.ext import db
 
 import tornado.httpserver
 import tornado.ioloop
@@ -24,16 +24,15 @@ import tornado.options
 import tornado.web
 import tornado.escape
 
-from tornado.options import define, options
 sys.path.append(os.getcwd())
+from tornado.options import define, options
 
-options['log_file_prefix'].set(settings.LOG_LOCATION)
+options['log_file_prefix'].set(os.path.join(os.path.dirname(__file__), 'page302.log'))
 define("port", default=8000, help="run on the given port", type=int)
 
 
 class Application(tornado.web.Application):
     def __init__(self):
-        self.db = settings.DATABASE
         handlers = [
         (r"/", IndexHandler),
         (r"/register", RegisterHandler),
@@ -49,20 +48,17 @@ class Application(tornado.web.Application):
         (r"/comment/(.*)", CommentHandler)]
 
         SETTINGS = dict(
-        static_path = settings.STATIC_PATH,
-        template_path = settings.TEMPLATE_PATH,
+        static_path = os.path.join(os.path.dirname(__file__), 'static'),
+        template_path = os.path.join(os.path.dirname(__file__), 'templates'),
         login_url = "/login",
-        debug = settings.DEBUG)
+        debug = True)
 
         tornado.web.Application.__init__(self, handlers, **SETTINGS)
 
 
 class BaseHandler(tornado.web.RequestHandler):
-    @property
-    def db(self):
-        return self.application.db
     def get_current_user(self):
-        member = self.db.member.find_one({"auth": self.get_cookie('auth')})
+        member = db.member.find_one({"auth": self.get_cookie('auth')})
         if member:
             return member
         else:
@@ -75,15 +71,15 @@ class TestHandler(BaseHandler):
 
 class MemberHandler(BaseHandler):
     def get(self, uname):
-        master = CheckAuth(self.get_cookie('auth'))
+        master = self.get_current_user()
 
         page = self.get_argument("p", 1)
         skip_articles = (int(page) -1 )*10
-        author = self.db.member.find_one({"name_safe": uname})
-        articles = self.db.article.find({"status":"normal",
+        author = db.member.find_one({"name_safe": uname})
+        articles = db.article.find({"status":"normal",
                                     "author": author['uid']}).sort("date",-1).limit(skip_articles)
 
-        total = self.db.article.find({"author": author['uid']}).count()
+        total = db.article.find({"author": author['uid']}).count()
         pages  = total // 10 + 1
         if total % 10 > 0:
             pages += 1
@@ -100,15 +96,15 @@ class IndexHandler(BaseHandler):
     def get(self):
         page = self.get_argument("p", 1)
         skip_articles = (int(page) -1 )*10
-        master = CheckAuth(self.get_cookie('auth'))
+        master = self.get_current_user()
         #master = member.check_auth(self.get_cookie('auth'))
-        articles = self.db.article.find({"status":"normal"})
+        articles = db.article.find({"status":"normal"})
         articles.sort("date",-1).skip(skip_articles).limit(10)
 
-        top_x_hotest = self.db.article.find({"status":"normal"})
+        top_x_hotest = db.article.find({"status":"normal"})
         top_x_hotest.sort("heat", -1).limit(10)
 
-        total = self.db.article.count()
+        total = db.article.count()
         pages  = total // 10 + 1
         if total % 10 > 0:
             pages += 1
@@ -141,7 +137,7 @@ class LoginHandler(BaseHandler):
                             master=False, 
                             errors=errors)
         try:
-            member = self.db.member.find_one({'name':args['name']})
+            member = db.member.find_one({'name':args['name']})
             input_auth = hashlib.sha512(args['name'] + 
                         hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
         except:
@@ -172,13 +168,11 @@ class LogoutHandler(BaseHandler):
 
 
 class HomeHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self, page="index"):
         pages = ('write', 'manage', 'setting', 'index')
         template = ("home/%s.html" % page)
-        master = CheckAuth(self.get_cookie('auth'))
-        if not master:
-            self.send_error(401)
-            self.finish()
+        master = self.get_current_user()
         if (page == "manage"):
             articles = self.normal_articles(master['uid'])
             self.render(template, 
@@ -192,51 +186,43 @@ class HomeHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self):
-        master = CheckAuth(self.get_cookie('auth'))
+        master = self.get_current_user()
         if master:
             brief = self.get_argument('brief', default=None)
-            self.db.member.update({"uid":master['uid']},{"$set":{"brief":brief}})
-            member = self.db.member.find_one({'uid': master['uid']})
+            db.member.update({"uid":master['uid']},{"$set":{"brief":brief}})
+            member = db.member.find_one({'uid': master['uid']})
         else:
             self.send_error(403)
             self.findish()
 
     def get_author_all_articles(self, owner_id):
-        return self.db.article.find({"author": owner_id}).sort("date", -1)
+        return db.article.find({"author": owner_id}).sort("date", -1)
 
     def normal_articles(self, owner_id):
-        return self.db.article.find(
+        return db.article.find(
                 {"author": owner_id, "status":"normal"}).sort("date", -1)
         
 class ArticleHandler(BaseHandler):
-    def __init__(self, *request, **kwargs):
-        super(ArticleHandler,self).__init__(request[0], request[1])
-        self.db.article = self.application.db.article
-        self.db.member = self.application.db.member
-        self.db.comment = self.application.db.comment
-
     def get(self, article_sn):
-        # check whether member logged in
-        master = CheckAuth(self.get_cookie('auth'))
+        master = self.get_current_user()
 
         try:
-            option = self.get_argument("option")
+            option = self.get_argument("option", None)
             if option == "delete" and master:
-                print "option=" + option
                 delete_article(article_sn)
                 self.set_status(200)
                 self.finish()
         except:
             pass
             
-        article = self.db.article.find_one(
+        article = db.article.find_one(
                     {"status": "normal", 'sn': int(article_sn)})
         if not article:
             self.send_error(404)
             self.finish()
 
-        author = self.db.member.find_one({'uid': article['author'] })
-        comments_cursor = self.db.comment.find({
+        author = db.member.find_one({'uid': article['author'] })
+        comments_cursor = db.comment.find({
                           'article_id': int(article_sn)}).sort('date',1)
         comments = []
         for comment in comments_cursor:
@@ -245,7 +231,7 @@ class ArticleHandler(BaseHandler):
             comments.append(comment)
 
         article['heat'] += 1
-        self.db.article.save(article)
+        db.article.save(article)
 
         adjoins = find_adjoins(article['date'])
 
@@ -283,7 +269,7 @@ class ArticleHandler(BaseHandler):
 
         try:     
             cookie_auth = self.get_cookie("auth")
-            master = CheckAuth(self.get_cookie('auth'))
+            master = self.get_current_user()
             if master:
                 article.set_author(master['uid'])
                 article.save()
@@ -293,14 +279,20 @@ class ArticleHandler(BaseHandler):
         except:
             logging.warning("Unexpecting Error")
 
+    @tornado.web.authenticated
+    def delete(self, article_sn):
+        delete_article(article_sn)
+        self.set_status(200)
+        self.finish()
+
     def find_adjoins(self, current_date):
         try:
-            pre = self.db.article.find({'date':
+            pre = db.article.find({'date':
                 {'$lt': current_date}}).sort("date",-1)[0]['sn']
         except:
             pre = None
         try:
-            fol = self.db.article.find({'date': 
+            fol = db.article.find({'date': 
                 {"$gt": current_date}}).sort("date", 1)[0]['sn']
         except:
             fol = None
@@ -332,15 +324,15 @@ class ArticleHandler(BaseHandler):
 class ArticleUpdateHandler(BaseHandler):
     def __init__(self, *request, **kwargs):
         super(ArticleUpdateHandler,self).__init__(request[0], request[1])
-        self.db.article = self.application.db.article
-        self.db.member = self.application.db.member
+        db.article = self.application.db.article
+        db.member = self.application.db.member
 
     @tornado.web.authenticated
     def get(self, article_sn):
-        master = CheckAuth(self.get_cookie('auth'))
+        master = self.get_current_user()
         template = "home/edit.html"
-        article = self.db.article.find_one({'sn': int(article_sn)})
-        author = self.db.member.find_one({'_id': article['author']})
+        article = db.article.find_one({'sn': int(article_sn)})
+        author = db.member.find_one({'_id': article['author']})
 
         self.render(template, 
                     master = master,
@@ -357,15 +349,15 @@ class ArticleUpdateHandler(BaseHandler):
             except:
                 continue
 
-        master = CheckAuth(self.get_cookie('auth'))
-        article = self.db.article.find_one({"sn":int(article_id)})
+        master = self.get_current_user()
+        article = db.article.find_one({"sn":int(article_id)})
         
         if master:
             article['title']  = args['title']
             article['brief'] = args['brief']
             article['body'] = args['content']
             article['review'] = datetime.datetime.utcnow()
-            self.db.article.update({"sn":int(article_id)}, article)
+            db.article.update({"sn":int(article_id)}, article)
             self.redirect("/article/%s" % article_id)
         else:
             self.send_error(403)
@@ -373,7 +365,7 @@ class ArticleUpdateHandler(BaseHandler):
 class CommentHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, article_sn):
-        master = CheckAuth(self.get_cookie('auth'))
+        master = self.get_current_user()
         # if comment has no content then return back silently.
         try:
             cmt = self.get_argument('comment')

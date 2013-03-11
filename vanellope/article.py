@@ -3,42 +3,39 @@
 
 import time
 import datetime
+
+from vanellope.ext import db
 from tornado.escape import url_escape
-from settings import DATABASE
-from settings import DEFAULT_CATEGORY
-from settings import DEFAULE_ARTICLE_AVATAR
 
 
 def delete_article(article_sn):
-    print "delete option goes here"
-    print DATABASE.article.find({"sn":int(article_sn)})
-
-    DATABASE.article.update({"sn":int(article_sn)}, {"$set":{"status":"deleted"}})
-    print "done"
+    db.article.find({"sn":int(article_sn)})
+    db.article.update({"sn":int(article_sn)}, {"$set":{"status":"deleted"}})
 
 def recover_article(article_sn):
-    DATABASE.article.update({"sn":int(article_sn)}, {"$set":{"status":"normal"}})
+    db.article.update({"sn":int(article_sn)}, {"$set":{"status":"normal"}})
 
 def find_adjoins(current_date):
     try:
-        pre = DATABASE.article.find({"status":"normal",
+        pre = db.article.find({"status":"normal",
                       "date": {"$lt": current_date}
                       }).sort("date",-1)[0]['sn']
     except:
         pre = None
     try:
-        fol = DATABASE.article.find({"status":"normal",
+        fol = db.article.find({"status":"normal",
                        "date": {"$gt": current_date}
                        }).sort("date", 1)[0]['sn']
     except:
         fol = None
     return (pre, fol)
+
 def preserve_article(article_sn):
-    DATABASE.article.update({"sn":int(article_sn)}, {"$set":{"status":"preserved"}})
+    db.article.update({"sn":int(article_sn)}, {"$set":{"status":"preserved"}})
 
 
 class Article:
-    def __init__(self, db=DATABASE.article):
+    def __init__(self):
         self.db = db
         self.article = {
         # These are part of necessary items.
@@ -46,7 +43,7 @@ class Article:
             'status': "normal",
             'heat': 0, 
             'avatar': None,
-            'category':DEFAULT_CATEGORY,
+            'category':default,
             'date': datetime.datetime.utcnow(),
             'review': datetime.datetime.utcnow(),
         }
@@ -57,7 +54,7 @@ class Article:
         # Roughly it's the generated sequence of articles. It will make it 
         #  discontinuous if there were articles being deleted.
         try:
-            # Find the biggest sn number in the database  and 
+            # Find the biggest sn number in the db  and 
             # the new sn number should be ONE biggest than that.
             return self.db.find().sort("sn", -1)[0]['sn'] + 1
         except:
@@ -91,5 +88,3 @@ class Article:
             return True
         else:
             return False
-
-    # readOnly methods

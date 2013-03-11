@@ -2,11 +2,11 @@
 # coding=utf-8
 
 import datetime
-from settings import DATABASE
+from vanellope.ext import db
 
 class Comment:
-    def __init__(self, article_id, db=DATABASE.comment):
-        self.db = db
+    def __init__(self, article_id):
+        self.db = db.comment
         self.comment = {
             "article_id": article_id,
             "date": datetime.datetime.utcnow(),

@@ -6,18 +6,9 @@ import urllib
 import hashlib
 import datetime
 
-from settings import DATABASE, ROLE
+from vanellope.ext import db
 
 from urllib import quote_plus as url_escape
-
-def CheckAuth(auth_cookie):
-    # take a cookie name that do authentication function
-    db_member = DATABASE['member']
-    member = db_member.find_one({"auth": auth_cookie})
-    if member:
-        return member
-    else:
-        return None
 
 def Avatar(email, size=128):
     # Using Gravatar
@@ -33,10 +24,10 @@ def Avatar(email, size=128):
     return gravatar_url
 
 class Member:
-    def __init__(self, db=DATABASE.member ):
+    def __init__(self, db=db.member ):
         self.db = db
         self.member = {
-            "role": ROLE,
+            "role": "author",
             "verified":False,
             "date": datetime.datetime.utcnow(),
         }
