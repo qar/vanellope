@@ -203,17 +203,9 @@ class HomeHandler(BaseHandler):
                 {"author": owner_id, "status":"normal"}).sort("date", -1)
         
 class ArticleHandler(BaseHandler):
+    # display article
     def get(self, article_sn):
         master = self.get_current_user()
-
-        try:
-            option = self.get_argument("option", None)
-            if option == "delete" and master:
-                delete_article(article_sn)
-                self.set_status(200)
-                self.finish()
-        except:
-            pass
             
         article = db.article.find_one(
                     {"status": "normal", 'sn': int(article_sn)})
@@ -250,7 +242,8 @@ class ArticleHandler(BaseHandler):
                     title = article['title'],
                     author = author, 
                     article = article)
-        
+    #create article
+    @tornado.web.authenticated
     def post(self):
         # get post arguments
         post_values = ['intro-img', 'title', 'brief', 'content']
@@ -268,14 +261,10 @@ class ArticleHandler(BaseHandler):
         article.set_avatar(self.save_uploaded_avatar())
 
         try:     
-            cookie_auth = self.get_cookie("auth")
             master = self.get_current_user()
-            if master:
-                article.set_author(master['uid'])
-                article.save()
-                self.redirect('/')
-            else:
-                send_error(401)
+            article.set_author(master['uid'])
+            article.save()
+            self.redirect('/')
         except:
             logging.warning("Unexpecting Error")
 
@@ -322,11 +311,6 @@ class ArticleHandler(BaseHandler):
         return url
 
 class ArticleUpdateHandler(BaseHandler):
-    def __init__(self, *request, **kwargs):
-        super(ArticleUpdateHandler,self).__init__(request[0], request[1])
-        db.article = self.application.db.article
-        db.member = self.application.db.member
-
     @tornado.web.authenticated
     def get(self, article_sn):
         master = self.get_current_user()
@@ -340,7 +324,8 @@ class ArticleUpdateHandler(BaseHandler):
                     author = author,
                     article = article)
 
-    def post(self, article_id):
+    @tornado.web.authenticated
+    def post(self, article_sn):
         post_values = ['title', 'brief', 'content']
         args = {}
         for v in post_values:
@@ -350,7 +335,7 @@ class ArticleUpdateHandler(BaseHandler):
                 continue
 
         master = self.get_current_user()
-        article = db.article.find_one({"sn":int(article_id)})
+        article = db.article.find_one({"sn":int(article_sn)})
         
         if master:
             article['title']  = args['title']
@@ -396,20 +381,22 @@ class RegisterHandler(BaseHandler):
                     title = 'Register',
                     errors = None,
                     master = None)
-
+    @tornado.web.asynchronous
     def post(self):
         errors = []
         member = Member()                       
 
         post_values = ['name','pwd','cpwd','email']
         args = {}
-        for v in post_values:
-            try:
-                args[v] = self.get_argument(v)
-            except:
-                errors.append("complete the blanks")
-                self.render(template, title = title, 
-                            member = member, errors = errors)
+        try:
+            for v in post_values:
+                args[v] = self.get_argument(v, None)
+        except:
+            errors.append("complete the blanks")
+            html = render_string("register.html", title = "Reqister", 
+                        member = None, errors = errors)
+            print html
+            self.write(html)
 
         # check and set 'name'. 
         # If anything went wrong error messages list returned
