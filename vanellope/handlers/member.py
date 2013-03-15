@@ -3,12 +3,14 @@
 
 import re
 import hashlib
+import urllib
 import datetime
-from vanellope.handlers import BaseHandler
-from vanellope.ext import db
 
+from vanellope.ext import db
+from vanellope.handlers import BaseHandler
 
 import tornado.web
+
 
 UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
 EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
@@ -87,7 +89,7 @@ class RegisterHandler(BaseHandler):
         # set user password
         if args['pwd'] and (args['pwd'] == args['cpwd']):
             hashed = hashlib.sha512(args['pwd']).hexdigest()
-            model['pwd'] = args['pwd']
+            model['pwd'] = hashed
         else:
             errors.append(u"password different")
 
@@ -108,13 +110,14 @@ class RegisterHandler(BaseHandler):
         else:
             model['uid'] = db.member.count() + 1
             model['date'] = datetime.datetime.utcnow()
-            model['auth'] = hashlib.sha512(model['email'] + model['pwd']).hexdigest()
+            model['auth'] = hashlib.sha512(model['name'] + model['pwd']).hexdigest()
             gravatar_url = ("http://www.gravatar.com/avatar/%s" % 
-                             hashlib.md5(email.lower()).hexdigest() + "?")
-            gravatar_url += urllib.urlencode({'s':str(size)})
+                             hashlib.md5(model['email']).hexdigest() + "?")
+            gravatar_url += urllib.urlencode({'s':128})
             model['avatar'] = gravatar_url
             db.member.insert(model)
             self.set_cookie(name="auth", 
                             value=model['auth'], 
                             expires_days = 365)
             self.redirect('/')
+

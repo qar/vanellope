@@ -18,9 +18,9 @@
 
     <input id="title" class="article inputbox" type="text" name="title" value="{{ escape(article['title']) }}" style="height:25px">
       <div class="primary-item-sep"></div>
-    <textarea class="article inputbox" name="brief" style="min-height:60px">{{ article['brief'] }}</textarea>
+    <textarea class="article inputbox" name="brief" style="min-height:60px">{{ article['sub_title'] }}</textarea>
       <div class="primary-item-sep"></div>
-    <textarea id="text-content" class="article inputbox" name="content" style="min-height:260px">{{ article['body'] }}</textarea>    
+    <textarea id="text-content" class="article inputbox" name="content" style="min-height:260px">{{ article['markdown'] }}</textarea>    
       <div class="primary-item-sep"></div>
     <input class="button submit-button" type="submit" value="提交更改">
       <div class="primary-item-sep"></div>
