@@ -5,7 +5,7 @@
     
   {% for article in articles %}
     <div class="article-intro primary-item-container">
-      {% if article['avatar'] %}
+      {% if article.has_key('avatar')  and article['avatar'] %}
       <a href="/article/{{ article['sn'] }}"><img class="article-intro" src="{{ article['avatar'] }}"></a>
       {% end %}
       <a href="/article/{{ article['sn'] }}">

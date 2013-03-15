@@ -48,7 +48,9 @@ class Application(tornado.web.Application):
         (r"/u/(.*)", MemberHandler),
         (r"/home/(.*)", HomeHandler),
         (r"/login", LoginHandler),
+        (r"/member", MemberHandler),
         (r"/logout", LogoutHandler),
+        #(r"/ajax/(.*)", AjaxHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
         (r"/comment/(.*)", CommentHandler)]
 

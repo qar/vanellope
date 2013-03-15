@@ -13,4 +13,3 @@ class BaseHandler(tornado.web.RequestHandler):
         else:
             return None
 
-    

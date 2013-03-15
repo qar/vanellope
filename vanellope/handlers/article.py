@@ -52,7 +52,6 @@ class ArticleHandler(BaseHandler):
         model = {
             'sn': None, # article numeric id
             'status': None, # 'deleted', 'normal',
-            'avatar': None, # 
             'author': None, #
             'heat': 0,
             'title': None,

@@ -12,6 +12,11 @@
     <link rel="stylesheet" type="text/css" href="/static/css/widgets.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" />
     <link rel="shortcut icon" href="/static/img/favicon.ico" />
+    {% if master and master['color'] %}
+    <style>
+        .common-color{background-color: {{ master['color'] }};}
+    </style>
+    {% end %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="/static/js/page302.js"></script>
 </head>

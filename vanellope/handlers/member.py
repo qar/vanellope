@@ -5,6 +5,9 @@ import re
 import hashlib
 import urllib
 import datetime
+import smtplib
+
+from email.mime.text import MIMEText
 
 from vanellope.ext import db
 from vanellope.handlers import BaseHandler
@@ -19,9 +22,11 @@ EMAIL_ERR = {
     'exist': u"This email address has being used",
     'invalid': u"It's not a valid email address",
 }
+CSS_COlOR_PATT = r"#[0-9]{6}"
 
 class MemberHandler(BaseHandler):
     def get(self, uname):
+
         page = self.get_argument("p", 1)
         skip_articles = (int(page) -1 )*10
         author = db.member.find_one({"name_safe": uname})
@@ -33,12 +38,26 @@ class MemberHandler(BaseHandler):
         if total % 10 > 0:
             pages += 1
 
-        self.render("memberHomePage.html",
+        self.render("index.html",
                     title = author['name']+u"专栏",
                     articles = articles,
                     master = self.get_current_user(),
                     pages = pages,
                     author = author)
+
+    @tornado.web.authenticated
+    def post(self):
+        #print self.request
+        try:
+            color = self.get_argument("color", None)
+            if re.match(CSS_COlOR_PATT, color):
+                master = self.get_current_user()
+                master['color'] = color
+                db.member.save(master)
+                return True
+        except:
+            return False
+    
 
 
 class RegisterHandler(BaseHandler):
@@ -57,6 +76,7 @@ class RegisterHandler(BaseHandler):
             'name_safe': None,
             'email': None,
             'pwd': None, 
+            "color": None,
             'auth': None,
             'date': datetime.datetime.utcnow(),
             'avatar': None,
@@ -116,6 +136,7 @@ class RegisterHandler(BaseHandler):
             gravatar_url += urllib.urlencode({'s':128})
             model['avatar'] = gravatar_url
             db.member.insert(model)
+
             self.set_cookie(name="auth", 
                             value=model['auth'], 
                             expires_days = 365)

@@ -31,3 +31,13 @@ function deleteArticle(article_sn){
         location.reload(); 
     });
 };
+
+function changeColor(color){
+    $.ajax({
+        url:"/member",
+        type:"POST",
+        data: "color="+color,
+    }).success(function() { 
+        location.reload(); 
+    });
+}
