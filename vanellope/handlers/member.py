@@ -131,10 +131,10 @@ class RegisterHandler(BaseHandler):
             model['uid'] = db.member.count() + 1
             model['date'] = datetime.datetime.utcnow()
             model['auth'] = hashlib.sha512(model['name'] + model['pwd']).hexdigest()
-            gravatar_url = ("http://www.gravatar.com/avatar/%s" % 
+            gravatar = ("http://www.gravatar.com/avatar/%s" % 
                              hashlib.md5(model['email']).hexdigest() + "?")
-            gravatar_url += urllib.urlencode({'s':128})
-            model['avatar'] = gravatar_url
+            model['avatar'] = gravatar + urllib.urlencode({'s':64})
+            model['avatar_large'] = gravatar + urllib.urlencode({'s':128})
             db.member.insert(model)
 
             self.set_cookie(name="auth", 
