@@ -1,14 +1,13 @@
-#! /usr/bin/env 
+# /usr/bin/env python
 # coding=utf-8
 
 import datetime
 
 import tornado.web
-import markdown
+from markdown import markdown
 from vanellope.ext import db
 from vanellope.model import Article
 from vanellope.handlers import BaseHandler
-
 
 class ArticleHandler(BaseHandler):
     def get(self, sn):
@@ -80,7 +79,7 @@ class ArticleHandler(BaseHandler):
         model['title'] = args['title']
         model['sub_title'] = args['brief']
         model['markdown'] = args['content']
-        model['html'] = markdown.markdown(args['content'])
+        model['html'] = markdown(args['content'], ['fenced_code', 'codehilite'], safe_mode= "escape")
 
         try:     
             master = self.get_current_user()
@@ -161,7 +160,7 @@ class ArticleUpdateHandler(BaseHandler):
             article['title']  = args['title']
             article['brief'] = args['brief']
             article['markdown'] = args['content']
-            article['html'] = markdown.markdown(args['content'])
+            article['html'] = markdown(args['content'], ['fenced_code',  'codehilite'], safe_mode="escape" )
             article['review'] = datetime.datetime.utcnow()
             db.article.update({"sn":int(sn)}, article)
             self.redirect("/article/%s" % sn)

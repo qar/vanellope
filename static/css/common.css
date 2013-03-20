@@ -1,9 +1,13 @@
 /** common  tags override **/
+@charset "utf-8";
+
+/*
 *{
 	margin: 0px;
 	border: 0px;
 	padding: 0px;
 }
+*/
 
 html{
 	height: 100%;
@@ -20,9 +24,26 @@ body{
 	color: #555555;
 }
 
+a{
+
+}
+
+h1{
+	font-size: 25px;
+	line-height: 150%;
+	font-weight: normal;
+
+}
+
+h2{
+	font-size: 19px;
+	line-height: 150%;
+}
+
+
 p{
-	font-size: 17px;
-	line-height: 25px;
+	font-size: 15px;
+	line-height: 150%;
 }
 
 a{
@@ -38,16 +59,33 @@ textarea{
 	border: 1px solid silver;
 }
 
+li{
+	line-height: 160%;
+}
 
+
+ul.v-bare{
+	list-style-type: none;
+	list-style-position:inside;
+	padding:0px;
+}
+
+
+/*
 ul{	
 	list-style-type: none;
 	list-style-position:inside;
 }
+*/
+
+/*
+
 
 ol{	
 	list-style-position:inside;
 }
 
+*/
 
 /**  component base **/
 .inputbox{
@@ -152,8 +190,10 @@ a.nav:hover{
 	cursor: pointer;
 }
 
-
 code{
-	font-size: 13px;
-	color: gray;
+	background-color: #fee9cc;
+	margin: 1px 3px ;
+	padding: 1px 5px;
+	border-radius: 5px;
 }
+

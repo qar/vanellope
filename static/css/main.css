@@ -1,3 +1,4 @@
+@charset "utf-8";
 /*** the primary part ***/
 /**   primary **/
 div.primary-wrapper{
@@ -64,7 +65,7 @@ textarea.article{
 
 /** index **/
 div.article-intro{ /* display on index page */
-	padding:9px 0px 28px 0px;
+	padding:10px 0px 15px 0px;
 	margin-bottom: 29px;
 	overflow: hidden;
 }
@@ -81,11 +82,17 @@ img.article-intro{ /** display on index page**/
 h2.article-intro-title{
 	word-break: break-all;
 	word-wrap: break-word;
+	margin: 0px;
+	padding: 0px;
+/*
 	width: auto;
 	height: auto;
+*/
 	max-width: 636px;
+/*
 	font-size: 19px;
-	line-height: 25px;
+	line-height: 150%;
+*/
 	color: #0061a1;
 }
 span.article-brief{
@@ -100,12 +107,15 @@ span.article-brief{
 }
 h1.article-title{
 	word-break: break-all;
+/*
 	font-size: 25px;
-	line-height: 30px;
+	line-height: 150%;
 	font-weight: normal;
+*/
 	color: #0061a1;
 }
 div.article-content{
+	
 	word-break: break-all;
 	width: 100%;
 	margin: 30px 0px 20px 0px;
@@ -215,8 +225,11 @@ div.member-info-container{
 	height: auto;
 }
 h2.member-info, p.member-info{
+/*
 	height: auto;
+*/
 	width: 100%;
+
 	margin-bottom: 10px;
 }
 textarea.member-info{
@@ -239,8 +252,11 @@ div.comment{
 	overflow: auto;
 }
 p.comment{
+	margin: 0px;
 	max-width: 576px;
 	float: left;
 	font-size: 14px;
-	line-height: 20px;
+/*
+	line-height: 150%;
+*/
 }
