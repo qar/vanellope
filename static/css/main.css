@@ -322,3 +322,26 @@ p.comment{
 	line-height: 150%;
 */
 }
+
+ul.special-thx{
+	list-style-type: none;
+	float: left;
+	margin: 10px 0px 0px 0px;
+	padding: 0px;
+	font-size: 12px;
+}
+
+ul.special-thx{
+	text-align: left;
+}
+
+ul.brand{
+	float: right;
+	list-style-type: none;
+
+}
+
+ul.brand > li{
+	float: right;
+	margin-left: 20px;
+}

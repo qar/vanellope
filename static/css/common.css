@@ -170,13 +170,13 @@ a.nav:hover{
 	overflow: hidden;
 }
 #footer{ /* contains #footer-wrapper  */
-	height: 60px;
+	height: 80px;
 	background-color: white;
 	color: #868686;
 }
 #footer-wrapper{ /* wrap footer content */
 	width: 960px;
-	height: 60px;
+	height: 80px;
 	margin: 0px auto;
 	background-color: transparent;
 }
