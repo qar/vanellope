@@ -13,6 +13,18 @@
             <div class="primary-item-sep"></div>
 
             {% for article in articles %}
+
+            <div class="article-list">
+                <span class="article-caption">
+                    <a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
+                </span>
+
+                <span class="article-option-right option" onclick="deleteArticle({{ article['sn']}})"><i class="icon-trash  icon-large"></i></span>
+                <span class="article-option option"><a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a></span>
+            </div>
+            <div class="primary-item-sep"></div>
+            {% end %} 
+            {# <!--
             <div class="article-list">
                 <ul class="article-list">
                     <li class="article-list-caption"><a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a></li>
@@ -21,7 +33,8 @@
                 </ul>
             </div>
             <div class="primary-item-sep"></div>
-            {% end %}    
+        -->#}
+               
 
 	   </div>
     </div>
