@@ -105,3 +105,32 @@ ul.tools-list > li{
 	height: 30px;
 }
 ul.tools-list > li > a{color: #555555;}
+
+
+#color-input{
+	width: 187px;
+	margin-right: 0px;
+	border-radius: 4px 0px 0px 4px;
+	float: left;
+	height: 20px;
+	border-right: 0px;
+}
+
+#color-submit{
+	margin: 0px;
+	padding: 0px;
+	width: 55px;
+	margin-left: 0px;
+	border-radius: 0px 4px 4px 0px;
+	float:right;
+	height: 26px;
+	line-height: 26px;
+	background-color: #a4cbd9;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#color-submit:active{
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6) inset;
+
+}
