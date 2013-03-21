@@ -40,7 +40,7 @@ function changeColor(){
        $.ajax({
         url:"/member",
         type:"POST",
-        data: "color="+$.trim($('#color-input').val()),
+        data: "color="+ $.trim($('#color-input').val()),
     }).success(function() { 
         location.reload(); 
     }); 
