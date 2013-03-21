@@ -22,7 +22,7 @@ EMAIL_ERR = {
     'exist': u"This email address has being used",
     'invalid': u"It's not a valid email address",
 }
-CSS_COlOR_PATT = r"#[0-9]{6}"
+CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
 
 class MemberHandler(BaseHandler):
     def get(self, uname):
@@ -55,6 +55,8 @@ class MemberHandler(BaseHandler):
                 master['color'] = color
                 db.member.save(master)
                 return True
+            else:
+                return False
         except:
             return False
     
