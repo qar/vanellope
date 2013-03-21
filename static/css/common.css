@@ -106,6 +106,9 @@ ol{
 	border: 1px solid silver;
 	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7);
 }
+.button:active{
+	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7) inset;
+}
 .submit-button{
 	width: 100px;
 	float: left;
