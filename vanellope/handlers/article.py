@@ -50,7 +50,7 @@ class ArticleHandler(BaseHandler):
     def post(self):
         model = {
             'sn': None, # article numeric id
-            'status': None, # 'deleted', 'normal',
+            'status': "normal", # 'deleted', 'normal',
             'author': None, #
             'heat': 0,
             'title': None,
@@ -91,7 +91,9 @@ class ArticleHandler(BaseHandler):
 
     @tornado.web.authenticated
     def delete(self, article_sn):
-        delete_article(article_sn)
+        article = db.article.find_one({"sn": int(article_sn)})
+        article['status'] = "deleted"
+        db.article.save(article)
         self.set_status(200)
         self.finish()
 
