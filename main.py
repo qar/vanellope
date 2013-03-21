@@ -22,7 +22,8 @@ from vanellope.handlers.auth import ForgetHandler
 from vanellope.handlers.auth import PasswordHandler
 from vanellope.handlers.comment import CommentHandler
 from vanellope.handlers.member import MemberHandler
-from vanellope.handlers.member import SecureHandler
+from vanellope.handlers.member import VerifyHandler
+from vanellope.handlers.member import ResetHandler
 from vanellope.handlers.member import RegisterHandler
 from vanellope.handlers.article import ArticleHandler
 from vanellope.handlers.article import ArticleUpdateHandler
@@ -56,7 +57,8 @@ class Application(tornado.web.Application):
         (r"/logout", LogoutHandler),
         (r"/password", PasswordHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
-        (r"/verify/", SecureHandler),
+        (r"/verify/", VerifyHandler),
+        (r"/reset", ResetHandler),
         (r"/comment/(.*)", CommentHandler)]
 
         SETTINGS = dict(
@@ -99,16 +101,19 @@ class HomeHandler(BaseHandler):
             self.render(template, 
                         title = 'HOME | manage', 
                         master = master,
+                        errors=None,
                         articles = articles)
         elif(page == "deleted"):
             articles = self.deleted_articles(master['uid'])
             self.render("home/manage.html", 
                         title = 'HOME | manage', 
                         master = master,
+                        errors=None,                        
                         articles = articles)
         else:
             self.render(template, 
                         title="Home",
+                        errors=None,                        
                         master = master)
 
     @tornado.web.authenticated

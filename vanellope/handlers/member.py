@@ -6,7 +6,11 @@ import hashlib
 import urllib
 import datetime
 import smtplib
+import string
+import random
+import config
 
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from vanellope.ext import db
@@ -26,7 +30,6 @@ CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
 
 class MemberHandler(BaseHandler):
     def get(self, uname):
-
         page = self.get_argument("p", 1)
         skip_articles = (int(page) -1 )*10
         author = db.member.find_one({"name_safe": uname})
@@ -137,10 +140,100 @@ class RegisterHandler(BaseHandler):
                              hashlib.md5(model['email']).hexdigest() + "?")
             model['avatar'] = gravatar + urllib.urlencode({'s':64})
             model['avatar_large'] = gravatar + urllib.urlencode({'s':128})
+            model['secret_key'] = self.randomwords(20)
+            self.send_verification_email(model['email'], model['secret_key'])
             db.member.insert(model)
 
             self.set_cookie(name="auth", 
                             value=model['auth'], 
                             expires_days = 365)
             self.redirect('/')
+
+    def randomwords(self, length):
+        return ''.join(random.choice(string.lowercase 
+                + string.uppercase + string.digits     ) for i in range(length))
+
+    def send_verification_email(self, dst_email, secret_key):
+        TO = dst_email
+        url = "%s/verify/?" % (config.HOSTNAME,) + urllib.urlencode(
+            {"secret_key":secret_key})
+
+        CONTENT = '''
+        <h1>Welcome ! </h1>
+        <p>感谢您在 %s 注册, 复制下面的链接到浏览器地址栏进行验证</p>
+        <p>%s</p>
+        ''' % (config.HOSTNAME, url, )
+        msg = MIMEText(CONTENT, 'html')
+        msg['Subject'] = "Email Verification"
+        msg['From'] = config.FROM_EMAIL
+        msg['To'] = TO
+        s = smtplib.SMTP(config.SMTP_SERVER)
+        s.login(config.SMTP_SERVER_LOGIN[0], config.SMTP_SERVER_LOGIN[1])
+        s.sendmail(config.FROM_EMAIL, [TO,], msg.as_string())
+        s.quit()
+
+
+class VerifyHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        name = self.get_argument("name", None)
+        secret_key = self.get_argument("secret_key", None)
+        master = self.get_current_user()
+        if master['verified'] == False:
+            if secret_key == master['secret_key']:
+                master['verified'] = True
+                del master['secret_key']
+                db.member.save(master)
+                self.write("your email is activated\n") # everything fine
+            else:
+                self.write("url invalid") # url insecure
+        else:
+            self.write("your email has been activated already") # email has been verified
+        self.finish()
+
+
+class ResetHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self):
+        errors = []
+        origin_pwd = self.get_argument("origin_pwd", None)
+        new_pwd = self.get_argument("new_pwd", None)
+        new_pwd_repeat = self.get_argument("new_pwd_repeat", None)
+
+        master = self.get_current_user()
+        origin_pwd_hashed = hashlib.sha512(origin_pwd).hexdigest()
+
+        if master['pwd'] == origin_pwd_hashed:
+            if new_pwd == new_pwd_repeat:
+                new_pwd_hashed = hashlib.sha512(new_pwd).hexdigest()
+                master['pwd'] = new_pwd_hashed
+                master['auth'] = hashlib.sha512(master['name'] + new_pwd_hashed).hexdigest()
+                db.member.save(master)
+
+                self.set_cookie(name="auth", 
+                            value=master['auth'], 
+                            expires_days = 365)
+                self.set_status(200)
+                self.render("home/index.html", 
+                        title="Home",
+                        errors = errors,
+                        master = master)
+            else:
+                errors.append(u"新密码两次输入不一致")
+                self.render("home/index.html", 
+                        title="Home",
+                        errors = errors,
+                        master = master)
+
+        else:
+            errors.append(u"当前密码输入错误")
+            self.render("home/index.html", 
+                        title="Home",
+                        errors = errors,
+                        master = master)
+
+
+
+
+
 

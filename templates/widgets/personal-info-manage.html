@@ -1,0 +1,27 @@
+<div class="widget">
+	<div class="widget-caption common-color">个人资料管理</div>
+	<div class="widget-wrapper">
+			<form id="regist-form" action="/reset" method="post" style="margin:0px; padding:10px;float:left;max-width:247px; width:227px;">
+				{% if errors %}
+				{% for error in errors %}
+					<p style="color:red">{{ error }}</p>
+				{% end %}
+				{% end %}
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-key"></i></span>
+					<input class="span2 inputbox" type="password" name="origin_pwd" placeholder="旧密码">
+				</div><!-- end of "input-prepend"-->
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-key"></i></span>
+					<input class="span2 inputbox" type="password" name="new_pwd" placeholder="新密码">
+				</div><!-- end of "input-prepend"-->
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-key"></i></span>
+					<input class="span2 inputbox" type="password" name="new_pwd_repeat" placeholder="重复输入一次新密码">
+				</div><!-- end of "input-prepend"-->
+
+				<input class="button submit-button" type="submit" value="提交更改" style="float:right">
+			</form>
+	  		
+	</div>
+</div>

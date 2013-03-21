@@ -291,7 +291,7 @@ h2.member-info, p.member-info{
 	height: auto;
 */
 	width: 100%;
-
+	margin: 0px;
 	margin-bottom: 10px;
 }
 textarea.member-info{

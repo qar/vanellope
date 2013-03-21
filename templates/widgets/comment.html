@@ -1,6 +1,7 @@
 <div class="widget">
 	<div class="widget-caption common-color">评论</div>
 	<div class="widget-wrapper">
+		<div class="widget-inner-sep"></div>
 		<form id="comment" action="/comment/{{ article['sn'] }}" method="post">
 			<textarea class="inputbox" name="comment" placeholder="写评论" onfocus="expandCommentBox()"></textarea>
 			<input class="button submit-button" type="submit" value="提交">
