@@ -128,10 +128,10 @@ div.article-content{
 /*** member regist ***/
 form#regist-form{
 	width:260px;
-	height: 100%;
+	height: auto;
 	margin-right:7px; 
 	padding: 20px 20px 20px 20px;
-	margin-bottom: 50px;
+	margin: auto;
 	float: left;
 	overflow: hidden;
 	background-color: #FFFFFF;
@@ -248,23 +248,7 @@ span.article-option-right{
 	border-radius: 0px 5px 5px 0px; 
 	
 }
-/*
 
-ul.article-list{list-style-type: none;}
-
-li.article-list-caption{
-	display: inline;
-	float: left;
-	max-width: 450px;
-	overflow: hidden;
-}
-
-li.article-list{
-	display: inline;
-	float: right;
-	margin: 0px 5px;
-}
-*/
 /**##01-END /home/manage  ****/
 
 

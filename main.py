@@ -16,15 +16,15 @@ from vanellope.ext import db
 from vanellope.model import Article
 from vanellope.model import Comment
 from vanellope.handlers import BaseHandler
-from vanellope.handlers.auth import LoginHandler
-from vanellope.handlers.auth import LogoutHandler
-from vanellope.handlers.auth import ForgetHandler
-from vanellope.handlers.auth import PasswordHandler
-from vanellope.handlers.comment import CommentHandler
+from vanellope.handlers.member import LoginHandler
+from vanellope.handlers.member import LogoutHandler
+from vanellope.handlers.member import ForgetHandler
+from vanellope.handlers.member import PasswordHandler
 from vanellope.handlers.member import MemberHandler
 from vanellope.handlers.member import VerifyHandler
 from vanellope.handlers.member import ResetHandler
 from vanellope.handlers.member import RegisterHandler
+from vanellope.handlers.comment import CommentHandler
 from vanellope.handlers.article import ArticleHandler
 from vanellope.handlers.article import ArticleUpdateHandler
 
@@ -52,13 +52,13 @@ class Application(tornado.web.Application):
         (r"/u/(.*)", MemberHandler),
         (r"/home/(.*)", HomeHandler),
         (r"/login", LoginHandler),
-        (r"/forget", ForgetHandler),
         (r"/member", MemberHandler),
         (r"/logout", LogoutHandler),
         (r"/password", PasswordHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
         (r"/verify/", VerifyHandler),
         (r"/reset", ResetHandler),
+        (r"/forget", ForgetHandler),
         (r"/comment/(.*)", CommentHandler)]
 
         SETTINGS = dict(
