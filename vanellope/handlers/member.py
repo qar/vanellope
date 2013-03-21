@@ -280,8 +280,8 @@ class ForgetHandler(BaseHandler):
     def post(self):
         errors = []
 
-        name = self.get_argument("name")
-        email = self.get_argument("email")
+        name = self.get_argument("name", None)
+        email = self.get_argument("email", None)
 
         member = db.member.find_one({"name": name})
         if member:
@@ -319,7 +319,7 @@ class ForgetHandler(BaseHandler):
 
 class PasswordHandler(BaseHandler):
     def get(self):
-        secure_key = self.get_argument("key")
+        secure_key = self.get_argument("key", None)
         member = db.member.find_one({"secure_key": secure_key})
         if member:
             self.render("password.html", title="Change Password", errors=None, master=False, key=secure_key)
@@ -329,9 +329,9 @@ class PasswordHandler(BaseHandler):
 
     def post(self):
         errors = []
-        pwd = self.get_argument("pwd")
-        cpwd = self.get_argument("cpwd")
-        secure_key = self.get_argument("key")
+        pwd = self.get_argument("pwd", None)
+        cpwd = self.get_argument("cpwd", None)
+        secure_key = self.get_argument("key", None)
 
         member = db.member.find_one({"secure_key": secure_key})
         if member:
