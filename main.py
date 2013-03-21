@@ -89,12 +89,18 @@ class IndexHandler(BaseHandler):
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, page="index"):
-        pages = ('write', 'manage', 'setting', 'index')
+        pages = ('write', 'manage', 'setting', 'index', 'deleted')
         template = ("home/%s.html" % page)
         master = self.get_current_user()
         if (page == "manage"):
             articles = self.normal_articles(master['uid'])
             self.render(template, 
+                        title = 'HOME | manage', 
+                        master = master,
+                        articles = articles)
+        elif(page == "deleted"):
+            articles = self.deleted_articles(master['uid'])
+            self.render("home/manage.html", 
                         title = 'HOME | manage', 
                         master = master,
                         articles = articles)
@@ -120,6 +126,10 @@ class HomeHandler(BaseHandler):
     def normal_articles(self, owner_id):
         return db.article.find(
                 {"author": owner_id, "status":"normal"}).sort("date", -1)
+
+    def deleted_articles(self, owner_id):
+        return db.article.find(
+                {"author": owner_id, "status":"deleted"}).sort("date", -1)
         
 
 
