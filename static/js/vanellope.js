@@ -32,12 +32,18 @@ function deleteArticle(article_sn){
     });
 };
 
-function changeColor(color){
-    $.ajax({
+function changeColor(){
+    if(!$.trim($('#color-input').val())){
+            event.preventDefault();
+    }
+    else{
+       $.ajax({
         url:"/member",
         type:"POST",
-        data: "color="+color,
+        data: "color="+$.trim($('#color-input').val()),
     }).success(function() { 
         location.reload(); 
-    });
+    }); 
+    }
+    
 }

@@ -63,9 +63,13 @@ class MemberHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self):
+        print "goes here"
         #print self.request
         try:
-            color = self.get_argument("color", None)
+            print "goes here, too"
+            print self.request.headers
+            color = self.get_argument("color")
+            print "color=",color
             if re.match(CSS_COlOR_PATT, color):
                 master = self.get_current_user()
                 master['color'] = color

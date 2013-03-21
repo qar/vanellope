@@ -19,6 +19,7 @@ class CommentHandler(BaseHandler):
            'article': None,
            'body': None,
            'member': None, 
+           'floor': None,
         }
 
         master = self.get_current_user()
@@ -35,6 +36,7 @@ class CommentHandler(BaseHandler):
                 "name_safe": master['name_safe'],
                 "avatar": master['avatar']
             }
+            model['floor'] = db.comment.find({"article": int(article_sn)}).count() + 1
             model['article'] = int(article_sn)
             model['member'] = commenter
             model['body'] = cmt
