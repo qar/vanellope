@@ -22,6 +22,7 @@ from vanellope.handlers.auth import ForgetHandler
 from vanellope.handlers.auth import PasswordHandler
 from vanellope.handlers.comment import CommentHandler
 from vanellope.handlers.member import MemberHandler
+from vanellope.handlers.member import SecureHandler
 from vanellope.handlers.member import RegisterHandler
 from vanellope.handlers.article import ArticleHandler
 from vanellope.handlers.article import ArticleUpdateHandler
@@ -55,6 +56,7 @@ class Application(tornado.web.Application):
         (r"/logout", LogoutHandler),
         (r"/password", PasswordHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
+        (r"/verify/", SecureHandler),
         (r"/comment/(.*)", CommentHandler)]
 
         SETTINGS = dict(

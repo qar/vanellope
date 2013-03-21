@@ -1,0 +1,8 @@
+#! /usr/bin/env python
+# coding=utf-8
+
+SMTP_SERVER = ""
+FROM_EMAIL = ""
+SMTP_SERVER_LOGIN = () # (login_name, password)
+
+HOSTNAME = "" # host name
