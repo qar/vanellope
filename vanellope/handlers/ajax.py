@@ -16,8 +16,6 @@ from vanellope.ext import db
 from vanellope.model import Article
 from vanellope.model import Comment
 from vanellope.handlers import BaseHandler
-from vanellope.handlers.login import LoginHandler
-from vanellope.handlers.login import LogoutHandler
 from vanellope.handlers.comment import CommentHandler
 from vanellope.handlers.member import MemberHandler
 from vanellope.handlers.member import RegisterHandler
@@ -31,6 +29,8 @@ import tornado.options
 import tornado.httpserver
 from tornado.options import define, options
 
+CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
+
 #class AjaxHandler(BaseHandler):
 #    def post(self, func):
 #        
@@ -42,4 +42,16 @@ from tornado.options import define, options
 #        m['color'] = color
 #        db.member.save(m)
 #        return True
+
+
+class ColorHandler(BaseHandler):
+    def post(self):
+        color = self.get_argument("color", None)
+        if re.match(CSS_COlOR_PATT, color):
+            master = self.get_current_user()
+            master['color'] = color
+            db.member.save(master)
+            return True
+        else:
+            return False
 

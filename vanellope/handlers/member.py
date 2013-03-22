@@ -13,23 +13,10 @@ import config
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from vanellope.ext import db
-from vanellope.handlers import BaseHandler
-
 import tornado.web
-import re
-import hashlib
-import urllib
-import datetime
-import smtplib
-import random
-from email.mime.text import MIMEText
 
 from vanellope.ext import db
 from vanellope.handlers import BaseHandler
-
-import tornado.web
-
 
 
 UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
@@ -39,9 +26,16 @@ EMAIL_ERR = {
     'exist': u"This email address has being used",
     'invalid': u"It's not a valid email address",
 }
+
+
 CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
 
+
 class MemberHandler(BaseHandler):
+    #
+    # Member main information display
+    #
+
     def get(self, uname):
         page = self.get_argument("p", 1)
         skip_articles = (int(page) -1 )*10
@@ -59,22 +53,7 @@ class MemberHandler(BaseHandler):
                     articles = articles,
                     master = self.get_current_user(),
                     pages = pages,
-                    author = author)
-
-    @tornado.web.authenticated
-    def post(self):
-        try:
-            color = self.get_argument("color")
-            if re.match(CSS_COlOR_PATT, color):
-                master = self.get_current_user()
-                master['color'] = color
-                db.member.save(master)
-                return True
-            else:
-                return False
-        except:
-            return False
-    
+                    author = author)   
 
 
 class RegisterHandler(BaseHandler):
@@ -185,43 +164,44 @@ class VerifyHandler(BaseHandler):
 
 class ResetHandler(BaseHandler):
     @tornado.web.authenticated
-    def post(self):
+    def post(self):        
+        #
+        # user intend to change password.
+        # origin password is required to prevent malicious option.
+        #
         errors = []
-        origin_pwd = self.get_argument("origin_pwd", None)
-        new_pwd = self.get_argument("new_pwd", None)
-        new_pwd_repeat = self.get_argument("new_pwd_repeat", None)
+        args = dict(
+            origin_pwd = self.get_argument("origin_pwd", None),
+            new_pwd = self.get_argument("new_pwd", None),
+            new_pwd_repeat = self.get_argument("new_pwd_repeat", None)
+        )
+        for k in args.keys():
+            if( not args[k]):
+                errors.append(u"complete the blanks")
+                self.render("home/index.html", 
+                            title="Home", 
+                            master=False, 
+                            errors=errors)
 
         master = self.get_current_user()
-        origin_pwd_hashed = hashlib.sha512(origin_pwd).hexdigest()
-
+        origin_pwd_hashed = hashlib.sha512(args['origin_pwd']).hexdigest()
         if master['pwd'] == origin_pwd_hashed:
-            if new_pwd == new_pwd_repeat:
-                new_pwd_hashed = hashlib.sha512(new_pwd).hexdigest()
-                master['pwd'] = new_pwd_hashed
-                master['auth'] = hashlib.sha512(master['name'] + new_pwd_hashed).hexdigest()
+            if args['new_pwd'] == args['new_pwd_repeat']:
+                master['pwd'] = hashlib.sha512(args['new_pwd']).hexdigest()
+                master['auth'] = hashlib.sha512(master['name'] + master['pwd']).hexdigest()
                 db.member.save(master)
-
+                # update secure cookie
                 self.set_cookie(name="auth", 
                             value=master['auth'], 
                             expires_days = 365)
-                self.set_status(200)
-                self.render("home/index.html", 
-                        title="Home",
-                        errors = errors,
-                        master = master)
             else:
                 errors.append(u"新密码两次输入不一致")
-                self.render("home/index.html", 
-                        title="Home",
-                        errors = errors,
-                        master = master)
-
         else:
             errors.append(u"当前密码输入错误")
-            self.render("home/index.html", 
-                        title="Home",
-                        errors = errors,
-                        master = master)
+        self.render("home/index.html", 
+                    title="Home",
+                    errors = errors,
+                    master = master)
 
 
 
@@ -232,112 +212,128 @@ class LoginHandler(BaseHandler):
     def post(self):
         template = "login.html"
         errors = []
-        
-        post_values = ['name','pwd']
-        args = {}
-        try:
-            for v in post_values:
-                args[v] = self.get_argument(v)
-        except:
-            errors.append("complete the blanks")
+
+        args = dict(
+            name = self.get_argument("name", None),
+            pwd = self.get_argument("pwd", None)
+        )
+        if( not args['name'] or not args['pwd']):
+            errors.append(u"complete the blanks")
             self.render(template, 
                         title="Login", 
                         master=False, 
                         errors=errors)
+
         try:
             member = db.member.find_one({'name':args['name']})
             input_auth = hashlib.sha512(args['name'] + 
                         hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
         except:
-            errors.append("db error")
-            self.render(template, 
-                        title = "Login",
-                        master = False, 
-                        errors = errors)
+            errors.append(u"db error")
 
         if member and (member['auth'] == input_auth):
             self.set_cookie(name = "auth", 
                             value = member['auth'], 
                             expires_days = 365)
-            self.redirect('/')
         else:
-            errors.append("error with user name or password") 
+            errors.append(u"error with user name or password") 
+        if len(errors) > 0:
             self.render(template, 
                         title = "Login", 
                         master = False, 
                         errors = errors)
+        else:
+            self.redirect("/")
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
         self.clear_all_cookies()
         self.redirect('/')
-                    
+     
+
 class ForgetHandler(BaseHandler):
     def get(self):
-        self.render("forget.html", title="Login", errors=None, master=False)
+        self.render("forget.html", 
+            title="Login", 
+            errors=None, 
+            master=False)
 
     def post(self):
         errors = []
+        template = "forget.html"
 
-        name = self.get_argument("name", None)
-        email = self.get_argument("email", None)
+        args = dict(
+            name = self.get_argument("name", None),
+            email = self.get_argument("email", None)
+        )
+        if( not args['name'] or not args['email']):
+            errors.append(u"complete the blanks")
+            self.render(template, 
+                        title="Forget", 
+                        master=False, 
+                        errors=errors)
 
-        member = db.member.find_one({"name": name})
+        member = db.member.find_one({"name": args['name']})
         if member:
-            if email == member['email']:
-                secure_key = hashlib.md5(email + str(random.random())).hexdigest()
-                member['secure_key']  = secure_key
+            if args['email'] == member['email']:
+                member['secret_key']  = randomwords(20)
                 db.member.save(member)
-                FROM = "no-reply@page302.com"
-                TO = email
-                CONTENT = """
-                    <h1>click the link to change your password</h1>
-                    <a href="localhost:8000/password?key=%s">localhost:8000/password?key=%s</a>
-                """ % (secure_key, secure_key)
-                msg = MIMEText(CONTENT, 'html')
-                msg['Subject'] = "[page302.com] Change password"
-                msg['From'] = FROM
-                msg['To'] = TO
-                s = smtplib.SMTP('smtp.exmail.qq.com:25')
-                s.login("no-reply@page302.com", "abs&qar.45")
-                s.sendmail(FROM, [TO], msg.as_string())
-                s.quit()
-                self.redirect("/")
+                send_verification_email(args['email'], member['secret_key'])
             else:
                 errors.append(u"email is wrong")
-                self.render("forget.html", 
-                        title = "forget", 
+        else:
+            errors.append(u"no such user")
+        if len(errors) > 0:
+            self.render("forget.html", 
+                        title = "Forget", 
                         master = False, 
                         errors = errors)
         else:
-            errors.append(u"no such user")
-            self.render("forget.html", 
-                        title = "forget", 
-                        master = False, 
-                        errors = errors)
+            self.redirect("/")
 
 class PasswordHandler(BaseHandler):
     def get(self):
-        secure_key = self.get_argument("key", None)
-        member = db.member.find_one({"secure_key": secure_key})
+        
+        secret_key = self.get_argument("key", None)
+        member = db.member.find_one({"secret_key": secret_key})
         if member:
-            self.render("password.html", title="Change Password", errors=None, master=False, key=secure_key)
+            self.render("password.html", 
+                title="Change Password", 
+                errors=None, 
+                master=False, 
+                key=secret_key)
         else:
             self.send_error(404)
             self.finish()
 
     def post(self):
+        #
+        # Use secret_key to get the very user who send change password request
+        # Replace old password with the new one.
+        # update everything related to the password, like auth string, secure cookie , etc.
+        #
         errors = []
+        args = dict(
+            pwd = self.get_argument("pwd", None),
+            cpwd = self.get_argument("pwd", None)
+        )
+        if( not args['name'] or not args['pwd']):
+            errors.append(u"complete the blanks")
+            self.render(template, 
+                        title="Login", 
+                        master=False, 
+                        errors=errors)
         pwd = self.get_argument("pwd", None)
         cpwd = self.get_argument("cpwd", None)
-        secure_key = self.get_argument("key", None)
+        secret_key = self.get_argument("key", None)
 
-        member = db.member.find_one({"secure_key": secure_key})
+        member = db.member.find_one({"secret_key": secret_key})
         if member:
             if pwd == cpwd:
                 member['pwd'] = hashlib.sha512(pwd).hexdigest()
                 member['auth'] = hashlib.sha512(member['name'] + member['pwd']).hexdigest()
-                del member['secure_key']
+                del member['secret_key']
                 db.member.save(member)
                 self.set_cookie(name = "auth", 
                             value = member['auth'], 

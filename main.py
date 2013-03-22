@@ -16,6 +16,7 @@ from vanellope.ext import db
 from vanellope.model import Article
 from vanellope.model import Comment
 from vanellope.handlers import BaseHandler
+from vanellope.handlers import ajax
 from vanellope.handlers.member import LoginHandler
 from vanellope.handlers.member import LogoutHandler
 from vanellope.handlers.member import ForgetHandler
@@ -45,6 +46,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
         (r"/", IndexHandler),
+        (r"/ajax/color", ajax.ColorHandler),
         (r"/register", RegisterHandler),
         (r"/article/([0-9]+)", ArticleHandler),
         (r"/article", ArticleHandler),

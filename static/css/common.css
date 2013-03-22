@@ -88,6 +88,7 @@ ol{
 .inputbox{
 	padding: 2px;
 	border: 1px solid silver;
+	border-radius: 5px;
 }
 
 .inputbox:focus{

@@ -38,7 +38,7 @@ function changeColor(){
     }
     else{
        $.ajax({
-        url:"/member",
+        url:"/ajax/color",
         type:"POST",
         data: "color="+ $.trim($('#color-input').val()),
     }).success(function() { 
