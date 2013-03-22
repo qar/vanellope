@@ -19,7 +19,7 @@ function editBio(){
 
 
 function expandCommentBox(){
-    $("textarea.inputbox").css({"height":"100px"});
+    $("textarea.inputbox").css({"height":"200px"});
 };
 
 

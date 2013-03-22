@@ -2,16 +2,41 @@
 	<div class="widget-caption common-color">评论</div>
 	<div class="widget-wrapper">
 		<div class="widget-inner-sep"></div>
-		<form id="comment" action="/comment/{{ article['sn'] }}" method="post">
-			<textarea class="inputbox" name="comment" placeholder="写评论" onfocus="expandCommentBox()"></textarea>
+		{#<form id="comment" action="/comment/{{ article['sn'] }}" method="post">#}
+			<textarea class="inputbox" name="comment" placeholder="写评论" style="max-width:241px; height:35px; margin-bottom:8px"></textarea>
 			<input class="button submit-button" type="submit" value="提交">
       <script>
+      $("document").ready(function(){
+
+        $("textarea.inputbox").focus(function(){
+        	$(this).css({"height":"120px"});
+        });
+        
+        $("textarea.inputbox").blur(function(){
+        	
+        	if(!$.trim($('textarea.inputbox').val())){
+        		$(this).css({"height":"35px"});
+            }
+
+        });
+
         $("input.submit-button").click(function(event) {
-            if(!$.trim($('textarea.inputbox').val())){
+        	comment = $.trim($('textarea.inputbox').val())
+            if(!comment){
             event.preventDefault();
             }
+            else{
+            	$.ajax({
+        			url:"/comment/{{ article['sn'] }}" ,
+        			type:"POST",
+        			data: "comment="+ comment,
+    			}).success(function() { 
+        			window.location.reload(true);
+   				}); 
+            }
         });
+      	
+      });
       </script>
-		</form>
 	</div>
 </div>
