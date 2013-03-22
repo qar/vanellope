@@ -21,7 +21,7 @@
         });
 
         $("input.submit-button").click(function(event) {
-        	comment = $.trim($('textarea.inputbox').val())
+        	var comment = $.trim($('textarea.inputbox').val())
             if(!comment){
             event.preventDefault();
             }

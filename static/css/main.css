@@ -258,18 +258,7 @@ h2.member-info, p.member-info{
 	width: 100%;
 	margin: 0px;
 }
-textarea.member-info{
-	min-width: 455px;
-	max-width: 455px;
-	min-height: 75px;
-	max-height: 75px;
-}
-#edit-button{
-	color:#888888; 
-	cursor:pointer; 
-	width:120px; 
-	display:block;
-}
+
 
 /** comments zone **/
 div.comment{

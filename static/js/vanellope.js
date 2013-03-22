@@ -1,20 +1,9 @@
 
 function editBio(){
-    $('#edit-button').hide();
-    $('span.member-info').hide();
-    $('textarea.member-info, #submit').show();
-    $('textarea.member-info').html($.trim($('span.member-info').text()));
+    
 
-    $('button#submit').click(function(){
-        $('span.member-info').html($.trim($('textarea.member-info').val()));
-        $('textarea.member-info, #submit').hide();
-        $('span.member-info, #edit-button').show();
-        $.ajax({
-            url:"/home",
-            type:"POST",
-            data:{'brief':$.trim($('textarea.member-info').val())},
-        });
-    });
+
+    
 };
 
 
@@ -68,7 +57,8 @@ function getPage(page){
                 items.push('<div class="article-list primary-item-container" id="article-list-'+val.sn+'" style="margin:0px 20px 20px">');
                 items.push('<span class="article-caption"><a href="/article/' + val.sn + '" title="'+val.title+'">' + val.title + '</a></span>');
                 items.push('<span class="article-option-right option" onclick="deleteArticle('+ val.sn +')" style="visibility:hidden"><i class="icon-trash  icon-large"></i></span>');
-                items.push('<span class="article-option option" style="visibility:hidden"><a href="/update/'+val.sn+'"><i class="icon-edit icon-large"></i></a></span></div>');
+                items.push('<span class="article-option option" style="visibility:hidden"><a href="/update/'+val.sn+'"><i class="icon-edit icon-large"></i></a></span>');
+                items.push('<span class="article-option option" onclick="previewArticle('+val.sn+')" style="visibility:hidden"><i class="icon-eye-open icon-large"></i></span></div>');
                 $("#jq-insert-mark").append(items.join(''));
             });
         }

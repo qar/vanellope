@@ -135,6 +135,9 @@ class HomeHandler(BaseHandler):
             brief = self.get_argument('brief', default=None)
             db.member.update({"uid":master['uid']},{"$set":{"brief":brief}})
             member = db.member.find_one({'uid': master['uid']})
+            self.write(brief)
+            self.flush()
+            self.finish()
         else:
             self.send_error(403)
             self.findish()
