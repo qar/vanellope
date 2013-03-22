@@ -28,21 +28,34 @@ function deleteArticle(article_sn){
         url:"/article/" + article_sn,
         type:"DELETE",
     }).success(function() { 
-        location.reload(); 
+        /* hide the current element's parent element.
+        ** I don't know how to do it, so I add each "div.article-list" element an id.
+        */
+        $("#article-list-"+article_sn).slideUp(300);
+    });
+};
+
+function recoverArticle(article_sn){
+    $.ajax({
+        url:"/article/recover/" + article_sn,
+        type:"POST",
+    }).success(function(){
+        $("#article-list-"+article_sn).slideUp(300);
     });
 };
 
 function changeColor(){
-    if(!$.trim($('#color-input').val())){
+    color = $.trim($('#color-input').val())
+    if(!color){
             event.preventDefault();
     }
     else{
        $.ajax({
         url:"/ajax/color",
         type:"POST",
-        data: "color="+ $.trim($('#color-input').val()),
+        data: "color="+ color,
     }).success(function() { 
-        location.reload(); 
+        $(".common-color").css("background", color);
     }); 
     }
     

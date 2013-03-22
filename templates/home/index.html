@@ -1,11 +1,11 @@
 {% include "../common/header.html" %}
 <div id="wrapper">
   <div class="primary-wrapper">
+
   <div class="primary">
     <div class="primary-item-sep"></div>
     <div class="member-info">
       <img class="member-info" src="{{ master['avatar_large'] }}">
-
       <div class="member-info-container">
         <h2 class="member-info">{{ master['name'] }}</h2>
         <p class="member-info">{{ master['email'] }}</p>
@@ -20,7 +20,23 @@
     </div> <!-- end of ".member-info" -->      
           <div class="primary-item-sep"></div>
   </div> <!-- end of "primary" -->
-  </div>      
+
+  <div class="primary" >
+        <div class="primary-item-container">
+          {% for article in articles %}
+          <div class="article-list" id="article-list-{{ article['sn'] }}" style="margin-bottom:10px">
+              <span class="article-caption" >
+                  <a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
+              </span>
+
+              <span class="article-option-right option" onclick="deleteArticle({{ article['sn']}})"><i class="icon-trash  icon-large"></i></span>
+              <span class="article-option option"><a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a></span>
+          </div> <!-- end of article-list -->
+          {% end %} 
+        </div><!-- end of primary-item-container --> 
+  </div> <!-- end of "primary" --> 
+
+  </div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">
     {% include "../widgets/tools-list.html" %}

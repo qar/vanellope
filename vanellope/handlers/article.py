@@ -109,29 +109,7 @@ class ArticleHandler(BaseHandler):
         except:
             fol = None
         return (pre, fol)
-
-    #def save_uploaded_avatar(self, arg="intro-img"):
-    #    # save uploaded file's binary data on local storage.
-    #    # data specified by "arg", default value is "intro-img"
-    #    # when file saved return it's relative link, aka the "url".
-    #    # if no data with request use default link specified by settings.py file.
-    #    try:
-    #        uploaded = self.request.files[arg][0]
-    #        file_md5 = hashlib.md5(uploaded['body']).hexdigest()
-    #        file_ext = uploaded['filename'].split('.')[-1]
-    #        file_name = ("intro-%f-%s.%s" % (time.time(), file_md5, file_ext))
-    #        url = os.path.join("/", 
-    #                           os.path.basename(settings.STATIC_PATH),
-    #                           os.path.basename(settings.IMAGE_PATH),
-    #                           os.path.basename(settings.ARTICLE_AVATAR_PATH),
-    #                           file_name)
-    #        fp = os.path.join(settings.ARTICLE_AVATAR_PATH, file_name)
-    #        pic =  open(fp, 'wb')
-    #        pic.write(uploaded['body'])
-    #        pic.close()
-    #    except:
-    #        url = None #settings.DEFAULE_ARTICLE_AVATAR
-    #    return url
+        
 
 class ArticleUpdateHandler(BaseHandler):
     @tornado.web.authenticated
@@ -167,4 +145,17 @@ class ArticleUpdateHandler(BaseHandler):
             db.article.update({"sn":int(sn)}, article)
             self.redirect("/article/%s" % sn)
         else:
-            self.send_error(403)        
+            self.send_error(403)    
+
+class RecoverHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self, article_sn):
+        # Ajax Call:
+        # recover deleted article
+        #
+        article = db.article.find_one({"sn": int(article_sn)})
+        article['status'] = "normal"
+        db.article.save(article)
+        self.set_status(200)
+        return True
+        

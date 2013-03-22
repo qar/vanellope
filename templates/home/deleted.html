@@ -19,8 +19,10 @@
                     <a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
                 </span>
 
-                <span class="article-option-right option" onclick="deleteArticle({{ article['sn']}})"><i class="icon-trash  icon-large"></i></span>
+                <span class="article-option-right option" onclick="recoverArticle({{ article['sn']}})" title="recover"><i class="icon-undo  icon-large"></i></span>
+                {#
                 <span class="article-option option"><a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a></span>
+                #}
             </div>
             {% end %} 
             {# <!--

@@ -27,6 +27,7 @@ from vanellope.handlers.member import ResetHandler
 from vanellope.handlers.member import RegisterHandler
 from vanellope.handlers.comment import CommentHandler
 from vanellope.handlers.article import ArticleHandler
+from vanellope.handlers.article import RecoverHandler
 from vanellope.handlers.article import ArticleUpdateHandler
 
 import tornado.web
@@ -50,6 +51,7 @@ class Application(tornado.web.Application):
         (r"/register", RegisterHandler),
         (r"/article/([0-9]+)", ArticleHandler),
         (r"/article", ArticleHandler),
+        (r"/article/recover/([0-9]+)", RecoverHandler),
         (r"/home", HomeHandler),
         (r"/u/(.*)", MemberHandler),
         (r"/home/(.*)", HomeHandler),
@@ -107,16 +109,18 @@ class HomeHandler(BaseHandler):
                         articles = articles)
         elif(page == "deleted"):
             articles = self.deleted_articles(master['uid'])
-            self.render("home/manage.html", 
+            self.render(template, 
                         title = 'HOME | manage', 
                         master = master,
                         errors=None,                        
                         articles = articles)
         else:
+            articles = self.normal_articles(master['uid'])
             self.render(template, 
                         title="Home",
                         errors=None,                        
-                        master = master)
+                        master = master,
+                        articles = articles)
 
     @tornado.web.authenticated
     def post(self):

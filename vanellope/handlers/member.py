@@ -53,7 +53,9 @@ class MemberHandler(BaseHandler):
                     articles = articles,
                     master = self.get_current_user(),
                     pages = pages,
-                    author = author)   
+                    author = author) 
+
+                      
 
 
 class RegisterHandler(BaseHandler):
