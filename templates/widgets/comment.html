@@ -9,13 +9,13 @@
       $("document").ready(function(){
 
         $("textarea.inputbox").focus(function(){
-        	$(this).css({"height":"120px"});
+        	$(this).animate({height:"120px"},300);
         });
         
         $("textarea.inputbox").blur(function(){
         	
         	if(!$.trim($('textarea.inputbox').val())){
-        		$(this).css({"height":"35px"});
+        		$(this).animate({"height":"35px"},300);
             }
 
         });

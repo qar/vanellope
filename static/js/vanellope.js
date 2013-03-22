@@ -18,11 +18,6 @@ function editBio(){
 };
 
 
-function expandCommentBox(){
-    $("textarea.inputbox").css({"height":"200px"});
-};
-
-
 function deleteArticle(article_sn){
     $.ajax({
         url:"/article/" + article_sn,
@@ -57,6 +52,26 @@ function changeColor(){
     }).success(function() { 
         $(".common-color").css("background", color);
     }); 
-    }
-    
-}
+    }   
+};
+
+
+function getPage(page){
+    var url = "/article/page/"+page+".json"
+    $("#jq-insert-mark").empty();
+    $.ajax({
+        dataType: "json",
+        url: url,
+        success: function(data){
+            $.each(data, function(key, val){
+                var items = [];
+                items.push('<div class="article-list primary-item-container" id="article-list-'+val.sn+'" style="margin:0px 20px 20px">');
+                items.push('<span class="article-caption"><a href="/article/' + val.sn + '" title="'+val.title+'">' + val.title + '</a></span>');
+                items.push('<span class="article-option-right option" onclick="deleteArticle('+ val.sn +')" style="visibility:hidden"><i class="icon-trash  icon-large"></i></span>');
+                items.push('<span class="article-option option" style="visibility:hidden"><a href="/update/'+val.sn+'"><i class="icon-edit icon-large"></i></a></span></div>');
+                $("#jq-insert-mark").append(items.join(''));
+            });
+        }
+    });
+};
+

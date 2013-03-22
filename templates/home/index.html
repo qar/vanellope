@@ -1,40 +1,74 @@
 {% include "../common/header.html" %}
 <div id="wrapper">
-  <div class="primary-wrapper">
-
-  <div class="primary">
-    <div class="primary-item-sep"></div>
-    <div class="member-info">
-      <img class="member-info" src="{{ master['avatar_large'] }}">
-      <div class="member-info-container">
-        <h2 class="member-info">{{ master['name'] }}</h2>
-        <p class="member-info">{{ master['email'] }}</p>
-        
-        <div id="edit-button" onclick="editBio()">[&nbsp;<i class="icon-edit icon-large"></i>编辑个人简介&nbsp;]</div>
-        {% if master.has_key('brief') and master['brief'] %}
-        <span class="member-info" style="font-size:15px;line-height:22px;">{{ master['brief'] }}</span>
-        {% end %}
-        <textarea class='inputbox member-info' autofocus style="display:none"></textarea>
-        <button id='submit' class='button submit-button' style="display:none">Submit</button>
-      </div>
-    </div> <!-- end of ".member-info" -->      
-          <div class="primary-item-sep"></div>
-  </div> <!-- end of "primary" -->
-
-  <div class="primary" >
+	<div class="primary-wrapper">
+  	<div class="primary">
         <div class="primary-item-container">
-          {% for article in articles %}
-          <div class="article-list" id="article-list-{{ article['sn'] }}" style="margin-bottom:10px">
-              <span class="article-caption" >
-                  <a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
-              </span>
+    	<div class="member-info">
+      		<img src="{{ master['avatar_large'] }}">
+      		<div class="member-info-container">
+        		<h2 class="member-info">{{ master['name'] }}</h2>
+        		<p class="member-info">{{ master['email'] }}</p>
+        		<div id="edit-button" onclick="editBio()">
+        			[&nbsp;<i class="icon-edit icon-large"></i>编辑个人简介&nbsp;]
+        		</div>
+        		{% if master.has_key('brief') and master['brief'] %}
+        			<span class="member-info" style="font-size:15px;line-height:22px;">{{ master['brief'] }}</span>
+        		{% end %}
+        		<textarea class='inputbox member-info' autofocus style="display:none"></textarea>
+        		<button id='submit' class='button submit-button' style="display:none">Submit</button>
+  		    </div> <!-- end of "div.member-info-container" -->
+      	</div> <!-- end of div.member-info -->
+        </div> <!-- end of "div.primary-item-container" -->
 
-              <span class="article-option-right option" onclick="deleteArticle({{ article['sn']}})"><i class="icon-trash  icon-large"></i></span>
-              <span class="article-option option"><a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a></span>
-          </div> <!-- end of article-list -->
-          {% end %} 
-        </div><!-- end of primary-item-container --> 
-  </div> <!-- end of "primary" --> 
+        <div id="jq-insert-mark">
+        {% for article in articles %}
+            <div class="article-list primary-item-container" id="article-list-{{ article['sn'] }}" style="margin:0px 20px 20px">
+                <span class="article-caption" >
+                    <a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
+                </span>
+                <span class="article-option-right option" onclick="deleteArticle({{ article['sn']}})" style="visibility:hidden">
+                    <i class="icon-trash  icon-large"></i>
+                </span>
+                <span class="article-option option" style="visibility:hidden">
+                    <a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a>
+                </span>
+            </div> <!-- end of article-list -->
+        {% end %}
+        </div>
+
+       	<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
+  		{% if pages > 10 %}
+      		{% for page in range(1, 10) %}
+      		    <span id="pages-{{ page }}" class="option pages" onclick="getPage({{ page }})">{{ page }}</span>
+      		{% end %}
+      		    <span id="pages-more", class="option pages">...</span>
+  		{% else %}
+      		{% for page in range(1, pages) %}
+       			<span id="pages-{{ page }}" class="option pages" onclick="getPage({{ page }})">{{ page }}</span>
+      		{% end %}
+  		{% end %}
+		</div> <!-- end of div.pages -->
+
+        <script>
+        /*
+                $("div.article-list").hover(function(){
+                    $(this).children("span.option").css({"visibility":"visible"}).show(200);
+                }, function(){
+                    $(this).children("span.option").css({"visibility":"hidden"}).hide(200);
+                });
+        */
+                $(document).on("mouseenter", "div.article-list", function(){
+                    $(this).children("span.option").css({"visibility":"visible"}).show(200);
+                });
+                $(document).on("mouseleave", "div.article-list", function(){
+                    $(this).children("span.option").css({"visibility":"hidden"}).hide(200);
+                });
+
+        </script>
+        
+        
+    </div> <!-- end of "primary" -->
+
 
   </div><!-- end of primary-wrapper -->   
 

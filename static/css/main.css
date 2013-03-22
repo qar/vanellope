@@ -24,8 +24,8 @@ div.primary{ /* style specific */
 }
 div.primary-item-container{ /* #primary's general items style */
 	margin: 20px;
-	height: auto;
 	width: auto;
+	height: auto;
 }
 
 /** PAGES **/
@@ -180,41 +180,21 @@ div.err{
 
 
 
-/**##01-HED  /home/manage  ****/
+/**##01-HED  /home/manage rgba(76, 134, 125, 0.59) ****/
 div.article-list{
 	margin:0px;
 	padding: 0px;
-	width: 100%;
+	width: 636px;
 	height: 30px;
-	background-color: rgba(76, 134, 125, 0.59);
+	/*background-color:rgba(76, 134, 125, 0.59) ;*/
 	float: left;
+	border: 1px solid #a4cbd9;
 	border-radius: 5px;
-	box-shadow: 0 1px 1px rgba(0,0,0, 0.6);
+	/*box-shadow: 0 1px 1px rgba(0,0,0, 0.6);*/
 }
 
-ul.article-list{
-	list-style-type: none;
-	margin: 0px;
-	padding:0px;
-
-}
-
-li.article-list-caption{
-	display: inline;
-	float: left;
-}
-
-
-li.article-list{
-	display: inline;
-	float: right;
-	margin: 0px 5px;
-
-
-}
 
 span.article-caption{
-	color: #ffffff;
 	float: left;
 	height: 30px;
 	line-height: 30px;
@@ -226,12 +206,12 @@ span.article-caption{
 
 
 span.article-caption > a{
-	color:#FFFFFF;
+	color:#5c494d;
 }
 
 span.article-option, span.article-option-right{
 	float: right;
-	height: 29px;
+	height: 30px;
 	width: 35px;
 	background-color: #a4cbd9;
 	overflow: hidden;
@@ -254,11 +234,11 @@ span.article-option-right{
 
 /*** member-info ***/
 div.member-info{
-	margin: 20px;
-	width: auto;
-	height: 150px;
+	width:636px;
+	min-height:180px;
+	height: auto;
 }
-img.member-info{
+div.member-info > img{
 	float: left;
 	width:150px;
 	height: 150px;
@@ -272,14 +252,15 @@ div.member-info-container{
 }
 h2.member-info, p.member-info{
 /*
+	margin-bottom: 10px;
 	height: auto;
 */
 	width: 100%;
 	margin: 0px;
-	margin-bottom: 10px;
 }
 textarea.member-info{
-	width: 100%;
+	min-width: 455px;
+	max-width: 455px;
 	min-height: 75px;
 	max-height: 75px;
 }

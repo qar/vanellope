@@ -27,6 +27,7 @@ from vanellope.handlers.member import ResetHandler
 from vanellope.handlers.member import RegisterHandler
 from vanellope.handlers.comment import CommentHandler
 from vanellope.handlers.article import ArticleHandler
+from vanellope.handlers.article import PagesHandler
 from vanellope.handlers.article import RecoverHandler
 from vanellope.handlers.article import ArticleUpdateHandler
 
@@ -63,6 +64,7 @@ class Application(tornado.web.Application):
         (r"/verify/", VerifyHandler),
         (r"/reset", ResetHandler),
         (r"/forget", ForgetHandler),
+        (r"/article/page/([0-9]+)\.json$", PagesHandler),
         (r"/comment/(.*)", CommentHandler)]
 
         SETTINGS = dict(
@@ -81,11 +83,10 @@ class IndexHandler(BaseHandler):
         skip_articles = (int(page) -1 )*10
         articles = db.article.find({"status":"normal"})
         articles.sort("date",-1).skip(skip_articles).limit(10)
-
-        total = db.article.count()
-        pages  = total // 10 + 1
-        if total % 10 > 0:
-            pages += 1
+        total = db.article.find({"status":"normal"}).count()
+        pages = total // 10 + 1 # pages count from 1
+        if total % 10 > 0:      # the last page articles may not equal to 'p' 
+            pages += 1 
 
         self.render("index.html", 
                     title = 'PAGE302',
@@ -96,18 +97,22 @@ class IndexHandler(BaseHandler):
 
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self, page="index"):
-        pages = ('write', 'manage', 'setting', 'index', 'deleted')
-        template = ("home/%s.html" % page)
+    def get(self, html="index"):
+        htmls = ('write', 'manage', 'setting', 'index', 'deleted')
+
+        template = ("home/%s.html" % html)
+        page = self.get_argument("p", 1)
+        
         master = self.get_current_user()
-        if (page == "manage"):
+        pages = self.count_pages()
+        if (html == "manage"):
             articles = self.normal_articles(master['uid'])
             self.render(template, 
                         title = 'HOME | manage', 
                         master = master,
                         errors=None,
                         articles = articles)
-        elif(page == "deleted"):
+        elif(html == "deleted"):
             articles = self.deleted_articles(master['uid'])
             self.render(template, 
                         title = 'HOME | manage', 
@@ -120,6 +125,7 @@ class HomeHandler(BaseHandler):
                         title="Home",
                         errors=None,                        
                         master = master,
+                        pages = pages,
                         articles = articles)
 
     @tornado.web.authenticated
@@ -143,6 +149,19 @@ class HomeHandler(BaseHandler):
     def deleted_articles(self, owner_id):
         return db.article.find(
                 {"author": owner_id, "status":"deleted"}).sort("date", -1)
+
+    def count_pages(self, owner_id=None, p=10, status="normal"):
+        # p, articles per page
+        p = int(p)
+        if owner_id: # one member's
+            total = db.article.find(
+                {"status":status, "author":owner_id}).count()
+        else: # all members'
+            total = db.article.find({"status":status}).count()
+        pages = total // p + 1 # pages count from 1
+        if total % p > 0:      # the last page articles may not equal to 'p' 
+            pages += 1 
+        return pages
         
 
 

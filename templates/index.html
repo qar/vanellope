@@ -1,39 +1,39 @@
 {% include "common/header.html" %}
 <div id="wrapper">
-  <div class="primary-wrapper">
-  <div class="primary" >
-    
-  {% for article in articles %}
-    <div class="article-intro primary-item-container">
-      {% if article.has_key('avatar')  and article['avatar'] %}
-      <a href="/article/{{ article['sn'] }}"><img class="article-intro" src="{{ article['avatar'] }}"></a>
-      {% end %}
-      <a href="/article/{{ article['sn'] }}">
-        <h2 class="article-intro-title">{{ article['title']}}</h2>
-      </a>
-      <span class="article-brief">{{ article['sub_title'] }}</span>              
-    </div>
-  {% end %}
+	<div class="primary-wrapper">
+	<div class="primary" >
+		
+	{% for article in articles %}
+		<div class="article-intro primary-item-container">
+			{% if article.has_key('avatar')  and article['avatar'] %}
+			<a href="/article/{{ article['sn'] }}"><img class="article-intro" src="{{ article['avatar'] }}"></a>
+			{% end %}
+			<a href="/article/{{ article['sn'] }}">
+				<h2 class="article-intro-title">{{ article['title']}}</h2>
+			</a>
+			<span class="article-brief">{{ article['sub_title'] }}</span>              
+		</div>
+	{% end %}
 
-  <div class="pages">
-  {% if pages > 10 %}
-      {% for page in range(1, 10) %}
-      <a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
-      {% end %}
-      <a href="/?p=11"><span class="pages">...</span></a>
-  {% else %}
-      {% for page in range(1, pages) %}
-       <a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
-      {% end %}
-  {% end %}
+	<div class="pages">
+	{% if pages > 10 %}
+			{% for page in range(1, 10) %}
+			<a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
+			{% end %}
+			<a href="/?p=11"><span class="pages">...</span></a>
+	{% else %}
+			{% for page in range(1, pages) %}
+			 <a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
+			{% end %}
+	{% end %}
 </div>
 
 
-    </div> <!-- end of "#primary" -->
-    </div>
+		</div> <!-- end of "div.primary" -->
+		</div>
 
-   <div class="widgets-wrapper">
-    
-  </div>
+	 <div class="widgets-wrapper">
+		
+	</div>
 </div> <!-- Closing of wrapper -->   
 {% include "common/footer.html" %}

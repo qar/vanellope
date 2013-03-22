@@ -2,7 +2,7 @@
 # coding=utf-8
 
 import datetime
-
+import json
 import tornado.web
 from markdown import markdown
 from vanellope.ext import db
@@ -99,12 +99,12 @@ class ArticleHandler(BaseHandler):
 
     def find_adjoins(self, current_date):
         try:
-            pre = db.article.find({'date':
+            pre = db.article.find({"status":"normal", 'date':
                 {'$lt': current_date}}).sort("date",-1)[0]['sn']
         except:
             pre = None
         try:
-            fol = db.article.find({'date': 
+            fol = db.article.find({"status":"normal", 'date': 
                 {"$gt": current_date}}).sort("date", 1)[0]['sn']
         except:
             fol = None
@@ -158,4 +158,25 @@ class RecoverHandler(BaseHandler):
         db.article.save(article)
         self.set_status(200)
         return True
-        
+   
+
+class PagesHandler(BaseHandler):
+    def get(self, page=1):
+        page = int(page)
+        author = self.get_argument("uid", self.get_current_user()['uid'])
+        total = db.article.find({"status":"normal", "author": author}).count()
+        articles_per_page = 10
+        skip = (int(page) - 1)*articles_per_page
+        if int(page) > 0:
+            if total > skip:
+                articles = db.article.find({"status":"normal", "author":author}).skip(skip).sort("date", -1)
+                return_value = [dict(title=i['title'], sn=i['sn']) for i in articles]    
+            else:
+                return_value = None
+        else:
+            return_value = None
+        json_file = json.dumps(return_value)
+        self.write(json_file)
+        self.flush()
+        self.finish()
+
