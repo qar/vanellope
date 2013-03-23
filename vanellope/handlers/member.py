@@ -8,6 +8,7 @@ import datetime
 import smtplib
 import string
 import random
+import json
 import config
 
 from email.mime.multipart import MIMEMultipart
@@ -173,17 +174,15 @@ class ResetHandler(BaseHandler):
         #
         errors = []
         args = dict(
-            origin_pwd = self.get_argument("origin_pwd", None),
-            new_pwd = self.get_argument("new_pwd", None),
-            new_pwd_repeat = self.get_argument("new_pwd_repeat", None)
+            origin_pwd = self.get_argument("originPwd", None),
+            new_pwd = self.get_argument("newPwd", None),
+            new_pwd_repeat = self.get_argument("newPwdRepeat", None)
         )
         for k in args.keys():
             if( not args[k]):
                 errors.append(u"complete the blanks")
-                self.render("home/index.html", 
-                            title="Home", 
-                            master=False, 
-                            errors=errors)
+                self.write(json.dumps(errors))
+                self.finish()
 
         master = self.get_current_user()
         origin_pwd_hashed = hashlib.sha512(args['origin_pwd']).hexdigest()
@@ -200,10 +199,11 @@ class ResetHandler(BaseHandler):
                 errors.append(u"新密码两次输入不一致")
         else:
             errors.append(u"当前密码输入错误")
-        self.render("home/index.html", 
-                    title="Home",
-                    errors = errors,
-                    master = master)
+        if len(errors) > 0:
+            self.write(json.dumps(errors))
+        else:
+            self.write(json.dumps(True))
+        self.finish()
 
 
 

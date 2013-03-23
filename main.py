@@ -49,6 +49,7 @@ class Application(tornado.web.Application):
         handlers = [
         (r"/", IndexHandler),
         (r"/ajax/color", ajax.ColorHandler),
+        (r"/widgets/([\-\w\d]*\.html$)", WidgetsHandler),
         (r"/register", RegisterHandler),
         (r"/article/([0-9]+)", ArticleHandler),
         (r"/article", ArticleHandler),
@@ -165,7 +166,20 @@ class HomeHandler(BaseHandler):
         if total % p > 0:      # the last page articles may not equal to 'p' 
             pages += 1 
         return pages
-        
+  
+class WidgetsHandler(BaseHandler):
+    def get(self, w=None):
+        path = os.path.join(self.application.settings['template_path'],'widgets', w)
+        if os.path.exists(path):
+            f = open(path, 'r')
+            self.write(f.read())
+            f.close()
+            self.flush()
+            self.finish()
+        else:
+            self.send_error(404)
+            self.finish()
+
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ function recoverArticle(article_sn){
 };
 
 function changeColor(){
-    color = $.trim($('#color-input').val())
+    var color = $.trim($('#color-input').val());
     if(!color){
             event.preventDefault();
     }
@@ -64,4 +64,6 @@ function getPage(page){
         }
     });
 };
+
+
 

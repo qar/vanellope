@@ -1,27 +1,27 @@
 <div class="widget">
 	<div class="widget-caption common-color">个人资料管理</div>
-	<div class="widget-wrapper">
-			<form id="regist-form" action="/reset" method="post" style="margin:0px; padding:10px;float:left;max-width:247px; width:227px;">
-				{% if errors %}
-				{% for error in errors %}
-					<p style="color:red">{{ error }}</p>
-				{% end %}
-				{% end %}
-				<div class="input-prepend">
-					<span class="add-on"><i class="icon-key"></i></span>
-					<input class="span2 inputbox" type="password" name="origin_pwd" placeholder="旧密码">
-				</div><!-- end of "input-prepend"-->
-				<div class="input-prepend">
-					<span class="add-on"><i class="icon-key"></i></span>
-					<input class="span2 inputbox" type="password" name="new_pwd" placeholder="新密码">
-				</div><!-- end of "input-prepend"-->
-				<div class="input-prepend">
-					<span class="add-on"><i class="icon-key"></i></span>
-					<input class="span2 inputbox" type="password" name="new_pwd_repeat" placeholder="重复输入一次新密码">
-				</div><!-- end of "input-prepend"-->
+		<div class="option-nav">
+			<span class="option left-part" id="nav-password">Password&nbsp;&nbsp;<i class="icon-double-angle-right"></i></span>
+			<span class="option right-part" id="nav-email">Email&nbsp;&nbsp;<i class="icon-double-angle-right"></i></span>
+		</div>
+		<div class="widget-wrapper load-container" style="padding-bottom:0px;">
+		</div>
 
-				<input class="button submit-button" type="submit" value="提交更改" style="float:right">
-			</form>
-	  		
-	</div>
+		<script>
+			$(document).ready(function(){
+				$("#nav-password").click(function(){
+					if($("div.load-container").innerHeight() == 0){
+						$("div.load-container").load("/widgets/password-manage.html", function(){
+							$("div.load-container").hide().fadeIn('slow');
+							$("#nav-password > i.icon-double-angle-right").attr('class', 'icon-double-angle-down');
+						});
+					}else if($("div.load-container").innerHeight() > 0){
+						$("div.load-container").empty();
+						$("i.icon-double-angle-down").attr('class', 'icon-double-angle-right');
+					};
+				});
+
+
+			});
+		</script>
 </div>

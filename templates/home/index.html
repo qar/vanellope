@@ -69,10 +69,10 @@
 			});  
 
 			$(document).on("mouseenter", "div.article-list", function(){
-				$(this).children("span.option").css({"visibility":"visible"}).show(200);
+				$(this).children("span.option").css({"visibility":"visible"}).fadeIn(500);
 			});
 			$(document).on("mouseleave", "div.article-list", function(){
-				$(this).children("span.option").css({"visibility":"hidden"}).hide(200);
+				$(this).children("span.option").css({"visibility":"hidden"}).fadeOut(500);
 			});
 		</script>
 	
