@@ -165,7 +165,7 @@ class VerifyHandler(BaseHandler):
         self.finish()
 
 
-class ResetHandler(BaseHandler):
+class PasswordResetHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):        
         #
@@ -205,6 +205,35 @@ class ResetHandler(BaseHandler):
             self.write(json.dumps(True))
         self.finish()
 
+class EmailHandler(BaseHandler):
+    # ajax call
+    @tornado.web.authenticated
+    def get(self):
+        master = self.get_current_user()
+        self.write(master['email'])
+        self.flush()
+        self.finish()
+
+    # ajax call
+    def post(self):
+        errors = []
+        _email = self.get_argument("email", None).strip()
+        if re.match(EMAIL_PATT, _email):
+            ex = db.member.find_one({"email":_email})
+            if not ex:
+                master = self.get_current_user()
+                master['email'] = _email.lower()
+                db.member.save(master)
+            else:
+                errors.append(u"邮箱已被使用")
+        else:
+            errors.append(u"请检查邮箱的格式是否正确")
+        if len(errors) > 0:
+            self.write(json.dumps(errors))
+        else:
+            self.write(json.dumps(True))
+        self.flush()
+        self.finish()
 
 
 class LoginHandler(BaseHandler):
@@ -296,7 +325,6 @@ class ForgetHandler(BaseHandler):
 
 class PasswordHandler(BaseHandler):
     def get(self):
-        
         secret_key = self.get_argument("key", None)
         member = db.member.find_one({"secret_key": secret_key})
         if member:

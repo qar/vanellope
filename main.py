@@ -23,8 +23,9 @@ from vanellope.handlers.member import ForgetHandler
 from vanellope.handlers.member import PasswordHandler
 from vanellope.handlers.member import MemberHandler
 from vanellope.handlers.member import VerifyHandler
-from vanellope.handlers.member import ResetHandler
+from vanellope.handlers.member import PasswordResetHandler
 from vanellope.handlers.member import RegisterHandler
+from vanellope.handlers.member import EmailHandler
 from vanellope.handlers.comment import CommentHandler
 from vanellope.handlers.article import ArticleHandler
 from vanellope.handlers.article import PagesHandler
@@ -59,11 +60,12 @@ class Application(tornado.web.Application):
         (r"/home/(.*)", HomeHandler),
         (r"/login", LoginHandler),
         (r"/member", MemberHandler),
+        (r"/member/email\.json", EmailHandler),
         (r"/logout", LogoutHandler),
         (r"/password", PasswordHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
         (r"/verify/", VerifyHandler),
-        (r"/reset", ResetHandler),
+        (r"/reset", PasswordResetHandler),
         (r"/forget", ForgetHandler),
         (r"/article/page/([0-9]+)\.json$", PagesHandler),
         (r"/comment/(.*)", CommentHandler)]
@@ -168,6 +170,7 @@ class HomeHandler(BaseHandler):
         return pages
   
 class WidgetsHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self, w=None):
         path = os.path.join(self.application.settings['template_path'],'widgets', w)
         if os.path.exists(path):

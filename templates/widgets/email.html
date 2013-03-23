@@ -1,0 +1,37 @@
+<p id="emailErrorMsg" style="margin:5px;font-size:14px">当前邮箱是</p>
+<div id="resetEmail" style="margin:0px 0px 20px 0px; float:left;max-width:247px; width:100%;">
+	<p id="currentEmail" style="color:green;margin:0px 0px 10px 0px"></p>
+	<input class="inputbox flatInputBox" id="emailInput" placeholder="New email"></input>
+	<span class="option flatSubmitBtn" id="emailSubmit" >Submit</span>
+</div>
+<script>
+	$(document).ready(function(){
+		$.get("/member/email.json", function(data){
+			$("#currentEmail").html(data);
+		});
+		$("#emailSubmit").click(function(){
+			var email = $.trim($("#emailInput").val());
+			$.ajax({
+				url:"/member/email.json",
+				type:"POST",
+				dataType:"json",
+				data:"email="+email,
+				success: function(data){
+					if(data == true){
+						$('#emailErrorMsg').empty();
+						$("#emailErrorMsg").html("更换成功！现在的邮箱是");
+						$("#emailErrorMsg").css({"color":"green"});
+						$("#emailInput").val('');
+					}
+					else{
+						$.each(data, function(key, val){
+							$("#emailErrorMsg").empty();
+							$("#emailErrorMsg").html(val);
+							$("#emailErrorMsg").css({"color":"red"});
+						});
+					}
+				},
+			});
+		});
+	});
+</script>

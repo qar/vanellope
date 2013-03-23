@@ -29,7 +29,7 @@ function recoverArticle(article_sn){
 };
 
 function changeColor(){
-    var color = $.trim($('#color-input').val());
+    var color = $.trim($('#colorInput').val());
     if(!color){
             event.preventDefault();
     }

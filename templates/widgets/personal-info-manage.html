@@ -1,19 +1,19 @@
 <div class="widget">
 	<div class="widget-caption common-color">个人资料管理</div>
 		<div class="option-nav">
-			<span class="option left-part" id="nav-password">Password&nbsp;&nbsp;<i class="icon-double-angle-right"></i></span>
-			<span class="option right-part" id="nav-email">Email&nbsp;&nbsp;<i class="icon-double-angle-right"></i></span>
+			<span class="option" id="navPassword">Password&nbsp;&nbsp;<i class="icon-double-angle-right"></i></span>
+			<span class="option" id="navEmail">Email&nbsp;&nbsp;<i class="icon-double-angle-right"></i></span>
 		</div>
 		<div class="widget-wrapper load-container" style="padding-bottom:0px;">
 		</div>
 
 		<script>
 			$(document).ready(function(){
-				$("#nav-password").click(function(){
+				$("#navPassword").click(function(){
 					if($("div.load-container").innerHeight() == 0){
 						$("div.load-container").load("/widgets/password-manage.html", function(){
 							$("div.load-container").hide().fadeIn('slow');
-							$("#nav-password > i.icon-double-angle-right").attr('class', 'icon-double-angle-down');
+							$("#navPassword > i.icon-double-angle-right").attr('class', 'icon-double-angle-down');
 						});
 					}else if($("div.load-container").innerHeight() > 0){
 						$("div.load-container").empty();
@@ -21,7 +21,17 @@
 					};
 				});
 
-
+				$("#navEmail").click(function(){
+					if($("div.load-container").innerHeight() == 0){
+						$("div.load-container").load("/widgets/email.html", function(){
+							$("div.load-container").hide().fadeIn('slow');
+							$("#navEmail > i.icon-double-angle-right").attr('class', 'icon-double-angle-down');
+						});
+					}else if($("div.load-container").innerHeight() > 0){
+						$("div.load-container").empty();
+						$("i.icon-double-angle-down").attr('class', 'icon-double-angle-right');
+					};
+				});
 			});
 		</script>
 </div>
