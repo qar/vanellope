@@ -13,10 +13,14 @@ import pymongo
 import markdown
 
 from vanellope.ext import db
+from vanellope.ext import Mail
+
 from vanellope.model import Article
 from vanellope.model import Comment
+
 from vanellope.handlers import BaseHandler
 from vanellope.handlers import ajax
+
 from vanellope.handlers.member import LoginHandler
 from vanellope.handlers.member import LogoutHandler
 from vanellope.handlers.member import ForgetHandler
@@ -26,7 +30,9 @@ from vanellope.handlers.member import VerifyHandler
 from vanellope.handlers.member import PasswordResetHandler
 from vanellope.handlers.member import RegisterHandler
 from vanellope.handlers.member import EmailHandler
+
 from vanellope.handlers.comment import CommentHandler
+
 from vanellope.handlers.article import ArticleHandler
 from vanellope.handlers.article import PagesHandler
 from vanellope.handlers.article import RecoverHandler
@@ -39,35 +45,36 @@ import tornado.options
 import tornado.httpserver
 from tornado.options import define, options
 
+UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
 sys.path.append(os.getcwd())
 
 options['log_file_prefix'].set(os.path.join(os.path.dirname(__file__), 'page302.log'))
 define("port", default=8000, help="run on the given port", type=int)
 
 
-class Application(tornado.web.Application):
+class App(tornado.web.Application):
     def __init__(self):
         handlers = [
         (r"/", IndexHandler),
+        (r"/home", HomeHandler),
+        (r"/home/(.*)", HomeHandler),
+        (r"/login", LoginHandler),
+        (r"/logout", LogoutHandler),
+        (r"/member", MemberHandler),
+        (r"/member/([a-zA-Z0-9]{1,16})", MemberHandler),
+        (r"/member/email\.json", EmailHandler),
+        (r"/article", ArticleHandler),
+        (r"/article/([0-9]+)", ArticleHandler),
+        (r"/article/page/([0-9]+)\.json$", PagesHandler),
+        (r"/article/recover/([0-9]+)", RecoverHandler),
         (r"/ajax/color", ajax.ColorHandler),
         (r"/widgets/([\-\w\d]*\.html$)", WidgetsHandler),
         (r"/register", RegisterHandler),
-        (r"/article/([0-9]+)", ArticleHandler),
-        (r"/article", ArticleHandler),
-        (r"/article/recover/([0-9]+)", RecoverHandler),
-        (r"/home", HomeHandler),
-        (r"/u/(.*)", MemberHandler),
-        (r"/home/(.*)", HomeHandler),
-        (r"/login", LoginHandler),
-        (r"/member", MemberHandler),
-        (r"/member/email\.json", EmailHandler),
-        (r"/logout", LogoutHandler),
         (r"/password", PasswordHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
         (r"/verify/", VerifyHandler),
         (r"/reset", PasswordResetHandler),
         (r"/forget", ForgetHandler),
-        (r"/article/page/([0-9]+)\.json$", PagesHandler),
         (r"/comment/(.*)", CommentHandler)]
 
         SETTINGS = dict(
@@ -107,7 +114,7 @@ class HomeHandler(BaseHandler):
         page = self.get_argument("p", 1)
         
         master = self.get_current_user()
-        pages = self.count_pages()
+        pages = self.count_pages(master['uid'])
         if (html == "manage"):
             articles = self.normal_articles(master['uid'])
             self.render(template, 
@@ -138,9 +145,7 @@ class HomeHandler(BaseHandler):
             brief = self.get_argument('brief', default=None)
             db.member.update({"uid":master['uid']},{"$set":{"brief":brief}})
             member = db.member.find_one({'uid': master['uid']})
-            self.write(brief)
-            self.flush()
-            self.finish()
+            self.finish(brief)
         else:
             self.send_error(403)
             self.findish()
@@ -175,10 +180,7 @@ class WidgetsHandler(BaseHandler):
         path = os.path.join(self.application.settings['template_path'],'widgets', w)
         if os.path.exists(path):
             f = open(path, 'r')
-            self.write(f.read())
-            f.close()
-            self.flush()
-            self.finish()
+            self.finish(f.read())
         else:
             self.send_error(404)
             self.finish()
@@ -187,7 +189,7 @@ class WidgetsHandler(BaseHandler):
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
-    http_server = tornado.httpserver.HTTPServer(Application())
+    http_server = tornado.httpserver.HTTPServer(App())
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
 

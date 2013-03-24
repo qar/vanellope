@@ -4,6 +4,7 @@
 import re
 import hashlib
 import urllib
+import urlparse
 import datetime
 import smtplib
 import string
@@ -11,12 +12,13 @@ import random
 import json
 import config
 
+
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 import tornado.web
 
-from vanellope.ext import db
+from vanellope.ext import db, Mail
 from vanellope.handlers import BaseHandler
 
 
@@ -135,8 +137,17 @@ class RegisterHandler(BaseHandler):
             model['avatar'] = gravatar + urllib.urlencode({'s':64})
             model['avatar_large'] = gravatar + urllib.urlencode({'s':128})
             model['secret_key'] = randomwords(20)
-            send_verification_email(model['email'], model['secret_key'])
             db.member.insert(model)
+            netloc = urlparse.urlsplit(config.HOSTNAME).netloc
+            URL = "%s/verify/?" % (config.HOSTNAME,) + urllib.urlencode(
+                                {"secret_key":model['secret_key']})
+            SUBJECT = "[%s]邮件验证" % netloc
+            CONTENT = '''
+            <p>感谢您在 %s 注册, 点击下面的链接或将其复制到浏览器地址栏中打开进行最后的验证</p>
+            <a href="%s">%s</a>
+            ''' % (netloc, URL, URL)
+            mail = Mail(Subject=SUBJECT, To=model['email'], Body=CONTENT)
+            mail.Send()
 
             self.set_cookie(name="auth", 
                             value=model['auth'], 

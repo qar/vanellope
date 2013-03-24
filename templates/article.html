@@ -18,11 +18,11 @@
       {% for comment in comments %}
       <div class="comment primary-item-container">
 
-        <a class="member" href="/u/{{ comment['member']['name_safe'] }}">
+        <a class="member" href="/member/{{ comment['member']['name_safe'] }}">
           <img class="avatar" src="{{ comment['member']['avatar'] }}" alt="{{ comment['member']['name'] }}" width="50px" height="50px">
         </a>
 
-        <a href="/u/{{ comment['member']['name_safe'] }}"><span>{{ comment['member']['name']}}</span></a>
+        <a href="/member/{{ comment['member']['name_safe'] }}"><span>{{ comment['member']['name']}}</span></a>
         <span class="timestamp" style="margin-left:10px">{{ comment['date']}}</span>
         {% if master and master['color'] %}
         <span class="comment-floor" style="float:right;padding:0px 8px; min-width:10px; width:auto; background-color:{{ master['color'] }}; border-radius: 8px; text-align:center; color:#FFFFFF">{{ comment['floor'] }}</span>

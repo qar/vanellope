@@ -2,11 +2,11 @@
 	<div class="widget-caption common-color">小编</div>
 	<div class="widget-wrapper">
 		<div class="member">
-			<a class="member" href="/u/{{ author['name_safe'] }}">
+			<a class="member" href="/member/{{ author['name_safe'] }}">
 				<img class="avatar" src="{{ author['avatar'] }}" alt="{{ author['name'] }}" width="50" height="50px">
 			</a>
 			<ul class="v-bare">
-				<li><a class="member" href="/u/{{ author['name_safe'] }}">{{ author['name'] }}</a></li>
+				<li><a class="member" href="/member/{{ author['name_safe'] }}">{{ author['name'] }}</a></li>
 				{% if author.has_key("brief") and author['brief'] %}
 				<li><span class="member">{{ author['brief'] }}</li>
 				{% end %}
