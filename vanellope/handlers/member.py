@@ -38,7 +38,6 @@ class MemberHandler(BaseHandler):
     #
     # Member main information display
     #
-
     def get(self, uname):
         page = self.get_argument("p", 1)
         skip_articles = (int(page) -1 )*10
@@ -46,17 +45,21 @@ class MemberHandler(BaseHandler):
         articles = db.article.find({"status":"normal",
                                     "author": author['uid']}).sort("date",-1).limit(skip_articles)
 
-        total = db.article.find({"author": author['uid']}).count()
+        total = db.article.find({"status":"normal", "author": author['uid']}).count()
         pages  = total // 10 + 1
         if total % 10 > 0:
             pages += 1
-
-        self.render("index.html",
+        master = self.get_current_user()
+        if master and master['name_safe'] == uname:
+            member = master
+        else:
+            member = author
+        self.render("home/index.html",
                     title = author['name']+u"专栏",
                     articles = articles,
-                    master = self.get_current_user(),
+                    member = member,
                     pages = pages,
-                    author = author) 
+                    master = master) 
 
                       
 

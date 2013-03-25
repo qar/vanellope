@@ -14,7 +14,7 @@
 
             {% for article in articles %}
 
-            <div class="article-list" id="article-list-{{ article['sn'] }}" style="margin-bottom:10px">
+            <div class="article-list" id="{{ article['sn'] }}" style="margin-bottom:10px">
                 <span class="article-caption" >
                     <a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
                 </span>

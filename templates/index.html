@@ -3,37 +3,37 @@
 	<div class="primary-wrapper">
 	<div class="primary" >
 		
-	{% for article in articles %}
+		{% for article in articles %}
 		<div class="article-intro primary-item-container">
 			{% if article.has_key('avatar')  and article['avatar'] %}
 			<a href="/article/{{ article['sn'] }}"><img class="article-intro" src="{{ article['avatar'] }}"></a>
 			{% end %}
-			<a href="/article/{{ article['sn'] }}">
-				<h2 class="article-intro-title">{{ article['title']}}</h2>
-			</a>
+			<a href="/article/{{ article['sn'] }}"><h2 class="article-intro-title">{{ article['title']}}</h2></a>
 			<span class="article-brief">{{ article['sub_title'] }}</span>              
 		</div>
-	{% end %}
+		{% end %}
 
-	<div class="pages">
-	{% if pages > 10 %}
+		<div class="pages">
+		{% if pages > 10 %}
 			{% for page in range(1, 10) %}
 			<a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
 			{% end %}
 			<a href="/?p=11"><span class="pages">...</span></a>
-	{% else %}
+		{% else %}
 			{% for page in range(1, pages) %}
 			 <a href="/?p={{ page }}"><span class="pages">{{ page }}</span></a>
 			{% end %}
-	{% end %}
-</div>
+		{% end %}
+		</div><!-- end of div.pages -->
 
 
-		</div> <!-- end of "div.primary" -->
-		</div>
+	</div> <!-- end of div.primary -->
+	</div> <!-- end of div.primary-wrapper -->
 
 	 <div class="widgets-wrapper">
+	 	{% include "widgets/hotest-articles.html" %}
 		
 	</div>
+
 </div> <!-- Closing of wrapper -->   
 {% include "common/footer.html" %}

@@ -158,3 +158,18 @@ div.option-nav > span{
 	text-align: center;
 	vertical-align: middle;	
 }
+
+div.hotestArticles{
+	float: left;
+	padding: 10px;
+}
+
+#hotestArticles{
+	padding: 0px 0px 0px 15px;
+	float: left;
+	height: auto;
+}
+
+#hotestArticles > li{
+	font-size: 14px;
+}

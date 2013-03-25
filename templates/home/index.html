@@ -4,13 +4,17 @@
 	<div class="primary">
 		<div class="primary-item-container">
 		<div class="member-info">
-			<img src="{{ master['avatar_large'] }}">
+			<img src="{{ member['avatar_large'] }}">
 			<div class="member-info-container">
-				<h2 class="member-info">{{ master['name'] }}</h2>
-				<p class="member-info">{{ master['email'] }}</p>
-			
-				<p class="member-info" id="member-brief" style="font-size:15px;line-height:22px;height:100px;width:461px">
-			  	{% if master.has_key('brief') and master['brief'] %}{{ master['brief'] }} {% end %}
+				<h2 class="member-info">{{ member['name'] }}</h2>
+			  	{% if master %}
+				<p class="member-info">{{ member['email'] }}</p>				
+			  	<span id="memberBriefEditor" class="option"><i class="icon-edit"></i></span>
+			  	{% end %}
+			  	<p class="member-info" id="member-brief" style="font-size:15px;line-height:22px;height:100px;width:461px"> 
+			  		{% if member.has_key("brief") and member['brief'] %}
+			  		{{ member['brief'] }} 
+					{% end %}
 			  	</p>
 				<textarea class='inputbox member-info' autofocus style="display:none;height:94px;width:461px"></textarea>
 			</div> <!-- end of "div.member-info-container" -->
@@ -18,39 +22,35 @@
 		</div> <!-- end of "div.primary-item-container" -->
 
 		<div id="jq-insert-mark">
-		{% for article in articles %}
-			<div class="article-list primary-item-container" id="article-list-{{ article['sn'] }}" style="margin:0px 20px 20px">
-				<span class="article-caption" >
-					<a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
-				</span>
-				<span class="article-option-right option" onclick="deleteArticle({{ article['sn']}})" style="visibility:hidden">
-					<i class="icon-trash  icon-large"></i>
-				</span>
-				<span class="article-option option" style="visibility:hidden">
-					<a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a>
-				</span>
-				<span class="article-option option" onclick="previewArticle({{ article['sn']}})" style="visibility:hidden">
-				   <i class="icon-eye-open icon-large"></i>
-				</span>
-			</div> <!-- end of article-list -->
-		{% end %}
+			{% if master %}
+				{% include "owner-article-list.html" %}
+			{% else %}
+				{% include "viewer-article-list.html" %}
+			{% end %}
 		</div>
 
 		<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
 		{% if pages > 10 %}
 			{% for page in range(1, 10) %}
-				<span id="pages-{{ page }}" class="option pages" onclick="getPage({{ page }})">{{ page }}</span>
+				<span id="pages-{{ page }}" class="option pages">{{ page }}</span>
 			{% end %}
 				<span id="pages-more", class="option pages">...</span>
 		{% else %}
 			{% for page in range(1, pages) %}
-				<span id="pages-{{ page }}" class="option pages" onclick="getPage({{ page }})">{{ page }}</span>
+				<span id="pages-{{ page }}" class="option pages">{{ page }}</span>
 			{% end %}
 		{% end %}
 		</div> <!-- end of div.pages -->
 
 		<script>
-			$("#member-brief").dblclick(function(){
+			$("span.pages").click(function(){
+				var page = $(this).html();
+				var uname = $("h2.member-info").html();
+				getPageByAuthor(page, uname);
+			});
+
+			$("#memberBriefEditor").click(function(){
+				$(this).hide();
 			  	$('#member-brief').hide(300);
 			  	$('textarea.member-info').show(300).focus();
 			  	$('textarea.member-info').html($.trim($('#member-brief').text()));
@@ -65,23 +65,28 @@
 						type:"POST",
 						data:{'brief': content},
 					});
+					$("#memberBriefEditor").show();
 			  	});
 			});  
-
+			{% if master %}
 			$(document).on("mouseenter", "div.article-list", function(){
 				$(this).children("span.option").css({"visibility":"visible"}).fadeIn(500);
 			});
 			$(document).on("mouseleave", "div.article-list", function(){
 				$(this).children("span.option").css({"visibility":"hidden"}).fadeOut(500);
 			});
+			{% end %}
 		</script>
 	
 	</div> <!-- end of "primary" -->
   	</div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">
-	{% include "../widgets/tools-list.html" %}
-	{% include "../widgets/personal-info-manage.html" %}
+	{% if master %}
+        {% include "../widgets/tools-list.html" %}
+		{% include "../widgets/personal-info-manage.html" %}
+    {% end %}
+	
   	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->

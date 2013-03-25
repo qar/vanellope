@@ -35,6 +35,7 @@ from vanellope.handlers.comment import CommentHandler
 
 from vanellope.handlers.article import ArticleHandler
 from vanellope.handlers.article import PagesHandler
+from vanellope.handlers.article import HotestHandler
 from vanellope.handlers.article import RecoverHandler
 from vanellope.handlers.article import ArticleUpdateHandler
 
@@ -65,7 +66,7 @@ class App(tornado.web.Application):
         (r"/member/email\.json", EmailHandler),
         (r"/article", ArticleHandler),
         (r"/article/([0-9]+)", ArticleHandler),
-        (r"/article/page/([0-9]+)\.json$", PagesHandler),
+        (r"/article/page/([0-9]+)\.json", PagesHandler),
         (r"/article/recover/([0-9]+)", RecoverHandler),
         (r"/ajax/color", ajax.ColorHandler),
         (r"/widgets/([\-\w\d]*\.html$)", WidgetsHandler),
@@ -75,6 +76,7 @@ class App(tornado.web.Application):
         (r"/verify/", VerifyHandler),
         (r"/reset", PasswordResetHandler),
         (r"/forget", ForgetHandler),
+        (r"/article/hotest/([0-9]+)", HotestHandler),
         (r"/comment/(.*)", CommentHandler)]
 
         SETTINGS = dict(
@@ -108,25 +110,19 @@ class IndexHandler(BaseHandler):
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="index"):
-        htmls = ('write', 'manage', 'setting', 'index', 'deleted')
+        htmls = ('write', 'setting', 'index', 'deleted')
 
         template = ("home/%s.html" % html)
         page = self.get_argument("p", 1)
         
         master = self.get_current_user()
         pages = self.count_pages(master['uid'])
-        if (html == "manage"):
-            articles = self.normal_articles(master['uid'])
-            self.render(template, 
-                        title = 'HOME | manage', 
-                        master = master,
-                        errors=None,
-                        articles = articles)
-        elif(html == "deleted"):
+        if(html == "deleted"):
             articles = self.deleted_articles(master['uid'])
             self.render(template, 
                         title = 'HOME | manage', 
                         master = master,
+                        member = master,
                         errors=None,                        
                         articles = articles)
         else:
@@ -136,6 +132,7 @@ class HomeHandler(BaseHandler):
                         errors=None,                        
                         master = master,
                         pages = pages,
+                        member = master,
                         articles = articles)
 
     @tornado.web.authenticated

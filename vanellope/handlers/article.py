@@ -162,8 +162,17 @@ class RecoverHandler(BaseHandler):
 
 class PagesHandler(BaseHandler):
     def get(self, page=1):
+        uname = self.get_argument("name", None)
         page = int(page)
-        author = self.get_argument("uid", self.get_current_user()['uid'])
+        master = self.get_current_user()
+        if not uname:
+            if master:
+                author = master['uid']
+            else:
+                self.set_status(404)
+                self.finish()
+        else:
+            author = db.member.find_one({"name":uname})['uid']
         total = db.article.find({"status":"normal", "author": author}).count()
         articles_per_page = 10
         skip = (int(page) - 1)*articles_per_page
@@ -176,7 +185,14 @@ class PagesHandler(BaseHandler):
         else:
             return_value = None
         json_file = json.dumps(return_value)
-        self.write(json_file)
-        self.flush()
-        self.finish()
+        self.finish(json_file)
+
+
+class HotestHandler(BaseHandler):
+    @tornado.web.asynchronous
+    def get(self, N=10):
+        # N articles to be returned
+        articles = db.article.find({"status":"normal"}).sort("heat", -1).limit(int(N))
+        return_value = [dict(title=i['title'], sn=i['sn']) for i in articles] 
+        self.finish(json.dumps(return_value))
 

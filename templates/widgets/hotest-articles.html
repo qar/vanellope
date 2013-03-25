@@ -1,12 +1,25 @@
 <div class="widget">
-	<div class="widget-caption common-color">最火十篇</div>
-	<div class="widget-wrapper">
-		<!-- TOP 10 Hotest Articles -->
-  		{% for article in hotest %}
-  		<div class="article">
-    	<a href="/article/{{ article['sn'] }}">{{ article['title']}}</a>
-    	</div>
-    	{% end %}
-	</div>
+	<div class="widget-caption common-color">热度排名</div>
+	<!-- TOP 10 Hotest Articles -->
+  	<div class="hotestArticles">
+  		<ul id="hotestArticles">
+  		</ul>
+  	</div>
 </div>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+        url:"/article/hotest/10",
+        type:"GET",
+        dataType:"json",
+        success: function(data){
+            $.each(data, function(key, val){
+               var items = [];
+               items.push('<li><a href="/article/'+val.sn+'"><span></span><span>'+val.title+'</span></a></li>')
+               $("#hotestArticles").append(items.join(""));
+            });
+        },
+    }); 
+	});
+</script>
 
