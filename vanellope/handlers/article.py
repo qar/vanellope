@@ -76,9 +76,13 @@ class ArticleHandler(BaseHandler):
     @tornado.web.authenticated
     def delete(self, article_sn):
         article = db.article.find_one({"sn": int(article_sn)})
-        article['status'] = "deleted"
-        db.article.save(article)
-        self.set_status(200)
+        if article['status'] == "deleted":
+            # Remove article that already markded "deleted".
+            db.article.remove(article)
+        else:
+            # Just mark the article "deleted", not remove it.
+            article['status'] = "deleted"
+            db.article.save(article)
         self.finish()
 
     def find_adjoins(self, current_date):
@@ -101,7 +105,7 @@ class ArticleUpdateHandler(BaseHandler):
         article = db.article.find_one({'sn': int(sn)})
         author = db.member.find_one({'uid': article['author']})
 
-        self.render("home/edit.html", 
+        self.render("edit.html", 
                     master = self.get_current_user(),
                     title = "Edit",
                     author = author,

@@ -49,18 +49,6 @@ from tornado.options import define, options
 
 CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
 
-#class AjaxHandler(BaseHandler):
-#    def post(self, func):
-#        
-#    
-#    @tornado.web.authenticated
-#    def change_color(self, color):  
-#        master = self.get_current_user()
-#        m = db.member.find_one({"uid": master['uid']})
-#        m['color'] = color
-#        db.member.save(m)
-#        return True
-
 
 class ColorHandler(BaseHandler):
     def post(self):

@@ -52,37 +52,29 @@ class RegisterHandler(BaseHandler):
                 errors.append(u"user name has being taken")
             else:
                 member.set_name(args['name'])
-                print "name set"
         else:
             errors.append(u"illegal character")
 
         # set user password
         if args['pwd'] and (args['pwd'] == args['cpwd']):
             member.set_password(args['pwd'])
-            print "password set"
         else:
-            errors.append(u"password different")
+            errors.append(u"两次输入的密码不一致")
 
         # set user email
         if args['email']:
-            if member.set_email(args['email']):
-                print "email set"
-            else:
-                errors.append(u"It's not a valid email address")
+            if not member.set_email(args['email']):
+                errors.append(u"请检查邮箱地址的书写格式")
 
         if errors:
             self.render("register.html", #template file
-                        title = "Register", # web page title
+                        title = u"注册", # web page title
                         errors = errors,    
                         master = None)
         else:
             member.set_secret_key(randomwords(20))
-            print "secret_key set"
-            print "sending Email"
             member.verify()
-            print "email sent\ninsert into database...",
             member.put()
-            print "Done"
             self.set_cookie(name="auth", 
                             value=member.get_auth(), 
                             expires_days = 365)
@@ -100,12 +92,11 @@ class VerifyHandler(BaseHandler):
                 master['verified'] = True
                 del master['secret_key']
                 da.save_member(master)
-                self.write("your email is activated\n") # everything fine
+                self.finish(u"邮箱已被激活！") # everything fine
             else:
-                self.write("url invalid") # url insecure
+                self.finish(u"不正确的地址") # url insecure
         else:
-            self.write("your email has been activated already") # email has been verified
-        self.finish()
+            self.finish(u"链接已过期") # email has been verified
 
 
 class PasswordResetHandler(BaseHandler):
@@ -229,7 +220,7 @@ class ForgetHandler(BaseHandler):
             errors.append(u"no such user")
         if len(errors) > 0:
             self.render("forget.html", 
-                        title = "Forget", 
+                        title = "找回密码", 
                         master = False, 
                         errors = errors)
         else:
@@ -241,7 +232,7 @@ class PasswordHandler(BaseHandler):
         member = da.get_member_by({"secret_key": secret_key})
         if member:
             self.render("password.html", 
-                title="Change Password", 
+                title="更改密码", 
                 errors=None, 
                 master=False, 
                 key=secret_key)
@@ -284,14 +275,10 @@ class PasswordHandler(BaseHandler):
 
             else:
                 errors.append(u"different password")
-                self.render("password.html", 
-                        title = "Change Password", 
-                        master = False, 
-                        errors = errors)
         else:
             errors.append(u"invalid secure link")
             self.render("password.html", 
-                        title = "Change Password", 
+                        title = "更改密码", 
                         master = False, 
                         errors = errors)
 

@@ -23,15 +23,8 @@ from vanellope.handlers import BaseHandler
 
 
 UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
-EMAIL_ERR = {
-    # the dict key MUST NOT be changed
-    'exist': u"This email address has being used",
-    'invalid': u"It's not a valid email address",
-}
-
-
 CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
+EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
 
 
 class MemberHandler(BaseHandler):
@@ -64,7 +57,7 @@ class MemberHandler(BaseHandler):
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="home"):
-        htmls = ('write', 'setting', 'index', 'deleted')
+        htmls = ('write', 'index', 'deleted')
 
         template = ("%s.html" % html)
         page = self.get_argument("p", 1)
@@ -74,7 +67,7 @@ class HomeHandler(BaseHandler):
         if(html == "deleted"):
             articles = self.deleted_articles(master['uid'])
             self.render(template, 
-                        title = 'HOME | manage', 
+                        title = '回收站', 
                         master = master,
                         member = master,
                         errors=None,                        
@@ -139,7 +132,7 @@ class EmailHandler(BaseHandler):
     # ajax call
     def post(self):
         errors = []
-        _email = self.get_argument("email", None).strip()
+        _email = self.get_argument("email", None)
         if re.match(EMAIL_PATT, _email):
             ex = db.member.find_one({"email":_email})
             if not ex:

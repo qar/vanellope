@@ -117,7 +117,6 @@ class WidgetsHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, w=None):
         path = os.path.join(self.application.settings['template_path'],'widgets',w)
-        print path
         if os.path.exists(path):
             f = open(path, 'r')
             self.finish(f.read())

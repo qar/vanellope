@@ -121,6 +121,20 @@ ul.tools-list > li > a{color: #555555;}
 	padding: 0px;
 	width: 55px;
 	margin-left: 0px;
+	border-radius:4px;
+	float:right;
+	height: 26px;
+	line-height: 26px;
+	background-color: #a4cbd9;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.flatSubmitBtnRight{
+	margin: 0px;
+	padding: 0px;
+	width: 55px;
+	margin-left: 0px;
 	border-radius: 0px 4px 4px 0px;
 	float:right;
 	height: 26px;
