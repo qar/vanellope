@@ -16,18 +16,11 @@ import config
 import tornado.web
 
 from vanellope import da
+from vanellope.model import Member
 from vanellope.ext import db, Mail
 from vanellope.handlers import BaseHandler
 
 UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
-EMAIL_ERR = {
-    # the dict key MUST NOT be changed
-    'exist': u"This email address has being used",
-    'invalid': u"It's not a valid email address",
-}
-
-
 CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
 
 class RegisterHandler(BaseHandler):
@@ -39,20 +32,7 @@ class RegisterHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def post(self):
-        model = {
-            'uid': None,
-            'role': "reader",
-            'name': None,
-            'name_safe': None,
-            'email': None,
-            'pwd': None, 
-            "color": None,
-            'auth': None,
-            'date': datetime.datetime.utcnow(),
-            'avatar': None,
-            'brief': None,
-            'verified': False,
-        }
+        member = Member()
         errors = []
         post_values = ['name','pwd','cpwd','email']
         args = {}
@@ -71,26 +51,24 @@ class RegisterHandler(BaseHandler):
             if da.get_member_by_name(args['name']):
                 errors.append(u"user name has being taken")
             else:
-                model['name'] = args['name']
-                model['name_safe'] = args['name'].lower()
+                member.set_name(args['name'])
+                print "name set"
         else:
             errors.append(u"illegal character")
 
         # set user password
         if args['pwd'] and (args['pwd'] == args['cpwd']):
-            hashed = hashlib.sha512(args['pwd']).hexdigest()
-            model['pwd'] = hashed
+            member.set_password(args['pwd'])
+            print "password set"
         else:
             errors.append(u"password different")
 
         # set user email
-        if args['email'] and re.match(EMAIL_PATT, args['email'].lower()):
-            if get_member_by_email_lower(args['email'].lower()):
-                errors.append(u"This email address has being used")
+        if args['email']:
+            if member.set_email(args['email']):
+                print "email set"
             else:
-                model['email'] = args['email']
-        else:
-            errors.append(u"It's not a valid email address")
+                errors.append(u"It's not a valid email address")
 
         if errors:
             self.render("register.html", #template file
@@ -98,28 +76,15 @@ class RegisterHandler(BaseHandler):
                         errors = errors,    
                         master = None)
         else:
-            model['uid'] = da.total_member() + 1
-            model['date'] = datetime.datetime.utcnow()
-            model['auth'] = hashlib.sha512(model['name'] + model['pwd']).hexdigest()
-            gravatar = ("http://www.gravatar.com/avatar/%s" % 
-                             hashlib.md5(model['email']).hexdigest() + "?")
-            model['avatar'] = gravatar + urllib.urlencode({'s':64})
-            model['avatar_large'] = gravatar + urllib.urlencode({'s':128})
-            model['secret_key'] = randomwords(20)
-            da.insert_new_member(model)
-            netloc = urlparse.urlsplit(config.HOSTNAME).netloc
-            URL = "%s/verify/?" % (config.HOSTNAME,) + urllib.urlencode(
-                                {"secret_key":model['secret_key']})
-            SUBJECT = "[%s]邮件验证" % netloc
-            CONTENT = '''
-            <p>感谢您在 %s 注册, 点击下面的链接或将其复制到浏览器地址栏中打开进行最后的验证</p>
-            <a href="%s">%s</a>
-            ''' % (netloc, URL, URL)
-            mail = Mail(Subject=SUBJECT, To=model['email'], Body=CONTENT)
-            mail.Send()
-
+            member.set_secret_key(randomwords(20))
+            print "secret_key set"
+            print "sending Email"
+            member.verify()
+            print "email sent\ninsert into database...",
+            member.put()
+            print "Done"
             self.set_cookie(name="auth", 
-                            value=model['auth'], 
+                            value=member.get_auth(), 
                             expires_days = 365)
             self.redirect('/')
 
@@ -141,6 +106,7 @@ class VerifyHandler(BaseHandler):
         else:
             self.write("your email has been activated already") # email has been verified
         self.finish()
+
 
 class PasswordResetHandler(BaseHandler):
     @tornado.web.authenticated

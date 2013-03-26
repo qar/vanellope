@@ -7,7 +7,7 @@ import tornado.web
 import logging
 from markdown import markdown
 
-from vanellope import Article
+from vanellope.model import Article
 from vanellope.ext import db
 from vanellope.handlers import BaseHandler
 
