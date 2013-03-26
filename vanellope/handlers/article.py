@@ -4,14 +4,17 @@
 import datetime
 import json
 import tornado.web
+import logging
 from markdown import markdown
+
+from vanellope import Article
 from vanellope.ext import db
-from vanellope.model import Article
 from vanellope.handlers import BaseHandler
 
 class ArticleHandler(BaseHandler):
     def get(self, sn):
-        article = db.article.find_one({"status": "normal", 'sn': int(sn)})
+        article = Article().reload(sn)
+        #article = db.article.find_one({"status": "normal", 'sn': int(sn)})
         if not article:
             self.send_error(404)
             self.finish()
@@ -48,21 +51,7 @@ class ArticleHandler(BaseHandler):
     #create article
     @tornado.web.authenticated
     def post(self):
-        model = {
-            'sn': None, # article numeric id
-            'status': "normal", # 'deleted', 'normal',
-            'author': None, #
-            'heat': 0,
-            'title': None,
-            'sub_title': None,
-            'markdown': None,
-            'html': None,
-            'date': datetime.datetime.utcnow(),
-            'review': datetime.datetime.utcnow(),
-            'permalink': None,
-            'category': None,
-        }
-
+        article = Article()
         # get post values
         post_values = ['intro-img', 'title', 'brief', 'content']
         args = {}
@@ -71,20 +60,16 @@ class ArticleHandler(BaseHandler):
                 args[v] = self.get_argument(v)
             except:
                 pass
-        if db.article.count() == 0:
-            model['sn'] = 0;
-        else:
-            model['sn'] = db.article.find().sort("sn", -1)[0]['sn'] + 1
-        model['status'] = 'normal'
-        model['title'] = args['title']
-        model['sub_title'] = args['brief']
-        model['markdown'] = args['content']
-        model['html'] = markdown(args['content'], ['fenced_code', 'codehilite'], safe_mode= "escape")
+        print dir(article)
+        article.set_title(args['title'])
+        article.set_sub_title(args['brief'])
+        article.set_markdown(args['content'])
+        article.set_html(markdown(args['content'], ['fenced_code', 'codehilite'], safe_mode= "escape"))
 
         try:     
             master = self.get_current_user()
-            model['author'] = master['uid']
-            db.article.insert(model)
+            article.set_author(master['uid'])
+            article.put()
             self.redirect('/')
         except:
             logging.warning("Unexpecting Error")

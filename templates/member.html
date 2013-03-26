@@ -1,4 +1,4 @@
-{% include "../common/header.html" %}
+{% include "common/header.html" %}
 <div id="wrapper">
 	<div class="primary-wrapper">
 	<div class="primary">
@@ -7,10 +7,6 @@
 			<img src="{{ member['avatar_large'] }}">
 			<div class="member-info-container">
 				<h2 class="member-info">{{ member['name'] }}</h2>
-			  	{% if master %}
-				<p class="member-info">{{ member['email'] }}</p>				
-			  	<span id="memberBriefEditor" class="option"><i class="icon-edit"></i></span>
-			  	{% end %}
 			  	<p class="member-info" id="member-brief" style="font-size:15px;line-height:22px;height:100px;width:461px"> 
 			  		{% if member.has_key("brief") and member['brief'] %}
 			  		{{ member['brief'] }} 
@@ -22,10 +18,12 @@
 		</div> <!-- end of "div.primary-item-container" -->
 
 		<div id="jq-insert-mark">
-			{% if master %}
-				{% include "owner-article-list.html" %}
-			{% else %}
-				{% include "viewer-article-list.html" %}
+			{% for article in articles %}
+			<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
+				<span class="article-caption" >
+					<a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
+				</span>
+			</div>
 			{% end %}
 		</div>
 
@@ -48,50 +46,17 @@
 				var uname = $("h2.member-info").html();
 				getPageByAuthor(page, uname);
 			});
-
-			$("#memberBriefEditor").click(function(){
-				$(this).hide();
-			  	$('#member-brief').hide(300);
-			  	$('textarea.member-info').show(300).focus();
-			  	$('textarea.member-info').html($.trim($('#member-brief').text()));
-
-			  	$('textarea.member-info').blur(function(){
-					var content = $.trim($('textarea.member-info').val());
-					$('#member-brief').html(content);
-					$('textarea.member-info').hide(300);
-					$('#member-brief').show(300);
-					$.ajax({
-						url:"/home",
-						type:"POST",
-						data:{'brief': content},
-					});
-					$("#memberBriefEditor").show();
-			  	});
-			});  
-			{% if master %}
-			$(document).on("mouseenter", "div.article-list", function(){
-				$(this).children("span.option").css({"visibility":"visible"}).fadeIn(500);
-			});
-			$(document).on("mouseleave", "div.article-list", function(){
-				$(this).children("span.option").css({"visibility":"hidden"}).fadeOut(500);
-			});
-			{% end %}
 		</script>
 	
 	</div> <!-- end of "primary" -->
   	</div><!-- end of primary-wrapper -->   
 
-	<div class="widgets-wrapper">
-	{% if master %}
-        {% include "../widgets/tools-list.html" %}
-		{% include "../widgets/personal-info-manage.html" %}
-    {% end %}
-	
+	<div class="widgets-wrapper">	
   	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->
 
-{% include "../common/footer.html" %}
+{% include "common/footer.html" %}
 
 
 

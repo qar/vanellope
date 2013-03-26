@@ -145,5 +145,3 @@ class Comment:
 
     def put(self):
         db.comment.insert(self.comment)
-
-

@@ -13,13 +13,31 @@ import pymongo
 import markdown
 
 from vanellope.ext import db
+from vanellope.ext import Mail
+
 from vanellope.model import Article
 from vanellope.model import Comment
+
 from vanellope.handlers import BaseHandler
-from vanellope.handlers.comment import CommentHandler
+
+from vanellope.handlers.auth import LoginHandler
+from vanellope.handlers.auth import LogoutHandler
+from vanellope.handlers.auth import ForgetHandler
+from vanellope.handlers.auth import PasswordHandler
+from vanellope.handlers.auth import VerifyHandler
+from vanellope.handlers.auth import PasswordResetHandler
+from vanellope.handlers.auth import RegisterHandler
+
 from vanellope.handlers.member import MemberHandler
-from vanellope.handlers.member import RegisterHandler
+from vanellope.handlers.member import EmailHandler
+from vanellope.handlers.member import HomeHandler
+
+from vanellope.handlers.comment import CommentHandler
+
 from vanellope.handlers.article import ArticleHandler
+from vanellope.handlers.article import PagesHandler
+from vanellope.handlers.article import HotestHandler
+from vanellope.handlers.article import RecoverHandler
 from vanellope.handlers.article import ArticleUpdateHandler
 
 import tornado.web

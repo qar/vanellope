@@ -1,30 +1,32 @@
 
-{% include "../common/header.html" %}
+{% include "common/header.html" %}
 <!-- body content wrapper -->
 <div id="wrapper">
-  <div class="primary-wrapper">
+    <div class="primary-wrapper">
     <div class="primary" >
 
 <div class="primary-item-container">
 
   <div class="primary-caption">
     <span class="primary-caption-icon"><i class="icon-pencil icon-2x"></i></span>
-    <span class="primary-caption-words">修改文章</span>
+    <span class="primary-caption-words">写文章</span>
   </div><!-- end of  "primary-caption" -->
 
     <div class="primary-item-sep"></div>
 
-  <form class="article" id="myform" action="/update/{{ article['sn'] }}" enctype="multipart/form-data" method="post">
+  <form class="article" action="/article" enctype="multipart/form-data" method="post">
 
-    <input id="title" class="article inputbox" type="text" name="title" value="{{ escape(article['title']) }}" style="height:25px">
       <div class="primary-item-sep"></div>
-    <textarea class="article inputbox" name="brief" style="min-height:60px">{{ article['sub_title'] }}</textarea>
+    <input id="title" class="inputbox article" type="text" name="title" placeholder="标题" autofocus style="height:25px">
       <div class="primary-item-sep"></div>
-    <textarea id="text-content" class="article inputbox" name="content" style="min-height:260px">{{ article['markdown'] }}</textarea>    
+    <textarea class="inputbox article" name="brief" placeholder="简介" style="min-height:60px"></textarea>
       <div class="primary-item-sep"></div>
-    <input class="button submit-button" type="submit" value="提交更改">
+    <textarea class="inputbox article" id="text-content" name="content" placeholder=" 使用 markdown 语法撰写正文" style="min-height:260px"></textarea>    
+      <div class="primary-item-sep"></div>
+    <input type="submit" class="button submit-button" value="发表">
       <div class="primary-item-sep"></div>
   </form><!-- end of "article-editor" -->
+
   <script>
         $("input.submit-button").click(function(event) {
           // neither title nor main article conent should be null.
@@ -38,12 +40,12 @@
 </div>
 
   <div class="widgets-wrapper">
-    {% include "../widgets/tools-list.html" %}
+    {% include "widgets/tools-list.html" %}
   </div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->
 
-{% include "../common/footer.html" %}
+{% include "common/footer.html" %}
 
 
 
