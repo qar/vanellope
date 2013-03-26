@@ -6,7 +6,7 @@ import hashlib
 import urllib
 import datetime
 from vanellope.handlers import BaseHandler
-from vanellope.ext import db
+from vanellope import db
 
 
 import tornado.web

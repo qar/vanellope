@@ -12,11 +12,11 @@ import random
 import json
 import config
 
-import tornado.web
-
 from vanellope import da
-from vanellope.ext import db, Mail
+from vanellope import db, Mail
 from urllib import quote_plus as url_escape
+
+import tornado.web
 
 EMAIL_PATT = r'^[-a-zA-Z0-9\.]+@[-a-zA-Z0-9]+\.[a-z]{2,4}$'
 EMAIL_ERR = {
@@ -44,6 +44,10 @@ class Member:
             'verified': False,
         }
     
+    def reload(self, auth=None):
+        self._model = db.member.find_one({"auth":auth})
+        return self._model
+
     # Required Properties
     def set_name(self, _name):
         # check uniqueness

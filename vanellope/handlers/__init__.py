@@ -3,7 +3,7 @@
 
 import tornado.web
 
-from vanellope.ext import db
+from vanellope import db
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):

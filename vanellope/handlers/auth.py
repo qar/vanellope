@@ -17,7 +17,7 @@ import tornado.web
 
 from vanellope import da
 from vanellope.model import Member
-from vanellope.ext import db, Mail
+from vanellope import db, Mail
 from vanellope.handlers import BaseHandler
 
 UID_PATT = r'^[a-zA-Z0-9]{1,16}$'

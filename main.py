@@ -12,8 +12,8 @@ import re
 import pymongo
 import markdown
 
-from vanellope.ext import db
-from vanellope.ext import Mail
+from vanellope import db
+from vanellope import Mail
 
 from vanellope.model import Article
 from vanellope.model import Comment

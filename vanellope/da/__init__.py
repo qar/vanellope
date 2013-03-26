@@ -3,7 +3,7 @@
 # "da" means Data Access, this file contains various quick (or dirty) methods for accessing data.
 #
 #
-from vanellope.ext import db
+from vanellope import db
 
 def get_member_by_name(_name):
     return db.member.find_one({"name": _name})

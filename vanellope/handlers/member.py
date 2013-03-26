@@ -18,7 +18,7 @@ from email.mime.text import MIMEText
 
 import tornado.web
 
-from vanellope.ext import db, Mail
+from vanellope import db, Mail
 from vanellope.handlers import BaseHandler
 
 

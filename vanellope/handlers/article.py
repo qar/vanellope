@@ -8,13 +8,12 @@ import logging
 from markdown import markdown
 
 from vanellope.model import Article
-from vanellope.ext import db
+from vanellope import db
 from vanellope.handlers import BaseHandler
 
 class ArticleHandler(BaseHandler):
     def get(self, sn):
         article = Article().reload(sn)
-        #article = db.article.find_one({"status": "normal", 'sn': int(sn)})
         if not article:
             self.send_error(404)
             self.finish()
