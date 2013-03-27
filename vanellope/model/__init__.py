@@ -12,11 +12,14 @@ import random
 import json
 import config
 
-from vanellope import da
-from vanellope import db, Mail
 from urllib import quote_plus as url_escape
 
 import tornado.web
+
+from vanellope import da
+from vanellope import db, Mail
+from vanellope.exception import DocumentExistError
+
 
 EMAIL_PATT = r'^[-a-zA-Z0-9\.]+@[-a-zA-Z0-9]+\.[a-z]{2,4}$'
 EMAIL_ERR = {
@@ -52,7 +55,7 @@ class Member:
     def set_name(self, _name):
         # check uniqueness
         if db.member.find_one({"name": _name}):
-            return False
+            raise DocumentExistError()
         else:
             self._model['name'] = _name
             self._model['name_safe'] = _name.lower()
@@ -71,10 +74,9 @@ class Member:
 
     def set_email(self, _email):
         # check
-        print _email
         if re.match(EMAIL_PATT, _email.lower()):
             if db.member.find_one({"email": _email.lower()}):
-                return False
+                raise DocumentExistError()
             else:
                 self._model['email'] = _email.lower() 
                 return True
@@ -128,6 +130,35 @@ class Comment:
 
     def put(self):
         db.comment.insert(self.comment)
+
+
+class Message:
+    def __init__(self):
+        self._model = {
+            "mid": None,
+            "from": None,
+            "to": None,
+            "status": "unread", # "unread", "read"
+            "date": datetime.datetime.utcnow(),
+            "msg": None,
+        }
+
+    # Sender and Receiver
+    def contact(self, sender, receiver):
+        self._model['from'] = sender
+        self._model['to'] = receiver
+        total = db.message.find({"from": sender, "to":receiver}).count()
+        self._model['mid'] = int(''.join([str(sender), str(total+1), str(receiver)]))
+
+    def msg(self, msg):
+        self._model['msg'] = msg
+
+    def read(self):
+        self._model['status'] = "read"
+
+    def put(self):
+        db.message.save(self._model)
+
 
 
 class Article:

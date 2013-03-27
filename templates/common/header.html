@@ -1,24 +1,21 @@
-{# template values:
-## title: the title of this html page
-#} 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <!-- resharp page302.css into vanellope.css. when it's ready , rename vanellope.css as page302.css and relace the one already exists. -->
-    <link rel="stylesheet" type="text/css" href="/static/css/common.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/widgets.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" />
-    <link rel="shortcut icon" href="/static/img/favicon.ico" />
-    {% if master and master['color'] %}
-    <style>
-        .common-color{background-color: {{ master['color'] }};}
-    </style>
-    {% end %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="/static/js/vanellope.js"></script>
+	<meta charset="UTF-8">
+	<title>{{ title }}</title>
+	<!-- resharp page302.css into vanellope.css. when it's ready , rename vanellope.css as page302.css and relace the one already exists. -->
+	<link rel="stylesheet" type="text/css" href="/static/css/common.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/widgets.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" />
+	<link rel="shortcut icon" href="/static/img/favicon.ico" />
+	{% if master and master['color'] %}
+	<style>
+		.common-color{background-color: {{ master['color'] }};}
+	</style>
+	{% end %}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="/static/js/vanellope.js"></script>
 </head>
 
 <body>
@@ -28,13 +25,15 @@
   <span style="float:left; font-size:10px; height:100%; color:white; padding-left:6px; padding-top:5px">Pilot</span>
   <ul class="nav">
   {% if master %}
-    <li class="nav"><a class="nav" href="/home">{{ master['name'] }}</a></li>
-    <li class="nav"><a class="nav" href="/logout ">退出</a></li>
-    {% else %}
-    <li class="nav"><a class="nav" href="/login">登录</a></li>
-    <li class="nav"><a class="nav" href="/register">注册</a></li>
-    {% end %}
+	<li class="nav" id="memberName"><a class="nav" href="/home">{{ master['name'] }}</a></li>
+	<li class="nav"><a class="nav" href="/logout ">退出</a></li>
+	{% else %}
+	<li class="nav"><a class="nav" href="/login">登录</a></li>
+	<li class="nav"><a class="nav" href="/register">注册</a></li>
+	{% end %}
   </ul>
+  
+  </script>
 </div><!-- end of heaer -->
 </div> <!-- end of header-wrapper -->
 

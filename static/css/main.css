@@ -237,6 +237,7 @@ div.member-info{
 	width:636px;
 	min-height:180px;
 	height: auto;
+
 }
 div.member-info > img{
 	float: left;
@@ -298,4 +299,15 @@ ul.brand{
 ul.brand > li{
 	float: right;
 	margin-left: 20px;
+}
+
+span.privateMsgBtn{
+	float:right;
+	width:60px;
+	height:23px; 
+	line-height:23px;
+	background-color:#3e943e;
+	color:white;border-radius:5px; 
+	text-align:center;
+	vertical-align: middle;
 }

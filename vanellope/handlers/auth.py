@@ -20,13 +20,16 @@ from vanellope.model import Member
 from vanellope import db, Mail
 from vanellope.handlers import BaseHandler
 
+from vanellope.exception import DocumentExistError
+
 UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
 CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
+
 
 class RegisterHandler(BaseHandler):
     def get(self):
         self.render("register.html", 
-                    title = 'Register',
+                    title = '注册',
                     errors = None,
                     master = None)
 
@@ -36,24 +39,25 @@ class RegisterHandler(BaseHandler):
         errors = []
         post_values = ['name','pwd','cpwd','email']
         args = {}
-        for v in post_values:
-            args[v] = self.get_argument(v, None)
-            if args[v] is None:
-                errors.append("complete the blanks")
-                self.render("register.html",
-                            title="Register",
-                            master = None,
-                            errors=errors)
+        try:
+            for v in post_values:
+                args[v] = self.get_argument(v)
+        except:
+            errors.append("请把表格填写完整")
+            self.render("register.html",
+                        title="注册",
+                        master = None,
+                        errors=errors)
 
         # set user name
         # check user input name's usability
         if re.match(UID_PATT, args['name']):
-            if da.get_member_by_name(args['name']):
-                errors.append(u"user name has being taken")
-            else:
+            try:
                 member.set_name(args['name'])
+            except DocumentExistError:
+                errors.append(u"用户名已经被使用")
         else:
-            errors.append(u"illegal character")
+            errors.append(u"你填写的用户名中有不被支持的字符")
 
         # set user password
         if args['pwd'] and (args['pwd'] == args['cpwd']):
@@ -63,7 +67,9 @@ class RegisterHandler(BaseHandler):
 
         # set user email
         if args['email']:
-            if not member.set_email(args['email']):
+            try:
+                member.set_email(args['email'])
+            except DocumentExistError:
                 errors.append(u"请检查邮箱地址的书写格式")
 
         if errors:
@@ -114,7 +120,7 @@ class PasswordResetHandler(BaseHandler):
         )
         for k in args.keys():
             if( not args[k]):
-                errors.append(u"complete the blanks")
+                errors.append(u"请把表格填写完整")
                 self.write(json.dumps(errors))
                 self.finish()
 
@@ -152,7 +158,7 @@ class LoginHandler(BaseHandler):
             pwd = self.get_argument("pwd", None)
         )
         if( not args['name'] or not args['pwd']):
-            errors.append(u"complete the blanks")
+            errors.append(u"请把表格填写完整")
             self.render(template, 
                         title="Login", 
                         master=False, 
@@ -163,14 +169,14 @@ class LoginHandler(BaseHandler):
             input_auth = hashlib.sha512(args['name'] + 
                         hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
         except:
-            errors.append(u"db error")
+            errors.append(u"数据库错误")
 
         if member and (member['auth'] == input_auth):
             self.set_cookie(name = "auth", 
                             value = member['auth'], 
                             expires_days = 365)
         else:
-            errors.append(u"error with user name or password") 
+            errors.append(u"用户名或密码错误") 
         if len(errors) > 0:
             self.render(template, 
                         title = "Login", 
@@ -202,7 +208,7 @@ class ForgetHandler(BaseHandler):
             email = self.get_argument("email", None)
         )
         if( not args['name'] or not args['email']):
-            errors.append(u"complete the blanks")
+            errors.append(u"请把表格填写完整")
             self.render(template, 
                         title="Forget", 
                         master=False, 
@@ -215,9 +221,9 @@ class ForgetHandler(BaseHandler):
                 da.save_member(member)
                 send_verification_email(args['email'], member['secret_key'])
             else:
-                errors.append(u"email is wrong")
+                errors.append(u"邮件地址格式不正确")
         else:
-            errors.append(u"no such user")
+            errors.append(u"这个用户不存在")
         if len(errors) > 0:
             self.render("forget.html", 
                         title = "找回密码", 
@@ -252,7 +258,7 @@ class PasswordHandler(BaseHandler):
             cpwd = self.get_argument("pwd", None)
         )
         if( not args['name'] or not args['pwd']):
-            errors.append(u"complete the blanks")
+            errors.append(u"请把表格填写完整")
             self.render(template, 
                         title="Login", 
                         master=False, 
@@ -274,9 +280,9 @@ class PasswordHandler(BaseHandler):
                 self.redirect('/')
 
             else:
-                errors.append(u"different password")
+                errors.append(u"新密码两次输入不一致")
         else:
-            errors.append(u"invalid secure link")
+            errors.append(u"链接已过期")
             self.render("password.html", 
                         title = "更改密码", 
                         master = False, 

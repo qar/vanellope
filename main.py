@@ -80,7 +80,7 @@ class App(tornado.web.Application):
         (r"/article/recover/([0-9]+)", RecoverHandler),
         (r"/update/(.*)", ArticleUpdateHandler),
         (r"/article/hotest/([0-9]+)", HotestHandler),
-
+        
         (r"/comment/(.*)", CommentHandler),
         (r"/widgets/([-\w\d]*\.html$)", WidgetsHandler),
         (r"/ajax/color", ajax.ColorHandler),]
