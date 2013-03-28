@@ -12,19 +12,12 @@ import random
 import json
 import config
 
-
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
 import tornado.web
 
-from vanellope import db, Mail
+from vanellope import db
+from vanellope import Mail
+from vanellope import regex
 from vanellope.handlers import BaseHandler
-
-
-UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
-EMAIL_PATT = r'^[a-z0-9\.]+@[a-z0-9]+\.[a-z]{2,4}$'
 
 
 class MemberHandler(BaseHandler):
@@ -130,10 +123,11 @@ class EmailHandler(BaseHandler):
         self.finish()
 
     # ajax call
+    # BUG: even if email not verified still can go.
     def post(self):
         errors = []
         _email = self.get_argument("email", None)
-        if re.match(EMAIL_PATT, _email):
+        if re.match(regex.EMAIL, _email):
             ex = db.member.find_one({"email":_email})
             if not ex:
                 master = self.get_current_user()

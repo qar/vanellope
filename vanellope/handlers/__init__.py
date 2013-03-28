@@ -4,6 +4,7 @@
 import tornado.web
 
 from vanellope import db
+from vanellope.model import Member
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):

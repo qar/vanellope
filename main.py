@@ -3,23 +3,32 @@
 
 import os
 import sys
+import re
 import os.path
 import hashlib
 import datetime
 import time
 import logging
-import re
 import pymongo
 import markdown
 
+import tornado.web
+import tornado.ioloop
+import tornado.escape
+import tornado.options
+import tornado.httpserver
+from tornado.options import define, options
+
 from vanellope import db
 from vanellope import Mail
+from vanellope import regex
 
+from vanellope.model import Member
 from vanellope.model import Article
 from vanellope.model import Comment
 
-from vanellope.handlers import BaseHandler
 from vanellope.handlers import ajax
+from vanellope.handlers import BaseHandler
 
 from vanellope.handlers.auth import LoginHandler
 from vanellope.handlers.auth import LogoutHandler
@@ -41,17 +50,9 @@ from vanellope.handlers.article import HotestHandler
 from vanellope.handlers.article import RecoverHandler
 from vanellope.handlers.article import ArticleUpdateHandler
 
-import tornado.web
-import tornado.ioloop
-import tornado.escape
-import tornado.options
-import tornado.httpserver
-from tornado.options import define, options
 
-UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-sys.path.append(os.getcwd())
 
-options['log_file_prefix'].set(os.path.join(os.path.dirname(__file__), 'page302.log'))
+options['log_file_prefix'].set('log/page302.log')
 define("port", default=8000, help="run on the given port", type=int)
 
 
@@ -72,7 +73,7 @@ class App(tornado.web.Application):
         (r"/password", PasswordHandler),
         (r"/register", RegisterHandler),
         (r"/forget", ForgetHandler),
-        (r"/verify/", VerifyHandler),
+        (r"/verify", VerifyHandler),
 
         (r"/article", ArticleHandler),
         (r"/article/([0-9]+)", ArticleHandler),
@@ -127,6 +128,7 @@ class WidgetsHandler(BaseHandler):
 
 
 if __name__ == "__main__":
+    sys.path.append(os.getcwd())
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(App())
     http_server.listen(options.port)

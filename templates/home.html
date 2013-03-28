@@ -10,7 +10,7 @@
 				<p class="member-info">{{ member['email'] }}</p>				
 			  	<span id="memberBriefEditor" class="option"><i class="icon-edit"></i></span>
 			  	<p class="member-info" id="member-brief" style="font-size:15px;line-height:22px;height:100px;width:461px"> 
-			  		{% if member.has_key("brief") and member['brief'] %}
+			  		{% if member['brief'] %}
 			  		{{ member['brief'] }} 
 					{% end %}
 			  	</p>

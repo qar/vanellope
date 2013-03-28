@@ -12,18 +12,16 @@ import random
 import json
 import config
 
-
 import tornado.web
 
 from vanellope import da
+from vanellope import db
+from vanellope import Mail
+from vanellope import regex
+from vanellope import exception
+
 from vanellope.model import Member
-from vanellope import db, Mail
 from vanellope.handlers import BaseHandler
-
-from vanellope.exception import DocumentExistError
-
-UID_PATT = r'^[a-zA-Z0-9]{1,16}$'
-CSS_COlOR_PATT = r"#[0-9a-fA-F]{6}"
 
 
 class RegisterHandler(BaseHandler):
@@ -35,46 +33,46 @@ class RegisterHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def post(self):
+        errors = [] # errors message container
         member = Member()
-        errors = []
         post_values = ['name','pwd','cpwd','email']
         args = {}
-        try:
-            for v in post_values:
-                args[v] = self.get_argument(v)
-        except:
-            errors.append("请把表格填写完整")
-            self.render("register.html",
-                        title="注册",
-                        master = None,
-                        errors=errors)
+        for v in post_values:
+            # Get nessary argument
+            # Use None as default if argument is not supplied
+            args[v] = self.get_argument(v, None)
 
-        # set user name
-        # check user input name's usability
-        if re.match(UID_PATT, args['name']):
-            try:
-                member.set_name(args['name'])
-            except DocumentExistError:
-                errors.append(u"用户名已经被使用")
-        else:
+        # Set user name
+        try:
+            member.set_name(args['name'])
+        except exception.NameError:
+            errors.append(u"请填写用户名")
+        except exception.DupKeyError:
+            errors.append(u"用户名已经被使用")
+        except exception.PatternMatchError:
             errors.append(u"你填写的用户名中有不被支持的字符")
 
-        # set user password
-        if args['pwd'] and (args['pwd'] == args['cpwd']):
-            member.set_password(args['pwd'])
-        else:
+        # Set user password
+        if args['pwd'] != args['cpwd']:
             errors.append(u"两次输入的密码不一致")
+        elif args['pwd'] is None and args['cpwd'] is None:
+            errors.append(u"请填写密码")
+        else:
+            member.set_password(args['pwd'])
 
         # set user email
-        if args['email']:
-            try:
-                member.set_email(args['email'])
-            except DocumentExistError:
-                errors.append(u"请检查邮箱地址的书写格式")
+        try:
+            member.set_email(args['email'])
+        except ValueError:
+            errors.append(u"请填写邮箱")
+        except exception.DupKeyError:
+            errors.append(u"邮箱已经被使用")
+        except exception.PatternMatchError:
+            errors.append(u"邮件地址格式不正确")
 
         if errors:
-            self.render("register.html", #template file
-                        title = u"注册", # web page title
+            self.render("register.html", 
+                        title = u"注册", 
                         errors = errors,    
                         master = None)
         else:
@@ -82,115 +80,81 @@ class RegisterHandler(BaseHandler):
             member.verify()
             member.put()
             self.set_cookie(name="auth", 
-                            value=member.get_auth(), 
+                            value=member.auth, 
                             expires_days = 365)
             self.redirect('/')
 
 
-class VerifyHandler(BaseHandler):
-    @tornado.web.authenticated
-    def get(self):
-        name = self.get_argument("name", None)
-        secret_key = self.get_argument("secret_key", None)
-        master = self.get_current_user()
-        if master['verified'] == False:
-            if secret_key == master['secret_key']:
-                master['verified'] = True
-                del master['secret_key']
-                da.save_member(master)
-                self.finish(u"邮箱已被激活！") # everything fine
-            else:
-                self.finish(u"不正确的地址") # url insecure
-        else:
-            self.finish(u"链接已过期") # email has been verified
-
-
-class PasswordResetHandler(BaseHandler):
-    @tornado.web.authenticated
-    def post(self):        
-        #
-        # user intend to change password.
-        # origin password is required to prevent malicious option.
-        #
-        errors = []
-        args = dict(
-            origin_pwd = self.get_argument("originPwd", None),
-            new_pwd = self.get_argument("newPwd", None),
-            new_pwd_repeat = self.get_argument("newPwdRepeat", None)
-        )
-        for k in args.keys():
-            if( not args[k]):
-                errors.append(u"请把表格填写完整")
-                self.write(json.dumps(errors))
-                self.finish()
-
-        master = self.get_current_user()
-        origin_pwd_hashed = hashlib.sha512(args['origin_pwd']).hexdigest()
-        if master['pwd'] == origin_pwd_hashed:
-            if args['new_pwd'] == args['new_pwd_repeat']:
-                master['pwd'] = hashlib.sha512(args['new_pwd']).hexdigest()
-                master['auth'] = hashlib.sha512(master['name'] + master['pwd']).hexdigest()
-                da.save_member(master)
-                # update secure cookie
-                self.set_cookie(name="auth", 
-                            value=master['auth'], 
-                            expires_days = 365)
-            else:
-                errors.append(u"新密码两次输入不一致")
-        else:
-            errors.append(u"当前密码输入错误")
-        if len(errors) > 0:
-            self.write(json.dumps(errors))
-        else:
-            self.write(json.dumps(True))
-        self.finish()
-
 class LoginHandler(BaseHandler):
     def get(self):
-        self.render("login.html", title="Login", errors=None, master=False)
+        self.render("login.html", 
+                    title="Login", 
+                    errors=None, 
+                    master=False)
 
     def post(self):
-        template = "login.html"
         errors = []
-
-        args = dict(
-            name = self.get_argument("name", None),
-            pwd = self.get_argument("pwd", None)
-        )
-        if( not args['name'] or not args['pwd']):
-            errors.append(u"请把表格填写完整")
-            self.render(template, 
-                        title="Login", 
-                        master=False, 
-                        errors=errors)
-
+        template = "login.html"
+        post_values = ['name','pwd']
+        args = {}
+        for v in post_values:
+            # Get nessary argument
+            # Use None as default if argument is not supplied
+            args[v] = self.get_argument(v, None)
+        
         try:
-            member = da.get_member_by_name(args['name'])
-            input_auth = hashlib.sha512(args['name'] + 
-                        hashlib.sha512(args['pwd']).hexdigest()).hexdigest()
-        except:
-            errors.append(u"数据库错误")
-
-        if member and (member['auth'] == input_auth):
+            # BUG: can not chain like this "member = Member().reload()"
+            member = Member()
+            member.reload(args['name'], args['pwd'])
+            self.clear_all_cookies()
             self.set_cookie(name = "auth", 
-                            value = member['auth'], 
+                            value = member.auth,
                             expires_days = 365)
-        else:
-            errors.append(u"用户名或密码错误") 
+            self.redirect("/")
+        except exception.NameError:
+            errors.append(u"请填写用户名")
+        except exception.AuthError:
+            errors.append(u"用户名或密码错误")
+        
         if len(errors) > 0:
+            # No need to go on either name or pwd is None
             self.render(template, 
                         title = "Login", 
                         master = False, 
                         errors = errors)
-        else:
-            self.redirect("/")
 
 
 class LogoutHandler(BaseHandler):
     def get(self):
         self.clear_all_cookies()
         self.redirect('/')
-     
+
+
+class VerifyHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        #
+        # Database member entity's "verified" tag is initially "False"
+        # until this method is called.
+        #
+        # TODO: complete notification message display
+        #
+        errors = []
+        secret_key = self.get_argument("key", None)
+        
+        master = Member(entity=self.get_current_user())
+        if not master.verified:
+            # Verify secret key and set "verified" tag to "True"
+            if secret_key == master.secret_key:
+                master.getverified()
+                master.put()
+                self.redirect("/") # everything fine
+            else:
+                self.send_error(403) # url insecure
+        else:
+            self.redirect("/") # email has been verified
+        self.finish()
+
 
 class ForgetHandler(BaseHandler):
     def get(self):
@@ -202,28 +166,30 @@ class ForgetHandler(BaseHandler):
     def post(self):
         errors = []
         template = "forget.html"
+        post_values = ['name','email']
+        args = {}
+        for v in post_values:
+            # Get nessary argument
+            # Use None as default if argument is not supplied
+            args[v] = self.get_argument(v, None)
 
-        args = dict(
-            name = self.get_argument("name", None),
-            email = self.get_argument("email", None)
-        )
-        if( not args['name'] or not args['email']):
-            errors.append(u"请把表格填写完整")
-            self.render(template, 
-                        title="Forget", 
-                        master=False, 
-                        errors=errors)
-
-        member = da.get_member_by_name(args['name'])
-        if member:
-            if args['email'] == member['email']:
-                member['secret_key']  = randomwords(20)
-                da.save_member(member)
-                send_verification_email(args['email'], member['secret_key'])
-            else:
-                errors.append(u"邮件地址格式不正确")
+        if args['name'] is None:
+            errors.append(u"请填写用户名")
+        elif args['email'] is None:
+            errors.append(u"请填写邮箱")
         else:
-            errors.append(u"这个用户不存在")
+            member = da.get_member_by_name(args['name'])
+            if not member:
+                errors.append(u"这个用户不存在")
+            elif args['email'].lower() != member['email']:
+                errors.append(u"不是用户注册时使用的邮箱")
+            elif not member.verified:
+                errors.append(u"此邮箱未通过验证，不能用于找回密码")
+            else:
+                member.set_secret_key(randomwords(20))
+                member.put()
+                self.send_email(member['email'], member.secret_key)
+
         if len(errors) > 0:
             self.render("forget.html", 
                         title = "找回密码", 
@@ -232,62 +198,104 @@ class ForgetHandler(BaseHandler):
         else:
             self.redirect("/")
 
+    def send_email(self, email, key):
+        netloc = urlparse.urlsplit(config.HOSTNAME).netloc
+        URL = "%s/password?" % (config.HOSTNAME,)+urllib.urlencode({"key":key})
+        SUBJECT = "[%s]找回密码" % netloc
+        CONTENT = '''
+        <p>点击下面的链接或将其复制到浏览器地址栏中打开来设密重码</p>
+        <a href="%s">%s</a>
+        ''' % (URL, URL)
+        mail = Mail(Subject=SUBJECT, To=email, Body=CONTENT)
+        mail.Send()
+
+
+class PasswordResetHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self):        
+        #
+        # This method is called when LOGINED user intend to change password.
+        # Origin password is required to prevent malicious option.
+        #
+        msg = []
+        post_values = ['originPwd','newPwd','newPwdRepeat']
+        args = {}
+        for v in post_values:
+            # Get nessary argument
+            # Use None as default if argument is not supplied
+            args[v] = self.get_argument(v, None)
+
+
+        master = Member(entity=self.get_current_user())
+        if master.check_password(args['originPwd']):
+            if args['newPwd'] == args['newPwdRepeat']:
+                try:
+                    master.set_password(args['newPwd'])
+                    master.put()
+                    self.clear_all_cookies()
+                    self.set_cookie("auth", master.auth)
+                except TypeError:
+                    msg.append(u"密码不能为空")
+            else:
+                msg.append(u"新密码两次输入不一致")
+        else:
+            msg.append(u"当前密码输入错误")
+        self.finish(json.dumps(msg))
+
+
+
 class PasswordHandler(BaseHandler):
     def get(self):
         secret_key = self.get_argument("key", None)
-        member = da.get_member_by({"secret_key": secret_key})
+        member = db.member.find_one({"secret_key": secret_key})
         if member:
             self.render("password.html", 
-                title="更改密码", 
-                errors=None, 
-                master=False, 
-                key=secret_key)
+                        title="更改密码", 
+                        errors=None, 
+                        master=False, 
+                        key=secret_key)
         else:
             self.send_error(404)
             self.finish()
 
     def post(self):
         #
-        # Use secret_key to get the very user who send change password request
+        # Use secret_key to get the user who send change password request.
         # Replace old password with the new one.
-        # update everything related to the password, like auth string, secure cookie , etc.
+        # update everything related to the password, 
+        # like auth string, secure cookie , etc.
         #
         errors = []
-        args = dict(
-            pwd = self.get_argument("pwd", None),
-            cpwd = self.get_argument("pwd", None)
-        )
-        if( not args['name'] or not args['pwd']):
-            errors.append(u"请把表格填写完整")
-            self.render(template, 
-                        title="Login", 
-                        master=False, 
-                        errors=errors)
-        pwd = self.get_argument("pwd", None)
-        cpwd = self.get_argument("cpwd", None)
-        secret_key = self.get_argument("key", None)
-
-        member = da.get_member_by({"secret_key": secret_key})
-        if member:
-            if pwd == cpwd:
-                member['pwd'] = hashlib.sha512(pwd).hexdigest()
-                member['auth'] = hashlib.sha512(member['name'] + member['pwd']).hexdigest()
-                del member['secret_key']
-                da.save_member(member)
-                self.set_cookie(name = "auth", 
-                            value = member['auth'], 
-                            expires_days = 365)
-                self.redirect('/')
-
-            else:
-                errors.append(u"新密码两次输入不一致")
+        post_values = ['pwd','cpwd', 'key']
+        args = {}
+        for v in post_values:
+            # Get nessary argument
+            # Use None as default if argument is not supplied
+            args[v] = self.get_argument(v, None)
+    
+        member = db.member.find_one({"secret_key": args['key']})
+        master = Member(entity=member)
+        if args['pwd'] == args['cpwd']:
+            try:
+                master.set_password(args['pwd'])
+                master.put()
+                self.clear_all_cookies()
+                self.set_cookie("auth", master.auth)
+            except TypeError: # this try/except has no "else" statement
+                errors.append(u"密码不能为空")
         else:
-            errors.append(u"链接已过期")
+            errors.append(u"新密码两次输入不一致")
+        if len(errors) > 0:
             self.render("password.html", 
-                        title = "更改密码", 
-                        master = False, 
-                        errors = errors)
+                        title="更改密码", 
+                        errors=errors, 
+                        master=False, 
+                        key=args['key'])
+        else:
+            self.redirect("/home")
+
 
 def randomwords(length):
+    random.seed()
     return ''.join(random.choice(string.lowercase 
                 + string.uppercase + string.digits) for i in range(length))

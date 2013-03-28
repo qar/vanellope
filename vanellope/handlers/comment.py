@@ -5,11 +5,13 @@ import re
 import hashlib
 import urllib
 import datetime
-from vanellope.handlers import BaseHandler
-from vanellope import db
-
 
 import tornado.web
+
+from vanellope import db
+from vanellope.handlers import BaseHandler
+
+
 
 class CommentHandler(BaseHandler):
     @tornado.web.authenticated

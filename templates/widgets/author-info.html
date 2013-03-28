@@ -1,18 +1,14 @@
 <div class="widget">
 	<div class="widget-caption common-color">小编</div>
-	<div class="widget-wrapper">
-		<div class="member">
-			<a class="member" href="/member/{{ author['name_safe'] }}">
+	<div class="widget-wrapper" style="padding-top:12px">
+			<a class="member" href="/member/{{ author['name_safe'] }}" style="float:left;height:auto; width:auto">
 				<img class="avatar" src="{{ author['avatar'] }}" alt="{{ author['name'] }}" width="50" height="50px">
 			</a>
-			<ul class="v-bare">
-				<li><a class="member" href="/member/{{ author['name_safe'] }}">{{ author['name'] }}</a></li>
-				{% if author.has_key("brief") and author['brief'] %}
-				<li><span class="member">{{ author['brief'] }}</li>
-				{% end %}
-			</ul>
-		</div>
-
-		
+			<a class="member" href="/member/{{ author['name_safe'] }}" style="float:left;font-size:16px"><span>{{ author['name'] }}</span></a>
+	</div><!-- end of '.widget-wrapper' -->
+	<div class="widget-wrapper">
+			{% if author.has_key("brief") and author['brief'] %}
+			<p class="member" style="float:left;margin:0px;font-size:10px">{{ author['brief'] }}</p>
+			{% end %}
 	</div><!-- end of '.widget-wrapper' -->
 </div><!-- end of '.widget' -->

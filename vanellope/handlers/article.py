@@ -5,10 +5,11 @@ import datetime
 import json
 import tornado.web
 import logging
+
 from markdown import markdown
 
-from vanellope.model import Article
 from vanellope import db
+from vanellope.model import Article
 from vanellope.handlers import BaseHandler
 
 class ArticleHandler(BaseHandler):
@@ -59,7 +60,6 @@ class ArticleHandler(BaseHandler):
                 args[v] = self.get_argument(v)
             except:
                 pass
-        print dir(article)
         article.set_title(args['title'])
         article.set_sub_title(args['brief'])
         article.set_markdown(args['content'])
