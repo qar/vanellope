@@ -29,7 +29,6 @@ from vanellope.model import Member
 from vanellope.model import Article
 from vanellope.model import Comment
 
-from vanellope.handlers import ajax
 from vanellope.handlers import BaseHandler
 
 from vanellope.handlers.auth import LoginHandler
@@ -86,7 +85,7 @@ class App(tornado.web.Application):
         
         (r"/comment/(.*)", CommentHandler),
         (r"/widgets/([-\w\d]*\.html$)", WidgetsHandler),
-        (r"/ajax/color", ajax.ColorHandler),]
+        (r"/ajax/color", ColorHandler),]
 
         SETTINGS = dict(
         static_path = os.path.join(os.path.dirname(__file__), 'static'),
@@ -127,7 +126,16 @@ class WidgetsHandler(BaseHandler):
             self.send_error(404)
             self.finish()
 
-
+class ColorHandler(BaseHandler):
+    def post(self):
+        color = self.get_argument("color", None)
+        if re.match(regex.COLOR, color):
+            master = self.get_current_user()
+            master['color'] = color
+            db.member.save(master)
+            return True
+        else:
+            return False
 
 if __name__ == "__main__":
     sys.path.append(os.getcwd())
