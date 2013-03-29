@@ -8,146 +8,137 @@ import logging
 
 from markdown import markdown
 
+from vanellope import da
 from vanellope import db
+from vanellope import constant as cst
+
 from vanellope.model import Article
+from vanellope.model import Member
+
 from vanellope.handlers import BaseHandler
 
+
 class ArticleHandler(BaseHandler):
-    def get(self, sn):
-        article = Article().reload(sn)
+    def get(self, article_sn):
+        article = da.get_article_by_sn(int(article_sn)) # wrappered
         if not article:
             self.send_error(404)
             self.finish()
 
-        author = db.member.find_one({'uid': article['author'] })
-        cursor = db.comment.find({'article': int(sn)}).sort('date',1)
-        comments = []
-        for comment in cursor:
-            comment['date'] += datetime.timedelta(hours=8)
-            comment['date'] = comment['date'].strftime("%Y-%m-%d %H:%M")
-            comments.append(comment)
+        author = da.get_author(article.author).pack
+        comments = da.get_comment_list_by_sn(article.sn)
 
-        article['heat'] += 1
-        db.article.save(article)
-
-        adjoins = self.find_adjoins(article['date'])
-
-        article['body'] = article['html']
-        article['brief'] = article['sub_title']
-        article['date'] += datetime.timedelta(hours=8)
-        article['date'] = article['date'].strftime("%Y-%m-%d %H:%M")
-        article['review'] += datetime.timedelta(hours=8)
-        article['review'] = article['review'].strftime("%Y-%m-%d %H:%M")
-
+        da.heat_article_by_sn(int(article_sn))
+        adjoins = da.find_adjoins(article.date)
+        tpl = dict(
+            sn = article.sn,
+            title = article.title,
+            body = article.html,
+            brief = article.sub_title,
+            date = article.date + datetime.timedelta(hours=8),
+            review = article.review + datetime.timedelta(hours=8),
+            heat = article.heat,
+        )
+        tpl['date'] = tpl['date'].strftime("%Y-%m-%d %H:%M") 
+        tpl['review'] = tpl['review'].strftime("%Y-%m-%d %H:%M") 
         self.render("article.html", 
                     pre = adjoins[0],
                     fol = adjoins[1],
                     master = self.get_current_user(),
                     comments = comments, 
-                    title = article['title'],
+                    title = article.title,
                     author = author, 
-                    article = article)
+                    article = tpl)
 
     #create article
     @tornado.web.authenticated
     def post(self):
         article = Article()
         # get post values
-        post_values = ['intro-img', 'title', 'brief', 'content']
+        post_values = ['title', 'brief', 'content']
         args = {}
         for v in post_values:
-            try:
-                args[v] = self.get_argument(v)
-            except:
-                pass
+            # Get nessary argument
+            # Use None as default if argument is not supplied
+            args[v] = self.get_argument(v, None)
+  
+        article.set_sn()
         article.set_title(args['title'])
         article.set_sub_title(args['brief'])
         article.set_markdown(args['content'])
-        article.set_html(markdown(args['content'], ['fenced_code', 'codehilite'], safe_mode= "escape"))
+        article.set_html(markdown(args['content'], 
+                        ['fenced_code', 'codehilite'], 
+                        safe_mode= "escape"))
 
-        try:     
-            master = self.get_current_user()
-            article.set_author(master['uid'])
-            article.put()
-            self.redirect('/')
-        except:
-            logging.warning("Unexpecting Error")
+        master = Member(self.get_current_user())
+        article.set_author(master.uid)
+        article.put()
+        self.redirect('/')
 
     @tornado.web.authenticated
     def delete(self, article_sn):
-        article = db.article.find_one({"sn": int(article_sn)})
-        if article['status'] == "deleted":
+        article = da.get_article_by_sn(int(article_sn))
+        if article.status == cst.DELETED:
+            # Remove related data, like comments
             # Remove article that already markded "deleted".
-            db.article.remove(article)
+            article.remove()
+            da.remove_comments_with_article(int(article_sn))
         else:
             # Just mark the article "deleted", not remove it.
-            article['status'] = "deleted"
-            db.article.save(article)
+            article.set_status(cst.DELETED)
+            article.put()
         self.finish()
 
-    def find_adjoins(self, current_date):
-        try:
-            pre = db.article.find({"status":"normal", 'date':
-                {'$lt': current_date}}).sort("date",-1)[0]['sn']
-        except:
-            pre = None
-        try:
-            fol = db.article.find({"status":"normal", 'date': 
-                {"$gt": current_date}}).sort("date", 1)[0]['sn']
-        except:
-            fol = None
-        return (pre, fol)
-        
 
 class ArticleUpdateHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, sn):
-        article = db.article.find_one({'sn': int(sn)})
-        author = db.member.find_one({'uid': article['author']})
+        article = da.get_article_by_sn(int(sn)) # a wrapper
+        author = da.get_author(article.author) # a wrapper
 
         self.render("edit.html", 
                     master = self.get_current_user(),
                     title = "Edit",
-                    author = author,
-                    article = article)
+                    author = author.pack,
+                    article = article.pack)
 
     @tornado.web.authenticated
     def post(self, sn):
+        article = Article()
+        # get post values
         post_values = ['title', 'brief', 'content']
         args = {}
         for v in post_values:
-            try:
-                args[v] = self.get_argument(v)
-            except:
-                continue
-
+            # Get nessary argument
+            # Use None as default if argument is not supplied
+            args[v] = self.get_argument(v, None)
         master = self.get_current_user()
-        article = db.article.find_one({"sn":int(sn)})
-        
-        if master:
-            article['title']  = args['title']
-            article['brief'] = args['brief']
-            article['markdown'] = args['content']
-            article['html'] = markdown(args['content'], ['fenced_code',  'codehilite'], safe_mode="escape" )
-            article['review'] = datetime.datetime.utcnow()
-            db.article.update({"sn":int(sn)}, article)
-            self.redirect("/article/%s" % sn)
-        else:
-            self.send_error(403)    
 
+        article = da.get_article_by_sn(int(sn))
+        article.set_title(args['title'])
+        article.set_sub_title(args['brief'])
+        article.set_markdown(args['content'])
+        article.set_html(markdown(args['content'], 
+                        ['fenced_code', 'codehilite'], 
+                        safe_mode= "escape"))
+
+        article.set_review()
+        article.put()
+        self.redirect("/article/%s" % sn)
+
+
+# Ajax call handler
 class RecoverHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, article_sn):
-        # Ajax Call:
-        # recover deleted article
-        #
         article = db.article.find_one({"sn": int(article_sn)})
-        article['status'] = "normal"
+        article['status'] = cst.NORMAL
         db.article.save(article)
         self.set_status(200)
         return True
    
 
+# Ajax call handler
 class PagesHandler(BaseHandler):
     def get(self, page=1):
         uname = self.get_argument("name", None)
@@ -161,18 +152,8 @@ class PagesHandler(BaseHandler):
                 self.finish()
         else:
             author = db.member.find_one({"name":uname})['uid']
-        total = db.article.find({"status":"normal", "author": author}).count()
-        articles_per_page = 10
-        skip = (int(page) - 1)*articles_per_page
-        if int(page) > 0:
-            if total > skip:
-                articles = db.article.find({"status":"normal", "author":author}).skip(skip).sort("date", -1)
-                return_value = [dict(title=i['title'], sn=i['sn']) for i in articles]    
-            else:
-                return_value = None
-        else:
-            return_value = None
-        json_file = json.dumps(return_value)
+        t = split_pages(author=author, page=page)
+        json_file = json.dumps(t[2])
         self.finish(json_file)
 
 
@@ -180,7 +161,7 @@ class HotestHandler(BaseHandler):
     @tornado.web.asynchronous
     def get(self, N=10):
         # N articles to be returned
-        articles = db.article.find({"status":"normal"}).sort("heat", -1).limit(int(N))
+        articles = db.article.find({"status":cst.NORMAL}).sort("heat", -1).limit(int(N))
         return_value = [dict(title=i['title'], sn=i['sn']) for i in articles] 
         self.finish(json.dumps(return_value))
 

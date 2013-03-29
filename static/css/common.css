@@ -138,10 +138,14 @@ ol{
 ul.nav{
 	list-style-type: none;
 	float: right;
-	margin: 10px 10px;
+	margin: 6px 0px 6px 0px;
 }
 
-li.nav{display: inline;}
+li.nav{
+	display: inline;
+	margin: auto;
+
+}
 
 a.nav{
 	color: white;
@@ -149,8 +153,7 @@ a.nav{
 	border-radius: 4px;
 }
 a.nav:hover{
-	background-color: silver;
-	color: #404040;
+	text-shadow: 0px 0px 1px;
 }
 
 

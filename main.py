@@ -19,9 +19,11 @@ import tornado.options
 import tornado.httpserver
 from tornado.options import define, options
 
+from vanellope import da
 from vanellope import db
 from vanellope import Mail
 from vanellope import regex
+from vanellope import constant as cst
 
 from vanellope.model import Member
 from vanellope.model import Article
@@ -99,19 +101,19 @@ class App(tornado.web.Application):
 class IndexHandler(BaseHandler):
     def get(self):
         page = self.get_argument("p", 1)
-        skip_articles = (int(page) -1 )*10
-        articles = db.article.find({"status":"normal"})
-        articles.sort("date",-1).skip(skip_articles).limit(10)
-        total = db.article.find({"status":"normal"}).count()
-        pages = total // 10 + 1 # pages count from 1
-        if total % 10 > 0:      # the last page articles may not equal to 'p' 
-            pages += 1 
+        t = da.split_pages(page=page)
+        #skip_articles = (int(page) -1 )*10
+        #articles = da.normal_articles(skip=skip_articles, limit=10)
+        #total = len(da.normal_articles())
+        #pages = total // 10 + 1 # pages count from 1
+        #if total % 10 > 0:      # the last page articles may not equal to 'p' 
+        #    pages += 1 
 
         self.render("index.html", 
                     title = 'PAGE302',
                     master = self.get_current_user(), 
-                    pages = pages,
-                    articles = articles)
+                    pages = t[1],
+                    articles = t[2])
 
 
 class WidgetsHandler(BaseHandler):

@@ -14,38 +14,39 @@ import config
 
 import tornado.web
 
+from vanellope import da
 from vanellope import db
+
 from vanellope import Mail
 from vanellope import regex
+from vanellope import constant as cst
+
+from vanellope.model import Member
+from vanellope.model import Article
 from vanellope.handlers import BaseHandler
 
 
 class MemberHandler(BaseHandler):
-    #
+    # UTL: /member/USERNAME
     # Member main information display
     #
     def get(self, uname):
         page = self.get_argument("p", 1)
-        skip_articles = (int(page) -1 )*10
-        author = db.member.find_one({"name_safe": uname})
-        articles = db.article.find({"status":"normal",
-                                    "author": author['uid']}).sort("date",-1).limit(skip_articles)
+        author = Member(da.get_member_by_name_lower(uname))
 
-        total = db.article.find({"status":"normal", "author": author['uid']}).count()
-        pages  = total // 10 + 1
-        if total % 10 > 0:
-            pages += 1
-        master = self.get_current_user()
-        if master and master['name_safe'] == uname:
+        t = da.split_pages(author=author, page=page)
+        master = Member(self.get_current_user())
+        if master and master.name_safe == uname:
             self.redirect("/home")
         else:
             member = author
+
         self.render("member.html",
-                    title = author['name']+u"专栏",
-                    articles = articles,
-                    member = member,
-                    pages = pages,
-                    master = master) 
+                    title = author.name+u"专栏",
+                    articles = t[2],
+                    member = member.pack,
+                    pages = t[1],
+                    master = master.pack) 
 
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
@@ -55,10 +56,10 @@ class HomeHandler(BaseHandler):
         template = ("%s.html" % html)
         page = self.get_argument("p", 1)
         
-        master = self.get_current_user()
-        pages = self.count_pages(master['uid'])
-        if(html == "deleted"):
-            articles = self.deleted_articles(master['uid'])
+        master = Member(self.get_current_user())
+        t = da.split_pages(author=master.uid, page=page)
+        if(html == cst.DELETED):
+            articles = da.deleted_or_normal_articles(master.uid, cst.NOTMAL)
             self.render(template, 
                         title = '回收站', 
                         master = master,
@@ -66,12 +67,12 @@ class HomeHandler(BaseHandler):
                         errors=None,                        
                         articles = articles)
         else:
-            articles = self.normal_articles(master['uid'])
+            articles = da.deleted_or_normal_articles(master.uid, cst.DELETED)
             self.render(template, 
                         title="Home",
                         errors=None,                        
                         master = master,
-                        pages = pages,
+                        pages = t[1],
                         member = master,
                         articles = articles)
 
@@ -92,7 +93,7 @@ class HomeHandler(BaseHandler):
 
     def normal_articles(self, owner_id):
         return db.article.find(
-                {"author": owner_id, "status":"normal"}).sort("date", -1)
+                {"author": owner_id, "status":cst.NORMAL}).sort("date", -1)
 
     def deleted_articles(self, owner_id):
         return db.article.find(

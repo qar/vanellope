@@ -20,16 +20,11 @@ import tornado.web
 from vanellope import db
 from vanellope import Mail
 from vanellope import regex
-
+from vanellope import constant as cst
 from vanellope import exception 
 
-
-EMAIL_ERR = {
-    # the dict key MUST NOT be changed
-    'exist': u"This email address has being used",
-    'invalid': u"It's not a valid email address",
-}
-
+"""Database Schema
+"""
 
 class Member:
     """A wrapper.
@@ -64,6 +59,9 @@ class Member:
             return self._model[item]
         except KeyError:
             return None
+    @property 
+    def uid(self):
+        return self._model['uid']
 
     @property 
     def pack(self):
@@ -72,6 +70,10 @@ class Member:
     @property 
     def name(self):
         return self._model['name']
+
+    @property 
+    def name_safe(self):
+        return self._model['name_safe']
 
     @property 
     def email(self):
@@ -218,40 +220,12 @@ class Comment:
         db.comment.insert(self.comment)
 
 
-class Message:
-    def __init__(self):
-        self._model = {
-            "mid": None,
-            "from": None,
-            "to": None,
-            "status": "unread", # "unread", "read"
-            "date": datetime.datetime.utcnow(),
-            "msg": None,
-        }
-
-    # Sender and Receiver
-    def contact(self, sender, receiver):
-        self._model['from'] = sender
-        self._model['to'] = receiver
-        total = db.message.find({"from": sender, "to":receiver}).count()
-        self._model['mid'] = int(''.join([str(sender), str(total+1), str(receiver)]))
-
-    def msg(self, msg):
-        self._model['msg'] = msg
-
-    def read(self):
-        self._model['status'] = "read"
-
-    def put(self):
-        db.message.save(self._model)
-
-
 
 class Article:
-    def __init__(self):
+    def __init__(self, entity=None):
         self._model = {
             'sn': None, # article numeric id
-            'status': "normal", # 'deleted', 'normal',
+            'status': cst.NORMAL, # 'deleted', 'normal',
             'author': None, #
             'heat': 0,
             'title': None,
@@ -264,24 +238,56 @@ class Article:
             'category': None,
         }
 
-        # Set Serial Number.
-        # Serial Number is integer number.
-        # Serial Number maybe inconsistence if 
-        #   there were articles ever being deleted from database
-        # It always 1 bigger than the current biggest Serial Number
+        if entity and isinstance(entity, dict):
+            self._model = entity
+
+    @property 
+    def pack(self):
+        return self._model
+
+    @property 
+    def status(self):
+        return self._model['status']
+
+    @property 
+    def sn(self):
+        # Whatever it calls, sn refer to the numeric id.
+        return self._model['sn']
+
+    @property 
+    def author(self):
+        return self._model['author']
+
+    @property 
+    def title(self):
+        return self._model['title']
+
+    @property 
+    def sub_title(self):
+        return self._model['sub_title']
+
+    @property 
+    def html(self):
+        return self._model['html']
+
+    @property 
+    def date(self):
+        return self._model['date']
+
+    @property 
+    def review(self):
+        return self._model['review']
+
+    @property 
+    def heat(self):
+        return self._model['heat']
+
+    def set_sn(self):
         if db.article.count() == 0:
             self._model['sn'] = 0;
         else:
             self._model['sn'] = db.article.find().sort("sn", -1)[0]['sn'] + 1
 
-        #if kwargs:
-        #    try:
-        #        for k in _model.keys():
-        #            self.article[k] = kwargs[k]
-        #    except:
-        #        return False
-        #else:
-        #    self.article = self._model
     def set_title(self, _title):
         self._model['title'] = _title
 
@@ -294,9 +300,18 @@ class Article:
     def set_html(self, _html):
         self._model['html'] = _html
 
+    def set_status(self, _status):
+        self._model['status'] = _status
+
     # as long as the _identifier is unique
     def set_author(self, _identifier):
         self._model['author'] = _identifier
+
+    def set_review(self):
+        self._model['review'] = datetime.datetime.utcnow()
+
+    def remove(self):
+        db.article.remove({"sn": self._model['sn']})
 
     # save instance to database
     def put(self):
