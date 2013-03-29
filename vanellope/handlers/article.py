@@ -19,36 +19,85 @@ from vanellope.handlers import BaseHandler
 
 
 class ArticleHandler(BaseHandler):
+    # URL: /article/ARTICLE_SN
     def get(self, article_sn):
-        article = da.get_article_by_sn(int(article_sn)) # wrappered
+        article = da.get_article_by_sn(int(article_sn))
         if not article:
             self.send_error(404)
             self.finish()
+        else:
+            article = Article(article) # wrappered
 
-        author = da.get_author(article.author).pack
-        comments = da.get_comment_list_by_sn(article.sn)
+        # Template Values
+        #
+        # "master":
+        #    "color": theme color
+        #    "name": name
+        #
+        # "article": A mapping object
+        #     "title": article title     
+        #     "body": article main content
+        #         
+        #
+        # "comments": A iterable object, each item is a mapping object
+        #     item['member']: [member.uid, member.avatar, member.name]
+        #     item['date']: generated date
+        #     item['floor']: numeric generated sequence
+        #     item['body']: comment main content
+        #
 
-        da.heat_article_by_sn(int(article_sn))
-        adjoins = da.find_adjoins(article.date)
-        tpl = dict(
-            sn = article.sn,
+        article = dict(
+            sn = article.sn, # usage: widgets/comment.html
+            author = article.author,
             title = article.title,
             body = article.html,
-            brief = article.sub_title,
-            date = article.date + datetime.timedelta(hours=8),
-            review = article.review + datetime.timedelta(hours=8),
-            heat = article.heat,
+            heat = article.heat, # usage: widgets/article-status.html
+            #brief = article.sub_title,
+            date = article.date,
+            review = article.review,
         )
-        tpl['date'] = tpl['date'].strftime("%Y-%m-%d %H:%M") 
-        tpl['review'] = tpl['review'].strftime("%Y-%m-%d %H:%M") 
+
+        m = Member(da.get_author(article['author'])) # wrappered
+        author = dict(
+            uid = m.uid,
+            name = m.name,
+            avatar = m.avatar,
+            brief = m.brief,
+        )
+
+
+        cmts = da.get_comment_list_by_sn(article_sn)
+        comments = []
+        for cmt in cmts:
+            comments.append(dict(
+                member = cmt.member,
+                date = cmt.date,
+                floor = cmt.cid,
+                body = cmt.body
+            ))
+
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name,
+        )
+
+        da.heat_article_by_sn(int(article_sn)) # increase 'heat' tag then save
+
+        adjoins = da.find_adjoins(article['date'])
+
+        article['date'] = (article['date'] + 
+                       datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M") 
+        article['review'] = (article['review'] + 
+                       datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M") 
+
         self.render("article.html", 
-                    pre = adjoins[0],
-                    fol = adjoins[1],
-                    master = self.get_current_user(),
+                    adjoins = adjoins,
+                    master = master,
                     comments = comments, 
-                    title = article.title,
+                    title = article['title'],
                     author = author, 
-                    article = tpl)
+                    article = article)
 
     #create article
     @tornado.web.authenticated

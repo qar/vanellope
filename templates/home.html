@@ -1,17 +1,29 @@
 {% include "common/header.html" %}
+{#
+#	Template Value
+		master['name']
+		master['email']
+		master['brief']
+		master['avatar-Large']
+		articles: A mapping object:
+			item['sn']
+			item['title']
+		pages
+
+#}
 <div id="wrapper">
 	<div class="primary-wrapper">
 	<div class="primary">
 		<div class="primary-item-container">
 		<div class="member-info">
-			<img src="{{ member['avatar_large'] }}">
+			<img src="{{ master['avatar_large'] }}">
 			<div class="member-info-container">
-				<h2 class="member-info">{{ member['name'] }}</h2>
-				<p class="member-info">{{ member['email'] }}</p>				
+				<h2 class="member-info">{{ master['name'] }}</h2>
+				<p class="member-info">{{ master['email'] }}</p>				
 			  	<span id="memberBriefEditor" class="option"><i class="icon-edit"></i></span>
 			  	<p class="member-info" id="member-brief" style="font-size:15px;line-height:22px;height:100px;width:461px"> 
-			  		{% if member['brief'] %}
-			  		{{ member['brief'] }} 
+			  		{% if master['brief'] %}
+			  		{{ master['brief'] }} 
 					{% end %}
 			  	</p>
 				<textarea class='inputbox member-info' autofocus style="display:none;height:94px;width:461px"></textarea>
@@ -20,7 +32,9 @@
 		</div> <!-- end of "div.primary-item-container" -->
 	</div> <!-- end of "primary" -->
 
+	
 	<div class="primary" style="padding-top:35px">
+		{#
 		<div id="jq-insert-mark">
 			{% for article in articles %}
 			<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
@@ -40,6 +54,7 @@
 			{% end %}
 		</div>
 
+		
 		<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
 		{% if pages > 10 %}
 			{% for page in range(1, 10) %}
@@ -52,6 +67,7 @@
 			{% end %}
 		{% end %}
 		</div> <!-- end of div.pages -->
+		#}		
 
 		<script>
 			$("span.pages").click(function(){
@@ -91,8 +107,10 @@
   	</div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">
+		{#
     	{% include "widgets/tools-list.html" %}
 		{% include "widgets/personal-info-manage.html" %}
+		#}
   	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->

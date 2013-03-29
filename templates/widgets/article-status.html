@@ -1,3 +1,11 @@
+{#
+	Template Value
+	article['heat']
+	article['date']
+	article['review']
+	adjoins[0] (previous)
+	adjoins[1] (following)
+#}
 <div class="widget">
 	<div class="widget-caption common-color">关于这篇文章</div>
 	<div class="widget-wrapper">
@@ -9,15 +17,15 @@
 			</ul>
 		</div>
 
-		{% if pre is not None %}
+		{% if adjoins[0] is not None %}
 			<span id="previous">
-				<a href="/article/{{ pre }}"><i class="icon-double-angle-left"></i>&nbsp;前一篇</a>
+				<a href="/article/{{ adjoins[0] }}"><i class="icon-double-angle-left"></i>&nbsp;前一篇</a>
 			</span>
 		{% end %}
 
-		{% if fol is not None %}
+		{% if adjoins[1] is not None %}
 			<span id="following">
-				<a href="/article/{{ fol }}">后一篇&nbsp;<i class="icon-double-angle-right"></i></a>
+				<a href="/article/{{ adjoins[1] }}">后一篇&nbsp;<i class="icon-double-angle-right"></i></a>
 			</span>
 		{% end %}
 </div>

@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/widgets.css" />
 	<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" />
 	<link rel="shortcut icon" href="/static/img/favicon.ico" />
-	{% if master and master['color'] %}
+	{% if master['color'] %}
 	<style>
 		.common-color{background-color: {{ master['color'] }};}
 	</style>
@@ -24,7 +24,7 @@
   <a id="logo" href="/">PAGE302</a>
   <span style="float:left; font-size:10px; height:100%; color:white; padding-left:6px; padding-top:5px">Pilot</span>
   <ul class="nav">
-  {% if master %}
+  {% if master['name'] %}
 	<li class="nav" id="memberName"><a class="nav" href="/home">{{ master['name'] }}</a></li>
 	<li class="nav"><a class="nav" href="/logout ">退出</a></li>
 	{% else %}

@@ -1,41 +1,44 @@
+{#
+	Template Value:
+	article['sn']
+
+#}
 <div class="widget">
 	<div class="widget-caption common-color">评论</div>
 	<div class="widget-wrapper">
-		<div class="widget-inner-sep"></div>
-			<textarea class="inputbox" name="comment" placeholder="写评论" style="max-width:241px; height:35px; margin-bottom:8px"></textarea>
-			<input class="button submit-button" type="submit" value="提交">
-      <script>
-      $("document").ready(function(){
+	<div class="widget-inner-sep"></div>
+	
+	<textarea class="inputbox" name="comment" placeholder="写评论" style="max-width:241px; height:35px; margin-bottom:8px"></textarea>
+	<input class="button submit-button" type="submit" value="提交">
+	<script>
+		$("document").ready(function(){
+			$("textarea.inputbox").focus(function(){
+				$(this).animate({height:"120px"},300);
+			});
+				
+			$("textarea.inputbox").blur(function(){
+				if(!$.trim($('textarea.inputbox').val())){
+					$(this).animate({"height":"35px"},300);
+				}
+			});
 
-        $("textarea.inputbox").focus(function(){
-        	$(this).animate({height:"120px"},300);
-        });
-        
-        $("textarea.inputbox").blur(function(){
-        	
-        	if(!$.trim($('textarea.inputbox').val())){
-        		$(this).animate({"height":"35px"},300);
-            }
-
-        });
-
-        $("input.submit-button").click(function(event) {
-        	var comment = $.trim($('textarea.inputbox').val())
-            if(!comment){
-            event.preventDefault();
-            }
-            else{
-            	$.ajax({
-        			url:"/comment/{{ article['sn'] }}" ,
-        			type:"POST",
-        			data: "comment="+ comment,
-    			}).success(function() { 
-        			window.location.reload(true);
-   				}); 
-            }
-        });
-      	
-      });
-      </script>
+			$("input.submit-button").click(function(event) {
+				var comment = $.trim($('textarea.inputbox').val())
+					if(!comment){
+						event.preventDefault();
+					}
+					else{
+						$.ajax({
+							url:"/comment/{{ article['sn'] }}" ,
+							type:"POST",
+							data: "comment="+ comment,
+						}).success(function() { 
+							window.location.reload(true);
+						}); 
+					}
+				});
+				
+			});
+		</script>
 	</div>
 </div>

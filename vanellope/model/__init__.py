@@ -50,7 +50,7 @@ class Member:
             'brief': None,
             'verified': False,
         }
-        self._model['uid'] = db.member.count() + 1
+        
         if entity and isinstance(entity, dict):
             self._model = entity
 
@@ -64,6 +64,14 @@ class Member:
         return self._model['uid']
 
     @property 
+    def brief(self):
+        return self._model['brief']
+
+    @property 
+    def color(self):
+        return self._model['color']
+
+    @property 
     def pack(self):
         return self._model
 
@@ -74,6 +82,15 @@ class Member:
     @property 
     def name_safe(self):
         return self._model['name_safe']
+
+    @property 
+    def avatar(self):
+        return self._model['avatar']
+
+    @property 
+    def avatar_large(self):
+        return self._model['avatar_large']
+
 
     @property 
     def email(self):
@@ -96,6 +113,7 @@ class Member:
 
     # Required Properties
     def set_name(self, _name):
+        self._model['uid'] = db.member.count() + 1
         if not _name:
             raise exception.NameError
         elif re.match(regex.UNAME, _name):
@@ -208,16 +226,46 @@ class Member:
 
 
 class Comment:
-    def __init__(self, date=None, article=None, body=None, member=None):
-        self.comment = {
-           'date': None,
+    def __init__(self, entity=None):
+        self._model = {
+           'cid': None, 
+           'date': datetime.datetime.utcnow(),
            'article': None,
            'body': None,
-           'member': None, 
+           'member': None,
         }
+        if entity and isinstance(entity, dict):
+            self._model = entity
+
+    @property 
+    def cid(self):
+        return self._model['cid']
+
+    @property 
+    def member(self):
+        return self._model['member']
+
+    @property 
+    def body(self):
+        return self._model['body']
+
+    @property 
+    def date(self):
+        return self._model['date']
+
+    def set_article(self, _sn):
+        self._model['article'] = int(_sn)
+        self._model['cid'] = db.comment.find({"article":int(_sn)}).count() + 1
+
+    def set_body(self, _body):
+        self._model['body'] = _body
+
+
+    def set_commenter(self, _uid):
+        self._model['member'] = _uid
 
     def put(self):
-        db.comment.insert(self.comment)
+        db.comment.save(self._model)
 
 
 

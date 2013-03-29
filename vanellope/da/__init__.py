@@ -54,7 +54,7 @@ def get_article_by_sn(sn):
     if not article:
         return None
     else:
-        return Article(article)
+        return article
 
 def normal_articles(skip=None, limit=None):
     # return a dict list, sort by date descending.
@@ -91,31 +91,30 @@ def heat_article_by_sn(_sn):
     article['heat'] += 1
     db.article.save(article)
 
-def get_author(_author_uid):
-    member = db.member.find_one({"uid": int(_author_uid)})
+def get_author(_uid):
+    member = db.member.find_one({"uid": int(_uid)})
     if not member:
         return None
     else:
-        return Member(member)
+        return member
 
 def find_adjoins(current_date):
     try:
         pre = db.article.find({"status":cst.NORMAL, 'date':
             {'$lt': current_date}}).sort("date",-1)[0]['sn']
-    except IndexError:
+    except:
         pre = None
     try:
         fol = db.article.find({"status":cst.NORMAL, 'date': 
             {"$gt": current_date}}).sort("date", 1)[0]['sn']
-    except IndexError:
+    except:
         fol = None
     return (pre, fol)
 
 
 def split_pages(author=None, per=10, status=None, page=1):
     # Split all the available article into pages.
-    # Return a iterable object.
-    # Each item in the iterable object is a mapping object like dictionary.
+
     if not status:
         status = cst.NORMAL
 
@@ -135,7 +134,11 @@ def split_pages(author=None, per=10, status=None, page=1):
     temp = []
     for i in current:
         temp.append(Article(i).pack)
-    return (total, pages, temp)
+    return dict(
+        total = total,
+        pages = pages, 
+        articles = temp,
+    )
 
 
 

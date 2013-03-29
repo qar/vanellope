@@ -9,6 +9,7 @@ import datetime
 import tornado.web
 
 from vanellope import db
+from vanellope.model import Comment 
 from vanellope.handlers import BaseHandler
 
 
@@ -16,33 +17,19 @@ from vanellope.handlers import BaseHandler
 class CommentHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, article_sn):
-    	model = {
-           'date': datetime.datetime.utcnow(),
-           'article': None,
-           'body': None,
-           'member': None, 
-           'floor': None,
+        comment = Comment()
+        m = Member(self.get_current_user()) # wrappered
+        cmt = self.get_argument('comment', None)
+
+        # basic commenter information
+        commenter = {
+            "uid": m.uid,
+            "name": m.name,
+            "avatar": m.avatar,
         }
 
-        master = self.get_current_user()
-        try:
-            cmt = self.get_argument('comment')
-        except:
-            self.redirect(self.request.headers['Referer'])
-
-        if master:
-            # basic commenter information
-            commenter = {
-                "uid": master['uid'],
-                "name": master['name'],
-                "name_safe": master['name_safe'],
-                "avatar": master['avatar']
-            }
-            model['floor'] = db.comment.find({"article": int(article_sn)}).count() + 1
-            model['article'] = int(article_sn)
-            model['member'] = commenter
-            model['body'] = cmt
-            db.comment.insert(model)
-            self.redirect("/article/%s" % article_sn)
-        else:
-            self.send_error(403)
+        comment.set_article(int(article_sn))
+        comment.set_commenter(commenter)
+        comment.set_body(cmt)
+        comment.put()
+        self.redirect("/article/%s" % article_sn)

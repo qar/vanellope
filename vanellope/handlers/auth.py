@@ -26,10 +26,15 @@ from vanellope.handlers import BaseHandler
 
 class RegisterHandler(BaseHandler):
     def get(self):
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
         self.render("register.html", 
                     title = '注册',
                     errors = None,
-                    master = None)
+                    master = master)
 
     @tornado.web.asynchronous
     def post(self):
@@ -87,12 +92,22 @@ class RegisterHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
     def get(self):
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
         self.render("login.html", 
                     title="Login", 
                     errors=None, 
-                    master=False)
+                    master=master)
 
     def post(self):
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
         errors = []
         template = "login.html"
         post_values = ['name','pwd']
@@ -120,7 +135,7 @@ class LoginHandler(BaseHandler):
             # No need to go on either name or pwd is None
             self.render(template, 
                         title = "Login", 
-                        master = False, 
+                        master = master, 
                         errors = errors)
 
 
@@ -158,12 +173,23 @@ class VerifyHandler(BaseHandler):
 
 class ForgetHandler(BaseHandler):
     def get(self):
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
         self.render("forget.html", 
             title="Login", 
             errors=None, 
-            master=False)
+            master=master)
 
     def post(self):
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
+
         errors = []
         template = "forget.html"
         post_values = ['name','email']
@@ -193,7 +219,7 @@ class ForgetHandler(BaseHandler):
         if len(errors) > 0:
             self.render("forget.html", 
                         title = "找回密码", 
-                        master = False, 
+                        master = master, 
                         errors = errors)
         else:
             self.redirect("/")
@@ -246,13 +272,18 @@ class PasswordResetHandler(BaseHandler):
 
 class PasswordHandler(BaseHandler):
     def get(self):
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
         secret_key = self.get_argument("key", None)
         member = db.member.find_one({"secret_key": secret_key})
         if member:
             self.render("password.html", 
                         title="更改密码", 
                         errors=None, 
-                        master=False, 
+                        master=master, 
                         key=secret_key)
         else:
             self.send_error(404)

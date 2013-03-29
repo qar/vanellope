@@ -66,7 +66,7 @@ class App(tornado.web.Application):
         (r"/home", HomeHandler),
         (r"/home/(.*)", HomeHandler),
         (r"/member", MemberHandler),
-        (r"/member/([a-zA-Z0-9]{1,16})", MemberHandler),
+        (r"/member/([0-9]{1,16})", MemberHandler),
         (r"/member/email\.json", EmailHandler),
         
         (r"/login", LoginHandler),
@@ -101,19 +101,19 @@ class App(tornado.web.Application):
 class IndexHandler(BaseHandler):
     def get(self):
         page = self.get_argument("p", 1)
-        t = da.split_pages(page=page)
-        #skip_articles = (int(page) -1 )*10
-        #articles = da.normal_articles(skip=skip_articles, limit=10)
-        #total = len(da.normal_articles())
-        #pages = total // 10 + 1 # pages count from 1
-        #if total % 10 > 0:      # the last page articles may not equal to 'p' 
-        #    pages += 1 
+        d = da.split_pages(page=page)
+
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
 
         self.render("index.html", 
                     title = 'PAGE302',
-                    master = self.get_current_user(), 
-                    pages = t[1],
-                    articles = t[2])
+                    master = master, 
+                    pages = d['pages'],
+                    articles = d['articles'])
 
 
 class WidgetsHandler(BaseHandler):

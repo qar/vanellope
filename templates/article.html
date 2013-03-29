@@ -18,17 +18,13 @@
       {% for comment in comments %}
       <div class="comment primary-item-container">
 
-        <a class="member" href="/member/{{ comment['member']['name_safe'] }}">
+        <a class="member" href="/member/{{ comment['member']['uid'] }}">
           <img class="avatar" src="{{ comment['member']['avatar'] }}" alt="{{ comment['member']['name'] }}" width="50px" height="50px">
         </a>
 
-        <a href="/member/{{ comment['member']['name_safe'] }}"><span>{{ comment['member']['name']}}</span></a>
+        <a href="/member/{{ comment['member']['uid'] }}"><span>{{ comment['member']['name']}}</span></a>
         <span class="timestamp" style="margin-left:10px">{{ comment['date']}}</span>
-        {% if master and master['color'] %}
-        <span class="comment-floor" style="float:right;padding:0px 8px; min-width:10px; width:auto; background-color:{{ master['color'] }}; border-radius: 8px; text-align:center; color:#FFFFFF">{{ comment['floor'] }}</span>
-        {% else %}
-        <span class="comment-floor" style="float:right; padding:0px 8px; min-width:10px; width:auto; background-color:#969cb1; border-radius: 8px; text-align:center; color:#FFFFFF">{{ comment['floor'] }}</span>
-        {% end %}
+        <span class="comment-floor" style="float:right;padding:0px 8px; min-width:10px; width:auto; background-color:{% if master and master['color'] %}{{ master['color'] }}{% else %}#969cb1{% end %}; border-radius: 8px; text-align:center; color:#FFFFFF">{{ comment['floor'] }}</span>
         <br/>
         <p class="comment">{{ comment['body'] }}</p>
       </div>   
@@ -42,15 +38,16 @@
   <div class="widgets-wrapper">
     {% include "widgets/author-info.html" %}
 
-    {% if master %}
+    {#{% if master['name'] %}
       {% if master['auth'] == author['auth'] %}
         {% include "widgets/owner-article-option.html" %}
       {% end %}
     {% end %}
 
+    #}
     {% include "widgets/article-status.html" %}
     
-    {% if master %}
+    {% if master['name'] %}
       {% include "widgets/comment.html" %}
     {% end %}
   </div><!-- Closing of widgets-wrapper -->

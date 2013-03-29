@@ -30,51 +30,74 @@ class MemberHandler(BaseHandler):
     # UTL: /member/USERNAME
     # Member main information display
     #
-    def get(self, uname):
+    def get(self, uid):
+        m = Member(self.get_current_user())
         page = self.get_argument("p", 1)
-        author = Member(da.get_member_by_name_lower(uname))
+        author = Member(da.get_member_by_uid(uid))
 
-        t = da.split_pages(author=author, page=page)
-        master = Member(self.get_current_user())
-        if master and master.name_safe == uname:
+        d = da.split_pages(author=author.uid, page=page)
+
+        if author.uid is None:
+            self.send_error(404)
+            self.finish()
+        elif m.uid == author.uid:
             self.redirect("/home")
         else:
-            member = author
+            member = dict(
+                avatar_large = author.avatar_large,
+                brief = author.brief,
+                name = author.name
+            )
+
+        master = dict(
+            color = m.color,
+            name = m.name,
+        )
 
         self.render("member.html",
-                    title = author.name+u"专栏",
-                    articles = t[2],
-                    member = member.pack,
-                    pages = t[1],
-                    master = master.pack) 
+                    title = member['name'],
+                    articles = d['articles'],
+                    member = member,
+                    pages = d['pages'],
+                    master = master) 
 
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="home"):
+        m = Member(self.get_current_user())
+        master = dict(
+            uid = m.uid,
+            color = m.color,            
+            avatar_large = m.avatar_large,
+            brief = m.brief,
+            name = m.name,
+            email = m.email,
+        )
+
         htmls = ('write', 'index', 'deleted')
 
         template = ("%s.html" % html)
-        page = self.get_argument("p", 1)
+        #page = self.get_argument("p", 1)
         
-        master = Member(self.get_current_user())
-        t = da.split_pages(author=master.uid, page=page)
-        if(html == cst.DELETED):
-            articles = da.deleted_or_normal_articles(master.uid, cst.NOTMAL)
+        if(html == "deleted"):
+            #d = da.split_pages(author=master['uid'], page=page, status=cst.DELETED)
+            #articles = da.deleted_or_normal_articles(master['uid'], cst.NOTMAL)
             self.render(template, 
                         title = '回收站', 
                         master = master,
-                        member = master,
                         errors=None,                        
-                        articles = articles)
+                        #articles = d['artices']
+                        )
         else:
-            articles = da.deleted_or_normal_articles(master.uid, cst.DELETED)
+            #d = da.split_pages(author=master['uid'], page=page, status=cst.NORMAL)
+            #articles = da.deleted_or_normal_articles(master['uid'], cst.DELETED)
             self.render(template, 
                         title="Home",
                         errors=None,                        
                         master = master,
-                        pages = t[1],
-                        member = master,
-                        articles = articles)
+                        #pages = d['pages'],
+                        #articles = d['articles']
+                        )
 
     @tornado.web.authenticated
     def post(self):
