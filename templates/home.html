@@ -38,18 +38,13 @@
 		<div id="jq-insert-mark">
 			{% for article in articles %}
 			<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
-			<span class="article-caption" >
-			<a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
-			</span>
-			<span class="article-option-right option" onclick="deleteArticle({{ article['sn'] }})" style="visibility:hidden" title="删除">
-			<i class="icon-trash  icon-large"></i>
-			</span>
-			<span class="article-option option" style="visibility:hidden" title="修改">
-			<a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a>
-			</span>
-			<span class="article-option option" onclick="previewArticle({{ article['sn']}})" style="visibility:hidden" title="预览">
-			<i class="icon-eye-open icon-large"></i>
-			</span>
+				<span class="article-caption" ><a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a></span>
+
+				<span class="article-option-right option" onclick="deleteArticle({{ article['sn'] }})" style="visibility:hidden" title="删除"><i class="icon-trash  icon-large"></i>	</span>
+
+				<span class="article-option option" style="visibility:hidden" title="修改"><a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a></span>
+
+				<span class="article-option option" onclick="previewArticle({{ article['sn']}})" style="visibility:hidden" title="预览"><i class="icon-eye-open icon-large"></i></span>
 			</div> 
 			{% end %}
 		</div>
@@ -113,8 +108,8 @@
   	</div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">
-    	{% include "widgets/tools-list.html" %}
 		{% include "widgets/personal-info-manage.html" %}
+    	{% include "widgets/tools-list.html" %}
   	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->

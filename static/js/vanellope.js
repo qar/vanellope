@@ -31,7 +31,7 @@ function changeColor(){
         data: "color="+ color,
     }).success(function() { 
         //$(".common-color").css("background", color);
-        $(".theme").css("color", color);
+        location.reload();
     }); 
     }   
 };

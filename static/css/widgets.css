@@ -32,18 +32,14 @@ div.article-status > ul{
 div.article-status > ul > li{
  	margin-bottom: 8px;
 }
-a.arrow{color: #555555;}
 
-a.arrow:hover{
-	text-shadow: 0px 0px 1px;
-}
 span#previous, span#following{width: auto;}
 span#previous{float: left;}
 span#following{float: right;}
 
 
 
-/***  widget "tool-list" 
+/***  widget "tool-list" ***/
 ul.tools-list{
 	list-style-type: none;
 	width: 248px;
@@ -55,7 +51,7 @@ ul.tools-list > li{
 	height: 30px;
 }
 ul.tools-list > li > a{color: #555555;}
-***/
+
 
 
 /** widgets/hotest-articles.html **/
@@ -82,3 +78,31 @@ div.hotestArticles{
 	padding: 10px;
 }
 
+
+/*** widgets/personal-info-manage.html ***/
+div.option-nav{
+	margin: 0px;
+	border: 0px;
+	padding: 5px 10px 0px;
+	width: 100%;
+	max-width: 267px;
+	height: 26px;
+	float: left;
+	color:white;
+}
+
+div.option-nav > span{
+	padding-right: auto;
+	height: 20px;
+	line-height: 20px;
+	float: left;
+	width: 80px;
+	/*margin-right: 8px;*/
+	text-align: center;
+	vertical-align: middle;	
+}
+
+div.option-nav > span:hover{
+	text-shadow: 0px 0px 1px;
+	text-decoration: none;
+}

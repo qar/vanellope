@@ -2,9 +2,9 @@
 <div id="wrapper">
 	<div class="primary-wrapper">
 	<div class="primary" >
-		
+	
 		{% for article in articles %}
-		<div class="article-intro primary-item-container">
+		<div class="primary-item-container">
 			{% if article.has_key('avatar')  and article['avatar'] %}
 			<a href="/article/{{ article['sn'] }}"><img class="article-intro" src="{{ article['avatar'] }}"></a>
 			{% end %}

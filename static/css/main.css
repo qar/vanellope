@@ -1,21 +1,36 @@
 
 
-/** index **/
-div.article-intro{ /* display on index page */
-	padding:10px 0px 15px 0px;
-	margin-bottom: 29px;
-	overflow: hidden;
+/*** Header Nav Bar ***/
+ul.nav{
+	list-style-type: none;
+	float: right;
+	margin: 0px;
+	height: 35px;
 }
-img.article-intro{ /** display on index page**/
-	width: 192px;
-	height: 108px;
-	margin-right: 10px;
-	margin-bottom: 10px;
+li.nav{
+	display: inline-block;
+	height: 20px;
+	padding: 8px 5px 7px 5px;
+}
+li.nav > a{
+	color: white;
+	padding: 5px 8px;
+}
+li.nav:hover{
+	box-shadow: 0px 0px 28px 0px rgba(78, 78, 78, 0.2) inset;
+}
+li.nav > a:hover{
+	text-shadow: 0px 0px 1px;
+	text-decoration: none;
+}
+
+#logo{
 	float: left;
-	overflow: hidden;
-	border-radius: 6px;
-	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
+	color: #FFFFFF;
+	font-size: 30px;
+	text-decoration: none;
 }
+
 
 span.article-brief{
 	word-break: break-all;
@@ -125,7 +140,6 @@ p.comment{
 	margin: 0px;
 	max-width: 576px;
 	float: left;
-	font-size: 14px;
 }
 
 
@@ -241,29 +255,7 @@ ul.v-bare{
 
 }
 
-div.option-nav{
-	margin: 0px;
-	padding: 0px;
-	border: 0px;
-	padding: 0px 10px;
-	background-color: #789900;
-	width: 100%;
-	max-width: 267px;
-	height: 20px;
-	float: left;
-	color:white;
-}
 
-div.option-nav > span{
-	padding-right: auto;
-	height: 20px;
-	line-height: 20px;
-	float: left;
-	width: 80px;
-	margin-right: 8px;
-	text-align: center;
-	vertical-align: middle;	
-}
 
 /*
 textarea.article{
@@ -272,7 +264,7 @@ textarea.article{
 */
 
 
-/**##01-HED  /home/manage rgba(76, 134, 125, 0.59) 
+/**##01-HED  /home/manage rgba(76, 134, 125, 0.59) ****/
 div.article-list{
 	margin:0px;
 	padding: 0px;
@@ -282,7 +274,7 @@ div.article-list{
 	border: 1px solid #a4cbd9;
 	border-radius: 5px;
 }
-****/
+
 
 
 span.article-caption{
