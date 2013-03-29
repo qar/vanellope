@@ -118,8 +118,6 @@ def split_pages(author=None, per=10, status=None, page=1):
     if not status:
         status = cst.NORMAL
 
-    skip = (int(page) - 1)*int(per)
-
     if author:
         cursor = db.article.find({"author": author, "status": status})
     else:
@@ -128,6 +126,10 @@ def split_pages(author=None, per=10, status=None, page=1):
     copy = cursor.clone()
     total = cursor.sort("date", -1).count()
     pages =  total // int(per) + 1
+    if int(page) > pages:
+        page = pages # the 'page' has a max limit.
+    skip = (int(page) - 1)*int(per)
+    
     if total % int(per) > 0:
         pages += 1
     current = copy.sort("date", -1).skip(skip).limit(int(per))
@@ -135,7 +137,7 @@ def split_pages(author=None, per=10, status=None, page=1):
     for i in current:
         temp.append(Article(i).pack)
     return dict(
-        total = total,
+        total = total, # articles total number
         pages = pages, 
         articles = temp,
     )

@@ -26,7 +26,7 @@ class ArticleHandler(BaseHandler):
             self.send_error(404)
             self.finish()
         else:
-            article = Article(article) # wrappered
+            article = Article(article) # wrapped
 
         # Template Values
         #
@@ -57,7 +57,7 @@ class ArticleHandler(BaseHandler):
             review = article.review,
         )
 
-        m = Member(da.get_author(article['author'])) # wrappered
+        m = Member(da.get_author(article['author'])) # wrapped
         author = dict(
             uid = m.uid,
             name = m.name,
@@ -126,7 +126,10 @@ class ArticleHandler(BaseHandler):
 
     @tornado.web.authenticated
     def delete(self, article_sn):
-        article = da.get_article_by_sn(int(article_sn))
+        # This currently is a ajax call
+        # Request URL:/article/ARTICLE
+        # Request Method:DELETE
+        article = Article(da.get_article_by_sn(int(article_sn))) # wrapped
         if article.status == cst.DELETED:
             # Remove related data, like comments
             # Remove article that already markded "deleted".
@@ -142,18 +145,27 @@ class ArticleHandler(BaseHandler):
 class ArticleUpdateHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, sn):
-        article = da.get_article_by_sn(int(sn)) # a wrapper
-        author = da.get_author(article.author) # a wrapper
+        t = Article(da.get_article_by_sn(int(sn))) # wrapped
+        master = Member(self.get_current_user()) # wrapped
+
+        article = dict(
+            sn = t.sn, # usage: widgets/comment.html
+            title = t.title,
+            sub_title = t.sub_title,
+            markdown = t.markdown,
+            author = t.author,
+        )
+
+        #author = Member(da.get_author(article['author'])) # wrapped
 
         self.render("edit.html", 
-                    master = self.get_current_user(),
                     title = "Edit",
-                    author = author.pack,
-                    article = article.pack)
+                    master=master,
+                    #author = author,
+                    article = article)
 
     @tornado.web.authenticated
     def post(self, sn):
-        article = Article()
         # get post values
         post_values = ['title', 'brief', 'content']
         args = {}
@@ -161,16 +173,17 @@ class ArticleUpdateHandler(BaseHandler):
             # Get nessary argument
             # Use None as default if argument is not supplied
             args[v] = self.get_argument(v, None)
-        master = self.get_current_user()
 
-        article = da.get_article_by_sn(int(sn))
+        master = Member(self.get_current_user()) # wrapped
+
+        article = Article(da.get_article_by_sn(int(sn)))
+        
         article.set_title(args['title'])
         article.set_sub_title(args['brief'])
         article.set_markdown(args['content'])
         article.set_html(markdown(args['content'], 
                         ['fenced_code', 'codehilite'], 
                         safe_mode= "escape"))
-
         article.set_review()
         article.put()
         self.redirect("/article/%s" % sn)

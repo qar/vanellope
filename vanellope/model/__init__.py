@@ -37,7 +37,6 @@ class Member:
     def __init__(self, entity=None):
         self._model = {
             'uid': None,
-            'role': "reader",
             'name': None,
             'name_safe': None,
             'email': None,
@@ -70,10 +69,6 @@ class Member:
     @property 
     def color(self):
         return self._model['color']
-
-    @property 
-    def pack(self):
-        return self._model
 
     @property 
     def name(self):
@@ -111,6 +106,10 @@ class Member:
     def verified(self):
         return self._model['verified'] # True or False
 
+    @property 
+    def pack(self):
+        return self._model
+
     # Required Properties
     def set_name(self, _name):
         self._model['uid'] = db.member.count() + 1
@@ -133,6 +132,21 @@ class Member:
         self._model['pwd'] = self._encrypt_password(_pwd)
         self._set_auth()
 
+    def set_brief(self, _brief):
+        self._model['brief'] = _brief
+
+    def set_email(self, _email):
+        # check
+        if _email is None:
+            raise ValueError
+        elif re.match(regex.EMAIL, _email.lower()):
+            if db.member.find_one({"email": _email.lower()}):
+                raise exception.DupKeyError()
+            else:
+                self._model['email'] = _email.lower() 
+                self._model['verified'] = False # new email need be verified
+        else:
+            raise exception.PatternMatchError()
 
     def reload(self, _name, _pwd):
         """
@@ -169,17 +183,6 @@ class Member:
         except TypeError:
             return False
 
-    def set_email(self, _email):
-        # check
-        if _email is None:
-            raise ValueError
-        elif re.match(regex.EMAIL, _email.lower()):
-            if db.member.find_one({"email": _email.lower()}):
-                raise exception.DupKeyError()
-            else:
-                self._model['email'] = _email.lower() 
-        else:
-            raise exception.PatternMatchError()
 
     def set_secret_key(self, _key):
         self._model['secret_key'] = _key
@@ -317,6 +320,10 @@ class Article:
     @property 
     def html(self):
         return self._model['html']
+
+    @property 
+    def markdown(self):
+        return self._model['markdown']
 
     @property 
     def date(self):

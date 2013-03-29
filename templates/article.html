@@ -38,13 +38,13 @@
   <div class="widgets-wrapper">
     {% include "widgets/author-info.html" %}
 
-    {#{% if master['name'] %}
-      {% if master['auth'] == author['auth'] %}
+    {% if master['name'] %}
+      {% if master['name'] == author['name'] %}
         {% include "widgets/owner-article-option.html" %}
       {% end %}
     {% end %}
 
-    #}
+    
     {% include "widgets/article-status.html" %}
     
     {% if master['name'] %}

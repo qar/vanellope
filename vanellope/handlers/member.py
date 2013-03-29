@@ -64,6 +64,7 @@ class MemberHandler(BaseHandler):
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="home"):
+        # Login User Information
         m = Member(self.get_current_user())
         master = dict(
             uid = m.uid,
@@ -74,67 +75,51 @@ class HomeHandler(BaseHandler):
             email = m.email,
         )
 
-        htmls = ('write', 'index', 'deleted')
-
-        template = ("%s.html" % html)
-        #page = self.get_argument("p", 1)
         
-        if(html == "deleted"):
-            #d = da.split_pages(author=master['uid'], page=page, status=cst.DELETED)
-            #articles = da.deleted_or_normal_articles(master['uid'], cst.NOTMAL)
+        htmls = ('write', 'deleted', 'home') # Available templates
+        if html in htmls:
+            template = ("%s.html" % html) # Template Selector
+        else:
+            self.send_error(404)
+            self.finish()
+
+        # Articles pages slicing
+        page = self.get_argument("p", 1)
+        
+        if(html == "deleted"):  # aka. the trash bucket
+            d = da.split_pages(author=master['uid'], 
+                               status=cst.DELETED,
+                               page=page)
             self.render(template, 
                         title = '回收站', 
                         master = master,
-                        errors=None,                        
-                        #articles = d['artices']
+                        errors=None,                    
+                        pages = d['pages'],    
+                        articles = d['articles']
                         )
-        else:
-            #d = da.split_pages(author=master['uid'], page=page, status=cst.NORMAL)
-            #articles = da.deleted_or_normal_articles(master['uid'], cst.DELETED)
+        elif html == "home":
+            d = da.split_pages(author=master['uid'], 
+                               status=cst.NORMAL,
+                               page=page,)
             self.render(template, 
                         title="Home",
                         errors=None,                        
                         master = master,
-                        #pages = d['pages'],
-                        #articles = d['articles']
-                        )
+                        pages = d['pages'],
+                        articles = d['articles'])
+        elif html == "write":
+            self.render(template,
+                        title=u"撰写",
+                        master=master)
 
     @tornado.web.authenticated
     def post(self):
-        master = self.get_current_user()
-        if master:
-            brief = self.get_argument('brief', default=None)
-            db.member.update({"uid":master['uid']},{"$set":{"brief":brief}})
-            member = db.member.find_one({'uid': master['uid']})
-            self.finish(brief)
-        else:
-            self.send_error(403)
-            self.findish()
+        master = Member(self.get_current_user()) # wrapped
+        brief = self.get_argument('brief', default=None)
+        master.set_brief(brief)
+        master.put()
+        self.finish()
 
-    def get_author_all_articles(self, owner_id):
-        return db.article.find({"author": owner_id}).sort("date", -1)
-
-    def normal_articles(self, owner_id):
-        return db.article.find(
-                {"author": owner_id, "status":cst.NORMAL}).sort("date", -1)
-
-    def deleted_articles(self, owner_id):
-        return db.article.find(
-                {"author": owner_id, "status":"deleted"}).sort("date", -1)
-
-    def count_pages(self, owner_id=None, p=10, status="normal"):
-        # p, articles per page
-        p = int(p)
-        if owner_id: # one member's
-            total = db.article.find(
-                {"status":status, "author":owner_id}).count()
-        else: # all members'
-            total = db.article.find({"status":status}).count()
-        pages = total // p + 1 # pages count from 1
-        if total % p > 0:      # the last page articles may not equal to 'p' 
-            pages += 1 
-        return pages
-  
   
                       
 class EmailHandler(BaseHandler):
@@ -147,23 +132,26 @@ class EmailHandler(BaseHandler):
         self.finish()
 
     # ajax call
-    # BUG: even if email not verified still can go.
+    # Should return a json array
+    @tornado.web.authenticated
     def post(self):
         errors = []
-        _email = self.get_argument("email", None)
-        if re.match(regex.EMAIL, _email):
-            ex = db.member.find_one({"email":_email})
-            if not ex:
-                master = self.get_current_user()
-                master['email'] = _email.lower()
-                db.member.save(master)
-            else:
-                errors.append(u"邮箱已被使用")
-        else:
+        email = self.get_argument("email", None)
+        master = Member(self.get_current_user()) # wrapped
+        if not master.verified:
+            errors.append(u"你现在的邮箱还没有通过验证，暂时不能更换邮箱")
+            self.finish(json.dumps(errors))
+
+        try:
+            master.set_email(email)
+            master.verify()
+            master.put()
+        except exception.PatternMatchError:
             errors.append(u"请检查邮箱的格式是否正确")
+        except exception.DupKeyError:
+            errors.append(u"邮箱已被使用")                
+            
         if len(errors) > 0:
-            self.write(json.dumps(errors))
+            self.finish(json.dumps(errors))
         else:
-            self.write(json.dumps(True))
-        self.flush()
-        self.finish()
+            self.finish(json.dumps(True))

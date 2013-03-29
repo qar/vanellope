@@ -1,45 +1,52 @@
 
 {% include "common/header.html" %}
+{#
+	Template Values:
+		article['sn']
+		article['title']
+		article['sub_title']
+		article['markdown']
+#}	
 <!-- body content wrapper -->
 <div id="wrapper">
-  <div class="primary-wrapper">
-    <div class="primary" >
+	<div class="primary-wrapper">
+		<div class="primary" >
 
 <div class="primary-item-container">
 
-  <div class="primary-caption">
-    <span class="primary-caption-icon"><i class="icon-pencil icon-2x"></i></span>
-    <span class="primary-caption-words">修改文章</span>
-  </div><!-- end of  "primary-caption" -->
+	<div class="primary-caption">
+		<span class="primary-caption-icon"><i class="icon-pencil icon-2x"></i></span>
+		<span class="primary-caption-words">修改文章</span>
+	</div><!-- end of  "primary-caption" -->
 
-    <div class="primary-item-sep"></div>
+		<div class="primary-item-sep"></div>
 
-  <form class="article" id="myform" action="/update/{{ article['sn'] }}" enctype="multipart/form-data" method="post">
+	<form class="article" id="myform" action="/update/{{ article['sn'] }}" enctype="multipart/form-data" method="post">
 
-    <input id="title" class="article inputbox" type="text" name="title" value="{{ escape(article['title']) }}" style="height:25px">
-      <div class="primary-item-sep"></div>
-    <textarea class="article inputbox" name="brief" style="min-height:60px">{{ article['sub_title'] }}</textarea>
-      <div class="primary-item-sep"></div>
-    <textarea id="text-content" class="article inputbox" name="content" style="min-height:260px">{{ article['markdown'] }}</textarea>    
-      <div class="primary-item-sep"></div>
-    <input class="button submit-button" type="submit" value="提交更改">
-      <div class="primary-item-sep"></div>
-  </form><!-- end of "article-editor" -->
-  <script>
-        $("input.submit-button").click(function(event) {
-          // neither title nor main article conent should be null.
-            if(!$.trim($('#title').val()) || !$.trim($('#text-content').val())){
-              event.preventDefault();
-            }
-        });
-      </script>
+		<input id="title" class="article inputbox" type="text" name="title" value="{{ escape(article['title']) }}" style="height:25px">
+			<div class="primary-item-sep"></div>
+		<textarea class="article inputbox" name="brief" style="min-height:60px">{{ article['sub_title'] }}</textarea>
+			<div class="primary-item-sep"></div>
+		<textarea id="text-content" class="article inputbox" name="content" style="min-height:260px">{{ article['markdown'] }}</textarea>    
+			<div class="primary-item-sep"></div>
+		<input class="button submit-button" type="submit" value="提交更改">
+			<div class="primary-item-sep"></div>
+	</form><!-- end of "article-editor" -->
+	<script>
+				$("input.submit-button").click(function(event) {
+					// neither title nor main article conent should be null.
+						if(!$.trim($('#title').val()) || !$.trim($('#text-content').val())){
+							event.preventDefault();
+						}
+				});
+			</script>
 	</div>
 </div><!-- end of primary -->
 </div>
 
-  <div class="widgets-wrapper">
-    {% include "widgets/tools-list.html" %}
-  </div><!-- Closing of widgets-wrapper -->
+	<div class="widgets-wrapper">
+		{% include "widgets/tools-list.html" %}
+	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->
 

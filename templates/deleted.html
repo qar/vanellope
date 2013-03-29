@@ -1,38 +1,51 @@
 {% include "common/header.html" %}
+{#
+	Template Values:
+	articles:
+		article['sn']
+		article['title']
+		article['title']
+	pages
 
+#}
 <!-- body content wrapper -->
 <div id="wrapper">
 	<div class="primary-wrapper">
-	<div class="primary" >
-		<div class="primary-item-container">
-			<div class="primary-caption">
-			<span class="primary-caption-icon"><i class="icon-list icon-2x"></i></span>
-			<span class="primary-caption-words">文章管理</span>
-			</div><!-- end of  "primary-caption" -->
+	<div class="primary" style="padding-top:35px">
 
-			<div class="primary-item-sep"></div>
+		{% for article in articles %}
+		<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
+			<span class="article-caption" titlee="{{ article['title']}}">{{ article['title']}}</span>
 
-			{% for article in articles %}
-			<div class="article-list" id="{{ article['sn'] }}" style="margin-bottom:10px">
-				<span class="article-caption" titlee="{{ article['title']}}">{{ article['title']}}</span>
+			<span class="article-option-right option" onclick="removeCheck({{ article['sn']}})" title="彻底移除"><i  class="icon-trash  icon-large"></i></span>
+			<span class="article-option option" onclick="recoverArticle({{ article['sn']}})" title="恢复"><i class="icon-undo  icon-large"></i></span>
+		</div>
+		{% end %}     
 
-				<span class="article-option-right option" onclick="removeCheck({{ article['sn']}})" title="彻底移除"><i class="icon-trash  icon-large"></i>
-				</span>
-				<span class="article-option option" onclick="recoverArticle({{ article['sn']}})" title="恢复"><i class="icon-undo  icon-large"></i>
-				</span>
-			</div>
-			{% end %}     
-			<script>
-				function removeCheck(sn){
-					if(confirm("彻底移除不可恢复，继续？")){
-						deleteArticle(sn);
-					}
+		<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
+		{% if pages > 10 %}
+			{% for page in range(1, 10) %}
+			<a href="/home?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+			{% end %}
+			<span id="pages-more", class="option pages">...</span>
+		{% else %}
+			{% for page in range(1, pages) %}
+			<a href="/home?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+			{% end %}
+		{% end %}
+		</div> <!-- end of div.pages -->
+
+		<script>
+			function removeCheck(sn){
+				if(confirm("彻底移除不可恢复，继续？")){
+					deleteArticle(sn);
 				}
-			</script>        
+			}
+		</script>        
 
-	   </div>
-	</div>
-	</div> <!-- end of "primary" --> 
+	   </div><!-- end of div.primary -->
+	</div><!-- end of primary wrapper -->
+</div> <!-- end of div.wrapper --> 
 
 <div class="widgets-wrapper">
 {% include "widgets/tools-list.html" %}
