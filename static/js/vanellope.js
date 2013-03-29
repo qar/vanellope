@@ -30,7 +30,8 @@ function changeColor(){
         type:"POST",
         data: "color="+ color,
     }).success(function() { 
-        $(".common-color").css("background", color);
+        //$(".common-color").css("background", color);
+        $(".theme").css("color", color);
     }); 
     }   
 };

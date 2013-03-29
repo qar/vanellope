@@ -10,6 +10,7 @@ import datetime
 import time
 import logging
 import pymongo
+import json
 import markdown
 
 import tornado.web
@@ -23,6 +24,7 @@ from vanellope import da
 from vanellope import db
 from vanellope import Mail
 from vanellope import regex
+from vanellope import exception
 from vanellope import constant as cst
 
 from vanellope.model import Member
@@ -127,15 +129,21 @@ class WidgetsHandler(BaseHandler):
             self.finish()
 
 class ColorHandler(BaseHandler):
+    @tornado.web.authenticated
     def post(self):
         color = self.get_argument("color", None)
-        if re.match(regex.COLOR, color):
-            master = self.get_current_user()
-            master['color'] = color
-            db.member.save(master)
-            return True
-        else:
-            return False
+        master = Member(self.get_current_user()) #wrapped
+        try:
+            print color
+            print master.name
+            master.set_color(color)
+            print master.color
+            master.put()
+            master.color
+            self.finish(json.dumps([])) # a empty array indicate no error occors
+        except exception.PatternMatchError:
+            errors = u"不支持的CSS颜色属性"
+            self.finish(json.dumps(errors))
 
 if __name__ == "__main__":
     sys.path.append(os.getcwd())

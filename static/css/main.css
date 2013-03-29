@@ -1,32 +1,42 @@
-@charset "utf-8";
-/*** the primary part ***/
-/**   primary **/
-div.primary-wrapper{
+
+
+/** index **/
+div.article-intro{ /* display on index page */
+	padding:10px 0px 15px 0px;
+	margin-bottom: 29px;
+	overflow: hidden;
+}
+img.article-intro{ /** display on index page**/
+	width: 192px;
+	height: 108px;
+	margin-right: 10px;
+	margin-bottom: 10px;
 	float: left;
-	height: auto;
-	width: 676px;
+	overflow: hidden;
+	border-radius: 6px;
+	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
 }
 
-div.primary-item-sep{
-	width: 100%;
-	height: 20px;
-	float: right;
-}
-div.primary{ /* style specific */
-	height: auto;
-	background-color: #ffffff;
-	border-radius: 4px;
-    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
-    overflow: hidden; 
-	width: 100%;
-	margin-bottom: 50px;
-	float: left;
-}
-div.primary-item-container{ /* #primary's general items style */
-	margin: 20px;
+span.article-brief{
+	word-break: break-all;
+	word-wrap: break-word;
+	display: block;
 	width: auto;
-	height: auto;
+	max-width: 636px;
+	font-size: 14px;
+	line-height: 18px;
+	color: #8E8E8E;
 }
+
+div.article-content{
+	word-break: break-all;
+	width: 100%;
+	margin: 30px 0px 20px 0px;
+	float: left;
+	color: #3E3E3E;
+	font-size: 15px;
+}
+
 
 /** PAGES **/
 div.pages{
@@ -46,83 +56,85 @@ span.pages{
 	border: 1px solid silver;
 }
 
-/** sumbmit article form **/
-form.article{
-	width: 100%;
-	height: auto;
-	float: left;	
-	overflow: visible;
-}
-input.article, textarea.article{
-	width: 632px;
+ul.special-thx{
+	list-style-type: none;
 	float: left;
-}
-/*
-textarea.article{
-	height: 200px;
-}
-*/
-
-/** index **/
-div.article-intro{ /* display on index page */
-	padding:10px 0px 15px 0px;
-	margin-bottom: 29px;
-	overflow: hidden;
-}
-img.article-intro{ /** display on index page**/
-	width: 192px;
-	height: 108px;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	float: left;
-	overflow: hidden;
-	border-radius: 6px;
-	box-shadow: 2px 2.5px 3px rgba(152,153,153,1);
-}
-h2.article-intro-title{
-	word-break: break-all;
-	word-wrap: break-word;
-	margin: 0px;
+	margin: 10px 0px 0px 0px;
 	padding: 0px;
-/*
-	width: auto;
+	font-size: 12px;
+}
+
+ul.special-thx{
+	text-align: left;
+}
+
+ul.brand{
+	float: right;
+	list-style-type: none;
+
+}
+
+ul.brand > li{
+	float: right;
+	margin-left: 20px;
+}
+
+
+
+
+
+
+/*** member-info ***/
+div.member-info{
+	width:636px;
+	min-height:180px;
 	height: auto;
-*/
-	max-width: 636px;
-/*
-	font-size: 19px;
-	line-height: 150%;
-*/
-	color: #0061a1;
+
 }
-span.article-brief{
-	word-break: break-all;
-	word-wrap: break-word;
-	display: block;
-	width: auto;
-	max-width: 636px;
-	font-size: 14px;
-	line-height: 18px;
-	color: #8E8E8E;
-}
-h1.article-title{
-	word-break: break-all;
-/*
-	font-size: 25px;
-	line-height: 150%;
-	font-weight: normal;
-*/
-	color: #0061a1;
-}
-div.article-content{
-	
-	word-break: break-all;
-	width: 100%;
-	margin: 30px 0px 20px 0px;
+div.member-info > img{
 	float: left;
-	color: #3E3E3E;
-	font-size: 15px;
+	width:150px;
+	height: 150px;
+	border-radius: 5px;
 }
+div.member-info-container{
+	width: 461px;
+	padding: 0px 0px 0px 15px;
+	float: right;
+	height: auto;
+}
+h2.member-info, p.member-info{
+	width: 100%;
+	margin: 0px;
+}
+
+
+
+
+
+
+
+/** comments zone **/
+div.comment{
+	min-height: 50px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #cdcdcd;
+	overflow: auto;
+}
+p.comment{
+	margin: 0px;
+	max-width: 576px;
+	float: left;
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
 
 
 /*** member regist ***/
@@ -180,18 +192,97 @@ div.err{
 
 
 
-/**##01-HED  /home/manage rgba(76, 134, 125, 0.59) ****/
+
+
+/** sumbmit article form **/
+form.article{
+	width: 100%;
+	height: auto;
+	float: left;	
+	overflow: visible;
+}
+input.article, textarea.article{
+	width: 632px;
+	float: left;
+}
+
+
+
+
+
+
+.avatar{ /* user's avatar image */
+	display: inline;
+	float: left;
+	margin-right: 10px;
+	border-radius: 4px;
+}
+
+/*** don't know how this work **/
+
+a.member{
+	text-decoration: none;
+	color: #555555;
+}
+
+a.theme{
+	text-decoration: none;
+}
+
+
+ul.v-bare{
+	list-style-type: none;
+	list-style-position:inside;
+	padding:0px;
+}
+
+#color-submit:active{
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6) inset;
+
+}
+
+div.option-nav{
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	padding: 0px 10px;
+	background-color: #789900;
+	width: 100%;
+	max-width: 267px;
+	height: 20px;
+	float: left;
+	color:white;
+}
+
+div.option-nav > span{
+	padding-right: auto;
+	height: 20px;
+	line-height: 20px;
+	float: left;
+	width: 80px;
+	margin-right: 8px;
+	text-align: center;
+	vertical-align: middle;	
+}
+
+/*
+textarea.article{
+	height: 200px;
+}
+*/
+
+
+/**##01-HED  /home/manage rgba(76, 134, 125, 0.59) 
 div.article-list{
 	margin:0px;
 	padding: 0px;
 	width: 636px;
 	height: 30px;
-	/*background-color:rgba(76, 134, 125, 0.59) ;*/
 	float: left;
 	border: 1px solid #a4cbd9;
 	border-radius: 5px;
-	/*box-shadow: 0 1px 1px rgba(0,0,0, 0.6);*/
 }
+****/
 
 
 span.article-caption{
@@ -227,87 +318,4 @@ span.article-option:active, span.article-option-right:active{
 span.article-option-right{
 	border-radius: 0px 5px 5px 0px; 
 	
-}
-
-/**##01-END /home/manage  ****/
-
-
-/*** member-info ***/
-div.member-info{
-	width:636px;
-	min-height:180px;
-	height: auto;
-
-}
-div.member-info > img{
-	float: left;
-	width:150px;
-	height: 150px;
-	border-radius: 5px;
-}
-div.member-info-container{
-	width: 461px;
-	padding: 0px 0px 0px 15px;
-	float: right;
-	height: auto;
-}
-h2.member-info, p.member-info{
-/*
-	margin-bottom: 10px;
-	height: auto;
-*/
-	width: 100%;
-	margin: 0px;
-}
-
-
-/** comments zone **/
-div.comment{
-	min-height: 50px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #cdcdcd;
-	overflow: auto;
-}
-p.comment{
-	margin: 0px;
-	max-width: 576px;
-	float: left;
-	font-size: 14px;
-/*
-	line-height: 150%;
-*/
-}
-
-ul.special-thx{
-	list-style-type: none;
-	float: left;
-	margin: 10px 0px 0px 0px;
-	padding: 0px;
-	font-size: 12px;
-}
-
-ul.special-thx{
-	text-align: left;
-}
-
-ul.brand{
-	float: right;
-	list-style-type: none;
-
-}
-
-ul.brand > li{
-	float: right;
-	margin-left: 20px;
-}
-
-span.privateMsgBtn{
-	float:right;
-	width:60px;
-	height:23px; 
-	line-height:23px;
-	background-color:#3e943e;
-	color:white;border-radius:5px; 
-	text-align:center;
-	vertical-align: middle;
 }

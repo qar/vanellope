@@ -10,23 +10,24 @@
 	<div class="widget-caption common-color">关于这篇文章</div>
 	<div class="widget-wrapper">
 		<div class="article-status">
-			<ul class="article-status">
-				<li ><i class="icon-fire"></i>{{ article['heat']}}°</li>
-				<li >创建时间 {{ article['date'] }}</li>
-				<li >最近更新 {{ article['review'] }}</li>
+			<ul>
+				<li class="theme"><i class="icon-fire"></i>{{ article['heat']}}°</li>
+				<li class="theme">创建时间 {{ article['date'] }}</li>
+				<li class="theme">最近更新 {{ article['review'] }}</li>
 			</ul>
 		</div>
 
 		{% if adjoins[0] is not None %}
-			<span id="previous">
-				<a href="/article/{{ adjoins[0] }}"><i class="icon-double-angle-left"></i>&nbsp;前一篇</a>
-			</span>
+			
+			<a class="arrow" href="/article/{{ adjoins[0] }}">
+				<span id="previous"><i class="icon-double-angle-left"></i>&nbsp;前一篇</span>
+			</a>
 		{% end %}
 
 		{% if adjoins[1] is not None %}
-			<span id="following">
-				<a href="/article/{{ adjoins[1] }}">后一篇&nbsp;<i class="icon-double-angle-right"></i></a>
-			</span>
+			<a class="arrow" href="/article/{{ adjoins[1] }}">
+				<span id="following">后一篇&nbsp;<i class="icon-double-angle-right"></i></span>
+			</a>
 		{% end %}
 </div>
 </div>

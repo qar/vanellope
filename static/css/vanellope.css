@@ -1,0 +1,128 @@
+html{
+	height: 100%;
+}
+
+body{
+	margin: auto;
+	height: 100%;
+	overflow: auto;
+	background-color: #e3e3e3;
+	/*text-align: center;*/
+	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: #555555;
+}
+
+#header{
+	width: 100%;
+	box-shadow: 0px 2px 2px rgba(120,120,120,0.4);	
+}
+
+#header-wrapper{ 
+	width: 960px;
+	height: 35px;
+	margin:0px auto;	
+}
+
+/* content wrapper */
+#wrapper{ 
+	min-height: 100%;
+	height: auto ! important;
+	width: 960px;
+	margin: 30px auto;
+	text-align: left;
+	background-color: transparent;
+	overflow: hidden;
+}
+
+#footer{ /* contains #footer-wrapper  */
+	height: 80px;
+	background-color: white;
+	color: #868686;
+}
+#footer-wrapper{ /* wrap footer content */
+	width: 960px;
+	height: 80px;
+	margin: 0px auto;
+	background-color: transparent;
+}
+
+/*** the primary part ***/
+/**   primary **/
+div.primary-wrapper{
+	float: left;
+	height: auto;
+	width: 676px;
+}
+
+div.primary-item-sep{
+	width: 100%;
+	height: 20px;
+	float: right;
+}
+div.primary{ /* style specific */
+	height: auto;
+	background-color: #ffffff;
+	border-radius: 4px;
+    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
+    overflow: hidden; 
+	width: 100%;
+	margin-bottom: 50px;
+	float: left;
+}
+div.primary-item-container{ /* #primary's general items style */
+	margin: 20px;
+	width: auto;
+	height: auto;
+}
+
+/** widget structure **/
+div.widgets-wrapper{
+	width: 267px;
+	margin-left: 15px;  /* gap between #primary and #secondary */
+	margin-right: 2px; /* leave space for border*/
+	min-height: 100%;
+	height: auto;
+	float: right;
+}
+div.widget{ 
+	height: auto;
+	background-color: #ffffff;
+	border-radius: 4px;
+    box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
+    overflow: hidden; 
+	height: auto;
+	width: auto;
+	float:right;
+	margin-bottom: 20px;
+}
+div.widget-wrapper{
+	margin: 0px;
+	border: 0px;
+	width: 100%;
+	max-width: 247px;
+	float: left;
+	padding: 0px 10px 10px 10px;
+	border-radius: 0px 0px 4px 4px;
+}
+div.widget-outer-sep{
+	width: 307px;
+	height: 10px;
+	float: right;
+	background-color: transparent;
+}
+div.widget-caption{
+	color: #ffffff;
+	width: 262px;
+	height: 20px;
+	padding: 3px 0px 0px 5px;
+	border-radius: 4px 4px 0px 0px;
+    overflow: hidden; 
+	float: left;
+}
+.widget-inner-sep{
+	width: 100%;
+	height: 10px;
+	float: left;
+	background-color: transparent;
+}

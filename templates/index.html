@@ -8,7 +8,7 @@
 			{% if article.has_key('avatar')  and article['avatar'] %}
 			<a href="/article/{{ article['sn'] }}"><img class="article-intro" src="{{ article['avatar'] }}"></a>
 			{% end %}
-			<a href="/article/{{ article['sn'] }}"><h2 class="article-intro-title">{{ article['title']}}</h2></a>
+			<a href="/article/{{ article['sn'] }}"><h2 class="title">{{ article['title']}}</h2></a>
 			<span class="article-brief">{{ article['sub_title'] }}</span>              
 		</div>
 		{% end %}

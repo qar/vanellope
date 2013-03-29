@@ -1,56 +1,55 @@
 {% include "common/header.html" %}
 
 <div id="wrapper">
-  <div class="primary-wrapper">
-    <div class="primary" id="article">
-      <div class="primary-item-container">
-        <h1 class="article-title">{{ article['title'] }}</h1><!-- end of "article-title" -->
-        <div class="article-content" id="content">
-          {% for i in article['body'].splitlines() %}
-          {% raw i %}
-          {% end %}
-        </div>
-      </div>
-    </div>
-  
-    {% if comments %}
-    <div class="primary" id="comments">
-      {% for comment in comments %}
-      <div class="comment primary-item-container">
+<div class="primary-wrapper">
 
-        <a class="member" href="/member/{{ comment['member']['uid'] }}">
-          <img class="avatar" src="{{ comment['member']['avatar'] }}" alt="{{ comment['member']['name'] }}" width="50px" height="50px">
-        </a>
+	<div class="primary"><!-- removed  id="article"-->
+		<div class="primary-item-container">
+		<h1 class="title">{{ article['title'] }}</h1><!-- end of "article-title" -->
+		<div class="article-content" id="content">
+		{% for i in article['body'].splitlines() %}
+		{% raw i %}
+		{% end %}
+		</div>
+		</div>
+	</div><!-- end of "div.primary" -->
+	
+	{% if comments %}
+	<div class="primary"> <!-- removed id="comments"-->
+		{% for comment in comments %}
+		<div class="comment primary-item-container">
 
-        <a href="/member/{{ comment['member']['uid'] }}"><span>{{ comment['member']['name']}}</span></a>
-        <span class="timestamp" style="margin-left:10px">{{ comment['date']}}</span>
-        <span class="comment-floor" style="float:right;padding:0px 8px; min-width:10px; width:auto; background-color:{% if master and master['color'] %}{{ master['color'] }}{% else %}#969cb1{% end %}; border-radius: 8px; text-align:center; color:#FFFFFF">{{ comment['floor'] }}</span>
-        <br/>
-        <p class="comment">{{ comment['body'] }}</p>
-      </div>   
-      {% end %}
-    </div>
-    {% end %}
-
-  </div>
+			<a class="member" href="/member/{{ comment['member']['uid'] }}"><img class="avatar" src="{{ comment['member']['avatar'] }}" alt="{{ comment['member']['name'] }}" width="50px" height="50px"></a>
+			<a href="/member/{{ comment['member']['uid'] }}"><span>{{ comment['member']['name']}}</span></a>
+			<span class="timestamp" style="margin-left:10px">{{ comment['date']}}</span>
+			<span class="comment-floor" style="float:right;padding:0px 8px; min-width:10px; width:auto; background-color:{% if master and master['color'] %}{{ master['color'] }}{% else %}#969cb1{% end %}; border-radius: 8px; text-align:center; color:#FFFFFF">{{ comment['floor'] }}</span>
+			<br/>
+			<p class="comment">{{ comment['body'] }}</p>
+		</div>   
+		{% end %}
+	</div><!-- end of "div.primary" -->
+	{% end %}
 
 
-  <div class="widgets-wrapper">
-    {% include "widgets/author-info.html" %}
+</div>
 
-    {% if master['name'] %}
-      {% if master['name'] == author['name'] %}
-        {% include "widgets/owner-article-option.html" %}
-      {% end %}
-    {% end %}
 
-    
-    {% include "widgets/article-status.html" %}
-    
-    {% if master['name'] %}
-      {% include "widgets/comment.html" %}
-    {% end %}
-  </div><!-- Closing of widgets-wrapper -->
+	<div class="widgets-wrapper">
+		{% include "widgets/author-info.html" %}
+
+		{% if master['name'] %}
+			{% if master['name'] == author['name'] %}
+				{% include "widgets/owner-article-option.html" %}
+			{% end %}
+		{% end %}
+
+		
+		{% include "widgets/article-status.html" %}
+		
+		{% if master['name'] %}
+			{% include "widgets/comment.html" %}
+		{% end %}
+	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->
 

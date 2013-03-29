@@ -125,6 +125,13 @@ class Member:
         else:
             raise exception.PatternMatchError()
 
+    def set_color(self, color):
+        if re.match(regex.COLOR, color):
+            self._model['color'] = color
+        else:
+            raise exception.PatternMatchError()
+
+
     def set_password(self, _pwd):
         # _pwd is inscure. 
         # If _pwd is not string, TypeError (from method _encrypt_password)

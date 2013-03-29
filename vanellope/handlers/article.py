@@ -14,7 +14,7 @@ from vanellope import constant as cst
 
 from vanellope.model import Article
 from vanellope.model import Member
-
+from vanellope.model import Comment
 from vanellope.handlers import BaseHandler
 
 
@@ -69,6 +69,7 @@ class ArticleHandler(BaseHandler):
         cmts = da.get_comment_list_by_sn(article_sn)
         comments = []
         for cmt in cmts:
+            cmt = Comment(cmt)
             comments.append(dict(
                 member = cmt.member,
                 date = cmt.date,

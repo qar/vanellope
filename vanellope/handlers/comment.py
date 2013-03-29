@@ -10,6 +10,8 @@ import tornado.web
 
 from vanellope import db
 from vanellope.model import Comment 
+from vanellope.model import Member
+from vanellope.model import Article
 from vanellope.handlers import BaseHandler
 
 

@@ -38,6 +38,11 @@ class RegisterHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def post(self):
+        m = Member(self.get_current_user())
+        master = dict(
+            color = m.color,
+            name = m.name
+        )
         errors = [] # errors message container
         member = Member()
         post_values = ['name','pwd','cpwd','email']
@@ -79,7 +84,7 @@ class RegisterHandler(BaseHandler):
             self.render("register.html", 
                         title = u"注册", 
                         errors = errors,    
-                        master = None)
+                        master = master)
         else:
             member.set_secret_key(randomwords(20))
             member.verify()
