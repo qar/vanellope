@@ -141,6 +141,15 @@ p.comment{
 	max-width: 576px;
 	float: left;
 }
+.comment-floor{
+	float:right;
+	padding:0px 8px;
+	min-width:10px; 
+	width:auto; 
+	border-radius: 8px; 
+	text-align:center; 
+	color:#FFFFFF;
+}
 
 
 
