@@ -44,6 +44,7 @@ from vanellope.handlers.auth import RegisterHandler
 from vanellope.handlers.member import MemberHandler
 from vanellope.handlers.member import EmailHandler
 from vanellope.handlers.member import HomeHandler
+from vanellope.handlers.member import BriefHandler
 
 from vanellope.handlers.comment import CommentHandler
 
@@ -66,6 +67,7 @@ class App(tornado.web.Application):
 
         (r"/home", HomeHandler),
         (r"/home/(.*)", HomeHandler),
+        (r"/brief", BriefHandler),
         (r"/member", MemberHandler),
         (r"/member/([0-9]{1,16})", MemberHandler),
         (r"/member/email\.json", EmailHandler),
@@ -134,10 +136,7 @@ class ColorHandler(BaseHandler):
         color = self.get_argument("color", None)
         master = Member(self.get_current_user()) #wrapped
         try:
-            print color
-            print master.name
             master.set_color(color)
-            print master.color
             master.put()
             master.color
             self.finish(json.dumps([])) # a empty array indicate no error occors

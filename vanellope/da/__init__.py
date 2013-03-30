@@ -135,7 +135,7 @@ def split_pages(author=None, per=10, status=None, page=1):
     current = copy.sort("date", -1).skip(skip).limit(int(per))
     temp = []
     for i in current:
-        temp.append(Article(i).pack)
+        temp.append(i)
     return dict(
         total = total, # articles total number
         pages = pages, 

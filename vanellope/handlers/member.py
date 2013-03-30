@@ -37,17 +37,20 @@ class MemberHandler(BaseHandler):
 
         d = da.split_pages(author=author.uid, page=page)
 
-        if author.uid is None:
+        if author.uid is None: # no such user, wrong url
             self.send_error(404)
             self.finish()
-        elif m.uid == author.uid:
+        elif m.uid == author.uid: # user is logined
             self.redirect("/home")
-        else:
-            member = dict(
-                avatar_large = author.avatar_large,
-                brief = author.brief,
-                name = author.name
-            )
+            self.finish()
+        
+        # this is what we expected
+        member = dict(
+            avatar_large = author.avatar_large,
+            brief = author.brief,
+            name = author.name,
+
+        )
 
         master = dict(
             color = m.color,
@@ -59,7 +62,9 @@ class MemberHandler(BaseHandler):
                     articles = d['articles'],
                     member = member,
                     pages = d['pages'],
+                    total = d['total'],
                     master = master) 
+
 
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
@@ -105,12 +110,23 @@ class HomeHandler(BaseHandler):
                         title="Home",
                         errors=None,                        
                         master = master,
+                        total = d['total'],
                         pages = d['pages'],
                         articles = d['articles'])
         elif html == "write":
             self.render(template,
                         title=u"撰写",
                         master=master)
+
+
+
+
+class BriefHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        master = Member(self.get_current_user()) # wrapped
+        brief = master.brief
+        self.finish(json.dumps(brief))
 
     @tornado.web.authenticated
     def post(self):
@@ -120,7 +136,7 @@ class HomeHandler(BaseHandler):
         master.put()
         self.finish()
 
-  
+
                       
 class EmailHandler(BaseHandler):
     # ajax call

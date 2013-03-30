@@ -33,7 +33,7 @@
 		</div> <!-- end of "div.primary-item-container" -->
 	</div> <!-- end of "primary" -->
 
-	
+	{% if total > 0 %}
 	<div class="primary" style="padding-top:35px">
 		<div id="jq-insert-mark">
 			{% for article in articles %}
@@ -73,26 +73,28 @@
 
 			$("#memberBriefEditor").click(function(){
 				$(this).hide();
-			  	$('#member-brief').hide(300);
-			  	$('textarea.member-info').show(300).focus();
-			  	var raw = $.trim($('#member-brief').text());
-			  	var trip = raw.split("<br/>");
-			  	var raw = trip.join("\n");
-			  	$('textarea.member-info').html(raw);
+			  	$('#member-brief').hide();
+			  	$.ajax({
+			  		url:"/brief",
+			  		type:"GET",
+			  		dataType: "json",
+			  		success: function(data){
+			  			$('textarea.member-info').html(data);
+			  			$('textarea.member-info').show(300).focus();
+			  		},
+			  	});
 
 			  	$('textarea.member-info').blur(function(){
 					var input = $.trim($('textarea.member-info').val());
 					$.ajax({
-						url:"/home",
+						url:"/brief",
 						type:"POST",
 						data:{'brief': input},
+						success: function(data){
+							location.reload();
+						}
 					});
-					var lines = input.split("\n");
-					var output = lines.join("<br/>")
-					$('#member-brief').html(output);
-					$('textarea.member-info').hide(300);
-					$('#member-brief').show(300);
-					$("#memberBriefEditor").show();
+					
 			  	});
 			});  
 
@@ -105,6 +107,7 @@
 		</script>
 	
 	</div> <!-- end of "primary" -->
+	{% end %}{# end of "if total > 0" statement #}
   	</div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">

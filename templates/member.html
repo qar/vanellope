@@ -18,18 +18,19 @@
 		</div> <!-- end of "div.primary-item-container" -->
 		</div> <!-- end of "primary" -->
 
+	{% if total > 0 %}
 	<div class="primary" style="padding-top:35px">
-		{#
 		<div id="jq-insert-mark">
 			{% for article in articles %}
 			<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
-				<span class="article-caption" >
+				<span class="article-caption" style="max-width:615px" >
 					<a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a>
 				</span>
 			</div>
 			{% end %}
 		</div>
 
+		
 		<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
 		{% if pages > 10 %}
 			{% for page in range(1, 10) %}
@@ -42,7 +43,7 @@
 			{% end %}
 		{% end %}
 		</div> <!-- end of div.pages -->
-		#}
+		
 
 		<script>
 			$("span.pages").click(function(){
@@ -53,6 +54,8 @@
 		</script>
 	
 	</div> <!-- end of "primary" -->
+	{% end %}
+	
   	</div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">	

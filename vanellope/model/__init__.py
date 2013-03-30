@@ -38,7 +38,6 @@ class Member:
         self._model = {
             'uid': None,
             'name': None,
-            'name_safe': None,
             'email': None,
             'pwd': None, 
             "color": None,
@@ -53,11 +52,13 @@ class Member:
         if entity and isinstance(entity, dict):
             self._model = entity
 
+    # Is is NECESSARY ???????
     def __getitem__(self, item):
         try:
             return self._model[item]
         except KeyError:
             return None
+
     @property 
     def uid(self):
         return self._model['uid']
@@ -74,9 +75,6 @@ class Member:
     def name(self):
         return self._model['name']
 
-    @property 
-    def name_safe(self):
-        return self._model['name_safe']
 
     @property 
     def avatar(self):
@@ -155,27 +153,6 @@ class Member:
         else:
             raise exception.PatternMatchError()
 
-    def reload(self, _name, _pwd):
-        """
-        Take username and password as argument. Position matters.
-        ValueError exception is raised when username's boolean value is False.
-        If password is not match, AuthError exception is raised.
-        More about AuthError exception see  'vanellope/exception.py'.
-        """
-        # Use (name, pwd) pair or auth cookie to reload
-        if not _name:
-            raise exception.NameError
-        elif not _pwd:
-            raise exception.AuthError()
-        else:
-            entity = db.member.find_one({"name": _name})
-            # Pymongo return None value if not match one
-            if not entity:
-                raise exception.AuthError()
-            elif entity['pwd'] != self._encrypt_password(_pwd):
-                raise exception.AuthError()
-            else:
-                self._model = entity
 
     def check_password(self, _pwd):
         #
@@ -223,6 +200,28 @@ class Member:
         if self._model['name'] and self._model['pwd']:
             self._model['auth'] = hashlib.sha256(self._model['name'] + 
                                   self._model['pwd']).hexdigest()
+
+    def reload(self, _name, _pwd):
+        """
+        Take username and password as argument. Position matters.
+        ValueError exception is raised when username's boolean value is False.
+        If password is not match, AuthError exception is raised.
+        More about AuthError exception see  'vanellope/exception.py'.
+        """
+        # Use (name, pwd) pair or auth cookie to reload
+        if not _name:
+            raise exception.NameError
+        elif not _pwd:
+            raise exception.AuthError()
+        else:
+            entity = db.member.find_one({"name": _name})
+            # Pymongo return None value if not match one
+            if not entity:
+                raise exception.AuthError()
+            elif entity['pwd'] != self._encrypt_password(_pwd):
+                raise exception.AuthError()
+            else:
+                self._model = entity
 
     def put(self):
         if self._model['avatar'] is None: 
@@ -293,15 +292,10 @@ class Article:
             'date': datetime.datetime.utcnow(),
             'review': datetime.datetime.utcnow(),
             'permalink': None,
-            'category': None,
         }
 
         if entity and isinstance(entity, dict):
             self._model = entity
-
-    @property 
-    def pack(self):
-        return self._model
 
     @property 
     def status(self):
@@ -379,6 +373,3 @@ class Article:
     def put(self):
         db.article.save(self._model)
 
-    def reload(self, _sn):
-        self._model = db.article.find_one({"sn": int(_sn), "status":"normal"})
-        return self._model
