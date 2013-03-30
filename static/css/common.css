@@ -43,7 +43,10 @@ h2.title{
 p.comment{
 	font-size:1em;
 }
-
+.Bio{
+	font-size: 0.8em;
+	line-height: 1.4;
+}
 
 /******* Link *******/
 a{
