@@ -95,8 +95,8 @@ div.widget{
     box-shadow: 1px 1.5px 2px rgba(12,12,12,0.5); 
     overflow: hidden; 
 	height: auto;
-	width: auto;
-	float:right;
+	width: 100%;
+	float:left;
 	margin-bottom: 20px;
 }
 div.widget-wrapper{

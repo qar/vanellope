@@ -80,18 +80,19 @@ div.hotestArticles{
 
 
 /*** widgets/personal-info-manage.html ***/
+/*** widgets/tools-list.html ***/
 div.option-nav{
 	margin: 0px;
 	border: 0px;
 	padding: 5px 10px 0px;
 	width: 100%;
-	max-width: 267px;
+	max-width: 247px;
 	height: 26px;
 	float: left;
 	color:white;
 }
 
-div.option-nav > span{
+div.option-nav > span, div.option-nav > a{
 	padding-right: auto;
 	height: 20px;
 	line-height: 20px;
@@ -101,8 +102,16 @@ div.option-nav > span{
 	text-align: center;
 	vertical-align: middle;	
 }
+div.option-nav > a{
+	color: white;
+	float: left;
+}
 
-div.option-nav > span:hover{
+div.option-nav > span:hover, div.option-nav > a:hover{
 	text-shadow: 0px 0px 1px;
 	text-decoration: none;
 }
+
+
+
+

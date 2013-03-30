@@ -13,14 +13,14 @@
 <div id="wrapper">
 	<div class="primary-wrapper">
 	<div class="primary">
-		<div class="primary-item-container">
+		<div class="primary-item-container" style="height:auto">
 		<div class="member-info">
 			<img src="{{ master['avatar_large'] }}">
-			<div class="member-info-container">
+			<div class="member-info-container" style="height:auto">
 				<h2 class="member-info">{{ master['name'] }}</h2>
 				<p class="member-info">{{ master['email'] }}</p>				
 			  	<span id="memberBriefEditor" class="option"><i class="icon-edit"></i></span>
-			  	<p class="member-info Bio" id="member-brief" style="height:100px;width:461px"> 
+			  	<p class="member-info Bio" id="member-brief" style="min-height:100px;height:auto;width:461px"> 
 			  		{% if master['brief'] %}
 			  			{% for i in master['brief'].splitlines() %}
 			  				{{i}}</br>
@@ -55,12 +55,12 @@
 		<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
 		{% if pages > 10 %}
 			{% for page in range(1, 10) %}
-				<a href="/home?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+				<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 			{% end %}
 				<span id="pages-more", class="option pages">...</span>
 		{% else %}
 			{% for page in range(1, pages) %}
-				<a href="/home?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+				<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 			{% end %}
 		{% end %}
 		</div> <!-- end of div.pages -->
