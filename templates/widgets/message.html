@@ -3,18 +3,14 @@
 	<div class="option-nav common-color">
 	<span class="option commom-color" id="msgSender">私信TA&nbsp;&nbsp;<i class="icon-envelope"></i></span>
 	</div>
-	<div class="widget-wrapper" id="msgDialogBoxContainer" style="visibility:hidden; height:0px; padding-bottom:0px">
+	<div class="widget-wrapper" id="msgDialogBoxContainer" style="height:auto; padding-bottom:0px">
 		<textarea class="inputbox" id="privateMsgContent" style="max-width:241px;margin:10px 0px"></textarea>
-		<span class="flatBtn cancelBtn option">关闭</span>
+		<span class="flatBtn cancelBtn option">清空</span>
 		<span class="flatBtn submitBtn option">发送</span>
 		<div class="widget-inner-sep"></div>
 	</div>
 <script>
 	$(document).ready(function(){
-		$("#msgSender").click(function(){
-			$("#msgDialogBoxContainer").css({"visibility":"visible", "height":"auto"});
-		}); 
-
 		$("span.submitBtn").click(function(){
 			var content = $.trim($("#privateMsgContent").val());
     		var url = $("a.member").attr("href");
@@ -22,16 +18,20 @@
 		});
 
 		$("span.cancelBtn").click(function(){
-			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
+			$("#privateMsgContent").val('');
 		});
 
 		$("#privateMsgContent").focus(function(){
-			$(this).animate({"height":"120px"});
+			$(this).animate({"height":"120px"}, 230);
 		})
 
 		$("#privateMsgContent").blur(function(){
-			$(this).animate({"height":"35px"});
-		})
+			if(!$.trim($('#privateMsgContent').val())){
+				$(this).animate({"height":"35px"},200);
+			}
+		});
+
+
 
 
 	});

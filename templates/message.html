@@ -1,7 +1,7 @@
 {% include "common/header.html" %}
 <div id="wrapper">
 	<div class="primary-wrapper">
-	<div class="primary" >
+	<div class="primary">
 
 	{% for msg in messages %}
 		{% if msg['sender']['uid'] == master['uid'] %}
@@ -36,5 +36,9 @@
 	</div><!-- end of div.primary -->
 	</div><!-- end of primary wrapper -->
 
+
+	<div class="widgets-wrapper">
+		{% include "widgets/message-usage.html" %}
+	</div><!-- Closing of widgets-wrapper -->
 </div> <!-- end of div#wrapper --> 
 {% include "common/footer.html" %}

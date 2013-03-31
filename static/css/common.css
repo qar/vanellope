@@ -70,6 +70,7 @@ img{max-width: 636px;}
 	border-radius: 5px;
 }
 textarea.inputbox{
+	min-width: 241px;
 	width: 100%;
 	max-width: 630px;
 	border: 1px solid silver;
@@ -145,6 +146,7 @@ input.inputbox{
 	vertical-align: middle;
 	text-align: center;
 }
+
 
 
 
