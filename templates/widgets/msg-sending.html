@@ -1,10 +1,3 @@
-	<textarea class="inputbox" id="privateMsgContent" style="max-width:241px; height:111px; margin:8px 0px 8px 0px "></textarea>
-	<span class="flatSubmitBtn option">发送</span>
+	<textarea class="inputbox" id="privateMsgContent" style="max-width:241px; height:80px; margin:8px 0px 8px 0px "></textarea>
+	<span class="flatBtn option">发送</span>
 	<div class="widget-inner-sep"></div>
-	<script>
-		$("span.flatSubmitBtn").click(function(){
-			var content = $.trim($("#privateMsgContent").val());
-    		var url = window.location.href;
-    		sendMessage(content, url);
-		})
-	</script>

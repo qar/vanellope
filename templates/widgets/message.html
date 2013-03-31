@@ -21,6 +21,13 @@
 				}
 			}); // end of $("#msgSender").click()
 
+
+			$("span.flatSubmitBtn").click(function(){
+				var content = $.trim($("#privateMsgContent").val());
+    			var url = window.location.href;
+    			sendMessage(content, url);
+			})
+
 		});// end of top function()
 	</script>
 </div>

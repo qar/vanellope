@@ -109,10 +109,11 @@ textarea.inputbox{
 	box-shadow: 0px 1px 1px 10px rgb(103, 194, 226) inset;
 }
 
-.flatSubmitBtn{
-	margin: 0px;
-	padding: 0px;
-	width: 55px;
+.flatBtn{
+	margin: 0px 5px 0px 5px;
+	padding: 0px 5px 0px 5px;
+	width: auto;
+	min-width: 55px;
 	margin-left: 0px;
 	border-radius:4px;
 	float:right;
@@ -122,7 +123,7 @@ textarea.inputbox{
 	vertical-align: middle;
 	text-align: center;
 }
-.flatSubmitBtn:active{
+.flatBtn:active{
 	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.7) inset
 }
 
