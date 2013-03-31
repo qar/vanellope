@@ -59,3 +59,15 @@ function getPageByAuthor(page, uname){
     });
 };
 
+
+function sendMessage(msg, dst){
+    $.ajax({
+        url: dst,
+        type: "POST",
+        dataType:"json",
+        data: "message="+msg,
+        success: function(data){
+            console.log("message sent");
+        }
+    });
+}; // end of button click event

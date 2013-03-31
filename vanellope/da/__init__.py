@@ -182,13 +182,13 @@ def get_messages_by_peer(peer_list):
 
 
 def get_new_messages(uid):
-    msgs =  db.message.find({"receiver": int(uid)}).sort("date", 1)
+    # You are the receiver
+    msgs =  db.message.find({"receiver": int(uid),
+                             "status": cst.UNREAD}).sort("date", 1)
     t = []
     for msg in msgs:
-        msg['status'] = cst.READ
-        db.message.save(msg)
         m = Member(db.member.find_one({"uid": msg['sender']}))
-        msg['receiver'] = dict(
+        msg['sender'] = dict(
             name = m.name,
             uid = m.uid,
             avatar = m.avatar
@@ -203,11 +203,12 @@ def my_all_messages(uid):
     msgs = db.message.find({"peer": {"$all":[int(uid),]}}).sort("date", 1)
     t = []
     for msg in msgs:
+        # You are the receiver
         if msg['receiver'] == int(uid) and msg['status'] == cst.UNREAD:
             msg['status'] = cst.READ
             db.message.save(msg)
         m = Member(db.member.find_one({"uid": msg['sender']}))
-        msg['receiver'] = dict(
+        msg['sender'] = dict(
             name = m.name,
             uid = m.uid,
             avatar = m.avatar

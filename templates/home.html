@@ -115,6 +115,10 @@
 	<div class="widgets-wrapper">
 		{% include "widgets/personal-info-manage.html" %}
     	{% include "widgets/tools-list.html" %}
+    	
+    	{% if master['messages'] > 0 %}
+    		{% include "widgets/news.html" %}
+    	{% end %}
   	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->

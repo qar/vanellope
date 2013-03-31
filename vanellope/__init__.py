@@ -38,3 +38,8 @@ class Mail:
 					"subject": self.subject,
 					"html": self.body})
 
+
+
+def filter(text):
+	# Convert raw @somone to <a href="/SomeURLAboutsomeone"></a>
+	patt = ""

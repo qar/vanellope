@@ -3,16 +3,8 @@
 	<div class="widget-inner-sep"></div>
 	<script>
 		$("span.flatSubmitBtn").click(function(){
-			var msg = $.trim($("#privateMsgContent").val());
-			var dst = window.location.href;
-			$.ajax({
-				url: dst,
-				type: "POST",
-				dataType:"json",
-				data: {"message":msg},
-				success: function(data){
-					alert("message sent");
-				}
-			});
-		}); // end of button click event
+			var content = $.trim($("#privateMsgContent").val());
+    		var url = window.location.href;
+    		sendMessage(content, url);
+		})
 	</script>

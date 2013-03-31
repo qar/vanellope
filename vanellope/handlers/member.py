@@ -125,17 +125,6 @@ class MessageHandler(BaseHandler):
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="home"):
-        # Login User Information
-        # I add a method to BaseHandler to replace this below:
-        #m = Member(self.get_current_user())
-        #master = dict(
-        #    uid = m.uid,
-        #    color = m.color,            
-        #    avatar_large = m.avatar_large,
-        #    brief = m.brief,
-        #    name = m.name,
-        #    email = m.email,
-        #)
         master = self.master()
         
         htmls = ('write', 'deleted', 'home', 'message') # Available templates
@@ -160,16 +149,18 @@ class HomeHandler(BaseHandler):
                         articles = d['articles']
                         )
         elif html == "home":
+            news = da.get_new_messages(master['uid'])
             d = da.split_pages(author=master['uid'], 
                                status=cst.NORMAL,
-                               page=page,)
+                               page=page)
             self.render(template, 
                         title="Home",
                         errors=None,                        
                         master = master,
                         total = d['total'],
                         pages = d['pages'],
-                        articles = d['articles'])
+                        articles = d['articles'],
+                        messages = news)
         elif html == "write":
             self.render(template,
                         title=u"撰写",
