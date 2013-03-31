@@ -1,0 +1,26 @@
+
+<div class="widget">
+	<div class="option-nav common-color">
+		<span class="option commom-color" id="msgSender">私信&nbsp;&nbsp;<i class="icon-envelope"></i></span>
+	</div>
+
+	<div class="widget-wrapper load-container" style="padding-bottom:0px;">
+	</div>
+
+
+	<script>
+		$(document).ready(function(){
+			$("#msgSender").click(function(){
+				if($("div.load-container").innerHeight() == 0){
+					$("div.load-container").load("/widgets/msg-sending.html", function(){
+							$("div.load-container").hide().fadeIn(300);
+					}); // end of load() op
+				}
+				else if( $("div.load-container").innerHeight() > 0 ){
+					$("div.load-container").empty();
+				}
+			}); // end of $("#msgSender").click()
+
+		});// end of top function()
+	</script>
+</div>

@@ -1,0 +1,40 @@
+{% include "common/header.html" %}
+<div id="wrapper">
+	<div class="primary-wrapper">
+	<div class="primary" >
+
+	{% for msg in messages %}
+		{% if msg['sender'] == master['uid'] %}
+		<div class="primary-item-container">
+			<div class="infoBox msgHere">
+				<a href="/member/{{ master['uid']}}">
+				<img class="msgAvatar msgHere" src="{{ master['avatar'] }}" title="{{ master['name']}}" width="50px" height="50px"></a>
+			</div>
+			<div class="msgHere msgBox" style="padding-left:20px">
+				<p class="msgContent msgHere">{{ msg['body'] }}</p>
+				<br/>
+				<p class="timestamp msgHere">{{ msg['date'] }}</p>
+			</div>
+		</div><!-- End of msgWrapper -->
+
+		{% else %}
+		<div class="primary-item-container">
+			<div class="infoBox msgThere">
+				<a href="/member/{{msg['receiver']['uid']}}">
+				<img class="msgAvatar msgThere" src="{{ msg['receiver']['avatar'] }}" title="{{ msg['receiver']['name']}}" width="50px" height="50px"></a>
+			</div>
+			<div class="msgThere msgBox" style="padding-right:20px">
+				<p class="msgContent msgThere">{{ msg['body'] }}</p>
+				<br/>
+				<p class="timestamp msgThere">{{ msg['date'] }}</p>
+			</div>
+		</div><!-- End of msgWrapper -->
+		{% end %}
+
+	{% end %}
+
+	</div><!-- end of div.primary -->
+	</div><!-- end of primary wrapper -->
+
+</div> <!-- end of div#wrapper --> 
+{% include "common/footer.html" %}

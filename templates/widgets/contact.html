@@ -1,0 +1,27 @@
+<div class="widget">
+	<div class="widget-caption common-color">通信列表</div>
+	<!-- TOP 10 Hotest Articles -->
+	<div class="widget-wrapper">
+	<ul id="hotestArticles">
+	</ul>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			url:"/article/hotest/10",
+			type:"GET",
+			dataType:"json",
+			success: function(data){
+				$.each(data, function(key, val){
+					var items = [];
+					items.push('<li>');
+					items.push('<a class="hot-list" href="/article/'+val.sn+'">');
+					items.push('<span>'+val.title+'</span></a></li>');
+					$("#hotestArticles").append(items.join(""));
+				});
+			},
+		}); 
+	});
+</script>
+

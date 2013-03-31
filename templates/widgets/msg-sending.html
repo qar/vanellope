@@ -1,0 +1,18 @@
+	<textarea class="inputbox" id="privateMsgContent" style="max-width:241px; height:111px; margin:8px 0px 8px 0px "></textarea>
+	<span class="flatSubmitBtn option">发送</span>
+	<div class="widget-inner-sep"></div>
+	<script>
+		$("span.flatSubmitBtn").click(function(){
+			var msg = $.trim($("#privateMsgContent").val());
+			var dst = window.location.href;
+			$.ajax({
+				url: dst,
+				type: "POST",
+				dataType:"json",
+				data: {"message":msg},
+				success: function(data){
+					alert("message sent");
+				}
+			});
+		}); // end of button click event
+	</script>
