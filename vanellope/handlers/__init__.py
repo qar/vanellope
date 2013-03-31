@@ -3,7 +3,9 @@
 
 import tornado.web
 
+from vanellope import da
 from vanellope import db
+
 from vanellope.model import Member
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -13,4 +15,33 @@ class BaseHandler(tornado.web.RequestHandler):
             return member
         else:
             return None
+
+    def master(self):
+        # get template values
+        m = Member(self.get_current_user())
+        return dict(
+            uid = m.uid,
+            color = m.color,            
+            avatar_large = m.avatar_large,
+            avatar = m.avatar,
+            brief = m.brief,
+            name = m.name,
+            email = m.email,
+            messages = da.unread_messages(m.uid)
+        )
+
+    def member(self, uid):
+        m = Member(da.get_member_by_uid(int(uid)))
+        return dict(
+            uid = m.uid,
+            color = m.color,            
+            avatar_large = m.avatar_large,
+            avatar = m.avatar,
+            brief = m.brief,
+            name = m.name,
+            email = m.email,
+        )
+        
+
+
 

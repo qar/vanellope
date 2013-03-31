@@ -64,30 +64,28 @@ class Member:
         return self._model['uid']
 
     @property 
-    def brief(self):
-        return self._model['brief']
+    def name(self):
+        return self._model['name']
+
+    @property 
+    def email(self):
+        return self._model['email']
 
     @property 
     def color(self):
         return self._model['color']
 
     @property 
-    def name(self):
-        return self._model['name']
-
-
-    @property 
-    def avatar(self):
-        return self._model['avatar']
+    def brief(self):
+        return self._model['brief']
 
     @property 
     def avatar_large(self):
         return self._model['avatar_large']
 
-
     @property 
-    def email(self):
-        return self._model['email']
+    def avatar(self):
+        return self._model['avatar']
 
     @property
     def auth(self):
@@ -224,9 +222,8 @@ class Member:
                 self._model = entity
 
     def put(self):
-        if self._model['avatar'] is None: 
-            self._model['avatar'] = self.gravatar(self._model['email'])
-            self._model['avatar_large'] = self.gravatar(self._model['email'], size=128)
+        self._model['avatar'] = self.gravatar(self._model['email'])
+        self._model['avatar_large'] = self.gravatar(self._model['email'], size=128)
         db.member.save(self._model)
 
 
@@ -372,4 +369,81 @@ class Article:
     # save instance to database
     def put(self):
         db.article.save(self._model)
+
+
+
+class Message:
+    def __init__(self, entity=None):
+        self._model = {
+            "mid": None, #mid只能用来标识确定两个用户之间的信息
+            "sender": None, 
+            "receiver": None,
+            "status": cst.UNREAD,
+            "date": datetime.datetime.utcnow(),
+            "body": None,
+            "peer": [], # the two contacters' uid.
+        }
+
+        if entity:
+            self._model = entity
+
+    # Access like attribute
+    
+    @property 
+    def mid(self):
+        return self._model['mid']
+
+    @property 
+    def sender(self):
+        return self._model['sender']
+
+    @property 
+    def receiver(self):
+        return self._model['receiver']
+
+    @property 
+    def status(self):
+        return self._model['status']
+
+    @property 
+    def date(self):
+        return self._model['date']
+
+    @property 
+    def body(self):
+        return self._model['body']
+
+    @property 
+    def peer(self):
+        return self._model['peer']
+        
+
+
+    # Utilities
+    def set_sender(self, sender_id):
+        if not isinstance(sender_id, int): # invalid argument
+            raise TypeError
+        else:
+            self._model['sender'] = sender_id
+            self._model['peer'].append(sender_id)
+
+    def set_receiver(self, receiver_id):
+        if not isinstance(receiver_id, int): # invalid argument
+            raise TypeError
+        else:
+            self._model['receiver'] = receiver_id
+            self._model['peer'].append(receiver_id)
+
+    def set_body(self, msg):
+        if not msg: # content empty
+            raise ValueError
+        else:
+            self._model['body'] = msg
+
+
+    def put(self):
+        t = db.message.find({"sender": self._model['sender'],
+                             "receiver": self._model['receiver']}).count()
+        self._model['mid'] = t + 1
+        db.message.save(self._model)
 

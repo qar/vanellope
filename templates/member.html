@@ -60,6 +60,9 @@
   	</div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">	
+		{% if master['name'] %}
+		{% include "widgets/message.html" %}
+		{% end %}
   	</div><!-- Closing of widgets-wrapper -->
 
 </div> <!-- Closing of wrapper -->

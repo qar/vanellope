@@ -79,7 +79,7 @@ div.primary-item-container{ /* #primary's general items style */
 	margin: 20px;
 	min-width: 636px;
 	height: auto;
-	height: auto;
+	overflow: auto;
 }
 
 /** widget structure **/

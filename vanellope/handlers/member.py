@@ -23,15 +23,24 @@ from vanellope import constant as cst
 
 from vanellope.model import Member
 from vanellope.model import Article
+from vanellope.model import Message
 from vanellope.handlers import BaseHandler
 
 
 class MemberHandler(BaseHandler):
-    # UTL: /member/USERNAME
+    # UTL: /member/USERID
     # Member main information display
     #
     def get(self, uid):
-        m = Member(self.get_current_user())
+
+        # I add a method to BaseHandler to replace this below:
+        #m = Member(self.get_current_user())
+        #master = dict(
+        #    color = m.color,
+        #    name = m.name,
+        #)
+        master = self.master()
+
         page = self.get_argument("p", 1)
         author = Member(da.get_member_by_uid(uid))
 
@@ -40,7 +49,7 @@ class MemberHandler(BaseHandler):
         if author.uid is None: # no such user, wrong url
             self.send_error(404)
             self.finish()
-        elif m.uid == author.uid: # user is logined
+        elif master['uid'] == author.uid: # user is logined
             self.redirect("/home")
             self.finish()
         
@@ -49,12 +58,6 @@ class MemberHandler(BaseHandler):
             avatar_large = author.avatar_large,
             brief = author.brief,
             name = author.name,
-
-        )
-
-        master = dict(
-            color = m.color,
-            name = m.name,
         )
 
         self.render("member.html",
@@ -65,23 +68,77 @@ class MemberHandler(BaseHandler):
                     total = d['total'],
                     master = master) 
 
+    @tornado.web.authenticated
+    def post(self, she):
+        #
+        # Message Receiver
+        m = Member(self.get_current_user()) # wrapped 
+        msg = self.get_argument("message", None)
+        message = Message() # initialize a message object
+        try:
+            message.set_sender(m.uid) # Use ID as identifier
+            message.set_receiver(int(she)) # May be it is a girl
+            message.set_body(msg) # The main content
+            message.put()
+            self.finish()
+        except TypeError:
+            pass
+        except ValueError:
+            pass
+        self.finish() # If error happens, this will end request
+
+class MessageHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        #
+        #m = Member(self.get_current_user())
+        #master = dict(
+        #    uid = m.uid,
+        #    color = m.color,            
+        #    avatar_large = m.avatar_large,
+        #    brief = m.brief,
+        #    name = m.name,
+        #    email = m.email,
+        #)
+        #my_msg = da.get_msg_by_receiver(master['uid'])
+
+        master = self.master()
+        #msgs = da.get_new_messages(master['uid'])
+        msgs = da.my_all_messages(master['uid'])
+        member = self.member(1)
+        
+        #try:
+        #    peer = [master['uid'], member['uid']]
+        #except TypeError:
+        #    print "no contacter"
+        #msgs = da.get_messages_by_peer(peer.sort())
+        #print msgs
+        self.render("message.html",
+                    title = "Message",
+                    master = master,
+                    member = member,
+                    messages = msgs)
+
+
+
 
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="home"):
         # Login User Information
-        m = Member(self.get_current_user())
-        master = dict(
-            uid = m.uid,
-            color = m.color,            
-            avatar_large = m.avatar_large,
-            brief = m.brief,
-            name = m.name,
-            email = m.email,
-        )
-
+        # I add a method to BaseHandler to replace this below:
+        #m = Member(self.get_current_user())
+        #master = dict(
+        #    uid = m.uid,
+        #    color = m.color,            
+        #    avatar_large = m.avatar_large,
+        #    brief = m.brief,
+        #    name = m.name,
+        #    email = m.email,
+        #)
+        master = self.master()
         
-        htmls = ('write', 'deleted', 'home') # Available templates
+        htmls = ('write', 'deleted', 'home', 'message') # Available templates
         if html in htmls:
             template = ("%s.html" % html) # Template Selector
         else:
@@ -117,6 +174,12 @@ class HomeHandler(BaseHandler):
             self.render(template,
                         title=u"撰写",
                         master=master)
+        elif html == "message":
+
+            self.render("message.html",
+                        title = "Message",
+                        master = master)
+
 
 
 
@@ -156,16 +219,15 @@ class EmailHandler(BaseHandler):
         master = Member(self.get_current_user()) # wrapped
         if not master.verified:
             errors.append(u"你现在的邮箱还没有通过验证，暂时不能更换邮箱")
-            self.finish(json.dumps(errors))
-
-        try:
-            master.set_email(email)
-            master.verify()
-            master.put()
-        except exception.PatternMatchError:
-            errors.append(u"请检查邮箱的格式是否正确")
-        except exception.DupKeyError:
-            errors.append(u"邮箱已被使用")                
+        else:
+            try:
+                master.set_email(email)
+                master.verify()
+                master.put()
+            except exception.PatternMatchError:
+                errors.append(u"请检查邮箱的格式是否正确")
+            except exception.DupKeyError:
+                errors.append(u"邮箱已被使用")                
             
         if len(errors) > 0:
             self.finish(json.dumps(errors))

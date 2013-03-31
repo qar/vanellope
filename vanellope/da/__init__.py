@@ -163,5 +163,62 @@ def get_comment_list_by_sn(article_sn):
 
 
 
+# Message Manipulation
+#
 
+def get_messages_by_peer(peer_list):
+    # Return a iterable object
+    cursor = db.message.find({"peer": {"$all": peer_list}}).sort("date", -1)
+    msgs = []
+    for m in cursor:
+        msgs.append(dict(
+            sender = m.sender,
+            receiver = m.receiver,
+            status = m.status,
+            date = m.date,
+            body = m.body,
+        ))
+    return msgs
+
+
+def get_new_messages(uid):
+    msgs =  db.message.find({"receiver": int(uid)}).sort("date", 1)
+    t = []
+    for msg in msgs:
+        msg['status'] = cst.READ
+        db.message.save(msg)
+        m = Member(db.member.find_one({"uid": msg['sender']}))
+        msg['receiver'] = dict(
+            name = m.name,
+            uid = m.uid,
+            avatar = m.avatar
+        )
+        msg['date'] = (msg['date'] + 
+                       datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M") 
+        t.append(msg)
+    return t
+
+def my_all_messages(uid):
+    # get all messages with sender id or receiver id is uid
+    msgs = db.message.find({"peer": {"$all":[int(uid),]}}).sort("date", 1)
+    t = []
+    for msg in msgs:
+        if msg['receiver'] == int(uid) and msg['status'] == cst.UNREAD:
+            msg['status'] = cst.READ
+            db.message.save(msg)
+        m = Member(db.member.find_one({"uid": msg['sender']}))
+        msg['receiver'] = dict(
+            name = m.name,
+            uid = m.uid,
+            avatar = m.avatar
+        )
+        msg['date'] = (msg['date'] + 
+                       datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M") 
+        t.append(msg)
+    return t
+
+def unread_messages(receiver_id):
+    # Return total unread message number
+    return db.message.find({"receiver": receiver_id,
+                            "status": cst.UNREAD}).count()
 

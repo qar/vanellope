@@ -77,11 +77,14 @@ class ArticleHandler(BaseHandler):
                 body = cmt.body
             ))
 
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name,
-        )
+        # I add a method to BaseHandler to replace this below:
+        #m = Member(self.get_current_user())
+        #master = dict(
+        #    color = m.color,
+        #    name = m.name,
+        #)
+
+        master = self.master()
 
         da.heat_article_by_sn(int(article_sn)) # increase 'heat' tag then save
 

@@ -114,4 +114,51 @@ div.option-nav > span:hover, div.option-nav > a:hover{
 
 
 
+#msgViewer{
+	height: 80px;
+	overflow: scroll;
+}
+.msgBox{
+	height: auto;
+	width: auto;
+	max-width: 65%;
+	background-color: rgb(213, 221, 223);
+	border-radius: 6px;
+	margin: 0px 10px 0px 10px;
+	padding: 5px;
+}
 
+.msgThere{
+	float: left;
+}
+
+.msgHere{
+	float: right;
+}
+
+
+.msgAvatar{
+	border-radius: 4px;
+}
+
+.msgContent{
+	width: 100%;
+}
+
+
+.infoBox{
+	height: 100%;
+	width: auto;
+	margin: 0px;
+}
+
+p.msgContent{
+	margin: 0px 0px 10px 0px;
+	width: auto;
+}
+p.timestamp{
+	font-size: 0.8em;
+	width: auto;
+	margin: 0px;
+	color: rgb(150, 150, 150);
+}

@@ -6,6 +6,7 @@
 	{% for article in articles %}
 	<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
 		<span class="article-caption" titlee="{{ article['title']}}">{{ article['title']}}</span>
+		
 		<span class="article-option-right option" onclick="removeCheck({{ article['sn']}})" title="彻底移除">
 		<i  class="icon-trash  icon-large"></i>
 		</span>

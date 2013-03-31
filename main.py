@@ -45,6 +45,7 @@ from vanellope.handlers.member import MemberHandler
 from vanellope.handlers.member import EmailHandler
 from vanellope.handlers.member import HomeHandler
 from vanellope.handlers.member import BriefHandler
+from vanellope.handlers.member import MessageHandler
 
 from vanellope.handlers.comment import CommentHandler
 
@@ -67,10 +68,12 @@ class App(tornado.web.Application):
 
         (r"/home", HomeHandler),
         (r"/home/(.*)", HomeHandler),
+        (r"/message", MessageHandler),
         (r"/brief", BriefHandler),
         (r"/member", MemberHandler),
         (r"/member/([0-9]{1,16})", MemberHandler),
         (r"/member/email\.json", EmailHandler),
+
         
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
@@ -106,11 +109,12 @@ class IndexHandler(BaseHandler):
         page = self.get_argument("p", 1)
         d = da.split_pages(page=page)
 
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
+        #m = Member(self.get_current_user())
+        #master = dict(
+        #    color = m.color,
+        #    name = m.name
+        #)
+        master = self.master()
 
         self.render("index.html", 
                     title = 'PAGE302',
