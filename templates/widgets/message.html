@@ -1,33 +1,39 @@
 
 <div class="widget">
 	<div class="option-nav common-color">
-		<span class="option commom-color" id="msgSender">私信&nbsp;&nbsp;<i class="icon-envelope"></i></span>
+	<span class="option commom-color" id="msgSender">私信TA&nbsp;&nbsp;<i class="icon-envelope"></i></span>
 	</div>
-
-	<div class="widget-wrapper load-container" style="padding-bottom:0px;">
+	<div class="widget-wrapper" id="msgDialogBoxContainer" style="visibility:hidden; height:0px; padding-bottom:0px">
+		<textarea class="inputbox" id="privateMsgContent" style="max-width:241px;margin:10px 0px"></textarea>
+		<span class="flatBtn cancelBtn option">关闭</span>
+		<span class="flatBtn submitBtn option">发送</span>
+		<div class="widget-inner-sep"></div>
 	</div>
+<script>
+	$(document).ready(function(){
+		$("#msgSender").click(function(){
+			$("#msgDialogBoxContainer").css({"visibility":"visible", "height":"auto"});
+		}); 
+
+		$("span.submitBtn").click(function(){
+			var content = $.trim($("#privateMsgContent").val());
+    		var url = $("a.member").attr("href");
+    		sendMessage(content, url);
+		});
+
+		$("span.cancelBtn").click(function(){
+			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
+		});
+
+		$("#privateMsgContent").focus(function(){
+			$(this).animate({"height":"120px"});
+		})
+
+		$("#privateMsgContent").blur(function(){
+			$(this).animate({"height":"35px"});
+		})
 
 
-	<script>
-		$(document).ready(function(){
-			$("#msgSender").click(function(){
-				if($("div.load-container").innerHeight() == 0){
-					$("div.load-container").load("/widgets/msg-sending.html", function(){
-							$("div.load-container").hide().fadeIn(300);
-					}); // end of load() op
-				}
-				else if( $("div.load-container").innerHeight() > 0 ){
-					$("div.load-container").empty();
-				}
-			}); // end of $("#msgSender").click()
-
-
-			$("span.flatSubmitBtn").click(function(){
-				var content = $.trim($("#privateMsgContent").val());
-    			var url = window.location.href;
-    			sendMessage(content, url);
-			})
-
-		});// end of top function()
-	</script>
+	});
+</script>
 </div>

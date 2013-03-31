@@ -248,6 +248,10 @@ a.member{
 	color: #555555;
 }
 
+a.member:hover{
+	text-decoration: none;
+}
+
 a.theme{
 	text-decoration: none;
 }
