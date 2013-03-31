@@ -1,0 +1,15 @@
+<div class="widget">
+	<div class="widget-caption common-color" style="margin-bottom:10px">最新消息</div>
+	<!-- TOP 10 Hotest Articles -->
+	{% for msg in messages %}
+	<div class="widget-wrapper">
+		<div class="infoBox msgThere">
+			<a href="/member/{{msg['sender']['uid']}}">
+			<img class="msgAvatar msgThere" src="{{ msg['sender']['avatar'] }}" title="{{ msg['sender']['name']}}" width="35px" height="35px"></a>
+		</div>
+		<div class="msgThere msgBox" style="margin-left:5px; padding:5px">
+			<p class="msgContent msgThere" style="margin:0px">{{ msg['body'] }}</p>
+		</div>
+	</div>
+	{% end %}
+</div>
