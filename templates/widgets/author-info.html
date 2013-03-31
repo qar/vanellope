@@ -11,11 +11,15 @@
 	<div class="widget-wrapper" style="padding-top:12px">
 		<a class="member" href="/member/{{ author['uid'] }}" style="float:left;height:auto; width:auto"><img class="avatar" src="{{ author['avatar'] }}" alt="{{ author['name'] }}" width="50" height="50px"></a>
 		<a class="member" href="/member/{{ author['uid'] }}" style="float:left;font-size:16px"><span>{{ author['name'] }}</span></a>
+
+		{% if master['name'] and (master['uid'] != author['uid']) %}
 		<span class="option" id="msgDialogBoxLoader" style="border-radius:4px; background-color:green;float:right;color:white;padding:3px;font-size:0.9em">私信TA</span>
+		{% end %}
+
 	</div><!-- end of '.widget-wrapper' -->
 	<div class="widget-wrapper" id="msgDialogBoxContainer" style="visibility:hidden; height:0px">
 		<textarea class="inputbox" id="privateMsgContent" style="max-width:241px;margin-bottom:3px"></textarea>
-		<span class="flatBtn cancelBtn option">取消发送</span>
+		<span class="flatBtn cancelBtn option">关闭</span>
 		<span class="flatBtn submitBtn option">发送</span>
 		<div class="widget-inner-sep"></div>
 	</div>
