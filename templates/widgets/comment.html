@@ -8,7 +8,7 @@
 	<div class="widget-wrapper">
 	<div class="widget-inner-sep"></div>
 	
-	<textarea class="inputbox" name="comment" placeholder="写评论" style="max-width:241px; height:35px; margin-bottom:8px"></textarea>
+	<textarea class="inputbox" id="articleCommentBox" name="comment" placeholder="写评论" style="max-width:241px; height:35px; margin-bottom:8px"></textarea>
 	<span class="flatBtn submitBtn option">提交</span>
 	<script>
 		$("document").ready(function(){
@@ -23,7 +23,7 @@
 			});
 
 			$("span.submitBtn").click(function(event) {
-				var comment = $.trim($('textarea.inputbox').val())
+				var comment = $.trim($('#articleCommentBox').val())
 					if(!comment){
 						event.preventDefault();
 					}
