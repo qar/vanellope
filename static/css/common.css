@@ -71,8 +71,11 @@ img{max-width: 636px;}
 }
 textarea.inputbox{
 	width: 100%;
-	max-width: 100%;
+	max-width: 630px;
 	border: 1px solid silver;
+}
+input.inputbox{
+	max-width: 630px;
 }
 .inputbox:focus{
 	outline: 0;

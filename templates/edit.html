@@ -23,7 +23,7 @@
 
 	<form class="article" id="myform" action="/update/{{ article['sn'] }}" enctype="multipart/form-data" method="post">
 
-		<input id="title" class="article inputbox" type="text" name="title" value="{{ escape(article['title']) }}" style="height:25px">
+		<input id="articleTitle" class="article inputbox" type="text" name="title" value="{{ escape(article['title']) }}" style="height:25px">
 			<div class="primary-item-sep"></div>
 		<textarea class="article inputbox" name="brief" style="min-height:60px">{{ article['sub_title'] }}</textarea>
 			<div class="primary-item-sep"></div>
@@ -35,7 +35,7 @@
 	<script>
 				$("input.submit-button").click(function(event) {
 					// neither title nor main article conent should be null.
-						if(!$.trim($('#title').val()) || !$.trim($('#text-content').val())){
+						if(!$.trim($('#articleTitle').val()) || !$.trim($('#text-content').val())){
 							event.preventDefault();
 						}
 				});
