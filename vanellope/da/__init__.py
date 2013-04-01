@@ -143,6 +143,14 @@ def split_pages(author=None, per=10, status=None, page=1):
     )
 
 
+def article_total_like(article):
+    cursor = db.member.find()
+    t = 0
+    for m in cursor:
+        if m.has_key("like") and int(article) in m['like']:
+            t += 1;
+    return t
+
 
 
 

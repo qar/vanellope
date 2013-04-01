@@ -13,15 +13,21 @@
 
 /****** Tag Override ******/
 code{
-	white-space: nowrap;
+	/*white-space: nowrap;*/
 	margin: 0 2px;
 	padding: 0px 5px;
 	border: 1px solid #eaeaea;
 	background-color: #f8f8f8;
 	border-radius: 3px;
-	font-size: 12px;
+	font-size: 0.8em;
+	line-height: 5px;
 	font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
+
+pre code{
+	white-space: pre;
+}
+
 
 
 

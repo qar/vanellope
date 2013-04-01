@@ -27,6 +27,7 @@ class BaseHandler(tornado.web.RequestHandler):
             brief = m.brief,
             name = m.name,
             email = m.email,
+            like = m.likeit,
             messages = da.unread_messages(m.uid)
         )
 
@@ -42,6 +43,9 @@ class BaseHandler(tornado.web.RequestHandler):
             email = m.email,
         )
         
+    def is_ajax(self):
+        return "X-Requested-With" in self.request.headers and \
+            self.request.headers['X-Requested-With'] == "XMLHttpRequest"
 
 
 

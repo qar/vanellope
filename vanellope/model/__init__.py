@@ -76,6 +76,13 @@ class Member:
         return self._model['color']
 
     @property 
+    def likeit(self):
+        if self._model.has_key("like"):
+            return self._model['like']
+        else:
+            return []
+
+    @property 
     def brief(self):
         return self._model['brief']
 
@@ -151,6 +158,20 @@ class Member:
         else:
             raise exception.PatternMatchError()
 
+    def like(self, article):
+        try:
+            if int(article) not in self._model['like']:
+                self._model['like'].append(int(article))
+        except KeyError:
+            self._model['like'] = []
+            self._model['like'].append(int(article))
+        
+
+    def dislike(self, article):
+        try:
+            self._model['like'].remove(int(article))
+        except KeyError:
+            pass
 
     def check_password(self, _pwd):
         #

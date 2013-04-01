@@ -37,8 +37,14 @@ span#previous, span#following{width: auto;}
 span#previous{float: left;}
 span#following{float: right;}
 
-
-
+#articleLikeMark{
+}
+.dislike{
+	color: silver;
+}
+.like{
+	color: red;
+}
 /***  widget "tool-list" ***/
 ul.tools-list{
 	list-style-type: none;

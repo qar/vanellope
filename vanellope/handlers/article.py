@@ -21,30 +21,22 @@ from vanellope.handlers import BaseHandler
 class ArticleHandler(BaseHandler):
     # URL: /article/ARTICLE_SN
     def get(self, article_sn):
+        if self.is_ajax():
+            total_like = da.article_total_like(int(article_sn))
+            master = self.master()
+            if int(article_sn) in master['like']:
+                i_like = True
+            else:
+                i_like = False
+            self.finish(json.dumps([total_like, i_like]))
+
+
         article = da.get_article_by_sn(int(article_sn))
         if not article:
             self.send_error(404)
             self.finish()
         else:
             article = Article(article) # wrapped
-
-        # Template Values
-        #
-        # "master":
-        #    "color": theme color
-        #    "name": name
-        #
-        # "article": A mapping object
-        #     "title": article title     
-        #     "body": article main content
-        #         
-        #
-        # "comments": A iterable object, each item is a mapping object
-        #     item['member']: [member.uid, member.avatar, member.name]
-        #     item['date']: generated date
-        #     item['floor']: numeric generated sequence
-        #     item['body']: comment main content
-        #
 
         article = dict(
             sn = article.sn, # usage: widgets/comment.html
@@ -77,13 +69,6 @@ class ArticleHandler(BaseHandler):
                 body = cmt.body
             ))
 
-        # I add a method to BaseHandler to replace this below:
-        #m = Member(self.get_current_user())
-        #master = dict(
-        #    color = m.color,
-        #    name = m.name,
-        #)
-
         master = self.master()
 
         da.heat_article_by_sn(int(article_sn)) # increase 'heat' tag then save
@@ -105,7 +90,18 @@ class ArticleHandler(BaseHandler):
 
     #create article
     @tornado.web.authenticated
-    def post(self):
+    def post(self, article_sn):
+        if self.is_ajax():
+            mark = self.get_argument("mark", None)
+            master = Member(self.get_current_user())
+            if mark == "like":
+                master.like(int(article_sn))
+            elif mark == "dislike":
+                master.dislike(int(article_sn))
+            master.put()
+            total_like = da.article_total_like(int(article_sn))
+            self.finish(json.dumps(total_like))
+
         article = Article()
         # get post values
         post_values = ['title', 'brief', 'content']

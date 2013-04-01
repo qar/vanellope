@@ -12,6 +12,8 @@
 		<div class="article-status">
 			<ul>
 				<li class="theme"><i class="icon-fire"></i>{{ article['heat']}}°</li>
+				<li class="option theme" title="Like It" id="articleLikeMark">
+					<i class="icon-heart-empty"></i><span id="peopleLikeIt"></span></li>
 				<li class="theme">创建时间 {{ article['date'] }}</li>
 				<li class="theme">最近更新 {{ article['review'] }}</li>
 			</ul>
@@ -31,3 +33,48 @@
 		{% end %}
 </div>
 </div>
+
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			url: window.location.href,
+			type: "GET",
+			dataType: "json",
+			success : function(data){
+				console.log(data);
+				if(data[1] == true){
+					$("#articleLikeMark").children("i").removeClass("icon-heart-empty");
+					$("#articleLikeMark").children("i").addClass("icon-heart");
+				}
+				$("#peopleLikeIt").html("&nbsp;&nbsp;"+data[0]+"&nbsp;people like it");
+			}
+		})
+		$("#articleLikeMark").click(function(){
+			if($(this).children("i").hasClass("icon-heart-empty")){
+				$(this).children("i").removeClass("icon-heart-empty");
+				$(this).children("i").addClass("icon-heart");
+				$.ajax({
+					url: window.location.href,
+					type: "POST",
+					dataType: "json",
+					data: "mark="+"like",
+					success: function(data){
+						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;people like it");
+					},
+				})
+			}else if($(this).children("i").hasClass("icon-heart")){
+				$(this).children("i").removeClass("icon-heart");
+				$(this).children("i").addClass("icon-heart-empty");
+				$.ajax({
+					url: window.location.href,
+					type: "POST",
+					dataType: "json",
+					data: "mark="+"dislike",
+					success: function(data){
+						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;people like it");
+					},
+				})
+			}
+		});
+	});
+</script>
