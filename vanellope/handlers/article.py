@@ -129,17 +129,21 @@ class ArticleHandler(BaseHandler):
         # This currently is a ajax call
         # Request URL:/article/ARTICLE
         # Request Method:DELETE
+        master = self.master()
         article = Article(da.get_article_by_sn(int(article_sn))) # wrapped
-        if article.status == cst.DELETED:
-            # Remove related data, like comments
-            # Remove article that already markded "deleted".
-            article.remove()
-            da.remove_comments_with_article(int(article_sn))
+        if master.uid != article.author:
+            self.finish(json.dumps(False))
         else:
-            # Just mark the article "deleted", not remove it.
-            article.set_status(cst.DELETED)
-            article.put()
-        self.finish()
+            if article.status == cst.DELETED:
+                # Remove related data, like comments
+                # Remove article that already markded "deleted".
+                article.remove()
+                da.remove_comments_with_article(int(article_sn))
+            else:
+                # Just mark the article "deleted", not remove it.
+                article.set_status(cst.DELETED)
+                article.put()
+            self.finish(json.dumps(True))
 
 
 class ArticleUpdateHandler(BaseHandler):
@@ -147,7 +151,6 @@ class ArticleUpdateHandler(BaseHandler):
     def get(self, sn):
         t = Article(da.get_article_by_sn(int(sn))) # wrapped
         master = Member(self.get_current_user()) # wrapped
-
         article = dict(
             sn = t.sn, # usage: widgets/comment.html
             title = t.title,
@@ -155,14 +158,14 @@ class ArticleUpdateHandler(BaseHandler):
             markdown = t.markdown,
             author = t.author,
         )
-
-        #author = Member(da.get_author(article['author'])) # wrapped
-
-        self.render("edit.html", 
-                    title = "Edit",
-                    master=master,
-                    #author = author,
-                    article = article)
+        if article['author'] == master.uid:
+            self.render("edit.html", 
+                        title = "Edit",
+                        master=master,
+                        article = article)
+        else:
+            self.send_error(403)
+            self.finish()
 
     @tornado.web.authenticated
     def post(self, sn):

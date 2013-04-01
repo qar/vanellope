@@ -46,7 +46,7 @@
 					$("#articleLikeMark").children("i").removeClass("icon-heart-empty");
 					$("#articleLikeMark").children("i").addClass("icon-heart");
 				}
-				$("#peopleLikeIt").html("&nbsp;&nbsp;"+data[0]+"&nbsp;people like it");
+				$("#peopleLikeIt").html("&nbsp;&nbsp;"+data[0]+"&nbsp;人喜欢");
 			}
 		})
 		$("#articleLikeMark").click(function(){
@@ -59,7 +59,7 @@
 					dataType: "json",
 					data: "mark="+"like",
 					success: function(data){
-						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;people like it");
+						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;人喜欢");
 					},
 				})
 			}else if($(this).children("i").hasClass("icon-heart")){
@@ -71,7 +71,7 @@
 					dataType: "json",
 					data: "mark="+"dislike",
 					success: function(data){
-						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;people like it");
+						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;人喜欢");
 					},
 				})
 			}

@@ -112,27 +112,48 @@ def find_adjoins(current_date):
     return (pre, fol)
 
 
-def split_pages(author=None, per=10, status=None, page=1):
+def split_pages(author=None, per=10, status=None, page=1, _type="post"):
     # Split all the available article into pages.
 
+    # Show deleted articles or normal articles
     if not status:
         status = cst.NORMAL
+    if _type == "post":
+        if author:
+            cursor = db.article.find({"author": author, "status": status})
+        else:
+            cursor = db.article.find({"status": status})
+        copy = cursor.clone()
 
-    if author:
-        cursor = db.article.find({"author": author, "status": status})
-    else:
-        cursor = db.article.find({"status": status})
-
-    copy = cursor.clone()
-    total = cursor.sort("date", -1).count()
-    pages =  total // int(per) + 1
-    if int(page) > pages:
-        page = pages # the 'page' has a max limit.
-    skip = (int(page) - 1)*int(per)
-    
-    if total % int(per) > 0:
-        pages += 1
-    current = copy.sort("date", -1).skip(skip).limit(int(per))
+        # Count Pages
+        total = cursor.sort("date", -1).count()
+        pages =  total // int(per) + 1
+        if int(page) > pages:
+            page = pages # the 'page' has a max limit.
+        skip = (int(page) - 1)*int(per)
+        if total % int(per) > 0:
+            pages += 1
+        current = copy.sort("date", -1).skip(skip).limit(int(per))
+        
+    elif _type == "favourite":
+        if author: # uid
+            member = db.member.find_one({"uid": int(author)})
+            if member.has_key("like"):
+                like_list = member['like']
+            else:
+                like_list = []
+            article_list = []
+            for uid in like_list:
+                article = db.article.find_one({"sn": int(uid)})
+                article_list.append(article)
+            total = len(like_list)
+            pages = total // int(per) + 1
+            if int(page) > pages:
+                page = pages # the 'page' has a max limit.
+            skip = (int(page) - 1)*int(per)
+            if total % int(per) > 0:
+                pages += 1
+            current = article_list[skip:(skip + int(per))]
     temp = []
     for i in current:
         temp.append(i)
@@ -141,6 +162,10 @@ def split_pages(author=None, per=10, status=None, page=1):
         pages = pages, 
         articles = temp,
     )
+
+
+
+
 
 
 def article_total_like(article):

@@ -20,7 +20,7 @@
 				<h2 class="member-info">{{ master['name'] }}</h2>
 				<p class="member-info">{{ master['email'] }}</p>				
 			  	<span id="memberBriefEditor" class="option"><i class="icon-edit"></i></span>
-			  	<p class="member-info Bio" id="member-brief" style="min-height:100px;height:auto;width:461px"> 
+			  	<p class="member-info Bio" id="member-brief" > 
 			  		{% if master['brief'] %}
 			  			{% for i in master['brief'].splitlines() %}
 			  				{{i}}</br>
@@ -28,7 +28,7 @@
 					{% end %}
 			  	</p>
 			  	<span class="inputErrMsg"></span>
-				<textarea class='inputbox member-info' autofocus maxlength="250" style="display:none;height:100px;width:461px">
+				<textarea class='inputbox member-info' autofocus maxlength="250" style="display:none;height:100px;width:450px">
 				</textarea>
 			</div> <!-- end of "div.member-info-container" -->
 		</div> <!-- end of div.member-info -->
@@ -36,15 +36,24 @@
 	</div> <!-- end of "primary" -->
 
 	{% if total > 0 %}
-	<div class="primary" style="padding-top:35px">
+	<div class="primary">
+			<div class="block-caption">
+			<a href="?type=post">
+				<span class="tabMarker option {% if type == 'post' %}tabMarkerFocus{% end %}" id="articlePosted"><i class="icon-pencil large"></i>发表的文章</span>
+			</a>
+			<a href="?type=favourite">
+			<span class="tabMarker option {% if type == 'favourite' %}tabMarkerFocus{% end %}" id="articleFavourite"><i class="icon-heart large"></i>喜欢的文章</span>
+			</a>
+			</div> 
 		<div id="jq-insert-mark">
 			{% for article in articles %}
 			<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
 				<span class="article-caption" ><a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a></span>
-
+				{% if type == "post" %}
 				<span class="article-option-right option" onclick="deleteArticle({{ article['sn'] }})" style="visibility:hidden" title="删除"><i class="icon-trash  icon-large"></i>	</span>
 
 				<span class="article-option option" style="visibility:hidden" title="修改"><a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a></span>
+				{% end %}
 			</div> 
 			{% end %}
 		</div>
@@ -53,36 +62,31 @@
 		<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
 		{% if pages > 10 %}
 			{% for page in range(1, 10) %}
-				<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+			<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 			{% end %}
-				<span id="pages-more", class="option pages">...</span>
+			<span id="pages-more", class="option pages">...</span>
 		{% else %}
 			{% for page in range(1, pages) %}
-				<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+			<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 			{% end %}
 		{% end %}
 		</div> <!-- end of div.pages -->
 		<script>
-			{#
-			$("span.pages").click(function(){
-				var page = $(this).html();
-				var uname = $("h2.member-info").html();
-				getPageByAuthor(page, uname);
-			});
-			#}
+			$(document).ready(function(){
 
-			$("#memberBriefEditor").click(function(){
-				$(this).hide();
-			  	$('#member-brief').hide();
-			  	$.ajax({
-			  		url:"/brief",
-			  		type:"GET",
-			  		dataType: "json",
-			  		success: function(data){
-			  			$('textarea.member-info').html(data);
-			  			$('textarea.member-info').show(300).focus();
-			  		},
-			  	});
+				$("#memberBriefEditor").click(function(){
+					$(this).hide();
+				  	$('#member-brief').hide();
+				  	$.ajax({
+				  		url:"/brief",
+				  		type:"GET",
+				  		dataType: "json",
+				  		success: function(data){
+				  			$('textarea.member-info').html(data);
+				  			$('textarea.member-info').show(300).focus();
+				  		},
+				  	});
+				 });
 
 			  	$('textarea.member-info').blur(function(){
 					var input = $.trim($('textarea.member-info').val());
@@ -96,13 +100,21 @@
 					});
 					
 			  	});
-			});  
 
-			$(document).on("mouseenter", "div.article-list", function(){
-				$(this).children("span.option").css({"visibility":"visible"}).fadeIn(500);
-			});
-			$(document).on("mouseleave", "div.article-list", function(){
-				$(this).children("span.option").css({"visibility":"hidden"}).fadeOut(500);
+				$(document).on("mouseenter", "div.article-list", function(){
+					$(this).children("span.option").css({"visibility":"visible"}).fadeIn(500);
+				});
+				$(document).on("mouseleave", "div.article-list", function(){
+					$(this).children("span.option").css({"visibility":"hidden"}).fadeOut(500);
+				});
+
+				$(".tabMarker").click(function(){
+					$(".tabMarker").removeClass("tabMarkerFocus");
+					$(this).addClass("tabMarkerFocus");
+				});
+
+
+
 			});
 		</script>
 	

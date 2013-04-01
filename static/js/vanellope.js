@@ -2,11 +2,13 @@ function deleteArticle(article_sn){
     $.ajax({
         url:"/article/" + article_sn,
         type:"DELETE",
-    }).success(function() { 
+    }).success(function(data) { 
         /* hide the current element's parent element.
         ** I don't know how to do it, so I add each "div.article-list" element an id.
         */
-        $("#"+article_sn).slideUp(300);
+        if(data == true){
+            $("#"+article_sn).slideUp(300);
+        }
     });
 };
 

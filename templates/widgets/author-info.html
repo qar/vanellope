@@ -6,7 +6,7 @@
 	author['brief']
 #}
 <div class="widget" id="author-info">
-	<div class="widget-caption common-color">小编</div>
+	<div class="widget-caption common-color">作者</div>
 
 	<div class="widget-wrapper" style="padding-top:12px">
 		<a class="member" href="/member/{{ author['uid'] }}" style="float:left;height:auto; width:auto"><img class="avatar" src="{{ author['avatar'] }}" alt="{{ author['name'] }}" width="50" height="50px"></a>
@@ -42,7 +42,7 @@
 
 		$("span.submitBtn").click(function(){
 			var content = $.trim($("#privateMsgContent").val());
-    		var url = $("a.member").attr("href");
+    		var url = "/member/{{ author['uid'] }}";
     		sendMessage(content, url);
 		});
 

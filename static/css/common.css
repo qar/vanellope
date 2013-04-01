@@ -54,6 +54,8 @@ p.comment{
 	line-height: 1.4;
 }
 
+
+
 /******* Link *******/
 a{
 	color: #568790;
@@ -83,6 +85,12 @@ textarea.inputbox{
 }
 input.inputbox{
 	max-width: 630px;
+}
+textarea.member-info{
+	min-height:100px;
+	height:auto;
+	width:450px;
+	max-width:450px;
 }
 .inputbox:focus{
 	outline: 0;
@@ -150,14 +158,31 @@ input.inputbox{
 	line-height: 26px;
 	background-color: #a4cbd9;
 	vertical-align: middle;
-	text-align: center;
+	text-align: center;primary-caption
 }
 
 
+/****** Tab ******/
+.tabMarker{
+	border: 1px solid silver;
+	border-bottom: 0px;
+	border-radius: 4px 4px 0px 0px ;
+	float: left;
+	padding: 8px 5px 3px 5px;
+}
 
+.block-caption{
+	width: 638px; /* without border */
+	height: auto;
+	margin: 0px auto 10px;
+	overflow: auto;
+	border-bottom: 1px solid silver;
+}
 
-
-
+.tabMarkerFocus{
+	background-color:rgb(81, 83, 83);
+	color: white;
+}
 
 
 

@@ -108,14 +108,7 @@ class IndexHandler(BaseHandler):
     def get(self):
         page = self.get_argument("p", 1)
         d = da.split_pages(page=page)
-
-        #m = Member(self.get_current_user())
-        #master = dict(
-        #    color = m.color,
-        #    name = m.name
-        #)
         master = self.master()
-
         self.render("index.html", 
                     title = 'PAGE302',
                     master = master, 
