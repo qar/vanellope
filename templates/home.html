@@ -71,7 +71,23 @@
 			{% end %}
 		{% end %}
 		</div> <!-- end of div.pages -->
-		<script>
+		
+	
+	</div> <!-- end of "primary" -->
+	{% end %}{# end of "if total > 0" statement #}
+  	</div><!-- end of primary-wrapper -->   
+
+	<div class="widgets-wrapper">
+		{% include "widgets/personal-info-manage.html" %}
+    	{% include "widgets/tools-list.html" %}
+    	
+    	{% if master['messages'] > 0 %}
+    		{% include "widgets/news.html" %}
+    	{% end %}
+  	</div><!-- Closing of widgets-wrapper -->
+
+</div> <!-- Closing of wrapper -->
+<script>
 			$(document).ready(function(){
 
 				$("#memberBriefEditor").click(function(){
@@ -117,22 +133,6 @@
 
 			});
 		</script>
-	
-	</div> <!-- end of "primary" -->
-	{% end %}{# end of "if total > 0" statement #}
-  	</div><!-- end of primary-wrapper -->   
-
-	<div class="widgets-wrapper">
-		{% include "widgets/personal-info-manage.html" %}
-    	{% include "widgets/tools-list.html" %}
-    	
-    	{% if master['messages'] > 0 %}
-    		{% include "widgets/news.html" %}
-    	{% end %}
-  	</div><!-- Closing of widgets-wrapper -->
-
-</div> <!-- Closing of wrapper -->
-
 {% include "common/footer.html" %}
 
 
