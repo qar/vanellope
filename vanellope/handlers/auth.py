@@ -26,23 +26,14 @@ from vanellope.handlers import BaseHandler
 
 class RegisterHandler(BaseHandler):
     def get(self):
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
+        current_user = self.get_current_user()
         self.render("register.html", 
                     title = '注册',
                     errors = None,
-                    master = master)
+                    master = current_user)
 
     @tornado.web.asynchronous
     def post(self):
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
         errors = [] # errors message container
         member = Member()
         post_values = ['name','pwd','cpwd','email']
@@ -84,7 +75,7 @@ class RegisterHandler(BaseHandler):
             self.render("register.html", 
                         title = u"注册", 
                         errors = errors,    
-                        master = master)
+                        master = None)
         else:
             member.set_secret_key(randomwords(20))
             member.verify()
@@ -97,22 +88,12 @@ class RegisterHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
     def get(self):
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
         self.render("login.html", 
                     title="Login", 
                     errors=None, 
-                    master=master)
+                    master=None)
 
     def post(self):
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
         errors = []
         template = "login.html"
         post_values = ['name','pwd']
@@ -140,7 +121,7 @@ class LoginHandler(BaseHandler):
             # No need to go on either name or pwd is None
             self.render(template, 
                         title = "Login", 
-                        master = master, 
+                        master = None, 
                         errors = errors)
 
 
@@ -162,12 +143,12 @@ class VerifyHandler(BaseHandler):
         errors = []
         secret_key = self.get_argument("key", None)
         
-        master = Member(entity=self.get_current_user())
-        if not master.verified:
+        current_user = self.current_user_entity()
+        if not current_user.verified:
             # Verify secret key and set "verified" tag to "True"
-            if secret_key == master.secret_key:
-                master.getverified()
-                master.put()
+            if secret_key == current_user.secret_key:
+                current_user.getverified()
+                current_user.put()
                 self.redirect("/") # everything fine
             else:
                 self.send_error(403) # url insecure
@@ -178,23 +159,12 @@ class VerifyHandler(BaseHandler):
 
 class ForgetHandler(BaseHandler):
     def get(self):
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
         self.render("forget.html", 
             title="Login", 
             errors=None, 
-            master=master)
+            master=None)
 
     def post(self):
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
-
         errors = []
         template = "forget.html"
         post_values = ['name','email']
@@ -224,7 +194,7 @@ class ForgetHandler(BaseHandler):
         if len(errors) > 0:
             self.render("forget.html", 
                         title = "找回密码", 
-                        master = master, 
+                        master = None, 
                         errors = errors)
         else:
             self.redirect("/")
@@ -257,7 +227,7 @@ class PasswordResetHandler(BaseHandler):
             args[v] = self.get_argument(v, None)
 
 
-        master = Member(entity=self.get_current_user())
+        master = self.current_user_entity()
         if master.check_password(args['originPwd']):
             if args['newPwd'] == args['newPwdRepeat']:
                 try:
@@ -277,18 +247,13 @@ class PasswordResetHandler(BaseHandler):
 
 class PasswordHandler(BaseHandler):
     def get(self):
-        m = Member(self.get_current_user())
-        master = dict(
-            color = m.color,
-            name = m.name
-        )
         secret_key = self.get_argument("key", None)
         member = db.member.find_one({"secret_key": secret_key})
         if member:
             self.render("password.html", 
                         title="更改密码", 
                         errors=None, 
-                        master=master, 
+                        master=None, 
                         key=secret_key)
         else:
             self.send_error(404)
@@ -310,7 +275,7 @@ class PasswordHandler(BaseHandler):
             args[v] = self.get_argument(v, None)
     
         member = db.member.find_one({"secret_key": args['key']})
-        master = Member(entity=member)
+        master = self.current_user_entity()
         if args['pwd'] == args['cpwd']:
             try:
                 master.set_password(args['pwd'])

@@ -1,5 +1,6 @@
 {#
 	Template Value
+	article['sn']
 	article['heat']
 	article['date']
 	article['review']
@@ -37,44 +38,38 @@
 <script>
 	$(document).ready(function(){
 		$.ajax({
-			url: window.location.href,
+			url: "/ajax/like",
 			type: "GET",
 			dataType: "json",
+			data: {"article": "{{article['sn']}}"},
 			success : function(data){
 				console.log(data);
-				if(data[1] == true){
+				if(data[0] == true){
 					$("#articleLikeMark").children("i").removeClass("icon-heart-empty");
 					$("#articleLikeMark").children("i").addClass("icon-heart");
 				}
-				$("#peopleLikeIt").html("&nbsp;&nbsp;"+data[0]+"&nbsp;人喜欢");
+				$("#peopleLikeIt").html("&nbsp;&nbsp;"+data[1]+"&nbsp;人喜欢");
 			}
 		})
 		$("#articleLikeMark").click(function(){
 			if($(this).children("i").hasClass("icon-heart-empty")){
 				$(this).children("i").removeClass("icon-heart-empty");
 				$(this).children("i").addClass("icon-heart");
-				$.ajax({
-					url: window.location.href,
-					type: "POST",
-					dataType: "json",
-					data: "mark="+"like",
-					success: function(data){
-						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;人喜欢");
-					},
-				})
 			}else if($(this).children("i").hasClass("icon-heart")){
 				$(this).children("i").removeClass("icon-heart");
 				$(this).children("i").addClass("icon-heart-empty");
-				$.ajax({
-					url: window.location.href,
-					type: "POST",
-					dataType: "json",
-					data: "mark="+"dislike",
-					success: function(data){
-						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data+"&nbsp;人喜欢");
-					},
-				})
 			}
+			$.ajax({
+				url: "/ajax/like",
+				type: "POST",
+				dataType: "json",
+				data: {"article":"{{ article['sn']}}"},
+				success: function(data){
+					if(data[0] == true){	
+						$("#peopleLikeIt").html("&nbsp;&nbsp;"+data[1]+"&nbsp;人喜欢");
+					}
+				},
+			})
 		});
 	});
 </script>

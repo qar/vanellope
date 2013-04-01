@@ -32,34 +32,27 @@ class MemberHandler(BaseHandler):
     # Member main information display
     #
     def get(self, uid):
-        master = self.master()
+        current_user = self.get_current_user()
 
         page = self.get_argument("p", 1)
-        author = Member(da.get_member_by_uid(uid))
+        member = self.get_user(uid=uid)
 
-        d = da.split_pages(author=author.uid, page=page)
+        d = da.split_pages(author=member['uid'], page=page)
 
-        if author.uid is None: # no such user, wrong url
+        if member['uid'] is None: # no such user, wrong url
             self.send_error(404)
             self.finish()
-        elif master['uid'] == author.uid: # user is logined
+        elif current_user['uid'] == member['uid']: # user is logined
             self.redirect("/home")
             self.finish()
         
-        # this is what we expected
-        member = dict(
-            avatar_large = author.avatar_large,
-            brief = author.brief,
-            name = author.name,
-        )
-
         self.render("member.html",
                     title = member['name'],
                     articles = d['articles'],
                     member = member,
                     pages = d['pages'],
                     total = d['total'],
-                    master = master) 
+                    master = current_user) 
 
     @tornado.web.authenticated
     def post(self, she):
@@ -82,26 +75,18 @@ class MemberHandler(BaseHandler):
 class MessageHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        master = self.master()
-
-        if self.is_ajax():
-            pass
-
-        
-        msgs = da.my_all_messages(master['uid'])
-        #member = self.member(1)
-
+        current_user = self.get_current_user()
+        msgs = da.my_all_messages(current_user['uid'])
         self.render("message.html",
                     title = "Message",
-                    master = master,
-                    #member = member,
+                    master = current_user,
                     messages = msgs)
 
 
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="home"):
-        master = self.master()
+        current_user = self.get_current_user()
         
         htmls = ('write', 'deleted', 'home', 'message') # Available templates
         if html in htmls:
@@ -115,19 +100,19 @@ class HomeHandler(BaseHandler):
         _type = self.get_argument("type", "post")
         
         if(html == "deleted"):  # aka. the trash bucket
-            d = da.split_pages(author=master['uid'], 
+            d = da.split_pages(author=current_user['uid'], 
                                status=cst.DELETED,
                                page=page)
             self.render(template, 
                         title = '回收站', 
-                        master = master,
+                        master = current_user,
                         errors=None,                    
                         pages = d['pages'],    
                         articles = d['articles']
                         )
         elif html == "home":
-            news = da.get_new_messages(master['uid'])
-            d = da.split_pages(author=master['uid'], 
+            news = da.get_new_messages(current_user['uid'])
+            d = da.split_pages(author=current_user['uid'], 
                                status=cst.NORMAL,
                                page=page,
                                _type=_type)
@@ -135,7 +120,7 @@ class HomeHandler(BaseHandler):
                         title="Home",
                         errors=None,
                         type=_type,                        
-                        master = master,
+                        master = current_user,
                         total = d['total'],
                         pages = d['pages'],
                         articles = d['articles'],
@@ -143,12 +128,12 @@ class HomeHandler(BaseHandler):
         elif html == "write":
             self.render(template,
                         title=u"撰写",
-                        master=master)
+                        master=current_user)
         elif html == "message":
 
             self.render("message.html",
                         title = "Message",
-                        master = master)
+                        master = current_user)
 
 
 
@@ -157,28 +142,25 @@ class HomeHandler(BaseHandler):
 class BriefHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        master = Member(self.get_current_user()) # wrapped
-        brief = master.brief
+        current_user = self.get_current_user() # wrapped
+        brief = current_user['brief']
         self.finish(json.dumps(brief))
 
     @tornado.web.authenticated
     def post(self):
-        master = Member(self.get_current_user()) # wrapped
+        current_user = self.current_user_entity()
         brief = self.get_argument('brief', default=None)
-        master.set_brief(brief)
-        master.put()
+        current_user.set_brief(brief)
+        current_user.put()
         self.finish()
-
 
                       
 class EmailHandler(BaseHandler):
     # ajax call
     @tornado.web.authenticated
     def get(self):
-        master = self.get_current_user()
-        self.write(master['email'])
-        self.flush()
-        self.finish()
+        current_user = self.get_current_user()
+        self.finish(current_user['email'])
 
     # ajax call
     # Should return a json array
@@ -186,14 +168,14 @@ class EmailHandler(BaseHandler):
     def post(self):
         errors = []
         email = self.get_argument("email", None)
-        master = Member(self.get_current_user()) # wrapped
-        if not master.verified:
+        current_user = self.current_user_entity()
+        if not current_user.verified:
             errors.append(u"你现在的邮箱还没有通过验证，暂时不能更换邮箱")
         else:
             try:
-                master.set_email(email)
-                master.verify()
-                master.put()
+                current_user.set_email(email)
+                current_user.verify()
+                current_user.put()
             except exception.PatternMatchError:
                 errors.append(u"请检查邮箱的格式是否正确")
             except exception.DupKeyError:

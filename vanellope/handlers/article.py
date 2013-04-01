@@ -21,16 +21,6 @@ from vanellope.handlers import BaseHandler
 class ArticleHandler(BaseHandler):
     # URL: /article/ARTICLE_SN
     def get(self, article_sn):
-        if self.is_ajax():
-            total_like = da.article_total_like(int(article_sn))
-            master = self.master()
-            if int(article_sn) in master['like']:
-                i_like = True
-            else:
-                i_like = False
-            self.finish(json.dumps([total_like, i_like]))
-
-
         article = da.get_article_by_sn(int(article_sn))
         if not article:
             self.send_error(404)
@@ -44,19 +34,11 @@ class ArticleHandler(BaseHandler):
             title = article.title,
             body = article.html,
             heat = article.heat, # usage: widgets/article-status.html
-            #brief = article.sub_title,
             date = article.date,
             review = article.review,
         )
 
-        m = Member(da.get_author(article['author'])) # wrapped
-        author = dict(
-            uid = m.uid,
-            name = m.name,
-            avatar = m.avatar,
-            brief = m.brief,
-        )
-
+        author = self.get_user(uid=article['author'])
 
         cmts = da.get_comment_list_by_sn(article_sn)
         comments = []
@@ -69,7 +51,7 @@ class ArticleHandler(BaseHandler):
                 body = cmt.body
             ))
 
-        master = self.master()
+        current_user = self.get_current_user()
 
         da.heat_article_by_sn(int(article_sn)) # increase 'heat' tag then save
 
@@ -82,7 +64,7 @@ class ArticleHandler(BaseHandler):
 
         self.render("article.html", 
                     adjoins = adjoins,
-                    master = master,
+                    master = current_user,
                     comments = comments, 
                     title = article['title'],
                     author = author, 
@@ -90,18 +72,7 @@ class ArticleHandler(BaseHandler):
 
     #create article
     @tornado.web.authenticated
-    def post(self, article_sn):
-        if self.is_ajax():
-            mark = self.get_argument("mark", None)
-            master = Member(self.get_current_user())
-            if mark == "like":
-                master.like(int(article_sn))
-            elif mark == "dislike":
-                master.dislike(int(article_sn))
-            master.put()
-            total_like = da.article_total_like(int(article_sn))
-            self.finish(json.dumps(total_like))
-
+    def post(self):
         article = Article()
         # get post values
         post_values = ['title', 'brief', 'content']
@@ -119,8 +90,8 @@ class ArticleHandler(BaseHandler):
                         ['fenced_code', 'codehilite'], 
                         safe_mode= "escape"))
 
-        master = Member(self.get_current_user())
-        article.set_author(master.uid)
+        current_user = self.get_current_user()
+        article.set_author(current_user['uid'])
         article.put()
         self.redirect('/')
 
@@ -129,9 +100,9 @@ class ArticleHandler(BaseHandler):
         # This currently is a ajax call
         # Request URL:/article/ARTICLE
         # Request Method:DELETE
-        master = self.master()
+        current_user = self.get_current_user()
         article = Article(da.get_article_by_sn(int(article_sn))) # wrapped
-        if master.uid != article.author:
+        if current_user['uid'] != article.author:
             self.finish(json.dumps(False))
         else:
             if article.status == cst.DELETED:
@@ -150,7 +121,7 @@ class ArticleUpdateHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, sn):
         t = Article(da.get_article_by_sn(int(sn))) # wrapped
-        master = Member(self.get_current_user()) # wrapped
+        current_user = self.get_current_user() # wrapped
         article = dict(
             sn = t.sn, # usage: widgets/comment.html
             title = t.title,
@@ -158,10 +129,10 @@ class ArticleUpdateHandler(BaseHandler):
             markdown = t.markdown,
             author = t.author,
         )
-        if article['author'] == master.uid:
+        if article['author'] == current_user['uid']:
             self.render("edit.html", 
                         title = "Edit",
-                        master=master,
+                        master=current_user,
                         article = article)
         else:
             self.send_error(403)
@@ -177,7 +148,7 @@ class ArticleUpdateHandler(BaseHandler):
             # Use None as default if argument is not supplied
             args[v] = self.get_argument(v, None)
 
-        master = Member(self.get_current_user()) # wrapped
+        current_user = self.get_current_user() # wrapped
 
         article = Article(da.get_article_by_sn(int(sn)))
         
@@ -208,16 +179,16 @@ class PagesHandler(BaseHandler):
     def get(self, page=1):
         uname = self.get_argument("name", None)
         page = int(page)
-        master = self.get_current_user()
+        current_user = self.get_current_user()
         if not uname:
-            if master:
-                author = master['uid']
+            if current_user:
+                author = current_user['uid']
             else:
                 self.set_status(404)
                 self.finish()
         else:
-            author = db.member.find_one({"name":uname})['uid']
-        t = split_pages(author=author, page=page)
+            author = self.get_user(name=uname)
+        t = split_pages(author=author['uid'], page=page)
         json_file = json.dumps(t[2])
         self.finish(json_file)
 

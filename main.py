@@ -41,6 +41,8 @@ from vanellope.handlers.auth import VerifyHandler
 from vanellope.handlers.auth import PasswordResetHandler
 from vanellope.handlers.auth import RegisterHandler
 
+from vanellope.handlers.ajax import LikeHandler
+
 from vanellope.handlers.member import MemberHandler
 from vanellope.handlers.member import EmailHandler
 from vanellope.handlers.member import HomeHandler
@@ -65,6 +67,8 @@ class App(tornado.web.Application):
     def __init__(self):
         handlers = [
         (r"/", IndexHandler),
+
+        (r"/ajax/like", LikeHandler),
 
         (r"/home", HomeHandler),
         (r"/home/(.*)", HomeHandler),
@@ -108,10 +112,10 @@ class IndexHandler(BaseHandler):
     def get(self):
         page = self.get_argument("p", 1)
         d = da.split_pages(page=page)
-        master = self.master()
+        current_user = self.get_current_user()
         self.render("index.html", 
                     title = 'PAGE302',
-                    master = master, 
+                    master = current_user, 
                     pages = d['pages'],
                     articles = d['articles'])
 
@@ -131,7 +135,7 @@ class ColorHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         color = self.get_argument("color", None)
-        master = Member(self.get_current_user()) #wrapped
+        master = self.current_user_entity() #wrapped
         try:
             master.set_color(color)
             master.put()

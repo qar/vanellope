@@ -46,6 +46,7 @@ class Member:
             'avatar': None,
             'avatar_large': None,
             'brief': None,
+            'like': [],
             'verified': False,
         }
         
@@ -74,13 +75,6 @@ class Member:
     @property 
     def color(self):
         return self._model['color']
-
-    @property 
-    def likeit(self):
-        if self._model.has_key("like"):
-            return self._model['like']
-        else:
-            return []
 
     @property 
     def brief(self):
@@ -159,19 +153,11 @@ class Member:
             raise exception.PatternMatchError()
 
     def like(self, article):
-        try:
-            if int(article) not in self._model['like']:
-                self._model['like'].append(int(article))
-        except KeyError:
-            self._model['like'] = []
+        if int(article) not in self._model['like']:
             self._model['like'].append(int(article))
-        
-
-    def dislike(self, article):
-        try:
+        else:
             self._model['like'].remove(int(article))
-        except KeyError:
-            pass
+       
 
     def check_password(self, _pwd):
         #

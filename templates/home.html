@@ -35,19 +35,18 @@
 		</div> <!-- end of "div.primary-item-container" -->
 	</div> <!-- end of "primary" -->
 
-	{% if total > 0 %}
 	<div class="primary">
-			<div class="block-caption">
+		<div class="block-caption">
 			<a href="?type=post">
-				<span class="tabMarker option {% if type == 'post' %}tabMarkerFocus{% end %}" id="articlePosted"><i class="icon-pencil large"></i>发表的文章</span>
+			<span class="tabMarker option {% if type == 'post' %}tabMarkerFocus{% end %}" id="articlePosted"><i class="icon-pencil large"></i>发表的文章</span>
 			</a>
 			<a href="?type=favourite">
 			<span class="tabMarker option {% if type == 'favourite' %}tabMarkerFocus{% end %}" id="articleFavourite"><i class="icon-heart large"></i>喜欢的文章</span>
 			</a>
-			</div> 
+		</div><!-- End of div.block-caption -->
 		<div id="jq-insert-mark">
 			{% for article in articles %}
-			<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
+			<div class="article-list primary-item-container" id="article-{{ article['sn'] }}" style="margin:0px 20px 20px">
 				<span class="article-caption" ><a href="/article/{{ article['sn']}}" title="{{ article['title']}}">{{ article['title']}}</a></span>
 				{% if type == "post" %}
 				<span class="article-option-right option" onclick="deleteArticle({{ article['sn'] }})" style="visibility:hidden" title="删除"><i class="icon-trash  icon-large"></i>	</span>
@@ -62,19 +61,18 @@
 		<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
 		{% if pages > 10 %}
 			{% for page in range(1, 10) %}
-			<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+			<a href="?{% if type == 'favourite' %}type=favourite&{% end %}p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 			{% end %}
 			<span id="pages-more", class="option pages">...</span>
 		{% else %}
 			{% for page in range(1, pages) %}
-			<a href="?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+			<a href="?{% if type == 'favourite' %}type=favourite&{% end %}p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 			{% end %}
 		{% end %}
 		</div> <!-- end of div.pages -->
 		
 	
 	</div> <!-- end of "primary" -->
-	{% end %}{# end of "if total > 0" statement #}
   	</div><!-- end of primary-wrapper -->   
 
 	<div class="widgets-wrapper">
@@ -128,9 +126,6 @@
 					$(".tabMarker").removeClass("tabMarkerFocus");
 					$(this).addClass("tabMarkerFocus");
 				});
-
-
-
 			});
 		</script>
 {% include "common/footer.html" %}

@@ -12,7 +12,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="/static/js/vanellope.js"></script>
 
-	{% if master['color'] %}
+	{% if master and master['color'] %}
 	<style>
 		.common-color{
 			background-color: {{ master['color'] }};
@@ -32,7 +32,7 @@
   <span style="float:left; font-size:10px; height:100%; color:white; padding-left:6px; padding-top:5px">Pilot</span>
  
   <ul class="nav">
-  {% if master['name'] %}
+  {% if master %}
 	<li class="nav" id="memberName"><a  href="/home">{{ master['name'] }}</a></li>
 	{% if master['messages'] > 0 %}
 	<li class="nav"><a href="/message"><i class="icon-envelope"></i></a></li>
