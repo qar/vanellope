@@ -6,7 +6,8 @@
 	cursor: pointer;
 }
 
-.common-color, .theme{background-color: #568790;}
+.common-color{background-color: #568790;}
+.theme{color:#568790;}
 
 
 
