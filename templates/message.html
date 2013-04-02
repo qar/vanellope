@@ -5,7 +5,7 @@
 	<div class="primary">
 	{% for msg in messages %}
 		{% if msg['sender']['uid'] == master['uid'] %}
-		<div class="primary-item-container">
+		<div class="primary-item-container" id="{{ msg['uid']}}">
 			<div class="infoBox msgHere">
 				<a href="/member/{{ master['uid']}}">
 				<img class="msgAvatar msgHere" src="{{ master['avatar'] }}" title="{{ master['name']}}" width="50px" height="50px"></a>
@@ -15,10 +15,11 @@
 				<br/>
 				<p class="timestamp msgHere">{{ msg['date'] }}</p>
 			</div>
+			<div class="option msgDeleteBtn msgHere" onclick="deleteMsg({{ msg['uid'] }})" style="visibility:hidden"><i class="icon-trash icon-2x"></i></div>
 		</div>
 
 		{% else %}
-		<div class="primary-item-container">
+		<div class="primary-item-container" id="{{ msg['uid']}}">
 			<div class="infoBox msgThere">
 				<a href="/member/{{msg['sender']['uid']}}">
 				<img class="msgAvatar msgThere" src="{{ msg['sender']['avatar'] }}" title="{{ msg['sender']['name']}}" width="50px" height="50px"></a>
@@ -28,6 +29,7 @@
 				<br/>
 				<p class="timestamp msgThere">{{ msg['date'] }}</p>
 			</div>
+			<div class="option msgDeleteBtn msgThere" onclick="deleteMsg({{ msg['uid'] }})" style="visibility:hidden"><i class="icon-trash icon-2x"></i></div>
 		</div>
 		{% end %}
 
@@ -49,4 +51,34 @@
 		{% include "widgets/message-usage.html" %}
 	</div><!-- Closing of widgets-wrapper -->
 </div> <!-- end of div#wrapper --> 
+
+<script>
+	$(document).ready(function(){
+		$("div.primary-item-container").mouseenter(function(){
+			$(this).children("div.msgDeleteBtn").css({"visibility":"visible"})
+		});
+		$("div.primary-item-container").mouseleave(function(){
+			$(this).children("div.msgDeleteBtn").css({"visibility":"hidden"})
+		});
+
+		
+	});
+	function deleteMsg(msg_uid){
+		if(confirm("确定要删除这条消息吗？")){
+            $.ajax({
+                url: "/message",
+                type: "POST",
+                dataType: "json",
+                data: {"message": msg_uid},
+                success: function(data){
+                    if(data[0] == true){
+                        $("#" + data[1]).slideUp(300);
+                    }
+                }
+            });
+        }
+			
+		}
+</script>
+
 {% include "common/footer.html" %}

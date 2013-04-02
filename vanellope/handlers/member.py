@@ -85,6 +85,20 @@ class MessageHandler(BaseHandler):
                     master = current_user,
                     messages = msgs)
 
+    @tornado.web.authenticated
+    def post(self):
+        current_user = self.get_current_user()
+        msg_uid = self.get_argument("message", None)
+        if msg_uid:
+            message = Message(db.message.find_one({"uid": int(msg_uid)}))
+            if message.receiver == current_user['uid']:
+                message.set_reject()
+                message.put()
+            elif message.sender == current_user['uid']:
+                message.drop()
+            self.finish(json.dumps([True, msg_uid]))
+        else:
+            pass
 
 class HomeHandler(BaseHandler):
     @tornado.web.authenticated

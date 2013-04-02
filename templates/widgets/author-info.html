@@ -18,9 +18,11 @@
 
 	</div><!-- end of '.widget-wrapper' -->
 	<div class="widget-wrapper" id="msgDialogBoxContainer" style="visibility:hidden; height:0px">
+		<span id="notificationBox"></span>
 		<textarea class="inputbox" id="privateMsgContent" style="max-width:241px;margin-bottom:3px"></textarea>
-		<span class="flatBtn cancelBtn option">关闭</span>
 		<span class="flatBtn submitBtn option">发送</span>
+		<span class="flatBtn clearBtn option">清除</span>
+		<span class="flatBtn cancelBtn option">关闭</span>
 		<div class="widget-inner-sep"></div>
 	</div>
 
@@ -37,17 +39,32 @@
 <script>
 	$(document).ready(function(){
 		$("#msgDialogBoxLoader").click(function(){
+			$("#notificationBox").html("");
 			$("#msgDialogBoxContainer").css({"visibility":"visible", "height":"auto"});
 		}); 
 
 		$("span.submitBtn").click(function(){
 			var content = $.trim($("#privateMsgContent").val());
     		var url = "/member/{{ author['uid'] }}";
-    		sendMessage(content, url);
+    		if(content.length > 0){
+    			sendMessage(content, url);
+    			$("#notificationBox").css({"color":"green"});
+    			$("#notificationBox").html("消息已发送");
+	    		var timer = setTimeout(function(){
+	    			$("#notificationBox").val("");
+	    			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
+	    		}, 3000)
+    		}else{
+    			$("#notificationBox").css({"color": "red"});
+    			$("#notificationBox").html("还没有填写任何内容");
+    		}
 		});
 
+		$("span.clearBtn").click(function(){
+			$("#privateMsgContent").val("");
+		});
 		$("span.cancelBtn").click(function(){
-
+			$("#privateMsgContent").val("");
 			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
 		});
 	});

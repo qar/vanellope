@@ -242,8 +242,13 @@ def my_all_messages(uid):
     for msg in msgs:
         # You are the receiver
         if msg['receiver'] == int(uid) and msg['status'] == cst.UNREAD:
+            # Mark as readed
             msg['status'] = cst.READ
             db.message.save(msg)
+
+            # Reject some
+        if msg['receiver'] == int(uid) and msg['reject'] == True:
+            continue # Jump Over it
         m = Member(db.member.find_one({"uid": msg['sender']}))
         msg['sender'] = dict(
             name = m.name,

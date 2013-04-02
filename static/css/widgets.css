@@ -158,6 +158,16 @@ div.option-nav > span:hover, div.option-nav > a:hover{
 	margin: 0px;
 }
 
+div.msgDeleteBtn{
+	height: 34px;
+	width: 34px;
+	padding-top:3px;
+	background-color: rgba(213, 221, 223, 1);
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 6px;
+}
+
 p.msgContent{
 	margin: 0px 0px 10px 0px;
 	width: auto;

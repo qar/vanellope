@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import re
+import time
 import hashlib
 import urllib
 import urlparse
@@ -383,8 +384,10 @@ class Message:
     def __init__(self, entity=None):
         self._model = {
             "mid": None, #mid只能用来标识确定两个用户之间的信息
+            "uid": None, # Unique among all messages
             "sender": None, 
             "receiver": None,
+            "reject": False,
             "status": cst.UNREAD,
             "date": datetime.datetime.utcnow(),
             "body": None,
@@ -407,6 +410,10 @@ class Message:
     @property 
     def receiver(self):
         return self._model['receiver']
+
+    @property 
+    def reject(self):
+        return self._model['reject']
 
     @property 
     def status(self):
@@ -447,10 +454,17 @@ class Message:
         else:
             self._model['body'] = msg
 
+    def set_reject(self):
+        self._model['reject'] = True
+
 
     def put(self):
         t = db.message.find({"sender": self._model['sender'],
                              "receiver": self._model['receiver']}).count()
         self._model['mid'] = t + 1
+        self._model['uid'] = int(time.time())
         db.message.save(self._model)
+
+    def drop(self):
+        db.message.remove({"uid": self._model['uid']})
 
