@@ -39,20 +39,23 @@ class MemberHandler(BaseHandler):
 
         d = da.split_pages(author=member['uid'], page=page)
 
-        if member['uid'] is None: # no such user, wrong url
+        if member['uid'] is None: 
+            # No such user, wrong url
             self.send_error(404)
             self.finish()
-        elif current_user['uid'] == member['uid']: # user is logined
+        elif current_user and current_user['uid'] == member['uid']: 
+            # User exist and logined
             self.redirect("/home")
             self.finish()
-        
-        self.render("member.html",
-                    title = member['name'],
-                    articles = d['articles'],
-                    member = member,
-                    pages = d['pages'],
-                    total = d['total'],
-                    master = current_user) 
+        else:
+            # User exist but not logined. Third view
+            self.render("member.html",
+                        title = member['name'],
+                        articles = d['articles'],
+                        member = member,
+                        pages = d['pages'],
+                        total = d['total'],
+                        master = current_user) 
 
     @tornado.web.authenticated
     def post(self, she):

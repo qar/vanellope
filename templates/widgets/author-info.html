@@ -12,7 +12,7 @@
 		<a class="member" href="/member/{{ author['uid'] }}" style="float:left;height:auto; width:auto"><img class="avatar" src="{{ author['avatar'] }}" alt="{{ author['name'] }}" width="50" height="50px"></a>
 		<a class="member" href="/member/{{ author['uid'] }}" style="float:left;font-size:16px"><span>{{ author['name'] }}</span></a>
 
-		{% if master['name'] and (master['uid'] != author['uid']) %}
+		{% if master and (master['uid'] != author['uid']) %}
 		<span class="option" id="msgDialogBoxLoader" style="border-radius:4px; background-color:green;float:right;color:white;padding:3px;font-size:0.9em">私信TA</span>
 		{% end %}
 

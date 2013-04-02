@@ -52,6 +52,7 @@
 				<span class="article-option-right option" onclick="deleteArticle({{ article['sn'] }})" style="visibility:hidden" title="删除"><i class="icon-trash  icon-large"></i>	</span>
 
 				<span class="article-option option" style="visibility:hidden" title="修改"><a href="/update/{{ article['sn']}}"><i class="icon-edit icon-large"></i></a></span>
+				<span class="article-option option" style="visibility:hidden" title="导出"><a href="/ajax/export/{{ article['sn']}}.json"><i class="icon-download-alt icon-large"></i></a></span>
 				{% end %}
 			</div> 
 			{% end %}

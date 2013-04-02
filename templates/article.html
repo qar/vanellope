@@ -37,7 +37,7 @@
 	<div class="widgets-wrapper">
 		{% include "widgets/author-info.html" %}
 
-		{% if master['name'] %}
+		{% if master %}
 			{% if master['name'] == author['name'] %}
 				{% include "widgets/owner-article-option.html" %}
 			{% end %}
@@ -46,7 +46,7 @@
 		
 		{% include "widgets/article-status.html" %}
 		
-		{% if master['name'] %}
+		{% if master %}
 			{% include "widgets/comment.html" %}
 		{% end %}
 	</div><!-- Closing of widgets-wrapper -->

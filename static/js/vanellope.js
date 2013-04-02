@@ -75,3 +75,14 @@ function sendMessage(msg, dst){
 }; // end of button click event
 
 
+function exportArticle(article_sn){
+    $.ajax({
+        url: "/ajax/export",
+        type: "GET",
+        dataType: "json",
+        data: {"article": article_sn},
+        success: function(data){
+            alert("hahah");
+        }
+    })
+}

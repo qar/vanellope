@@ -79,3 +79,21 @@ class LikeHandler(BaseHandler):
         total_like = da.article_total_like(int(article_sn))
         self.finish(json.dumps([True, total_like]))
 
+
+
+class ExportHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, article_sn=None):
+        # Export one single article or a bunch of articles
+        current_user = self.get_current_user()
+        if article_sn:
+            chunk = da.get_article_by_sn(int(article_sn))
+            if chunk['author'] == current_user['uid']:
+                chunk['date'] = (chunk['date'] + 
+                           datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M") 
+                chunk['review'] = (chunk['review'] + 
+                           datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
+                del chunk['_id'] 
+                self.finish(chunk)     
+            else:
+                self.send_error(403)       

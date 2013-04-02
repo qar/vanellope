@@ -44,6 +44,7 @@ from vanellope.handlers.auth import RegisterHandler
 from vanellope.handlers.ajax import WidgetsHandler
 from vanellope.handlers.ajax import ColorHandler
 from vanellope.handlers.ajax import LikeHandler
+from vanellope.handlers.ajax import ExportHandler
 
 from vanellope.handlers.member import MemberHandler
 from vanellope.handlers.member import EmailHandler
@@ -71,6 +72,7 @@ class App(tornado.web.Application):
         (r"/", IndexHandler),
 
         (r"/ajax/like", LikeHandler),
+        (r"/ajax/export/([0-9]+).json", ExportHandler),
 
         (r"/home", HomeHandler),
         (r"/home/(.*)", HomeHandler),
