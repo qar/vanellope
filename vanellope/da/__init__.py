@@ -138,13 +138,10 @@ def split_pages(author=None, per=10, status=None, page=1, _type="post"):
     elif _type == "favourite":
         if author: # uid
             member = db.member.find_one({"uid": int(author)})
-            if member.has_key("like"):
-                like_list = member['like']
-            else:
-                like_list = []
+            like_list = member['like']
             article_list = []
-            for uid in like_list:
-                article = db.article.find_one({"sn": int(uid)})
+            for sn in like_list:
+                article = db.article.find_one({"sn": sn, "status":cst.NORMAL})
                 article_list.append(article)
             total = len(like_list)
             pages = total // int(per) + 1
@@ -156,7 +153,11 @@ def split_pages(author=None, per=10, status=None, page=1, _type="post"):
             current = article_list[skip:(skip + int(per))]
     temp = []
     for i in current:
-        temp.append(i)
+        temp.append(dict(
+            sn = i['sn'],
+            title = i['title'],
+            sub_title = i['sub_title']
+        ))
     return dict(
         total = total, # articles total number
         pages = pages, 

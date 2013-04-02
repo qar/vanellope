@@ -90,7 +90,7 @@ class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, html="home"):
         current_user = self.get_current_user()
-        
+
         htmls = ('write', 'deleted', 'home', 'message') # Available templates
         if html in htmls:
             template = ("%s.html" % html) # Template Selector

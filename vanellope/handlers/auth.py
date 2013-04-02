@@ -127,8 +127,9 @@ class LoginHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
     def get(self):
+        referer = self.request.headers['Referer']
         self.clear_all_cookies()
-        self.redirect('/')
+        self.redirect(referer)
 
 
 class VerifyHandler(BaseHandler):
