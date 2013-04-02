@@ -21,7 +21,6 @@
 		<span id="notificationBox"></span>
 		<textarea class="inputbox" id="privateMsgContent" style="max-width:241px;margin-bottom:3px"></textarea>
 		<span class="flatBtn submitBtn option">发送</span>
-		<span class="flatBtn clearBtn option">清除</span>
 		<span class="flatBtn cancelBtn option">关闭</span>
 		<div class="widget-inner-sep"></div>
 	</div>
@@ -60,9 +59,6 @@
     		}
 		});
 
-		$("span.clearBtn").click(function(){
-			$("#privateMsgContent").val("");
-		});
 		$("span.cancelBtn").click(function(){
 			$("#privateMsgContent").val("");
 			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
