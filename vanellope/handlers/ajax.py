@@ -28,17 +28,30 @@ from vanellope import regex
 
 from vanellope.handlers import BaseHandler
 
-
+class WidgetsHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, w=None):
+        path = os.path.join(self.application.settings['template_path'],'widgets',w)
+        if os.path.exists(path):
+            f = open(path, 'r')
+            self.finish(f.read())
+        else:
+            self.send_error(404)
+            self.finish()
+            
 class ColorHandler(BaseHandler):
+    @tornado.web.authenticated
     def post(self):
         color = self.get_argument("color", None)
-        if re.match(regex.COLOR, color):
-            master = self.get_current_user()
-            master['color'] = color
-            db.member.save(master)
-            return True
-        else:
-            return False
+        master = self.current_user_entity() #wrapped
+        try:
+            master.set_color(color)
+            master.put()
+            master.color
+            self.finish(json.dumps([])) # a empty array indicate no error occors
+        except exception.PatternMatchError:
+            errors = u"不支持的CSS颜色属性"
+            self.finish(json.dumps(errors))
 
 
 class LikeHandler(BaseHandler):

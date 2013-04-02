@@ -41,6 +41,8 @@ from vanellope.handlers.auth import VerifyHandler
 from vanellope.handlers.auth import PasswordResetHandler
 from vanellope.handlers.auth import RegisterHandler
 
+from vanellope.handlers.ajax import WidgetsHandler
+from vanellope.handlers.ajax import ColorHandler
 from vanellope.handlers.ajax import LikeHandler
 
 from vanellope.handlers.member import MemberHandler
@@ -120,30 +122,9 @@ class IndexHandler(BaseHandler):
                     articles = d['articles'])
 
 
-class WidgetsHandler(BaseHandler):
-    @tornado.web.authenticated
-    def get(self, w=None):
-        path = os.path.join(self.application.settings['template_path'],'widgets',w)
-        if os.path.exists(path):
-            f = open(path, 'r')
-            self.finish(f.read())
-        else:
-            self.send_error(404)
-            self.finish()
 
-class ColorHandler(BaseHandler):
-    @tornado.web.authenticated
-    def post(self):
-        color = self.get_argument("color", None)
-        master = self.current_user_entity() #wrapped
-        try:
-            master.set_color(color)
-            master.put()
-            master.color
-            self.finish(json.dumps([])) # a empty array indicate no error occors
-        except exception.PatternMatchError:
-            errors = u"不支持的CSS颜色属性"
-            self.finish(json.dumps(errors))
+
+
 
 if __name__ == "__main__":
     sys.path.append(os.getcwd())
