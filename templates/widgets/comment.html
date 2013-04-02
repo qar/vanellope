@@ -15,12 +15,15 @@
 			$("textarea.inputbox").focus(function(){
 				$(this).animate({height:"120px"},300);
 			});
+			
 				
 			$("textarea.inputbox").blur(function(){
-				if(!$.trim($('textarea.inputbox').val())){
+				var content = $.trim($(this).val());
+				if(content.length == 0){
 					$(this).animate({"height":"35px"},300);
 				}
 			});
+
 
 			$("span.submitBtn").click(function(event) {
 				var comment = $.trim($('#articleCommentBox').val())
