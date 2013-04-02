@@ -28,6 +28,17 @@
 		</div>   
 		{% end %}
 	</div><!-- end of "div.primary" -->
+	{% else %}
+		<div class="primary" style="padding:0px">
+			<div id="ifNoComment primary-item-container" style="border: 1.5px dashed silver; padding:10px">
+				<span>暂无评论。
+					{% if not master %}
+					<a href="/login">登录</a>&nbsp;&nbsp;或&nbsp;&nbsp;<a href="/register">注册</a>&nbsp;&nbsp;后留下你想说的话
+					{% end %}
+				</span>
+			</div>
+		</div>
+
 	{% end %}
 
 

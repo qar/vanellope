@@ -22,7 +22,7 @@ class ArticleHandler(BaseHandler):
     # URL: /article/ARTICLE_SN
     def get(self, article_sn):
         article = da.get_article_by_sn(int(article_sn))
-        if not article:
+        if not article or article['status'] == cst.DELETED:
             self.send_error(404)
             self.finish()
         else:

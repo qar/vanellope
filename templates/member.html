@@ -20,6 +20,7 @@
 		</div> <!-- end of "primary" -->
 
 	{% if total > 0 %}
+
 	<div class="primary" style="padding-top:35px">
 		<div id="jq-insert-mark">
 			{% for article in articles %}
@@ -55,7 +56,14 @@
 		</script>
 	
 	</div> <!-- end of "primary" -->
+	{% else %}
+	<div class="primary" style="padding:0px">
+			<div id="ifNoComment primary-item-container" style="border: 1.5px dashed silver; padding:10px">
+				<span>这位同学比较低调，还未发表过任何文章。</span>
+			</div>
+		</div>
 	{% end %}
+
 	
   	</div><!-- end of primary-wrapper -->   
 
