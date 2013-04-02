@@ -33,6 +33,8 @@ class BaseHandler(tornado.web.RequestHandler):
             member = db.member.find_one({"uid":int(uid)})
         elif name:
             member = db.member.find_one({"name": name})
+        else: 
+            return None
         if member:
             return dict(
                 uid = member['uid'],

@@ -36,14 +36,14 @@ class MemberHandler(BaseHandler):
 
         page = self.get_argument("p", 1)
         member = self.get_user(uid=uid)
-
-        d = da.split_pages(author=member['uid'], page=page)
-
-        if member['uid'] is None: 
+        if member:
+            d = da.split_pages(author=member['uid'], page=page)
+        else:
             # No such user, wrong url
             self.send_error(404)
             self.finish()
-        elif current_user and current_user['uid'] == member['uid']: 
+
+        if current_user and current_user['uid'] == member['uid']: 
             # User exist and logined
             self.redirect("/home")
             self.finish()

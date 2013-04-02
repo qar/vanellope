@@ -4,10 +4,10 @@
 	<div class="primary">
 
 	{% for article in articles %}
-	<div class="article-list primary-item-container" id="{{ article['sn'] }}" style="margin:0px 20px 20px">
+	<div class="article-list primary-item-container" id="article-{{ article['sn'] }}" style="margin:0px 20px 20px">
 		<span class="article-caption" titlee="{{ article['title']}}">{{ article['title']}}</span>
 		
-		<span class="article-option-right option" onclick="removeCheck({{ article['sn']}})" title="彻底移除">
+		<span class="article-option-right option" onclick="completeRemove({{ article['sn']}})" title="彻底移除">
 		<i  class="icon-trash  icon-large"></i>
 		</span>
 		<span class="article-option option" onclick="recoverArticle({{ article['sn']}})" title="恢复">
@@ -19,12 +19,12 @@
 	<div class="pages" style="float:left; text-align:center; width:100%;margin:30px auto auto 0px">
 	{% if pages > 10 %}
 		{% for page in range(1, 10) %}
-		<a href="/home?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+		<a href="/deleted?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 		{% end %}
 		<span id="pages-more", class="option pages">...</span>
 	{% else %}
 		{% for page in range(1, pages) %}
-		<a href="/home?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
+		<a href="/deleted?p={{page}}"><span id="pages-{{ page }}" class="option pages">{{ page }}</span></a>
 		{% end %}
 	{% end %}
 	</div> <!-- end of div.pages -->

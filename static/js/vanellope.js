@@ -12,6 +12,24 @@ function deleteArticle(article_sn){
     });
 };
 
+function completeRemove(article_sn){
+    if(confirm("彻底移除不可恢复，继续？")){
+    $.ajax({
+        url:"/article/" + article_sn,
+        type:"DELETE",
+    }).success(function(data) { 
+        /* hide the current element's parent element.
+        ** I don't know how to do it, so I add each "div.article-list" element an id.
+        */
+        if(data == "true"){
+            $("#article-"+article_sn).slideUp(300);
+        }
+    });
+    }
+};
+
+
+
 function recoverArticle(article_sn){
     $.ajax({
         url:"/article/recover/" + article_sn,
