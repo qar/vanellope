@@ -38,10 +38,10 @@
 	<div class="primary">
 		<div class="block-caption">
 			<a href="?type=post">
-			<span class="tabMarker option {% if type == 'post' %}tabMarkerFocus{% end %}" id="articlePosted"><i class="icon-pencil large"></i>发表的文章</span>
+			<span class="tabMarker option {% if type == 'post' %}common-color{% end %}" id="articlePosted"><i class="icon-pencil large"></i>发表的文章</span>
 			</a>
 			<a href="?type=favourite">
-			<span class="tabMarker option {% if type == 'favourite' %}tabMarkerFocus{% end %}" id="articleFavourite"><i class="icon-heart large"></i>喜欢的文章</span>
+			<span class="tabMarker option {% if type == 'favourite' %}common-color{% end %}" id="articleFavourite"><i class="icon-heart large"></i>喜欢的文章</span>
 			</a>
 		</div><!-- End of div.block-caption -->
 		<div id="jq-insert-mark">
@@ -120,11 +120,6 @@
 				});
 				$(document).on("mouseleave", "div.article-list", function(){
 					$(this).children("span.option").css({"visibility":"hidden"}).fadeOut(500);
-				});
-
-				$(".tabMarker").click(function(){
-					$(".tabMarker").removeClass("tabMarkerFocus");
-					$(this).addClass("tabMarkerFocus");
 				});
 			});
 		</script>

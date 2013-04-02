@@ -7,10 +7,7 @@ function deleteArticle(article_sn){
         ** I don't know how to do it, so I add each "div.article-list" element an id.
         */
         if(data == "true"){
-        alert(data);
             $("#article-"+article_sn).slideUp(300);
-        }else{
-            alert("no no no");
         }
     });
 };

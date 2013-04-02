@@ -6,10 +6,11 @@
 	cursor: pointer;
 }
 
-.common-color{background-color: #568790;}
+.common-color{
+	background-color: #568790;
+	color: white;
+}
 .theme{color:#568790;}
-
-
 
 
 /****** Tag Override ******/
