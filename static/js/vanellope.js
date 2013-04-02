@@ -35,7 +35,7 @@ function recoverArticle(article_sn){
         url:"/article/recover/" + article_sn,
         type:"POST",
     }).success(function(){
-        $("#"+article_sn).slideUp(300);
+        $("#article-"+article_sn).slideUp(300);
     });
 };
 

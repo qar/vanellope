@@ -140,9 +140,12 @@ def split_pages(author=None, per=10, status=None, page=1, _type="post"):
             member = db.member.find_one({"uid": int(author)})
             like_list = member['like']
             article_list = []
-            for sn in like_list:
+            for sn in like_list[:]:
                 article = db.article.find_one({"sn": sn, "status":cst.NORMAL})
-                article_list.append(article)
+                if article:
+                    article_list.append(article)
+                else:
+                    like_list.remove(sn)
             total = len(like_list)
             pages = total // int(per) + 1
             if int(page) > pages:

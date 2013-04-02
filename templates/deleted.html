@@ -1,8 +1,8 @@
 {% include "common/header.html" %}
 <div id="wrapper">
 	<div class="primary-wrapper">
+{% if articles %}
 	<div class="primary">
-
 	{% for article in articles %}
 	<div class="article-list primary-item-container" id="article-{{ article['sn'] }}" style="margin:0px 20px 20px">
 		<span class="article-caption" titlee="{{ article['title']}}">{{ article['title']}}</span>
@@ -37,6 +37,13 @@
 	</script> 
 
 	</div><!-- end of div.primary -->
+{% else %}
+		<div class="primary" style="padding:0px;">
+			<div id="ifNoComment primary-item-container" style="border: 1.5px dashed silver; padding:10px">
+				<span>空空的回收站。</span>
+			</div>
+		</div><!-- end of div.primary -->
+{% end %}
 	</div><!-- end of primary wrapper -->
 
 	<div class="widgets-wrapper">
