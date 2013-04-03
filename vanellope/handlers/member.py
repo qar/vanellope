@@ -88,19 +88,21 @@ class MessageHandler(BaseHandler):
         contacter = self.get_argument("contacter", None)
         for uid in current_user['contacter']:
             contacters.append(self.get_user(uid=uid))
-        print "i have contacters list =",contacters
+
         if len(contacters) and not contacter:
-            print "first = ",contacters[0]
             msgs = da.my_messages_with_contacter(current_user['uid'], contacters[0]['uid']) 
-            print "first contacter msgs=",msgs
+            current = contacters[0]
         elif contacter:
             msgs = da.my_messages_with_contacter(current_user['uid'], int(contacter)) 
+            current = self.get_user(uid = int(contacter))
         else:
             msgs = [] 
+            current = None
         self.render("message.html",
                     title = "Message",
                     master = current_user,
                     messages = msgs,
+                    current = current,
                     contacters = contacters)
 
     @tornado.web.authenticated
