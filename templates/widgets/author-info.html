@@ -44,15 +44,27 @@
 
 		$("span.submitBtn").click(function(){
 			var content = $.trim($("#privateMsgContent").val());
-    		var url = "/member/{{ author['uid'] }}";
+    		var dst = "/member/{{ author['uid'] }}";
     		if(content.length > 0){
-    			sendMessage(content, url);
-    			$("#notificationBox").css({"color":"green"});
-    			$("#notificationBox").html("消息已发送");
-	    		var timer = setTimeout(function(){
-	    			$("#notificationBox").val("");
-	    			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
-	    		}, 3000)
+    			    $.ajax({
+    			    url: dst,
+    			    type: "POST",
+    			    dataType:"json",
+    			    data: "message="+content,
+    			    success: function(data){
+    			        if(data == true){
+			    			$("#notificationBox").css({"color":"green"});
+			    			$("#notificationBox").html("消息已发送");
+				    		var timer = setTimeout(function(){
+				    			$("#notificationBox").val("");
+				    			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
+				    		}, 3000);
+    			        }else{
+    			        	$("#notificationBox").css({"color":"red"});
+			    			$("#notificationBox").html("消息发送失败");
+    			        }
+    			    }
+    			});
     		}else{
     			$("#notificationBox").css({"color": "red"});
     			$("#notificationBox").html("还没有填写任何内容");

@@ -13,7 +13,7 @@
 			<div class="msgHere msgBox" style="padding-left:20px">
 				<p class="msgContent msgHere">{{ msg['body'] }}</p>
 				<br/>
-				<p class="timestamp msgHere">{{ msg['date'] }}</p>
+				<p class="timestamp msgHere">{{ msg['date'] }}&nbsp;&nbsp;to&nbsp; </p>
 			</div>
 			<div class="option msgDeleteBtn msgHere" onclick="deleteMsg({{ msg['uid'] }})" style="visibility:hidden"><i class="icon-trash icon-2x"></i></div>
 		</div>
@@ -49,6 +49,7 @@
 
 	<div class="widgets-wrapper">
 		{% include "widgets/message-usage.html" %}
+		{% include "widgets/contacter.html" %}
 	</div><!-- Closing of widgets-wrapper -->
 </div> <!-- end of div#wrapper --> 
 
@@ -67,7 +68,7 @@
 		if(confirm("确定要删除这条消息吗？")){
             $.ajax({
                 url: "/message",
-                type: "POST",
+                type: "post",
                 dataType: "json",
                 data: {"message": msg_uid},
                 success: function(data){

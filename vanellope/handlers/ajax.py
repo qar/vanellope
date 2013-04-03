@@ -97,3 +97,17 @@ class ExportHandler(BaseHandler):
                 self.finish(chunk)     
             else:
                 self.send_error(403)       
+
+
+class ContacterHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        # Return a logined user's contacter list
+        current_user = self.get_current_user()
+        temp = []
+        for uid in current_user['contacter']:
+            temp.append(self.get_user(uid=uid))
+        return temp
+            
+
+        

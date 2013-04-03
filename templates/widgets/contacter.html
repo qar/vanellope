@@ -1,0 +1,14 @@
+<div class="widget">
+	<div class="widget-caption common-color">联系人列表</div>
+	<!-- TOP 10 Hotest Articles -->
+	<div class="widget-wrapper" style="padding-top:10px">
+		{% for contacter in contacters %}
+		<div class="contacter" style="width:40px;height:40px;float:left">
+			<a href="?contacter={{ contacter['uid']}}"><img class="avatar" src="{{ contacter['avatar']}}" title="{{ contacter['name']}}" width="35px" height="35px" ></a>
+		</div>
+		{% end %}
+	</div>
+</div>
+
+
+

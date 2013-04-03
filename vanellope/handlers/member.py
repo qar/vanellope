@@ -60,30 +60,48 @@ class MemberHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, she):
         # Ajax call: receive and store message
-        m = Member(self.get_current_user()) # Message Sender 
+        m = self.current_user_entity() # Message Sender 
+        r = self.user_entity(uid=int(she))
         msg = self.get_argument("message", None) # Message
         message = Message() # initialize a message object
         try:
             message.set_sender(m.uid) # Use ID as identifier
-            message.set_receiver(int(she)) # Message Receiver
+            message.set_receiver(r.uid) # Message Receiver
             message.set_body(msg) 
+            r.add_contacter(m.uid)
+            m.add_contacter(r.uid)
+            r.put()
+            m.put()
             message.put()
-            self.finish()
+            self.finish(json.dumps(True))
         except TypeError:
             pass
         except ValueError:
             pass
-        self.finish() # If error happens, this will end request
+        self.finish(json.dumps(False)) # If error happens, this will end request
 
 class MessageHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         current_user = self.get_current_user()
-        msgs = da.my_all_messages(current_user['uid'])
+        contacters = []
+        contacter = self.get_argument("contacter", None)
+        for uid in current_user['contacter']:
+            contacters.append(self.get_user(uid=uid))
+        print "i have contacters list =",contacters
+        if len(contacters) and not contacter:
+            print "first = ",contacters[0]
+            msgs = da.my_messages_with_contacter(current_user['uid'], contacters[0]['uid']) 
+            print "first contacter msgs=",msgs
+        elif contacter:
+            msgs = da.my_messages_with_contacter(current_user['uid'], int(contacter)) 
+        else:
+            msgs = [] 
         self.render("message.html",
                     title = "Message",
                     master = current_user,
-                    messages = msgs)
+                    messages = msgs,
+                    contacters = contacters)
 
     @tornado.web.authenticated
     def post(self):
