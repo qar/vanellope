@@ -132,13 +132,11 @@ class Member:
 
     def add_contacter(self, _uid):
         if isinstance(_uid, int):
-            print "Get Contacter UID = ", _uid
             if _uid in self._model['contacter']:
                 self._model['contacter'].remove(_uid)
             self._model['contacter'].reverse()
             self._model['contacter'].append(int(_uid))
             self._model['contacter'].reverse()
-            print "Now Contacter is ",self._model['contacter']
 
 
     def set_password(self, _pwd):

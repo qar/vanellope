@@ -4,6 +4,7 @@
 	<span class="option commom-color" id="msgSender">私信TA&nbsp;&nbsp;<i class="icon-envelope"></i></span>
 	</div>
 	<div class="widget-wrapper" id="msgDialogBoxContainer" style="height:auto; padding-bottom:0px">
+		<span id="notificationBox"></span>
 		<textarea class="inputbox" id="privateMsgContent" style="max-width:241px;margin:10px 0px"></textarea>
 		<span class="flatBtn cancelBtn option">清空</span>
 		<span class="flatBtn submitBtn option">发送</span>
@@ -13,8 +14,33 @@
 	$(document).ready(function(){
 		$("span.submitBtn").click(function(){
 			var content = $.trim($("#privateMsgContent").val());
-    		var url = $("a.member").attr("href");
-    		sendMessage(content, url);
+    		var dst = $("a.member").attr("href");
+    		if(content.length > 0){
+    			$.ajax({
+    			    url: dst,
+    			    type: "POST",
+    			    dataType:"json",
+    			    data: "message="+content,
+    			    success: function(data){
+    			        if(data == true){
+			    			$("#notificationBox").css({"color":"green"});
+			    			$("#notificationBox").html("消息已发送");
+				    		var timer = setTimeout(function(){
+				    			$("#notificationBox").html("");
+				    			$("#privateMsgContent").val("");
+				    			$("#privateMsgContent").css({"height":"35px"});
+				    		}, 3000);
+    			        }else{
+    			        	$("#notificationBox").css({"color":"red"});
+			    			$("#notificationBox").html("消息发送失败");
+    			        }
+    			    }
+    			});
+    		}else{
+    			$("#notificationBox").css({"color": "red"});
+    			$("#notificationBox").html("还没有填写任何内容");
+    		}
+
 		});
 
 		$("span.cancelBtn").click(function(){
@@ -31,7 +57,32 @@
 			}
 		});
 
-
+/*
+if(content.length > 0){
+    			    $.ajax({
+    			    url: dst,
+    			    type: "POST",
+    			    dataType:"json",
+    			    data: "message="+content,
+    			    success: function(data){
+    			        if(data == true){
+			    			$("#notificationBox").css({"color":"green"});
+			    			$("#notificationBox").html("消息已发送");
+				    		var timer = setTimeout(function(){
+				    			$("#notificationBox").val("");
+				    			$("#msgDialogBoxContainer").css({"visibility":"hidden", "height":"0px"});
+				    		}, 3000);
+    			        }else{
+    			        	$("#notificationBox").css({"color":"red"});
+			    			$("#notificationBox").html("消息发送失败");
+    			        }
+    			    }
+    			});
+    		}else{
+    			$("#notificationBox").css({"color": "red"});
+    			$("#notificationBox").html("还没有填写任何内容");
+    		}
+*/
 
 
 	});
