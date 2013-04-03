@@ -126,10 +126,6 @@ class IndexHandler(BaseHandler):
                     articles = d['articles'])
 
 
-
-
-
-
 if __name__ == "__main__":
     sys.path.append(os.getcwd())
     tornado.options.parse_command_line()

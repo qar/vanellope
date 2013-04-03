@@ -48,7 +48,7 @@ class MemberHandler(BaseHandler):
             self.redirect("/home")
             self.finish()
         else:
-            # User exist but not logined. Third view
+            # User exist but not logined. 
             self.render("member.html",
                         title = member['name'],
                         articles = d['articles'],
