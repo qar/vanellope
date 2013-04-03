@@ -46,7 +46,6 @@ h1.title{
 }
 h2.title{
 	font-size: 1.2em;
-	margin-bottom: 6px;
 }
 p.comment{
 	font-size:1em;
@@ -55,7 +54,11 @@ p.comment{
 	font-size: 0.9em;
 	line-height: 1.4;
 }
-
+span.article-brief{
+	font-size: 0.9em;
+	line-height: 1.5;
+	color: #8E8E8E;
+}
 
 
 /******* Link *******/
