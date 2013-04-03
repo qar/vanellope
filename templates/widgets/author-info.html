@@ -12,11 +12,12 @@
 		<a class="member" href="/member/{{ author['uid'] }}" style="float:left;height:auto; width:auto"><img class="avatar" src="{{ author['avatar'] }}" alt="{{ author['name'] }}" width="50" height="50px"></a>
 		<a class="member" href="/member/{{ author['uid'] }}" style="float:left;font-size:16px"><span>{{ author['name'] }}</span></a>
 
-		{% if master and (master['uid'] != author['uid']) %}
-		<span class="option" id="msgDialogBoxLoader" style="border-radius:4px; background-color:green;float:right;color:white;padding:3px;font-size:0.9em">私信TA</span>
-		{% end %}
+		
+		<span class="option" id="msgDialogBoxLoader" style="border-radius:4px; {% if master and (master['uid'] != author['uid']) %}background-color:green;{% else %}background-color:gray;{% end %}float:right;color:white;padding:3px;font-size:0.9em">私信TA</span>
+		
 
 	</div><!-- end of '.widget-wrapper' -->
+	{% if master and (master['uid'] != author['uid']) %}
 	<div class="widget-wrapper" id="msgDialogBoxContainer" style="visibility:hidden; height:0px">
 		<span id="notificationBox"></span>
 		<textarea class="inputbox" id="privateMsgContent" style="max-width:241px;margin-bottom:3px"></textarea>
@@ -24,6 +25,7 @@
 		<span class="flatBtn cancelBtn option">关闭</span>
 		<div class="widget-inner-sep"></div>
 	</div>
+	{% end %}
 
 	<div class="widget-wrapper">
 		{% if author['brief'] %}
