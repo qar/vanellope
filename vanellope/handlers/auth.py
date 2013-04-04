@@ -301,3 +301,14 @@ def randomwords(length):
     random.seed()
     return ''.join(random.choice(string.lowercase 
                 + string.uppercase + string.digits) for i in range(length))
+
+
+handlers = [
+    (r"/login", LoginHandler),
+    (r"/logout", LogoutHandler),
+    (r"/reset", PasswordResetHandler),
+    (r"/password", PasswordHandler),
+    (r"/register", RegisterHandler),
+    (r"/forget", ForgetHandler),
+    (r"/verify", VerifyHandler),
+]

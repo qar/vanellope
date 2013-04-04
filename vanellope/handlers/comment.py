@@ -35,3 +35,8 @@ class CommentHandler(BaseHandler):
         comment.set_body(cmt)
         comment.put()
         self.redirect("/article/%s" % article_sn)
+
+
+handlers = [
+    (r"/comment/(.*)", CommentHandler),
+]

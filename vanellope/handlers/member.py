@@ -222,3 +222,14 @@ class EmailHandler(BaseHandler):
             self.finish(json.dumps(errors))
         else:
             self.finish(json.dumps(True))
+
+
+handlers = [
+        (r"/home", HomeHandler),
+        (r"/home/(.*)", HomeHandler),
+        (r"/message", MessageHandler),
+        (r"/brief", BriefHandler),
+        (r"/member", MemberHandler),
+        (r"/member/([0-9]{1,16})", MemberHandler),
+        (r"/member/email\.json", EmailHandler),
+]            

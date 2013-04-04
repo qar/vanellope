@@ -110,4 +110,10 @@ class ContacterHandler(BaseHandler):
         return temp
             
 
-        
+handlers = [
+    (r"/widgets/([-\w\d]*\.html$)", WidgetsHandler),
+    (r"/ajax/color", ColorHandler),
+    (r"/ajax/like", LikeHandler),
+    (r"/ajax/export/([0-9]+).json", ExportHandler),
+    (r"/ajax/contacter", ContacterHandler),
+]    

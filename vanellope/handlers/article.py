@@ -201,3 +201,13 @@ class HotestHandler(BaseHandler):
         return_value = [dict(title=i['title'], sn=i['sn']) for i in articles] 
         self.finish(json.dumps(return_value))
 
+
+
+handlers = [
+    (r"/article", ArticleHandler),
+    (r"/article/([0-9]+)", ArticleHandler),
+    (r"/article/page/([0-9]+)\.json", PagesHandler),
+    (r"/article/recover/([0-9]+)", RecoverHandler),
+    (r"/update/(.*)", ArticleUpdateHandler),
+    (r"/article/hotest/([0-9]+)", HotestHandler),
+]
