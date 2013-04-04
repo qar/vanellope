@@ -44,7 +44,8 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def _member_db_map(self, db):
         # The returned dict object supply a uniform database access interface 
-        return dict(
+        try:
+            return dict(
                 uid = db['uid'],
                 name = db['name'],
                 email = db['email'],
@@ -56,7 +57,9 @@ class BaseHandler(tornado.web.RequestHandler):
                 messages = da.unread_messages(db['uid']),
                 verified = db['verified'],
                 contacter = db['contacter']
-        )
+            )
+        except TypeError:
+            return {}
 
 
 

@@ -7,10 +7,9 @@ import os.path
 import logging
 import urls
 
-
-from tornado import web
-from tornado import ioloop
-from tornado import httpserver
+import tornado.web
+import tornado.ioloop
+import tornado.httpserver
 from tornado.options import define, options
 
 from vanellope.handlers import BaseHandler
@@ -18,23 +17,25 @@ from vanellope.handlers import BaseHandler
 options['log_file_prefix'].set('log/page302.log')
 define("port", default=8000, help="run on the given port", type=int)
 
+ROOT = os.path.abspath(os.path.dirname(__file__))
 
-class App(web.Application):
+class App(tornado.web.Application):
     def __init__(self):
         SETTINGS = dict(
-        static_path = os.path.join(os.path.dirname(__file__), 'static'),
-        template_path = os.path.join(os.path.dirname(__file__), 'templates'),
-        login_url = "/login",
-        debug = True)
+            static_path = os.path.join(ROOT, 'static'),
+            template_path = os.path.join(ROOT, 'templates'),
+            login_url = "/login",
+            debug = True
+        )
 
-        web.Application.__init__(self, urls.handlers, **SETTINGS)
+        tornado.web.Application.__init__(self, urls.handlers, **SETTINGS)
 
 
 if __name__ == "__main__":
     sys.path.append(os.getcwd())
     options.parse_command_line()
-    http_server = httpserver.HTTPServer(App())
+    http_server = tornado.httpserver.HTTPServer(App())
     http_server.listen(options.port)
-    ioloop.IOLoop.instance().start()
+    tornado.ioloop.IOLoop.instance().start()
 
 
