@@ -11,3 +11,4 @@ build
 reload.sh
 *.db
 vanellope/uploaded
+dist
