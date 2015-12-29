@@ -1,0 +1,68 @@
+{% include "common/header.html" %}
+
+<div class="wrapper" ng-controller="adminCtrl">
+
+  <div class="main-content">
+    <div class="vn-input-group">
+      <input class="vn-input" type="text" placeholder="网站 URL" ng-model="configs.site_url">
+      <p class="help">* like "www.example.com"</p>
+    </div>
+
+    <div class="vn-input-group">
+      <input class="vn-input" type="text" placeholder="网站标题" ng-model="configs.site_title">
+      <p class="help">* like "My Lovely Blog"</p>
+    </div>
+
+    <div class="vn-input-group">
+      <label><input class="vn-input" type="radio" value="google_analystics" ng-model="configs.site_tracking" /> Google Analystics</label>
+    </div>
+
+    <div class="vn-input-group">
+      <input class="vn-input vn-half" type="text" placeholder="Tracking ID" ng-model="configs.site_tracking_id">
+      <label>
+        <input class="vn-input vn-checkbox" type="checkbox"
+               ng-model="configs.site_tracking_enabled"
+               ng-true-value="'yes'"
+               ng-false-value="'no'">&nbsp;Enabled</label>
+
+      <p class="help">* like "My Lovely Blog"</p>
+    </div>
+
+    <div class="vn-input-group">
+      <label><input class="vn-input" type="radio" value="disqus" ng-model="configs.site_comment" /> Disqus</label>
+    </div>
+    <div class="vn-input-group">
+      <label><input class="vn-input" type="radio" value="duoshuo" ng-model="configs.site_comment" /> 多说</label>
+    </div>
+
+    <div class="vn-input-group">
+      <input class="vn-input vn-half" type="text" placeholder="Comment Service ID" ng-model="configs.site_comment_id">
+      <label>
+        <input class="vn-input vn-checkbox" type="checkbox"
+               ng-model="configs.site_comment_enabled"
+               ng-true-value="'yes'"
+               ng-false-value="'no'">&nbsp;Enabled</label>
+      <p class="help">* </p>
+    </div>
+
+    <div class="vn-input-group">
+      <ul class="buttons">
+        <li><a href="#" class="vn-btn btn-primary" ng-click="save()">保存</a>
+      </ul>
+    </div>
+
+    <div class="vn-input-group">
+      <ul class="buttons">
+        <li><a href="/admin/export" class="vn-btn btn-primary">备份数据库</a>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sub-content">
+    <div class="widget admin">
+      <div class="widget-body">
+      </div>
+    </div>
+  </div>
+</div>
+{% include "common/footer.html" %}

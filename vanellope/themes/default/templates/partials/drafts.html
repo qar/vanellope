@@ -1,0 +1,14 @@
+{% if len(drafts) > 0 %}
+<div class="widget">
+  <div class="widget-header">DRAFTS</div>
+  <div class="widget-body">
+    <ul>
+
+      {% for entry in drafts %}
+      <li><a href="{{ entry['path'] }}"><span>{{ entry['title'] }}</span></a></li>
+      {% end %}
+
+    </ul>
+  </div>
+</div>
+{% end %}

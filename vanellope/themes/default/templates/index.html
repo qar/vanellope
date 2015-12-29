@@ -1,0 +1,58 @@
+{% include "common/header.html" %}
+
+<div class="wrapper">
+  <div class="main-content">
+
+    <div class="main-content-header">
+      <a href="/">HOME</a> /
+    </div>
+
+    {% if len(articles) == 0 %}
+      No articles
+    {% else %}
+
+    <ol class="posts">
+      {% for article in articles %}
+      <li class="post">
+      <a href="{{ article['path'] }}"><h3 class="title">{{ article['title'] }}</h3></a>
+        <p class="brief">
+        </p>
+        <ul class="meta">
+          <li class="timestamp">{{ article['created_at'] }}</li>
+          <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
+          <li class="tags">
+            {% for tag in article['tags'] %}
+            <a href="/tags/{{ tag }}">{{ tag }}</a>
+            {% end %}
+          </li>
+          {% if current_user and current_user['role'] == 'admin' %}
+          <li class=""><a href="{{ article['editor-path'] }}">编辑</a></li>
+          {% end %}
+        </ul>
+      </li>
+      {% end %}
+    </ol>
+
+    <ol class="pagination">
+      {% for p in range(1, pages + 1) %}
+      <li><a href="?p={{ p }}">{{ p }}</a></li>
+      {% end %}
+    </ol>
+
+    {% end %}
+  </div>
+  <!--
+
+  --><div class="sub-content">
+
+  {% if current_user and current_user['role'] == 'admin' %}
+  {% include "partials/admin-tools.html" %}
+  {% include "partials/drafts.html" %}
+  {% end %}
+
+  {% include "partials/archives.html" %}
+  {% include "partials/tags.html" %}
+  {% include "partials/links.html" %}
+  </div>
+
+{% include "common/footer.html" %}

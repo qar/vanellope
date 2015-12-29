@@ -1,0 +1,40 @@
+@import "_normalize.scss";
+@import "_variables.scss";
+@import "_mixins.scss";
+@import "_resets.scss";
+@import "_components.scss";
+@import "_layouts.scss";
+
+.site-title {
+    margin: 0;
+    padding: 0;
+    color: white;
+    height: 4rem;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: normal;
+    font-size: 3rem;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -2rem;
+}
+
+/**
+ * Overrides
+ */
+.simditor {
+    border: none !important;
+}
+
+.simditor .simditor-body  {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.simditor .simditor-toolbar {
+    ul {
+        padding-left: 0;
+    }
+}
+

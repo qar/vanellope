@@ -1,0 +1,57 @@
+// Shared Style
+
+.vn-btn {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: $button-normal-height;
+    width: $button-normal-height / 9 * 16 * 2;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+
+    &.btn-primary {
+        background-color: $theme-color;
+        color: white;
+    }
+
+    &.btn-block {
+        width: 100%;
+    }
+
+    margin-bottom: 1rem;
+}
+
+.vn-input-group {
+    height: auto;
+
+    &:not(:last-child) {
+        margin-bottom: $group-ele-gap;
+    }
+}
+
+input[type="text"].vn-input,
+input[type="password"].vn-input,
+input[type="email"].vn-input {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    line-height: $button-normal-height;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #DDD;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+
+    &.vn-half {
+        width: 50%;
+    }
+
+    &:focus {
+        outline: none;
+
+    }
+}
+

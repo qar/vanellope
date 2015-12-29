@@ -1,0 +1,25 @@
+{% include "common/header.html" %}
+
+  <div class="wrapper">
+    <div class="main-content">
+
+      <div class="main-content-header">
+        <a href="/">HOME</a> / ARCHIVES
+      </div>
+
+      <ol class="posts">
+        {% for year in archives.keys() %}
+          {% for month in archives[year].keys() %}
+          <li><a href="/archive/{{ year }}/{{ month }}"><span>{{ year }} {{ archives[year][month]['abbr'] }} ({{ archives[year][month]['count'] }})</span></a></li>
+          {% end %}
+        {% end %}
+      </ol>
+
+    </div><!--
+
+    --><div class="sub-content">
+      {% include "partials/archives.html" %}
+      {% include "partials/tags.html" %}
+    </div>
+
+{% include "common/footer.html" %}

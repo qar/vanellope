@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="vanellope">
+<head>
+	<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ title }}</title>
+  {% include "./favicon.html" %}
+
+  {% if page.startswith('admin') %}
+  <link rel="stylesheet" type="text/css" href="{{ static_url('js/simditor/styles/simditor.css') }}" />
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/module.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/hotkeys.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/uploader.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/simditor.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/angular.min.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/application.js') }}"></script>
+  {% end if %}
+
+  <link rel="stylesheet" type="text/css" href="{{ static_url('css/style.css') }}" />
+</head>
+
+<body>
+  <div id="main-wrapper">
+
+  <div class="banner">
+    <div class="wrapper">
+      <div class="banner-content">
+        <ul class="nav">
+          <li class="{{ u'active' if page == 'index' else '' }}"><a href="/">Home</a></li>
+          <li class="{{ u'active' if page == 'admin/drafts' else '' }}"><a href="/admin/drafts">Drafts</a></li>
+          <li class="{{ u'active' if page == 'admin/trash' else '' }}"><a href="/admin/trash">Trash</a></li>
+          <li class="{{ u'active' if page == 'admin/edit' else '' }}"><a href="/admin/edit">New Post</a></li>
+          <li class="{{ u'active' if page == 'admin/settings' else '' }}"><a href="/admin/settings">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>

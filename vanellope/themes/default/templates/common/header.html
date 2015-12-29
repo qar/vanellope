@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ title }}</title>
+  {% include "./favicon.html" %}
+
+  {% if page.startswith('admin') %}
+  <link rel="stylesheet" type="text/css" href="{{ static_url('js/simditor/styles/simditor.css') }}" />
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/module.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/hotkeys.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/uploader.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/simditor.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/angular.min.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/application.js') }}"></script>
+  {% end if %}
+
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+</head>
+
+<body ng-app="vanellope">
+  <div id="main-wrapper">
+
+  <div class="banner">
+    <div class="wrapper">
+      <div class="banner-content">
+        <a href="/"><h1 class="site-title">{{ site['site_title'] }}</h1></a>
+        <!--
+        <ul class="nav nav-tabs">
+          <li class="{{ u'active' if page == 'index' else '' }}"><a href="/">Home</a></li>
+          <li class="{{ u'active' if page == 'tags' else '' }}"><a href="/tags">Tags</a></li>
+          <li class="{{ u'active' if page == 'archives' else '' }}"><a href="/archives">Archives</a></li>
+          {% if current_user and current_user['role'] == 'admin' %}
+          <li class="{{ u'active' if page == 'admin' else '' }}"><a href="/admin">Admin</a></li>
+          {% end %}
+        </ul>
+        -->
+      </div>
+    </div>
+  </div>

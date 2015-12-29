@@ -1,0 +1,12 @@
+<div class="widget">
+  <div class="widget-header">TAGS</div>
+  <div class="widget-body">
+    <ul>
+
+      {% for tag in sorted(tags, key = lambda x:x['count'], reverse=True)[0:19] %}
+      <li><a href="/tag/{{ tag['tag'] }}"><span>{{ tag['tag'] }} ({{ tag['count'] }})</span></a></li>
+      {% end %}
+
+    </ul>
+  </div>
+</div>

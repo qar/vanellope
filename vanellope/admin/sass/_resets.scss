@@ -1,0 +1,26 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    font-size: $font-base-size;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+body {
+    font-family: $font;
+    font-size: 1.4rem;
+    overflow-x: hidden; // 禁止横向滚动
+    overflow-y: auto; // 允许垂直滚动，必要时才显示滚动条
+}
+
+ol, ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

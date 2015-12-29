@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">{{ site['site_title'] }}</title>
+
+  {% if 'sub_title' in site %}
+  <subtitle type="html">{{ site['sub_title'] }}</subtitle>
+  {% end %}
+
+  <updated>2005-07-31T12:29:29Z</updated>
+
+  <id>{{ req['hostname'] }}/</id>
+
+  <link rel="alternate" type="text/html"
+        hreflang="en" href="{{ req['hostname'] }}"/>
+
+  <link rel="self" type="application/atom+xml"
+    href="{{ req['hostname'] + req['path'] }}"/>
+
+  <rights>Copyright (c) 2003, Mark Pilgrim</rights>
+
+  <generator uri="http://vanellope.org" version="0.1">VANELLOPE 1.0</generator>
+
+{% for entry in entries %}
+  <entry>
+    <title>{{ entry['title'] }}</title>
+    <link rel="alternate" type="text/html"
+      href="{{ req['hostname'] + entry['long_path'] }}"/>
+    <id>{{ req['hostname'] + entry['short_path'] }}</id>
+    <updated>{{ entry['updated_at'].strftime('%Y-%m-%dT%H:%M:%S%ZZ') }}</updated>
+    <published>{{ entry['created_at'].strftime('%Y-%m-%dT%H:%M:%S%ZZ') }}</published>
+
+    <author>
+      <name>Mark Pilgrim</name>
+      <uri>http://example.org/</uri>
+      <email>f8dy@example.com</email>
+    </author>
+    {#
+    <contributor>
+      <name>Sam Ruby</name>
+    </contributor>
+    <contributor>
+      <name>Joe Gregorio</name>
+    </contributor>
+    #}
+
+    <content type="html"  xml:base="{{ req['hostname'] }}/" xml:lang="en">
+        {{ entry['content'] }}
+    </content>
+  </entry>
+{% end %}
+
+</feed>

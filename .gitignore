@@ -1,0 +1,13 @@
+.DS_Store
+build
+*.egg-info
+.sh
+
+*.pyc
+*~
+*.swp
+*.swo
+.sass-cache
+reload.sh
+*.db
+vanellope/uploaded

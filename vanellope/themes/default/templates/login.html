@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link type="text/css" rel="stylesheet" href="/static/css/landing.css">
+  {% include "./common/favicon.html" %}
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="landing-wrapper">
+      <img class="logo" src="/static/img/logo.png">
+
+     <form action="/login" method="POST">
+
+        <div class="vn-input-group">
+          <input class="vn-input" type="email" placeholder="邮箱" name="email">
+        </div>
+
+        <div class="vn-input-group">
+          <input class="vn-input" type="password" placeholder="密码" name="pwd">
+        </div>
+
+        <div class="vn-input-group">
+          <div class="vn-btn btn-primary btn-block"
+               onClick="document.getElementsByTagName('form')[0].submit();">登录</div>
+          </div>
+        </div>
+    </form>
+
+    </div>
+  </div>
+</body>
+</html>
+

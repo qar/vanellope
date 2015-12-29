@@ -1,0 +1,134 @@
+@import "_normalize.scss";
+@import "_variables.scss";
+@import "_mixins.scss";
+@import "_resets.scss";
+@import "_components.scss";
+@import "_layouts.scss";
+
+
+@mixin box-sizing ($property) {
+  -webkit-box-sizing: $property;
+     -moz-box-sizing: $property;
+       -o-box-sizing: $property;
+          box-sizing: $property;
+}
+
+@mixin box-shadow () {
+  box-shadow: 1px 1.5px 2px rgba(12, 12, 12, 0.5);
+}
+
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+	background-color: #EEE;
+	font-family:  Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+}
+
+#wrapper {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+#wrapper:before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+  width: 0;
+  margin-right: -0.165em;
+}
+
+.landing-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    height: auto;
+    width: 360px;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0px 2px 2px rgba(120, 120, 120, 0.4);
+
+    padding: 2em;
+
+    input {
+        outline: none;
+        border: 1px solid #7b838f;
+    }
+
+  .logo {
+    padding: 1rem 0 4rem 0;
+    width: 68%;
+  }
+
+  .message {
+    height: 1em;
+    line-height: 1em;
+    vertical-align: middle;
+    text-align: center;
+    margin: 1em r;
+  }
+}
+
+//.landing-wrapper input[type='text'],
+//.landing-wrapper input[type='password']{
+//  width: 92%;
+//  margin: 0 4%;
+//  height: 3.4em;
+//  border-radius: 2px;
+//  margin-bottom: 2em;
+//  padding-left: 1em;
+//  line-height: 1.2em;
+//  font-size: 0.8em;
+//  color: #9ea5ae;
+//  @include box-sizing(border-box);
+//}
+
+.landing-wrapper input:focus {
+  outline: none;
+}
+
+.landing-wrapper {
+  span.forget-password {
+    margin-left: 4%;
+    line-height: 2em;
+    vertical-align: bottom;
+    float: left;
+    text-align: left;
+    a {
+      color: #9ea5ae;
+      font-size: 0.9em;
+    }
+  }
+  .submit {
+    float: right;
+    width: 86px;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
+    text-align: center;
+    color: white;
+    display: block;
+    background: #4B515F;
+    margin-right: 4%;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  .submit:focus {
+    outline: none;
+    background: #757C8F;
+  }
+}
+
+::selection {
+  background: transparent;
+}
+

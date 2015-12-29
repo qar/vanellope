@@ -1,0 +1,14 @@
+{% if len(tags) > 0 %}
+<div class="widget">
+  <div class="widget-header">TAGS</div>
+  <div class="widget-body">
+    <ul>
+
+      {% for tag in sorted(tags, key = lambda x:x['count'], reverse=True)[0:19] %}
+      <li><a href="/tags/{{ tag['tag'] }}"><span>{{ tag['tag'] }} ({{ tag['count'] }})</span></a></li>
+      {% end %}
+
+    </ul>
+  </div>
+</div>
+{% end %}

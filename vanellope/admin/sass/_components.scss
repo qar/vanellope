@@ -1,0 +1,54 @@
+.vn-btn {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: $button-normal-height;
+    width: $button-normal-height / 9 * 16 * 2;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+
+    &.btn-primary {
+        background-color: $theme-color;
+        color: white;
+    }
+}
+
+.vn-input-group {
+    height: auto;
+    margin-bottom: 2rem;
+
+    .help {
+        font-size: 1.1rem;
+        margin: 0.5rem 0;
+        vertical-align: middle;
+    }
+}
+
+input[type="checkbox"].vn-checkbox {
+    line-height: $button-normal-height;
+}
+
+input[type="text"].vn-input,
+input[type="password"].vn-input,
+input[type="email"].vn-input {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    line-height: $button-normal-height;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #DDD;
+    padding: 0 1rem;
+
+    &.vn-half {
+        width: 50%;
+    }
+
+    &:focus {
+        outline: none;
+
+    }
+}

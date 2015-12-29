@@ -1,0 +1,45 @@
+{% include "common/header.html" %}
+
+<div class="wrapper" ng-controller="trashCtrl">
+  <div class="main-content">
+
+  {% if len(articles) == 0 %}
+
+  (Empty)
+
+  {% else %}
+
+    <ol class="posts">
+
+      {% for article in articles %}
+      <li class="post">
+        <a href="/article/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}"><h3 class="title">{{ article['title'] }}</h3></a>
+        <p class="brief">
+        </p>
+        <ul class="meta">
+          <li class="timestamp">{{ article['created_at'] }}</li>
+          <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
+          <li class="tags">
+            {% for tag in article['tags'] %}
+            <a href="/tags/{{ tag }}">{{ tag }}</a>
+            {% end %}
+          </li>
+          {% if current_user and current_user['role'] == 'admin' %}
+          <li class=""><a href="/admin/edit/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}">编辑</a></li>
+          <li class=""><a href="#" ng-click="dropEntry('{{ article['uuid'] }}')">彻底删除</a></li>
+          {% end %}
+        </ul>
+      </li>
+      {% end %}
+
+  {% end %}
+
+  </ol>
+</div>
+<!--
+
+--><div class="sub-content">
+</div>
+
+
+{% include "common/footer.html" %}

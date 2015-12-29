@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="auth">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link type="text/css" rel="stylesheet" href="/static/css/landing.css">
+  {% include "./common/favicon.html" %}
+
+  <script type="text/javascript" src="{{ static_url('js/angular.min.js') }}"></script>
+  <script type="text/javascript" src="{{ static_url('js/authentication.js') }}"></script>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="landing-wrapper">
+      <img class="logo" src="/static/img/logo.png">
+
+      <form action="/authentication" method="POST">
+        <input type="text" name="role" value="admin" hidden>
+
+        <div class="vn-input-group">
+          <p ng-class="msgClass"></p>
+        </div>
+
+        <div class="vn-input-group">
+          <input class="vn-input" type="email" placeholder="邮箱" name="email">
+        </div>
+
+        <div class="vn-input-group">
+          <input class="vn-input" type="password" placeholder="密码" name="pwd">
+        </div>
+
+        <div class="vn-input-group">
+          <div class="vn-btn btn-primary btn-block"
+               onClick="document.getElementsByTagName('form')[0].submit();">注册为管理员</div>
+          </div>
+        </div>
+    </form>
+
+    </div>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,4 @@
+include LICENSE README.md 
+recursive-include vanellope *
+recursive-exclude vanellope *.pyc
+prune vanellope/uploaded

@@ -1,0 +1,25 @@
+@import "_normalize.scss";
+@import "_variables.scss";
+@import "_mixins.scss";
+@import "_resets.scss";
+@import "_components.scss";
+@import "_layouts.scss";
+
+/**
+ * Overrides
+ */
+.simditor {
+    border: none !important;
+}
+
+.simditor .simditor-body  {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.simditor .simditor-toolbar {
+    ul {
+        padding-left: 0;
+    }
+}
+

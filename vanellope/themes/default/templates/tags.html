@@ -1,0 +1,33 @@
+{% include "common/header.html" %}
+
+{% if len(tags) == 0 %}
+
+No tags
+
+{% else %}
+
+  <div class="wrapper">
+    <div class="main-content">
+
+      <div class="main-content-header">
+        <a href="/">HOME</a> / <a href="/tags">TAGS</a>
+      </div>
+
+      <ol class="tags">
+
+        {% for tag in tags %}
+          <li><a href="/tags/{{ tag['tag'] }}" class="tag">{{ tag['tag'] }}</a></li>
+        {% end %}
+
+      </ol>
+    </div>
+{% end %}
+    <!--
+
+    --><div class="sub-content">
+      {% include "partials/archives.html" %}
+      {% include "partials/tags.html" %}
+    </div>
+
+
+{% include "common/footer.html" %}

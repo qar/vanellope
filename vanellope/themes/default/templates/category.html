@@ -1,0 +1,42 @@
+{% include "common/header.html" %}
+
+{% if len(articles) == 0 %}
+
+No articles
+
+{% else %}
+
+  <div class="wrapper">
+    <div class="main-content">
+      <ol class="posts">
+
+        {% for article in articles %}
+        <li class="post">
+          <a href="{{ article['path'] }}"><h3 class="title">{{ article['title'] }}</h3></a>
+          <p class="brief">
+          </p>
+          <ul class="meta">
+            <li class="timestamp">{{ article['created_at'] }}</li>
+            <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
+            <li class="tags">
+              {% for tag in article['tags'] %}
+              <a href="/tags/{{ tag }}">{{ tag }}</a>
+              {% end %}
+            </li>
+            {% if current_user and current_user['role'] == 'admin' %}
+            <li class=""><a href="{{ article['editor-path'] }}">编辑</a></li>
+            {% end %}
+          </ul>
+        </li>
+        {% end %}
+
+      </ol>
+    </div>
+{% end %}
+    <!--
+
+    --><div class="sub-content">
+    </div>
+
+
+{% include "common/footer.html" %}

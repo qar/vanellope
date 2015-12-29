@@ -1,0 +1,36 @@
+{% if site['site_comment'] == 'duoshuo' %}
+
+  <div class="ds-thread" data-thread-key="{{ article['uuid'] }}" data-title="{{ article['title'] }}" data-url="/article/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}"></div>
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"{{ site['site_comment_id'] }}"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+       || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+{% elif site['site_comment'] == 'disqus' %}
+
+  <div id="disqus_thread"></div>
+  <script>
+
+  var disqus_config = function () {
+    this.page.url = "http://standfast.me/article/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}"; 
+    this.page.identifier = "{{ article['uuid'] }}"; 
+  };
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = '//{{ site['site_comment_id'] }}.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+{% end %}

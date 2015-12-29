@@ -1,0 +1,12 @@
+<div class="widget">
+  <div class="widget-header">ARCHIVES</div>
+  <div class="widget-body">
+    <ul>
+      {% for year in archives.keys() %}
+        {% for month in archives[year].keys() %}
+        <li><a href="/archive/{{ year }}/{{ month }}"><span>{{ year }} {{ archives[year][month]['abbr'] }} ({{ archives[year][month]['count'] }})</span></a></li>
+        {% end %}
+      {% end %}
+    </ul>
+  </div>
+</div>

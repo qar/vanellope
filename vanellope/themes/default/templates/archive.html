@@ -1,0 +1,32 @@
+{% include "common/header.html" %}
+
+  <div class="wrapper">
+    <div class="main-content">
+
+      <div class="main-content-header">
+        <a href="/">HOME</a> / <a href="/archives">ARCHIVES</a> / <span class="normal">{{ from_date.strftime('%Y-%m-%d') }} - {{ end_date.strftime('%Y-%m-%d') }}</span>
+      </div>
+
+
+      {% if len(articles) == 0 %}
+      <span>( Nothing Found )</span>
+      {% end %}
+
+      <ol class="posts">
+
+        {% for article in articles %}
+        <li class="post">
+          <a href="{{ article['path'] }}"><h3 class="title">{{ article['title'] }}</h3></a>
+          <ul class="meta">
+            <li class="timestamp">{{ article['created_at'].strftime('%Y-%m-%dT%T') }}</li>
+          </ul>
+        </li>
+        {% end %}
+
+      </ol>
+    </div><!--
+
+    --><div class="sub-content">
+    </div>
+
+{% include "common/footer.html" %}
