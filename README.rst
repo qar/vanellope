@@ -6,7 +6,8 @@ vanellope is a publishing engine (just a blog software) named after the adorable
 DEMO
 ----
 
-..
+.. code-block:: shell
+
   pip install vanellope
   vanellope --port=8000
 
