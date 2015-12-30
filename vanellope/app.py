@@ -76,6 +76,7 @@ def make_app():
 
 
 def main():
+    options.parse_command_line()
     App().listen(options.port, '127.0.0.1', xheaders=True)
     print 'VANELLOPE running on %d' % options.port
     ioloop.IOLoop.instance().start()

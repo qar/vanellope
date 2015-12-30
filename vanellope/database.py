@@ -152,11 +152,8 @@ class ConfigModel(DataAccess):
         return site_name[0]
 
     def update(self, data):
-        t = ()
-        for k, v in data.items():
-            t.append((v, k))
-
         cur = self.conn.cursor()
+        t = tuple((v, k) for k,v in data.items())
         cur.executemany("UPDATE configuration SET value = ? WHERE key = ?", t)
 
 

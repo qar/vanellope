@@ -12,8 +12,9 @@ from datetime import datetime, timedelta
 from dateutil import relativedelta
 
 import base64
-from tornado.web import StaticFileHandler, RequestHandler
+from tornado.web import StaticFileHandler, RequestHandler, MissingArgumentError
 from tornado.log import access_log
+from tornado.escape import json_decode
 
 from user_agents import parse as ua_parse
 import urlparse
@@ -128,6 +129,30 @@ class BaseHandler(RequestHandler):
         namespace['categories'] = []
 
         return namespace
+
+    def get_payload_argument(self, name, default, strip=True):
+        """ Get request data from payload
+
+        """
+        source = json_decode(self.request.body)
+        if isinstance(source, dict):
+            if name in source:
+                arg = source[name]
+                if isinstance(arg, basestring):
+                    arg = self.decode_argument(arg)
+                    # Get rid of any weird control chars (unless decoding gave
+                    # us bytes, in which case leave it alone)
+                    arg = RequestHandler._remove_control_chars_regex.sub(" ", arg)
+                    if strip:
+                         arg = arg.strip()
+
+                elif isinstance(arg, list):
+                    arg = filter(lambda item: self.decode_argument(item).strip(), arg)
+                return arg
+            else:
+                return default
+
+        raise MissingArgumentError(name)
 
     def gravatar(self, email, size=64):
         gravatar_url = ("http://www.gravatar.com/avatar/%s" %
