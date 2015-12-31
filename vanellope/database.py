@@ -38,7 +38,7 @@ def create_tables():
 
     # Initialize configurations
     if len(results) == 0:
-        t = config.app_settings.items
+        t = config.app_settings.items()
         cur.executemany("INSERT INTO configuration VALUES (?, ?)", t)
 
     # Create posts table
