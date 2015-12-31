@@ -96,7 +96,7 @@ class BaseHandler(RequestHandler):
             user_agent)
         )
 
-        if not self.settings['admin'] and self.request.uri != '/welcome':
+        if not self.settings['admin'] and self.request.method == 'GET' and self.request.uri != '/welcome':
             self.redirect('/welcome')
 
     def get_template_namespace(self):

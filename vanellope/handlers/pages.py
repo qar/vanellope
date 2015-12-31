@@ -19,7 +19,7 @@ class WelcomePage(BaseHandler):
             return self.redirect('/')
 
         self.render("welcome.html",
-                    title=u'Welcome',
+                    title=u'VANELLOPE| Welcome',
                     page=u'welcome')
 
     def post(self):
@@ -62,10 +62,10 @@ class WelcomePage(BaseHandler):
             admin_user = self.user.get_admin_user()
             self.settings['admin'] = admin_user
 
-        self.finish({
-            'status': u'success',
-            'msg': msg
-        })
+        if not err:
+            self.redirect('/admin')
+        else:
+            self.redirect('/welcome')
 
 
 class IndexPage(BaseHandler):
@@ -93,7 +93,7 @@ class IndexPage(BaseHandler):
             pages += 1
 
         self.render("index.html",
-                    title=u'首页 | VANELLOPE',
+                    title=u'VANELLOPE| Home',
                     page=u'index',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
@@ -107,7 +107,7 @@ class TagsPage(BaseHandler):
         current_page = int(self.get_argument(u'p', 1))
 
         self.render("tags.html",
-                    title=u'标签 | VANELLOPE',
+                    title=u'VANELLOPE| Tags',
                     page=u'tags',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1)
@@ -131,7 +131,7 @@ class TagPage(BaseHandler):
 class ArchivesPage(BaseHandler):
     def get(self):
         self.render('archives.html',
-                    title=u'归档 | VANELLOPE',
+                    title=u'VANELLOPE| Archive',
                     page=u'archives')
 
 
@@ -223,7 +223,7 @@ class ArchivePage(BaseHandler):
             articles.append(article)
 
         self.render("archive.html",
-                    title=u'归档 | VANELLOPE',
+                    title=u'VANELLOPE| Archive',
                     page=u'archive',
                     from_date=from_date,
                     end_date=end_date,
@@ -239,7 +239,7 @@ class CategoryPage(BaseHandler):
         articles = self.posts.find_by_category(cate)
 
         self.render("category.html",
-                    title=u'Category:{0} | VANELLOPE'.format(cate),
+                    title=u'VANELLOPE| Category:{0}'.format(cate),
                     page=u'category',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
@@ -250,7 +250,7 @@ class CategoryPage(BaseHandler):
 class LoginPage(BaseHandler):
     def get(self):
         self.render("login.html",
-                    title=u'登录 | VANELLOPE',
+                    title=u'VANELLOPE| Login',
                     page=u'login')
 
     def post(self):

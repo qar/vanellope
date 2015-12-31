@@ -106,7 +106,10 @@ class PostsHandler(BaseHandler):
             'state': state
         })
 
-        article_url = '/article/' + post_uuid + '+' + "_".join(title.split())
+        if state == 'draft':
+            article_url = '/drafts/' + post_uuid + '+' + "_".join(title.split())
+        else:
+            article_url = '/article/' + post_uuid + '+' + "_".join(title.split())
 
         self.finish({
             'info': 'success',
@@ -139,7 +142,10 @@ class PostsHandler(BaseHandler):
             'state': state
         })
 
-        article_url = '/article/' + uuid + '+' + "_".join(title.split())
+        if state == 'draft':
+            article_url = '/drafts/' + post_uuid + '+' + "_".join(title.split())
+        else:
+            article_url = '/article/' + post_uuid + '+' + "_".join(title.split())
 
         self.finish({
             'info': 'success',

@@ -9,7 +9,7 @@ class AdminSettingsPage(AdminBaseHandler):
     @authenticated
     def get(self):
         self.render("admin.html",
-                    title=u'控制台 | VANELLOPE',
+                    title=u'VANELLOPE| Admin',
                     page=u'admin/settings')
 
 
@@ -22,7 +22,7 @@ class AdminEditPage(AdminBaseHandler):
             return self.send_error(404)
 
         self.render("write.html",
-                    title=u'编辑 | VANELLOPE',
+                    title=u'VANELLOPE| Editing',
                     page=u'admin/edit',
                     article=article)
 
@@ -33,7 +33,7 @@ class AdminDraftsPage(AdminBaseHandler):
         articles = self.posts.get_drafts()
 
         self.render("drafts.html",
-                    title=u'草稿箱 | VANELLOPE',
+                    title=u'VANELLOPE| Drafts',
                     page=u'admin/drafts',
                     articles=articles)
 
@@ -44,7 +44,7 @@ class AdminTrashPage(AdminBaseHandler):
         articles = self.posts.get_trash()
 
         self.render("trash.html",
-                    title=u'垃圾箱 | VANELLOPE',
+                    title=u'VANELLOPE| Trash',
                     page=u'admin/trash',
                     articles=articles)
 

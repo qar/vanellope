@@ -25,8 +25,8 @@
             {% end %}
           </li>
           {% if current_user and current_user['role'] == 'admin' %}
-          <li class=""><a href="/admin/edit/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}">编辑</a></li>
-          <li class=""><a href="#" ng-click="dropEntry('{{ article['uuid'] }}')">彻底删除</a></li>
+          <li class=""><a href="/admin/edit/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}">Edit</a></li>
+          <li class=""><a href="#" ng-click="dropEntry('{{ article['uuid'] }}')">Physically Delete</a></li>
           {% end %}
         </ul>
       </li>
