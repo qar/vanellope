@@ -62,10 +62,10 @@ class WelcomePage(BaseHandler):
             admin_user = self.user.get_admin_user()
             self.settings['admin'] = admin_user
 
-        self.finish({
-            'status': u'success',
-            'msg': msg
-        })
+        if not err:
+            self.redirect('/admin')
+        else:
+            self.redirect('/welcome')
 
 
 class IndexPage(BaseHandler):
