@@ -3,7 +3,7 @@
 <div class="wrapper" ng-controller="editorCtrl">
 
   <div class="main-content">
-    <input class="vn-input" type="text" placeholder="标题" ng-model="title">
+    <input class="vn-input" type="text" placeholder="Title" ng-model="title">
 
     <div class="quill-wrapper post post-editing">
       <textarea id="editor" placeholder="Happy writing" autofocus></textarea>
@@ -14,22 +14,22 @@
     <div class="widget admin">
       <div class="widget-body">
         <div class="vn-input-group">
-          <input class="vn-input" type="text" ng-model="category" placeholder="分类">
+          <input class="vn-input" type="text" ng-model="category" placeholder="Category">
         </div>
         <div class="vn-input-group">
-          <input class="vn-input" type="text" ng-model="tags" placeholder="标签">
+          <input class="vn-input" type="text" ng-model="tags" placeholder="Tags">
         </div>
 
         <div class="vn-input-group">
-          <label><input class="vn-input" type="radio" value="draft" ng-model="state" /> 草稿</label>
+          <label><input class="vn-input" type="radio" value="draft" ng-model="state" /> Save as a draft</label>
         </div>
         <div class="vn-input-group">
-          <label><input class="vn-input" type="radio" value="published" ng-model="state" /> 发布</label>
+          <label><input class="vn-input" type="radio" value="published" ng-model="state" /> Save and publish</label>
         </div>
 
         <ul class="buttons">
-          <li><a href="#" class="vn-btn btn-primary" ng-click="savePost()">保存</a></li>
-          <li><a href="#" class="vn-btn btn-primary" ng-show="entry_id" ng-click="deletePost()">移到垃圾箱</a></li>
+          <li><a href="#" class="vn-btn btn-primary" ng-click="savePost()">Save</a></li>
+          <li><a href="#" class="vn-btn btn-primary" ng-show="entry_id" ng-click="deletePost()">Move to trash can</a></li>
         </ul>
       </div>
     </div>

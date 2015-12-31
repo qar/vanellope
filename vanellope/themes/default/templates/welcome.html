@@ -2,7 +2,7 @@
 <html ng-app="auth">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>{{ title }}</title>
   <link type="text/css" rel="stylesheet" href="/static/css/landing.css">
   {% include "./common/favicon.html" %}
 
@@ -23,16 +23,16 @@
         </div>
 
         <div class="vn-input-group">
-          <input class="vn-input" type="email" placeholder="邮箱" name="email">
+          <input class="vn-input" type="email" placeholder="Email" name="email">
         </div>
 
         <div class="vn-input-group">
-          <input class="vn-input" type="password" placeholder="密码" name="pwd">
+          <input class="vn-input" type="password" placeholder="Password" name="pwd">
         </div>
 
         <div class="vn-input-group">
           <div class="vn-btn btn-primary btn-block"
-               onClick="document.getElementsByTagName('form')[0].submit();">注册为管理员</div>
+               onClick="document.getElementsByTagName('form')[0].submit();">Signup as Adminstrator</div>
           </div>
         </div>
     </form>

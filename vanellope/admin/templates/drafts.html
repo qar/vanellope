@@ -6,7 +6,7 @@
 
     {% if len(articles) == 0 %}
 
-    没有草稿
+    (Empty)
 
     {% else %}
 
@@ -26,8 +26,8 @@
             {% end %}
           </li>
           {% if current_user and current_user['role'] == 'admin' %}
-          <li class=""><a href="{{ article['editor-path'] }}">编辑</a></li>
-          <li class=""><a href="#" ng-click="deleteEntry('{{ article['uuid'] }}')">移到垃圾箱</a></li>
+          <li class=""><a href="{{ article['editor-path'] }}">Edit</a></li>
+          <li class=""><a href="#" ng-click="deleteEntry('{{ article['uuid'] }}')">Move to trash can</a></li>
           {% end %}
         </ul>
       </li>

@@ -5,8 +5,6 @@ from vanellope.handlers import BaseHandler
 
 class MainFeed(BaseHandler):
     def get(self):
-        # 每页显示 N 篇文章
-
         current_page = int(self.get_argument(u'p', 1))
 
         _posts = self.posts.get_posts()
@@ -27,7 +25,7 @@ class MainFeed(BaseHandler):
         self.set_header('Content-Type', 'application/atom+xml; charset=UTF-8')
 
         self.render("feeds.xml",
-                    title=u'首页 | VANELLOPE',
+                    title=u'VANELLOPE| Feeds',
                     page=u'index',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
