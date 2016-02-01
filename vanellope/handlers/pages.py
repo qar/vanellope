@@ -92,11 +92,15 @@ class IndexPage(BaseHandler):
         if total_entries > pages * ENTRIES_PER_PAGE:
             pages += 1
 
+        next_page = current_page + 1 if current_page < pages else pages
+        previous_page = current_page - 1 if current_page > 1 else 1
+
         self.render("index.html",
                     title=u'VANELLOPE| Home',
                     page=u'index',
-                    previous_page=current_page - 1 if current_page > 1 else 1,
-                    next_page=current_page + 1,
+                    current_page=current_page,
+                    next_page=next_page,
+                    previous_page=previous_page,
                     pages=pages,
                     drafts=drafts,
                     articles=articles)
