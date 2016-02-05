@@ -126,14 +126,14 @@ class PostsHandler(BaseHandler):
         """
         category = self.get_payload_argument('category', '')
         content = self.get_payload_argument('content', '')
-        uuid = self.get_payload_argument('uuid', '')
+        post_uuid = self.get_payload_argument('uuid', '')
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'published')
         ext = 'html'
 
-        self.posts.update(uuid, {
-            'uuid': uuid,
+        self.posts.update(post_uuid, {
+            'uuid': post_uuid,
             'content': content,
             'title': title,
             'category': category,

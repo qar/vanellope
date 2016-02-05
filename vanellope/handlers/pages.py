@@ -19,7 +19,7 @@ class WelcomePage(BaseHandler):
             return self.redirect('/')
 
         self.render("welcome.html",
-                    title=u'VANELLOPE| Welcome',
+                    title=self.concat_page_title('Welcome'),
                     page=u'welcome')
 
     def post(self):
@@ -38,12 +38,10 @@ class WelcomePage(BaseHandler):
         role = self.get_argument('role', None)
 
         err = 0
-        msg = u'login successfully'
 
         admin_user = self.user.get_admin_user()
         if role == 'admin' and admin_user:
             err += 1
-            msg = u'Admin user exists'
 
         else:
             password_hash = self.user.create_user({
@@ -96,7 +94,7 @@ class IndexPage(BaseHandler):
         previous_page = current_page - 1 if current_page > 1 else 1
 
         self.render("index.html",
-                    title=u'VANELLOPE| Home',
+                    title=self.concat_page_title('Home'),
                     page=u'index',
                     current_page=current_page,
                     next_page=next_page,
@@ -111,7 +109,7 @@ class TagsPage(BaseHandler):
         current_page = int(self.get_argument(u'p', 1))
 
         self.render("tags.html",
-                    title=u'VANELLOPE| Tags',
+                    title=self.concat_page_title('Tags'),
                     page=u'tags',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1)
@@ -124,7 +122,7 @@ class TagPage(BaseHandler):
         articles = self.posts.find_posts_with_tag(tag)
 
         self.render("tag.html",
-                    title=u"VANELLOPE | Tag:{0}".format(tag),
+                    title=self.concat_page_title("Tag:{0}".format(tag)),
                     page=u'tag',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
@@ -135,7 +133,7 @@ class TagPage(BaseHandler):
 class ArchivesPage(BaseHandler):
     def get(self):
         self.render('archives.html',
-                    title=u'VANELLOPE| Archive',
+                    title=self.concat_page_title('Archive'),
                     page=u'archives')
 
 
@@ -227,7 +225,7 @@ class ArchivePage(BaseHandler):
             articles.append(article)
 
         self.render("archive.html",
-                    title=u'VANELLOPE| Archive',
+                    title=self.concat_page_title('Archive'),
                     page=u'archive',
                     from_date=from_date,
                     end_date=end_date,
@@ -243,7 +241,7 @@ class CategoryPage(BaseHandler):
         articles = self.posts.find_by_category(cate)
 
         self.render("category.html",
-                    title=u'VANELLOPE| Category:{0}'.format(cate),
+                    title=self.concat_page_title('Category:{0}'.format(cate)),
                     page=u'category',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
@@ -254,7 +252,7 @@ class CategoryPage(BaseHandler):
 class LoginPage(BaseHandler):
     def get(self):
         self.render("login.html",
-                    title=u'VANELLOPE| Login',
+                    title=self.concat_page_title('Login'),
                     page=u'login')
 
     def post(self):
