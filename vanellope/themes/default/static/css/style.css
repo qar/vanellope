@@ -632,28 +632,19 @@ ul.nav {
   .wrapper {
     padding-left: 2rem;
     padding-right: 2rem; } }
-.slidebar {
-  background-color: #1a1a1a;
-  width: 26rem;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  right: 0;
-  -webkit-transform: translate3d(26rem, 0, 0);
-  transform: translate3d(26rem, 0, 0);
-  -webkit-transition: -webkit-transform 200ms ease;
-  transition: transform 200ms ease; }
-  body.show-slide .slidebar {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    -webkit-transition: -webkit-transform 200ms ease;
-    transition: transform 200ms ease; }
-
-body.show-slide #main-wrapper {
-  -webkit-transform: translate3d(-26rem, 0, 0);
-  transform: translate3d(-26rem, 0, 0);
-  -webkit-transition: -webkit-transform 200ms ease;
-  transition: transform 200ms ease; }
+.vertical-middle {
+  display: inline-block;
+  vertical-align: middle; }
+  .vertical-middle:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle; }
+  .vertical-middle .centered {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    vertical-align: middle; }
 
 .pagination {
   width: 100%; }
@@ -672,6 +663,11 @@ body.show-slide #main-wrapper {
   .pagination .right {
     float: right; }
 
+@media screen and (max-width: 960px) {
+  .main-content, .sub-content {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0; } }
 .site-title {
   margin: 0;
   padding: 0;

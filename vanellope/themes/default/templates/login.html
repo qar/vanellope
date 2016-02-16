@@ -2,6 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Login</title>
   <link type="text/css" rel="stylesheet" href="/static/css/landing.css">
   {% include "./common/favicon.html" %}
@@ -9,25 +11,25 @@
 
 <body>
   <div id="wrapper">
-    <div class="landing-wrapper">
-      <img class="logo" src="/static/img/logo.png">
+      <div class="landing-wrapper">
+        <img class="logo" src="/static/img/logo.png">
 
-     <form action="/login" method="POST">
+       <form action="/login" method="POST">
 
-        <div class="vn-input-group">
-          <input class="vn-input" type="email" placeholder="Email" name="email">
-        </div>
-
-        <div class="vn-input-group">
-          <input class="vn-input" type="password" placeholder="Password" name="pwd">
-        </div>
-
-        <div class="vn-input-group">
-          <div class="vn-btn btn-primary btn-block"
-               onClick="document.getElementsByTagName('form')[0].submit();">Login</div>
+          <div class="vn-input-group">
+            <input class="vn-input" type="email" placeholder="Email" name="email">
           </div>
-        </div>
-    </form>
+
+          <div class="vn-input-group">
+            <input class="vn-input" type="password" placeholder="Password" name="pwd">
+          </div>
+
+          <div class="vn-input-group">
+            <div class="vn-btn btn-primary btn-block"
+                 onClick="document.getElementsByTagName('form')[0].submit();">Login</div>
+            </div>
+          </div>
+      </form>
 
     </div>
   </div>
