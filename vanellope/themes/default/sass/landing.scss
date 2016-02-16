@@ -33,30 +33,38 @@ body {
 }
 
 #wrapper {
-  height: 100%;
-  width: 100%;
-  text-align: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    /* May want to do this if there is risk the container may be narrower than the element inside */
+    white-space: nowrap;
+
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
 #wrapper:before {
-  content: '';
-  display: inline-block;
-  vertical-align: middle;
-  height: 100%;
-  width: 0;
-  margin-right: -0.165em;
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    width: 0;
+    margin-right: -0.25em; /* Adjusts for spacing */
 }
 
 .landing-wrapper {
     display: inline-block;
     vertical-align: middle;
     height: auto;
-    width: 360px;
+    max-width: 360px;
     border-radius: 4px;
     background: white;
     box-shadow: 0px 2px 2px rgba(120, 120, 120, 0.4);
 
-    padding: 2em;
+    padding: 2rem;
+
+    box-sizing: border-box;
 
     input {
         outline: none;

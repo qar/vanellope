@@ -25,7 +25,7 @@ class MainFeed(BaseHandler):
         self.set_header('Content-Type', 'application/atom+xml; charset=UTF-8')
 
         self.render("feeds.xml",
-                    title=u'VANELLOPE| Feeds',
+                    title=self.concat_page_title('Feeds'),
                     page=u'index',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,

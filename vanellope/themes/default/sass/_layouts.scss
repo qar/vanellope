@@ -4,7 +4,7 @@
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
-    padding-bottom: 1.5 * $footer-height-lg;
+    padding-bottom: 5 * $footer-height-lg;
     box-sizing: border-box;
 }
 
@@ -95,12 +95,13 @@ ul.nav {
 
 .posts {
     width: 100%;
+    margin-bottom: 3rem;
 
     .post {
         width: 100%;
-        margin-bottom: 8rem;
-        padding-bottom: 2rem;
+        padding-bottom: 3rem;
         border-bottom: 1px solid #EEE;
+        margin-top: 3rem;
     }
 
     .title {
@@ -169,7 +170,6 @@ ul.nav {
     .tags {
     }
     .category {
-        float: right;
     }
 }
 
@@ -183,7 +183,7 @@ ul.nav {
         // overide inline style
         max-width: 100% !important;
         height: auto!important;
-        
+
         box-shadow: 1px 5px 17px #838383;
     }
 
@@ -282,5 +282,24 @@ ul.nav {
     .wrapper {
         padding-left: 2rem;
         padding-right: 2rem;
+    }
+}
+
+.vertical-middle {
+    display: inline-block;
+    vertical-align: middle;
+
+    &:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    .centered {
+        display: inline-block;
+        width: auto;
+        height: auto;
+        vertical-align: middle;
     }
 }

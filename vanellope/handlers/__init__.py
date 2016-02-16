@@ -144,7 +144,7 @@ class BaseHandler(RequestHandler):
                     # us bytes, in which case leave it alone)
                     arg = RequestHandler._remove_control_chars_regex.sub(" ", arg)
                     if strip:
-                         arg = arg.strip()
+                        arg = arg.strip()
 
                 elif isinstance(arg, list):
                     arg = filter(lambda item: self.decode_argument(item).strip(), arg)
@@ -191,6 +191,10 @@ class BaseHandler(RequestHandler):
         p = re.compile(r'<.*?>')
         return p.sub('', data)
 
+    def concat_page_title(self, page_title):
+        site_title = self.get_template_namespace()['site']['site_title']
+        return site_title + '| ' + page_title
+
 
 class AdminBaseHandler(BaseHandler):
     def static_url(self, path, include_host=None, **kwargs):
@@ -220,3 +224,7 @@ class AdminBaseHandler(BaseHandler):
         In order to render admin page independently
         """
         return self.application.settings.get("admin_template_path")
+
+    def concat_page_title(self, page_title):
+        site_title = self.get_template_namespace()['site']['site_title']
+        return site_title + '| ' + page_title

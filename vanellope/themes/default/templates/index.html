@@ -18,7 +18,7 @@
         <p class="brief">
         </p>
         <ul class="meta">
-          <li class="timestamp">{{ article['created_at'] }}</li>
+          <li class="timestamp">{{ article['created_at'].strftime("%Y-%m-%d %H:%M:%S") }}</li>
           <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
           <li class="tags">
             {% for tag in article['tags'] %}
@@ -33,12 +33,19 @@
       {% end %}
     </ol>
 
-    <ol class="pagination">
-      {% for p in range(1, pages + 1) %}
-      <li><a href="?p={{ p }}">{{ p }}</a></li>
-      {% end %}
-    </ol>
+    <div class="pagination">
+      {% if next_page > current_page %}
+      <a href="/?p={{ next_page }}" class="right buttons">Next Page</a>
+      {% else %}
+      <p class="right labels">No More</p>
+      {% end if %}
 
+      {% if current_page > 1 %}
+      <a href="/?p={{ previous_page }}" class="left buttons">Previous Page</a>
+      {% else %}
+      <p class="left labels">No More</p>
+      {% end if %}
+    </div>
     {% end %}
   </div>
   <!--
@@ -55,4 +62,5 @@
   {% include "partials/links.html" %}
   </div>
 
+</div> <!-- End of .wrapper -->
 {% include "common/footer.html" %}
