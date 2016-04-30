@@ -13,6 +13,7 @@ from vanellope.database import create_tables, get_admin_user, connection
 from vanellope.urls import routers
 
 define("port", default=8000, help="run on the given port", type=int)
+define("host", default='127.0.0.1', help="run on the given host", type=str)
 define("debug", default=False, help="debug mode.", type=bool)
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -77,8 +78,8 @@ def make_app():
 
 def main():
     options.parse_command_line()
-    App().listen(options.port, '127.0.0.1', xheaders=True)
-    print 'VANELLOPE running on %d' % options.port
+    App().listen(options.port, options.host, xheaders=True)
+    print 'VANELLOPE running on %s:%d' % (options.host, options.port)
     ioloop.IOLoop.instance().start()
 
 
