@@ -13,10 +13,10 @@ from vanellope.database import create_tables, get_admin_user, connection
 from vanellope.urls import routers
 
 define("port", default=8000, help="run on the given port", type=int)
-define("host", default='127.0.0.1', help="run on the given host", type=str)
+define("host", default="127.0.0.1", help="run on the given host", type=str)
 define("debug", default=False, help="debug mode.", type=bool)
 
-ROOT = os.path.abspath(os.path.dirname(__file__))
+ROOT = "/var/www/vanellope/"
 
 
 class App(web.Application):
@@ -25,10 +25,10 @@ class App(web.Application):
         create_tables()
 
         theme = config.theme
-        static_path = os.path.join(ROOT, 'themes/%s/static' % theme)
-        template_path = os.path.join(ROOT, 'themes/%s/templates' % theme)
-        admin_static_path = os.path.join(ROOT, 'admin/static')
-        admin_template_path = os.path.join(ROOT, 'admin/templates')
+        static_path = os.path.join(ROOT, "themes/%s/static" % theme)
+        template_path = os.path.join(ROOT, "themes/%s/templates" % theme)
+        admin_static_path = os.path.join(ROOT, "admin/static")
+        admin_template_path = os.path.join(ROOT, "admin/templates")
         config_keys = config.app_settings.keys()
 
         settings = {
@@ -48,7 +48,7 @@ class App(web.Application):
             "theme": theme,
 
             "include_version": True,
-            "login_url": '/login',
+            "login_url": "/login",
             "debug": options.debug,
             "db_conn": connection
         }
@@ -60,7 +60,7 @@ class App(web.Application):
             static_handler_class = settings.get("static_handler_class",
                                                 web.StaticFileHandler)
             static_handler_args = settings.get("admin_static_handler_args", {})
-            static_handler_args['path'] = path
+            static_handler_args["path"] = path
             for pattern in [re.escape(static_url_prefix) + r"(.*)",
                             r"/(favicon\.ico)", r"/(robots\.txt)"]:
                 routers.insert(0, (pattern, static_handler_class,
@@ -79,7 +79,7 @@ def make_app():
 def main():
     options.parse_command_line()
     App().listen(options.port, options.host, xheaders=True)
-    print 'VANELLOPE running on %s:%d' % (options.host, options.port)
+    print "VANELLOPE running on %s:%d" % (options.host, options.port)
     ioloop.IOLoop.instance().start()
 
 
