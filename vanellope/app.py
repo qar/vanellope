@@ -16,7 +16,7 @@ define("port", default=8000, help="run on the given port", type=int)
 define("host", default="127.0.0.1", help="run on the given host", type=str)
 define("debug", default=False, help="debug mode.", type=bool)
 
-ROOT = "/var/www/vanellope/"
+ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 class App(web.Application):
