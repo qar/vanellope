@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import config
-from tornado import web
 
 from vanellope.handlers import pages
 from vanellope.handlers import apiv1
@@ -13,6 +12,8 @@ routers = [
 
     # Index page
     (r"/", pages.IndexPage),
+
+    (r"/snippets", pages.SnippetsPage),
 
     # 登录
     (r"/authentication", pages.WelcomePage),

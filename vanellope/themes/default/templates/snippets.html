@@ -1,0 +1,62 @@
+{% include "common/header.html" %}
+
+<div class="wrapper">
+  <div class="main-content">
+
+    <div class="main-content-header">
+      <a href="/">HOME</a> /
+    </div>
+
+    {% if len(articles) == 0 %}
+      No articles
+    {% else %}
+
+    <ol class="posts">
+      {% for article in articles %}
+      <li class="post">
+      <a href="{{ article['path'] }}"><h3 class="title">{{ article['title'] }}</h3></a>
+        <p class="brief">
+        </p>
+        <ul class="meta">
+          <li class="timestamp">{{ article['created_at'].strftime("%Y-%m-%d %H:%M:%S") }}</li>
+          <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
+          <li class="tags">
+            {% for tag in article['tags'] %}
+            <a href="/tags/{{ tag }}">{{ tag }}</a>
+            {% end %}
+          </li>
+          {% if current_user and current_user['role'] == 'admin' %}
+          <li class=""><a href="{{ article['editor-path'] }}">Edit</a></li>
+          {% end %}
+        </ul>
+      </li>
+      {% end %}
+    </ol>
+
+    <div class="pagination">
+      {% if next_page > current_page %}
+      <a href="/?p={{ next_page }}" class="right buttons">Next Page</a>
+      {% else %}
+      <p class="right labels">No More</p>
+      {% end if %}
+
+      {% if current_page > 1 %}
+      <a href="/?p={{ previous_page }}" class="left buttons">Previous Page</a>
+      {% else %}
+      <p class="left labels">No More</p>
+      {% end if %}
+    </div>
+    {% end %}
+  </div>
+  <!--
+
+  --><div class="sub-content">
+
+  {% if current_user and current_user['role'] == 'admin' %}
+  {% end %}
+
+  {% include "partials/links.html" %}
+  </div>
+
+</div> <!-- End of .wrapper -->
+{% include "common/footer.html" %}
