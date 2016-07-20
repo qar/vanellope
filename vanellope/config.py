@@ -39,6 +39,7 @@ create_table_sqls = {
                          uuid TEXT PRIMARY KEY,
                          ext TEXT,
                          title TEXT,
+                         source TEXT,
                          content TEXT,
                          category TEXT NOT NULL,
                          tags TEXT,
