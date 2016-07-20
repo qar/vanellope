@@ -26,6 +26,9 @@ class TestDatabasePostModel(unittest.TestCase):
             'content': '1234'
         }
 
+class TestDatabaseSnippetModel(unittest.TestCase):
+    def setUp(self):
+        self.posts = database.SnippetModel()
 
 
 if __name__ == '__main__':
