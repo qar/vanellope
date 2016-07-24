@@ -683,7 +683,7 @@ class SnippetModel(DataAccess):
 
         cur = self.conn.cursor()
 
-        sql = """ INSERT INTO snippets
+        sql = """ INSERT INTO posts
                   (ext, title, source, content, category, tags,
                    state, uuid, created_at, updated_at)
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -736,7 +736,7 @@ class SnippetModel(DataAccess):
         cur = self.conn.cursor()
 
         sql = """
-              UPDATE snippets
+              UPDATE posts
               SET ext = ?,
                   title = ?,
                   source = ?,
@@ -775,7 +775,7 @@ class SnippetModel(DataAccess):
                   created_at as "created_at [timestamp]",
                   updated_at
 
-              FROM snippets WHERE 1
+              FROM posts WHERE 1
               """
         params = []
 
@@ -829,7 +829,7 @@ class SnippetModel(DataAccess):
         states = filter(None, states)
         categories = filter(None, categories)
 
-        sql = " SELECT count(*) as count FROM snippets WHERE 1 "
+        sql = " SELECT count(*) as count FROM posts WHERE 1 "
         params = []
 
         if len(tag_list) > 0:
@@ -863,7 +863,7 @@ class SnippetModel(DataAccess):
         cur = self.conn.cursor()
 
         sql = """
-              UPDATE snippets
+              UPDATE posts
               SET state = ?,
                   updated_at = ?
               WHERE uuid = ?
@@ -882,7 +882,7 @@ class SnippetModel(DataAccess):
         cur = self.conn.cursor()
 
         sql = """
-              DELETE FROM snippets
+              DELETE FROM posts
               WHERE state = 'deleted'
               AND uuid = ?
               """
@@ -978,7 +978,7 @@ class SnippetModel(DataAccess):
 
         cur = self.conn.cursor()
         sql = """
-        select tags from snippets where state = 'published'
+        select tags from posts where state = 'published'
         """
         cur.execute(sql)
         article_tags = cur.fetchall()
