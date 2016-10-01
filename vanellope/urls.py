@@ -49,6 +49,7 @@ routers = [
     (r"/api/v1/image", apiv1.ImageHandler),
     (r"/api/v1/configuration", apiv1.ConfigurationHandler),
     (r"/api/v1/admin/trash/(.*)", apiv1.AdminTrashHandler),
+    (r"/api/v1/comments", apiv1.CommentsHandler),
 
     # Feeds
     (r"/index.xml", feeds.MainFeed),

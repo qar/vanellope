@@ -267,6 +267,31 @@ ul.nav {
     }
 }
 
+// comments list
+.comments {
+    width: 100%;
+    margin-bottom: 10rem;
+
+    & > * {
+        padding-top: 1em;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cmt-meta {
+        width: 100%;
+        & > * {
+            display: inline-block;
+        }
+
+        .cmt-timestamp::before {
+            content: 'on';
+            margin-right: 0.5em;
+            margin-left: 0.5em;
+        }
+    }
+}
+
 #full-editor {
     min-height: 400px;
     border: 1px solid #DDD;
@@ -302,4 +327,11 @@ ul.nav {
         height: auto;
         vertical-align: middle;
     }
+}
+
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
 }

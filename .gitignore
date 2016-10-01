@@ -13,3 +13,4 @@ reload.sh
 *.db
 vanellope/uploaded
 dist
+content

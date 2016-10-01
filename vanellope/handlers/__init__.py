@@ -23,6 +23,7 @@ from vanellope.database import ConfigModel
 from vanellope.database import UserModel
 from vanellope.database import PostModel
 from vanellope.database import Session
+from vanellope.database import CommentModel
 
 
 class Days(object):
@@ -82,6 +83,7 @@ class BaseHandler(RequestHandler):
     posts = PostModel()
     config = ConfigModel()
     session = Session()
+    comments = CommentModel()
 
     def prepare(self):
         try:

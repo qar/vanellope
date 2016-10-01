@@ -169,3 +169,32 @@ class AdminTrashHandler(BaseHandler):
         self.finish({
             'msg': 'success'
         })
+
+
+class CommentsHandler(BaseHandler):
+    def post(self):
+        """
+        创建
+
+        提交参数:
+            post_id
+            name
+            email
+            website
+            content
+        """
+        post_id = self.get_argument('post_id', '')
+        name = self.get_argument('name', '')
+        email = self.get_argument('email', '')
+        website = self.get_argument('website', '')
+        content = self.get_argument('content', '')
+
+        self.comments.create({
+            'post_id': post_id,
+            'name': name,
+            'email': email,
+            'website': website,
+            'content': content,
+        })
+
+        self.redirect(self.request.headers['Referer'])
