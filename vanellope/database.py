@@ -270,7 +270,6 @@ class PostModel(DataAccess):
         assert data['title'] and len(data['title']) > 0
         params.append(data['title'])
 
-        assert data['content'] and len(data['content']) > 0
         params.append(data['content'])
 
         if 'category' in data:
