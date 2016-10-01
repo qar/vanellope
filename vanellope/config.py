@@ -66,6 +66,19 @@ create_table_sqls = {
                         key TEXT PRIMARY KEY,
                         value TEXT
                     )
+                    """,
+
+    "comments_schema": """
+                    CREATE TABLE IF NOT EXISTS comments (
+                         uuid TEXT PRIMARY KEY,
+                         post_id TEXT,
+                         name TEXT,
+                         email TEXT NOT NULL,
+                         website TEXT,
+                         content TEXT NOT NULL,
+                         state TEXT NOT NULL DEFAULT 'checking',
+                         created_at TIMESTAMP NOT NULL
+                    )
                     """
 }
 
@@ -77,13 +90,13 @@ app_settings = {
     'site_url': '',
 
     # 网站统计服务
-    'site_tracking': '', # 'google_analystics'
+    'site_tracking': '',  # 'google_analystics'
     'site_tracking_id': '',
     'site_tracking_enabled': 'yes',
 
     # 网站评论服务
-    'site_comment': '' , # 'duoshuo' or 'disqus'
-    'site_comment_id': '' ,
+    'site_comment': '',  # 'duoshuo' or 'disqus'
+    'site_comment_id': '',
     'site_comment_enabled': 'no',
 
     # Post default category

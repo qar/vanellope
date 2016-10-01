@@ -334,6 +334,9 @@ class ArticlePage(BaseHandler):
             self.send_error(404)
             return
 
+        # state should be pass
+        comments = self.comments.find(post_id=article_id, state="checking")
+
         if 'tags' not in article:
             article['tags'] = []
 
@@ -344,7 +347,8 @@ class ArticlePage(BaseHandler):
                     page=u'article',
                     related_articles=[],
                     siblings=siblings,
-                    article=article)
+                    article=article,
+                    comments=comments)
 
     def post(self):
         """Create new article"""
