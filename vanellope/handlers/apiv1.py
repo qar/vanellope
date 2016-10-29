@@ -2,9 +2,11 @@
 
 import os.path
 import uuid
+import math
 from tornado.web import authenticated
 from tornado.escape import json_decode
 from vanellope.handlers import BaseHandler
+from vanellope import config
 
 
 class ArticleHandler(BaseHandler):
@@ -79,8 +81,21 @@ class ImageHandler(BaseHandler):
 
 
 class PostsHandler(BaseHandler):
+    @authenticated
     def get(self):
-        self.finish()
+        ENTRIES_PER_PAGE = config.posts_per_page
+        current_page = int(self.get_argument(u'p', 1))
+
+        articles = self.posts.find(
+            states=['published'],
+            limit=ENTRIES_PER_PAGE,
+            skip=(current_page - 1) * ENTRIES_PER_PAGE
+        )
+
+        self.finish({
+            'info': 'success',
+            'data': articles,
+        })
 
     def post(self):
         """
@@ -106,10 +121,12 @@ class PostsHandler(BaseHandler):
             'state': state
         })
 
+        url_safe_title = '_'.join(title.split())
+
         if state == 'draft':
-            article_url = '/drafts/' + post_uuid + '+' + "_".join(title.split())
+            article_url = '/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
         else:
-            article_url = '/article/' + post_uuid + '+' + "_".join(title.split())
+            article_url = '/article/{0}+{1}'.format(post_uuid, url_safe_title)
 
         self.finish({
             'info': 'success',
@@ -142,10 +159,11 @@ class PostsHandler(BaseHandler):
             'state': state
         })
 
+        url_safe_title = '_'.join(title.split())
         if state == 'draft':
-            article_url = '/drafts/' + post_uuid + '+' + "_".join(title.split())
+            article_url = '/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
         else:
-            article_url = '/article/' + post_uuid + '+' + "_".join(title.split())
+            article_url = '/article/{0}+{1}'.format(post_uuid, url_safe_title)
 
         self.finish({
             'info': 'success',
