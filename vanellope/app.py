@@ -4,6 +4,8 @@
 import re
 import os
 import os.path
+import sys
+sys.path.append(os.getcwd())
 
 from tornado import web
 from tornado import ioloop

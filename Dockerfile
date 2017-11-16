@@ -1,7 +1,7 @@
-FROM centos:6
-FROM python:2.7
+FROM python:2.7-alpine
 MAINTAINER Qiao Anran <qiaoanran@gmail.com>
 COPY . /src
-RUN cd /src && python setup.py install
+WORKDIR /src
+RUN pip install -r requirements.txt
 EXPOSE 80
-CMD ["vanellope", "--host=0.0.0.0", "--port=80"]
+CMD ["python", "vanellope/app.py", "--host=0.0.0.0", "--port=80"]
