@@ -1,0 +1,8 @@
+<Tabs :value="tab" @on-click="switchTab" :animated="false">
+  <TabPane label="编辑" name="edit" v-show="tab === 'edit'">
+    <div id="editor" v-show="tab === 'edit'"></div>
+  </TabPane>
+  <TabPane label="预览" name="preview" v-show="tab === 'preview'">
+    <div id="preview" v-html="html"></div>
+  </TabPane>
+</Tabs>

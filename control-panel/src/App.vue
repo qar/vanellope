@@ -1,4 +1,3 @@
-
 <style scoped>
     .layout{
         border: 1px solid #d7dde4;
@@ -59,7 +58,9 @@
             <Col span="20">
                 <div class="layout-header"></div>
                 <div class="layout-content">
-                    <div class="layout-content-main">Content</div>
+                    <div class="layout-content-main">
+                      <router-view></router-view>
+                    </div>
                 </div>
                 <div class="layout-copy">
                     2011-2016 &copy; TalkingData
@@ -68,8 +69,9 @@
         </Row>
     </div>
 </template>
+
 <script>
-    export default {
-    }
+export default {
+};
 </script>
 

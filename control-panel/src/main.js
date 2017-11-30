@@ -3,6 +3,8 @@
 import Vue from 'vue';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/gfm/gfm';
 import App from './App';
 import router from './router';
 
