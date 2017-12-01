@@ -7,12 +7,15 @@ import '@/assets/global.scss';
 import 'iview/dist/styles/iview.css';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/gfm/gfm';
+import $http from '@/utils/http';
 import App from './App';
 import router from './router';
 
 Vue.config.productionTip = false;
 
 Vue.use(iView);
+
+Vue.prototype.$http = $http;
 
 /* eslint-disable no-new */
 new Vue({

@@ -2,7 +2,6 @@
 
 import os.path
 import uuid
-import math
 from tornado.web import authenticated
 from tornado.escape import json_decode
 from vanellope.handlers import BaseHandler
@@ -92,9 +91,15 @@ class PostsHandler(BaseHandler):
             skip=(current_page - 1) * ENTRIES_PER_PAGE
         )
 
+        data = []
+        for article in articles:
+            article['created_at'] = article['created_at'].strftime('%s')
+            article['updated_at'] = article['updated_at'].strftime('%s')
+            data.append(article)
+
         self.finish({
             'info': 'success',
-            'data': articles,
+            'data': data
         })
 
     def post(self):
