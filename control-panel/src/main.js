@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import iView from 'iview';
+import '@/assets/reset.css';
+import '@/assets/global.scss';
 import 'iview/dist/styles/iview.css';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/gfm/gfm';
