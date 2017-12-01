@@ -15,7 +15,7 @@ export default new Router({
     },
 
     {
-      path: '/editor',
+      path: '/editor/:articleId',
       name: 'MarkdownEditor',
       component: MarkdownEditor,
     },

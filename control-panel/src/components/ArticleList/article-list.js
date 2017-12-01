@@ -10,6 +10,17 @@ export default {
         {
           title: '标题',
           key: 'title',
+          render: (h, params) => {
+            return h('div', [
+                h('router-link', {
+                  props: {
+                    to: { name: 'MarkdownEditor', params: { articleId: params.row.uuid }}
+                  },
+                }, [
+                  h('strong', params.row.title)
+                ]),
+            ]);
+          }
         },
       ],
 
@@ -23,6 +34,7 @@ export default {
       this.rows = res.data.map(article => {
         return {
           title: article.title,
+          uuid: article.uuid,
         };
       });
     });

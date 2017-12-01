@@ -1,9 +1,11 @@
 /* eslint-disable */
 import CodeMirror from 'codemirror';
 window.CodeMirror = CodeMirror;
-
+import * as _ from 'lodash';
 import showdown from 'showdown';
 const converter = new showdown.Converter();
+import apis from '@/utils/api';
+import toMarkdown from 'to-markdown';
 
 export default {
   name: 'MarkdownEditor',
@@ -15,10 +17,28 @@ export default {
         mode: 'gfm',
       },
 
+      article: null,
+
       tab: 'edit',
 
       html: '',
     };
+  },
+
+  created() {
+    if (this.$route.params.articleId) {
+      apis.getArticle(this.$route.params.articleId)
+        .then(res => {
+          this.article = res;
+          if (this.editor) {
+            if (this.article.ext === 'html') {
+              this.editor.setValue(toMarkdown(this.article.content));
+            } else {
+              this.editor.setValue(this.article.content);
+            }
+          }
+        });
+    }
   },
 
   methods: {
@@ -45,5 +65,12 @@ export default {
   // boot-up
   mounted() {
     this.editor = new CodeMirror(this.$el, this.options);
+    if (this.article) {
+      if (this.article.ext === 'html') {
+        this.editor.setValue(toMarkdown(this.article.content));
+      } else {
+        this.editor.setValue(this.article.content);
+      }
+    }
   },
 };

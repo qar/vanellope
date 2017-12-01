@@ -9,7 +9,7 @@
                             <Icon type="ios-navigate"></Icon>
                             文章
                         </template>
-                        <MenuItem name="1-1">已发布</MenuItem>
+                        <MenuItem name="1-1"><router-link to="/articles" tag="div">已发布</router-link></MenuItem>
                         <MenuItem name="1-2">草稿</MenuItem>
                         <MenuItem name="1-3">回收站</MenuItem>
                     </Submenu>
