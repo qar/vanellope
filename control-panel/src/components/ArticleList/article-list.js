@@ -14,7 +14,7 @@ export default {
             return h('div', [
                 h('router-link', {
                   props: {
-                    to: { name: 'MarkdownEditor', params: { articleId: params.row.uuid }}
+                    to: { name: 'ArticleMarkdownEditor', params: { articleId: params.row.uuid }}
                   },
                 }, [
                   h('strong', params.row.title)

@@ -15,17 +15,16 @@ export default new Router({
     },
 
     {
-      path: '/editor/:articleId',
+      path: '/editor',
       name: 'MarkdownEditor',
       component: MarkdownEditor,
     },
 
     {
-      path: '/editor/',
-      name: 'MarkdownEditor',
+      path: '/editor/:articleId',
+      name: 'ArticleMarkdownEditor',
       component: MarkdownEditor,
     },
-
     {
       path: '/articles',
       name: 'ArticleList',

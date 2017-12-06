@@ -112,6 +112,7 @@ class PostsHandler(BaseHandler):
         """
         category = self.get_payload_argument('category', '')
         content = self.get_payload_argument('content', '')
+        source = self.get_payload_argument('source', '')
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'draft')
@@ -119,6 +120,7 @@ class PostsHandler(BaseHandler):
 
         post_uuid = self.posts.create({
             'content': content,
+            'source': source,
             'title': title,
             'category': category,
             'tags': tags,

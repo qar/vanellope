@@ -267,13 +267,13 @@ class PostModel(DataAccess):
         params = []
 
         assert data['ext']
-        assert data['ext'] == 'html'
         params.append(data['ext'])
 
         assert data['title'] and len(data['title']) > 0
         params.append(data['title'])
 
         params.append(data['content'])
+        params.append(data['source'])
 
         if 'category' in data:
             category = data['category']
@@ -289,9 +289,9 @@ class PostModel(DataAccess):
         cur = self.conn.cursor()
 
         sql = """ INSERT INTO posts
-                  (ext, title, content, category, tags,
+                  (ext, title, content, source, category, tags,
                    state, uuid, created_at, updated_at)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
               """
 
         post_id = self.gen_uuid(data['title'], data['content'])

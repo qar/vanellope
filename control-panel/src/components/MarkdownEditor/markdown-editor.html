@@ -2,7 +2,25 @@
   <TabPane label="编辑" name="edit" v-show="tab === 'edit'">
     <div id="editor" v-show="tab === 'edit'"></div>
   </TabPane>
+
   <TabPane label="预览" name="preview" v-show="tab === 'preview'">
     <div id="preview" v-html="html" class="article-view"></div>
+  </TabPane>
+
+  <TabPane label="设置" name="settings" v-show="tab === 'settings'">
+    <Row>
+      <Col span="12" offset="6">
+        <Form :model="settings" :label-width="80">
+          <FormItem label="标题">
+            <Input v-model="settings.title" placeholder="文章标题"></Input>
+          </FormItem>
+
+          <FormItem>
+            <Button type="primary" @click="saveAsDraft">保存成草稿</Button>
+            <Button type="success" @click="publish">发布</Button>
+          </FormItem>
+        </Form>
+      </Col>
+    </Row>
   </TabPane>
 </Tabs>

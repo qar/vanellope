@@ -30,12 +30,44 @@ export default {
         autofocus: true,
       },
 
+      // 设置选项
+      settings: {
+        // 文章标题
+        title: '',
+
+        select: '',
+        radio: 'male',
+        checkbox: [],
+        switch: true,
+        date: '',
+        time: '',
+        slider: [20, 50],
+        textarea: ''
+      },
+
       article: null,
 
       tab: 'edit',
 
       html: '',
     };
+  },
+
+  // boot-up
+  mounted() {
+    window.addEventListener('resize', this.handleResize)
+
+    this.editor = new CodeMirror(this.$el, this.options);
+    if (this.article) {
+      if (this.article.ext === 'html') {
+        this.editor.setValue(toMarkdown(this.article.content));
+      } else {
+        this.editor.setValue(this.article.content);
+      }
+
+      this.editor.refresh();
+    }
+    this.handleResize(); // manually called to initialize
   },
 
   created() {
@@ -51,12 +83,24 @@ export default {
             }
 
             this.editor.refresh();
+            this.handleResize(); // manually called to initialize
           }
         });
     }
   },
 
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+  },
+
   methods: {
+    handleResize(ev) {
+      const totalHeight = ev ? ev.target.innerHeight : (window.innerHeight - 35);
+      const tabsHeight = document.getElementsByClassName('ivu-tabs-bar')[0].offsetHeight;
+      const h = `${totalHeight - tabsHeight - 16}px`;
+      document.getElementsByClassName('CodeMirror-scroll')[0].style.height = h;
+    },
+
     switchTab(tab) {
       this.tab = tab;
       // show CodeMirror instance DOM
@@ -64,30 +108,32 @@ export default {
       // cmEle.classList = cmEle.classList.replace('hide-cm-instance', '');
       cmEle.classList.remove('hide-cm-instance');
 
-      if (tab === 'preview') {
+      if (tab !== 'edit') {
         // hide CodeMirror intance DOM
         const cmEle = this.editor.getWrapperElement();
         cmEle.classList.add('hide-cm-instance');
 
         // convert markdown to html and show on page
         const content = this.editor.getValue();
-        console.log('DEBUG got content', content);
         this.html = converter.makeHtml(content);
       }
     },
-  },
 
-  // boot-up
-  mounted() {
-    this.editor = new CodeMirror(this.$el, this.options);
-    if (this.article) {
-      if (this.article.ext === 'html') {
-        this.editor.setValue(toMarkdown(this.article.content));
-      } else {
-        this.editor.setValue(this.article.content);
-      }
+    publish() {
+      const params = {
+        category: '',
+        content: '',
+        title: this.settings.title,
+        state: 'published',
+        ext: 'markdown'
+      };
 
-      this.editor.refresh();
-    }
+      params.content = this.html;
+
+      apis.createArticle(params);
+    },
+
+    saveAsDraft() {}
+
   },
 };
