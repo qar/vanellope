@@ -7,7 +7,7 @@
     <!-- nav zone -->
     <div id="navbar">
       <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
-          <div class="layout-logo-left"></div>
+          <div class="layout-logo-left"><img src="/static/img/logo.png"></div>
           <Submenu name="1">
               <template slot="title">
                   <Icon type="ios-navigate"></Icon>
@@ -39,5 +39,16 @@ export default {
   // https://www.w3.org/TR/CSS2/box.html#collapsing-margins
   .layout-logo-left {
     display: inline-block;
+  }
+
+  .layout-logo-left img {
+    width: 80%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .layout-logo-left {
+    min-height: 0;
+    height: auto;
   }
 </style>
