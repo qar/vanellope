@@ -21,6 +21,12 @@ export default new Router({
     },
 
     {
+      path: '/editor/',
+      name: 'MarkdownEditor',
+      component: MarkdownEditor,
+    },
+
+    {
       path: '/articles',
       name: 'ArticleList',
       component: ArticleList,

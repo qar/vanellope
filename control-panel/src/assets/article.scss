@@ -1,0 +1,15 @@
+$bg-code: #2d2d2d;
+$color-code: #08e008;
+
+.article-view {
+  padding: 20px 5%;
+
+  // code block
+  pre > code {
+    display: block;
+    padding: 10px;
+    color: $color-code;
+    border-radius: 4px;
+    background-color: $bg-code;
+  }
+}

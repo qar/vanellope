@@ -14,7 +14,20 @@ export default {
     return {
       // CodeMirror Options
       options: {
+        // 编辑器模式: Github Flavor Markdown
         mode: 'gfm',
+
+        // 是否自动折行
+        lineWrapping: true,
+
+        // 是否显示行号
+        lineNumbers: true,
+
+        // 滚动条样式
+        scrollbarStyle: 'native',
+
+        // 自动获取焦点
+        autofocus: true,
       },
 
       article: null,
@@ -36,6 +49,8 @@ export default {
             } else {
               this.editor.setValue(this.article.content);
             }
+
+            this.editor.refresh();
           }
         });
     }
@@ -71,6 +86,8 @@ export default {
       } else {
         this.editor.setValue(this.article.content);
       }
+
+      this.editor.refresh();
     }
   },
 };
