@@ -10,7 +10,7 @@ import 'codemirror/mode/gfm/gfm';
 import '@/assets/sass/main.scss';
 import '@/assets/article.scss';
 import $http from '@/utils/http';
-import App from './App';
+import App from '@/components/App/app.vue';
 import router from './router';
 
 Vue.config.productionTip = false;

@@ -41,8 +41,8 @@ ul {
 
 #wrapper {
     float: left;
-    width: 88%;
-    margin-left: 12%;
+    width: 86%;
+    margin-left: 14%;
     height: 100%;
     @include box-sizing(border-box);
 }
@@ -428,12 +428,14 @@ p > code {
       display: none;
     }
 
+    font-family: $menuFont;
+
     position: fixed;
     top: 0;
     left: 0;
     margin: 0;
     height: 100%;
-    width: 12%;
+    width: 14%;
     text-align: center;
 }
 
