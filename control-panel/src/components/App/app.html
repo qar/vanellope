@@ -11,7 +11,7 @@
 
       <MenuItem name="2">
           <Icon type="gear-a" :size="iconSize"></Icon>
-          <span class="layout-text">Settings</span>
+          <router-link :to="{ name: 'Settings' }" tag="span" class="layout-text">Settings</router-link>
       </MenuItem>
 
       <Submenu name="3">

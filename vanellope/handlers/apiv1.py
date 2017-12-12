@@ -82,11 +82,13 @@ class ImageHandler(BaseHandler):
 class PostsHandler(BaseHandler):
     @authenticated
     def get(self):
-        ENTRIES_PER_PAGE = config.posts_per_page
+        ENTRIES_PER_PAGE = 1000
+        # config.posts_per_page
         current_page = int(self.get_argument(u'p', 1))
+        states = self.get_arguments(u's')
 
         articles = self.posts.find(
-            states=['published'],
+            states=states,
             limit=ENTRIES_PER_PAGE,
             skip=(current_page - 1) * ENTRIES_PER_PAGE
         )

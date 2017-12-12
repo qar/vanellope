@@ -396,9 +396,10 @@ class PostModel(DataAccess):
             sql += " AND created_at >= ?"
             params.append(after_date)
 
+        # https://stackoverflow.com/a/1310001/2609042
         if len(states) > 0:
-            sql += " AND state IN (?)"
-            params.append(','.join(states))
+            sql += " AND state IN (%s)" % ','.join('?' * 2)
+            params.extend(['published', 'draft'])
 
         if len(categories) > 0:
             sql += " AND category IN (?)"
