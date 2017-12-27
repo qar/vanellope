@@ -21,10 +21,10 @@ export default {
         lineWrapping: true,
 
         // 是否显示行号
-        lineNumbers: true,
+        lineNumbers: false, // true or false
 
         // 滚动条样式
-        scrollbarStyle: 'native',
+        scrollbarStyle: 'null', // native, null
 
         // 自动获取焦点
         autofocus: true,

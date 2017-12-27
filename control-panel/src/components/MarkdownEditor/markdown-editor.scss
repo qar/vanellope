@@ -1,3 +1,13 @@
 .CodeMirror.hide-cm-instance {
   display: none;
 }
+
+// custom style
+.CodeMirror {
+  padding: 0 14%;
+
+  .CodeMirror-scroll {
+    overflow-y: auto !important;
+  }
+}
+
