@@ -27,6 +27,20 @@ def get_admin_user():
     return UserModel().get_admin_user()
 
 
+def record_view(post_id):
+    # TODO is special id ?
+    cur = connection.cursor()
+
+    update_sql = 'UPDATE views SET counts = counts + 1 WHERE post_id = ? LIMIT 1'
+    insert_sql = 'INSERT INTO views (post_id, counts) VALUES (?, ?)'
+    result = cur.execute(update_sql, post_id)
+    if not result.count:
+        cur.execute(insert_sql, [post_id, 0])
+
+    # TODO check is post_id exist
+    # if exist, then update counts
+    # if not, insert one,
+
 def create_tables():
     # Create tables if not exist
     cur = connection.cursor()
@@ -399,7 +413,7 @@ class PostModel(DataAccess):
         # https://stackoverflow.com/a/1310001/2609042
         if len(states) > 0:
             sql += " AND state IN (%s)" % ','.join('?' * 2)
-            params.extend(['published', 'draft'])
+            params.extend(states)
 
         if len(categories) > 0:
             sql += " AND category IN (?)"
@@ -446,9 +460,11 @@ class PostModel(DataAccess):
             sql += " AND created_at >= ?"
             params.append(after_date)
 
+        # https://stackoverflow.com/a/1310001/2609042
         if len(states) > 0:
-            sql += " AND state IN (?)"
-            params.append(','.join(states))
+            sql += " AND state IN (%s)" % ','.join('?' * 2)
+            params.extend(states)
+
 
         if len(categories) > 0:
             sql += " AND category IN (?)"

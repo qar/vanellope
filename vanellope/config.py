@@ -49,6 +49,16 @@ create_table_sqls = {
                     )
                     """,
 
+    "posts_views_schema": """
+                    CREATE TABLE IF NOT EXISTS views (
+                         uuid TEXT PRIMARY KEY,
+                         post_id TEXT,
+                         counts INT,
+                         created_at TIMESTAMP NOT NULL,
+                         updated_at TIMESTAMP NOT NULL
+                    )
+                    """,
+
     "users_schema": """
                     CREATE TABLE IF NOT EXISTS users (
                         username TEXT PRIMARY KEY,

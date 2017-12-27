@@ -82,16 +82,19 @@ class ImageHandler(BaseHandler):
 class PostsHandler(BaseHandler):
     @authenticated
     def get(self):
-        ENTRIES_PER_PAGE = 1000
+        ENTRIES_PER_PAGE = 10 
         # config.posts_per_page
         current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
         states = self.get_arguments(u's')
 
         articles = self.posts.find(
             states=states,
-            limit=ENTRIES_PER_PAGE,
-            skip=(current_page - 1) * ENTRIES_PER_PAGE
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page 
         )
+
+        total_items = self.posts.count(states=states)
 
         data = []
         for article in articles:
@@ -101,6 +104,11 @@ class PostsHandler(BaseHandler):
 
         self.finish({
             'info': 'success',
+            'paging': {
+                'total': total_items,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
             'data': data
         })
 

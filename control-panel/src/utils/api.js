@@ -10,8 +10,13 @@ function createArticle(args) {
     .then(res => res.data);
 }
 
-function getArticleList() {
-  return $http.get('/api/v1/posts?s=draft&s=published')
+function getArticleList(paging) {
+  const params = {
+    s: ['published', 'draft'],
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/posts', { params })
     .then(res => res.data);
 }
 
