@@ -38,6 +38,12 @@ class AdminDraftsPage(AdminBaseHandler):
                     articles=articles)
 
 
+class AdminControlPanel(AdminBaseHandler):
+    @authenticated
+    def get(self):
+        self.render("controlpanel.html")
+
+
 class AdminTrashPage(AdminBaseHandler):
     @authenticated
     def get(self):

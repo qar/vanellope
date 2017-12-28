@@ -29,7 +29,7 @@ class App(web.Application):
         theme = config.theme
         static_path = os.path.join(ROOT, "themes/%s/static" % theme)
         template_path = os.path.join(ROOT, "themes/%s/templates" % theme)
-        admin_static_path = os.path.join(ROOT, "admin/static")
+        admin_static_path = os.path.join(ROOT, "admin/assets")
         admin_template_path = os.path.join(ROOT, "admin/templates")
         config_keys = config.app_settings.keys()
 
@@ -39,7 +39,7 @@ class App(web.Application):
             "admin_static_path": admin_static_path,
             "admin_template_path": admin_template_path,
             "static_url_prefix": "/static/",
-            "admin_static_url_prefix": "/admin-static/",
+            "admin_static_url_prefix": "/assets/",
             "config_keys": config_keys,
             "uploaded_path": config.uploaded_path,
             "db_path": config.db_path,

@@ -61,5 +61,6 @@ routers = [
     (r"/admin/settings", admin.AdminSettingsPage),
     (r"/admin/edit", admin.AdminEditPage),
     (r"/admin/edit/(\w{8})\+.*", admin.AdminEditPage),
-    (r"/admin/export", admin.AdminExportData)
+    (r"/admin/export", admin.AdminExportData),
+    (r"/controlpanel", admin.AdminControlPanel)
 ]

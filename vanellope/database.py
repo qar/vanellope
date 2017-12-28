@@ -412,7 +412,7 @@ class PostModel(DataAccess):
 
         # https://stackoverflow.com/a/1310001/2609042
         if len(states) > 0:
-            sql += " AND state IN (%s)" % ','.join('?' * 2)
+            sql += " AND state IN (%s)" % ','.join('?' * len(states))
             params.extend(states)
 
         if len(categories) > 0:
@@ -462,7 +462,7 @@ class PostModel(DataAccess):
 
         # https://stackoverflow.com/a/1310001/2609042
         if len(states) > 0:
-            sql += " AND state IN (%s)" % ','.join('?' * 2)
+            sql += " AND state IN (%s)" % ','.join('?' * len(states))
             params.extend(states)
 
 
