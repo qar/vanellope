@@ -5,6 +5,7 @@
   </TabPane>
 
   <TabPane label="预览" name="preview" v-show="tab === 'preview'">
+    <div class="article-title">{{ settings.title }}</div>
     <div id="preview" v-html="html" class="article-view"></div>
   </TabPane>
 
