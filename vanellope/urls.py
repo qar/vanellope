@@ -55,12 +55,6 @@ routers = [
     (r"/index.xml", feeds.MainFeed),
 
     # Administrotor URLs
-    (r"/admin", admin.AdminSettingsPage),
-    (r"/admin/drafts", admin.AdminDraftsPage),
-    (r"/admin/trash", admin.AdminTrashPage),
-    (r"/admin/settings", admin.AdminSettingsPage),
-    (r"/admin/edit", admin.AdminEditPage),
-    (r"/admin/edit/(\w{8})\+.*", admin.AdminEditPage),
     (r"/admin/export", admin.AdminExportData),
     (r"/controlpanel", admin.AdminControlPanel)
 ]
