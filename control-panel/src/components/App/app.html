@@ -4,6 +4,16 @@
     <Menu active-name="1" theme="dark" width="auto">
       <div class="layout-logo-left"><img src="/static/img/logo.png"></div>
 
+      <Submenu name="0">
+          <template slot="title">
+              <Icon type="ios-keypad"></Icon>
+              COMPOSE
+          </template>
+          <MenuItem name="0-1">
+            <router-link :to="{ name: 'MarkdownEditor' }" tag="span" class="layout-text">New Article</router-link>
+          </MenuItem>
+      </Submenu>
+
       <MenuItem name="1">
           <Icon type="coffee" :size="iconSize"></Icon>
           <router-link :to="{ name: 'ArticleList' }" tag="span" class="layout-text">Articles</router-link>
@@ -13,15 +23,6 @@
           <Icon type="gear-a" :size="iconSize"></Icon>
           <router-link :to="{ name: 'Settings' }" tag="span" class="layout-text">Settings</router-link>
       </MenuItem>
-
-      <Submenu name="3">
-          <template slot="title">
-              <Icon type="ios-keypad"></Icon>
-              Item 2
-          </template>
-          <MenuItem name="2-1">Option 1</MenuItem>
-          <MenuItem name="2-2">Option 2</MenuItem>
-      </Submenu>
     </Menu>
   </div>
 

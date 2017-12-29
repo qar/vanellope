@@ -75,6 +75,8 @@ export default {
       apis.getArticle(this.$route.params.articleId)
         .then(res => {
           this.article = res;
+          this.settings.title = this.article.title;
+
           if (this.editor) {
             if (this.article.ext === 'html') {
               this.editor.setValue(toMarkdown(this.article.content));

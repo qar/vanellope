@@ -1,5 +1,6 @@
 <Tabs :value="tab" @on-click="switchTab" :animated="false">
   <TabPane label="编辑" name="edit" v-show="tab === 'edit'">
+    <input type="text" class="article-title" v-model="settings.title">
     <div id="editor" class="editor-instance" v-show="tab === 'edit'"></div>
   </TabPane>
 
@@ -11,10 +12,6 @@
     <Row>
       <Col span="12" offset="6">
         <Form :model="settings" :label-width="80">
-          <FormItem label="标题">
-            <Input v-model="settings.title" placeholder="文章标题"></Input>
-          </FormItem>
-
           <FormItem>
             <Button type="primary" @click="saveAsDraft">保存成草稿</Button>
             <Button type="success" @click="publish">发布</Button>

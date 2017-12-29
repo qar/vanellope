@@ -4,10 +4,29 @@
 
 // custom style
 .CodeMirror {
+  font-size: 18px;
+  font-family: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, "Hiragino Sans GB", "PingFang SC", "Heiti SC", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans", sans-serif;
+  color: #5c5c5c;
+
   padding: 0 14%;
 
   .CodeMirror-scroll {
     overflow-y: auto !important;
   }
+}
+
+input.article-title {
+  width: 60%;
+  display: block;
+  border: none;
+  outline: none;
+  position: relative;
+  height: 64px;
+  line-height: 64px;
+  margin: 50px auto 50px;
+  font-size: 20px;
+  text-align: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
 }
 
