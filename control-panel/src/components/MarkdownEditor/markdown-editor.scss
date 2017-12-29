@@ -44,3 +44,11 @@ $contentFontFamily: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helveti
   vertical-align: baseline;
   padding: 0 14%;
 }
+
+.article-tools {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #eee;
+  z-index: 99999999;
+}

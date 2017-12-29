@@ -1,12 +1,28 @@
-<Tabs :value="tab" @on-click="switchTab" :animated="false">
-  <TabPane label="编辑" name="edit" v-show="tab === 'edit'">
+<div>
+  <section v-if="section === 'edit'">
     <input type="text" class="article-title" v-model="settings.title">
-    <div id="editor" class="editor-instance" v-show="tab === 'edit'"></div>
-  </TabPane>
+    <div id="editor" class="editor-instance"></div>
+  </section>
 
-  <TabPane label="预览" name="preview" v-show="tab === 'preview'">
+  <section v-if="section === 'preview'">
     <div class="article-title">{{ settings.title }}</div>
     <div id="preview" v-html="html" class="article-view"></div>
+  </section>
+
+  <Row class="article-tools">
+    <Col span="24">
+      <ButtonGroup>
+        <Button icon="edit" @click="editing"></Button>
+        <Button icon="eye" @click="preview"></Button>
+        <Button icon="cloud"></Button>
+        <Button icon="upload"></Button>
+      </ButtonGroup>
+    </Col>
+  </Row>
+</div>
+<!--
+<Tabs :value="tab" @on-click="switchTab" :animated="false">
+  <TabPane label="预览" name="preview" v-show="tab === 'preview'">
   </TabPane>
 
   <TabPane label="设置" name="settings" v-show="tab === 'settings'">
@@ -22,3 +38,4 @@
     </Row>
   </TabPane>
 </Tabs>
+-->

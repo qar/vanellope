@@ -47,7 +47,8 @@ export default {
 
       article: null,
 
-      tab: 'edit',
+      // in editing or in preview, or in settings
+      section: 'edit',
 
       html: '',
     };
@@ -103,22 +104,24 @@ export default {
       document.getElementsByClassName('CodeMirror-scroll')[0].style.height = h;
     },
 
-    switchTab(tab) {
-      this.tab = tab;
+    preview() {
+      // hide CodeMirror intance DOM
+      const cmEle = this.editor.getWrapperElement();
+      cmEle.classList.add('hide-cm-instance');
+
+      // convert markdown to html and show on page
+      const content = this.editor.getValue();
+      this.html = converter.makeHtml(content);
+
+      this.section = 'preview';
+    },
+
+    editing() {
       // show CodeMirror instance DOM
       const cmEle = this.editor.getWrapperElement();
-      // cmEle.classList = cmEle.classList.replace('hide-cm-instance', '');
       cmEle.classList.remove('hide-cm-instance');
 
-      if (tab !== 'edit') {
-        // hide CodeMirror intance DOM
-        const cmEle = this.editor.getWrapperElement();
-        cmEle.classList.add('hide-cm-instance');
-
-        // convert markdown to html and show on page
-        const content = this.editor.getValue();
-        this.html = converter.makeHtml(content);
-      }
+      this.section = 'edit';
     },
 
     publish() {
