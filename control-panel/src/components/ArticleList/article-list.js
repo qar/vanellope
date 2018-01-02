@@ -53,6 +53,19 @@ export default {
                   }
                 }
               }),
+
+              h('Button', {
+                props: {
+                  icon: 'eye',
+                  type: 'ghost',
+                  size: 'small',
+                },
+                on: {
+                  click: () => {
+                    this.preview(params.row)
+                  }
+                }
+              }),
             ]);
           }
         },
@@ -70,6 +83,10 @@ export default {
   },
 
   methods: {
+    preview(article) {
+      window.location.href = `/article/${article.uuid}`;
+    },
+
     // 跳转到第 n 页
     changePage(n) {
       this.paging.current = n;

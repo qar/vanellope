@@ -136,7 +136,18 @@ export default {
         ext: 'markdown'
       };
 
-      apis.createArticle(params).finally(() => this.isPublishing = false);
+      apis.createArticle(params)
+        .then(() => {
+          this.onSuccess();
+        })
+        .finally(() => this.isPublishing = false);
     },
+  },
+
+  onSuccess() {
+    this.$Notice.open({
+      title: '新文章已创建',
+      desc: '',
+    });
   },
 };
