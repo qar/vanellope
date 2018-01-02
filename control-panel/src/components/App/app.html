@@ -20,6 +20,16 @@
       </MenuItem>
 
       <MenuItem name="2">
+          <Icon type="trash-b" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'Trash' }" tag="span" class="layout-text">Trash</router-link>
+      </MenuItem>
+
+      <MenuItem name="3">
+          <Icon type="trash-b" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'Draft' }" tag="span" class="layout-text">Draft</router-link>
+      </MenuItem>
+
+      <MenuItem name="4">
           <Icon type="gear-a" :size="iconSize"></Icon>
           <router-link :to="{ name: 'Settings' }" tag="span" class="layout-text">Settings</router-link>
       </MenuItem>

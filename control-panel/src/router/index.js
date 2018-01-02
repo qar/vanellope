@@ -31,5 +31,17 @@ export default new Router({
       name: 'Settings',
       component: Settings,
     },
+
+    {
+      path: '/trash',
+      name: 'Trash',
+      component: Settings,
+    },
+
+    {
+      path: '/draft',
+      name: 'Draft',
+      component: Settings,
+    },
   ],
 });
