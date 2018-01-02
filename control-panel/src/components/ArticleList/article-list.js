@@ -33,6 +33,29 @@ export default {
           title: '阅读数',
           key: 'views',
         },
+
+        {
+          title: '操作',
+          key: 'action',
+          width: 150,
+          align: 'center',
+          render: (h, params) => {
+            return h('ButtonGroup', [
+              h('Button', {
+                props: {
+                  icon: 'trash-a',
+                  type: 'ghost',
+                  size: 'small',
+                },
+                on: {
+                  click: () => {
+                    this.remove(params.index)
+                  }
+                }
+              }),
+            ]);
+          }
+        },
       ],
 
       rows: [],
@@ -77,6 +100,12 @@ export default {
             };
           });
         });
+    },
+
+    remove(index) {
+    },
+
+    show(index) {
     },
   },
 
