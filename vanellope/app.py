@@ -21,6 +21,11 @@ define("debug", default=False, help="debug mode.", type=bool)
 ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
+def preflight():
+    # check content path existence
+    pass
+
+
 class App(web.Application):
     def __init__(self):
 
@@ -86,4 +91,5 @@ def main():
 
 
 if __name__ == "__main__":
+    preflight()
     main()

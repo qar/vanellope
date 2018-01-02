@@ -61,7 +61,7 @@ class WelcomePage(BaseHandler):
             self.settings['admin'] = admin_user
 
         if not err:
-            self.redirect('/admin')
+            self.redirect('/controlpanel')
         else:
             self.redirect('/welcome')
 
