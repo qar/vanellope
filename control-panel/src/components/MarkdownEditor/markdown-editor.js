@@ -50,14 +50,14 @@ export default {
       // in editing or in preview, or in settings
       section: 'edit',
 
+      isPublishing: false,
+
       html: '',
     };
   },
 
   // boot-up
   mounted() {
-    window.addEventListener('resize', this.handleResize)
-
     this.editor = new CodeMirror(this.$el, this.options);
     if (this.article) {
       if (this.article.ext === 'html') {
@@ -68,7 +68,16 @@ export default {
 
       this.editor.refresh();
     }
-    this.handleResize(); // manually called to initialize
+  },
+
+  computed: {
+    isInEditMode() {
+      return this.section === 'edit' ? 'info' : 'ghost';
+    },
+
+    isInPreviewMode() {
+      return this.section === 'preview' ? 'info' : 'ghost';
+    },
   },
 
   created() {
@@ -86,24 +95,12 @@ export default {
             }
 
             this.editor.refresh();
-            this.handleResize(); // manually called to initialize
           }
         });
     }
   },
 
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize)
-  },
-
   methods: {
-    handleResize(ev) {
-      const totalHeight = ev ? ev.target.innerHeight : (window.innerHeight - 35);
-      const tabsHeight = document.getElementsByClassName('ivu-tabs-bar')[0].offsetHeight;
-      const h = `${totalHeight - tabsHeight - 16}px`;
-      document.getElementsByClassName('CodeMirror-scroll')[0].style.height = h;
-    },
-
     preview() {
       // hide CodeMirror intance DOM
       const cmEle = this.editor.getWrapperElement();
@@ -125,20 +122,21 @@ export default {
     },
 
     publish() {
+      this.isPublishing = true;
+
+      const source = this.editor.getValue();
+      const content = converter.makeHtml(source);
+
       const params = {
         category: '',
-        content: '',
+        content,
+        source,
         title: this.settings.title,
         state: 'published',
         ext: 'markdown'
       };
 
-      params.content = this.html;
-
-      apis.createArticle(params);
+      apis.createArticle(params).finally(() => this.isPublishing = false);
     },
-
-    saveAsDraft() {}
-
   },
 };

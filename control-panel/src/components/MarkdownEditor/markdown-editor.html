@@ -12,30 +12,10 @@
   <Row class="article-tools">
     <Col span="24">
       <ButtonGroup>
-        <Button icon="edit" @click="editing"></Button>
-        <Button icon="eye" @click="preview"></Button>
-        <Button icon="cloud"></Button>
-        <Button icon="upload"></Button>
+        <Button icon="edit" @click="editing" :type="isInEditMode"></Button>
+        <Button icon="eye" @click="preview" :type="isInPreviewMode"></Button>
+        <Button icon="upload" @click="publish" type="ghost" :loading="isPublishing"></Button>
       </ButtonGroup>
     </Col>
   </Row>
 </div>
-<!--
-<Tabs :value="tab" @on-click="switchTab" :animated="false">
-  <TabPane label="预览" name="preview" v-show="tab === 'preview'">
-  </TabPane>
-
-  <TabPane label="设置" name="settings" v-show="tab === 'settings'">
-    <Row>
-      <Col span="12" offset="6">
-        <Form :model="settings" :label-width="80">
-          <FormItem>
-            <Button type="primary" @click="saveAsDraft">保存成草稿</Button>
-            <Button type="success" @click="publish">发布</Button>
-          </FormItem>
-        </Form>
-      </Col>
-    </Row>
-  </TabPane>
-</Tabs>
--->

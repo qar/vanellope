@@ -16,6 +16,11 @@ $contentFontFamily: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helveti
   .CodeMirror-scroll {
     overflow-y: auto !important;
   }
+
+  .cm-comment {
+    font-size: 14px;
+    line-height: 9px;
+  }
 }
 
 .article-title {
@@ -49,6 +54,7 @@ $contentFontFamily: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helveti
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #eee;
+  background: white;
   z-index: 99999999;
+  border-radius: 4px;
 }

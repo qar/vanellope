@@ -5,7 +5,6 @@ import uuid
 from tornado.web import authenticated
 from tornado.escape import json_decode
 from vanellope.handlers import BaseHandler
-from vanellope import config
 
 
 class ArticleHandler(BaseHandler):
@@ -82,7 +81,7 @@ class ImageHandler(BaseHandler):
 class PostsHandler(BaseHandler):
     @authenticated
     def get(self):
-        ENTRIES_PER_PAGE = 10 
+        ENTRIES_PER_PAGE = 10
         # config.posts_per_page
         current_page = int(self.get_argument(u'p', 1))
         items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
@@ -91,7 +90,7 @@ class PostsHandler(BaseHandler):
         articles = self.posts.find(
             states=states,
             limit=items_per_page,
-            skip=(current_page - 1) * items_per_page 
+            skip=(current_page - 1) * items_per_page
         )
 
         total_items = self.posts.count(states=states)
@@ -140,10 +139,10 @@ class PostsHandler(BaseHandler):
 
         url_safe_title = '_'.join(title.split())
 
-        if state == 'draft':
-            article_url = '/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
+        if state == u'draft':
+            article_url = u'/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
         else:
-            article_url = '/article/{0}+{1}'.format(post_uuid, url_safe_title)
+            article_url = u'/article/{0}+{1}'.format(post_uuid, url_safe_title)
 
         self.finish({
             'info': 'success',
