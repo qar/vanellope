@@ -19,11 +19,11 @@ from tornado.escape import json_decode
 from user_agents import parse as ua_parse
 import urlparse
 
-from vanellope.database import ConfigModel
-from vanellope.database import UserModel
-from vanellope.database import PostModel
-from vanellope.database import Session
-from vanellope.database import CommentModel
+from vanellope.da.config import ConfigModel
+from vanellope.da.user import UserModel
+from vanellope.da.post import PostModel
+from vanellope.da.session import Session
+from vanellope.da.comment import CommentModel
 
 
 class Days(object):

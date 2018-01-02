@@ -10,8 +10,9 @@ sys.path.append(os.getcwd())
 from tornado import web
 from tornado import ioloop
 from tornado.options import define, options
+from vanellope.da import create_tables, connection
+from vanellope.da.user import UserModel 
 from vanellope import config
-from vanellope.database import create_tables, get_admin_user, connection
 from vanellope.urls import routers
 
 define("port", default=8000, help="run on the given port", type=int)
@@ -20,6 +21,9 @@ define("debug", default=False, help="debug mode.", type=bool)
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 
+
+def get_admin_user():
+    return UserModel().get_admin_user()
 
 def preflight():
     # check content path existence

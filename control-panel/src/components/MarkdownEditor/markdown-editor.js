@@ -138,16 +138,16 @@ export default {
 
       apis.createArticle(params)
         .then(() => {
-          this.onSuccess();
+          this.successNotify();
         })
         .finally(() => this.isPublishing = false);
     },
-  },
 
-  onSuccess() {
-    this.$Notice.open({
-      title: '新文章已创建',
-      desc: '',
-    });
+    successNotify() {
+      this.$Notice.open({
+        title: '新文章已创建',
+        desc: '',
+      });
+    },
   },
 };
