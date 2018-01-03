@@ -31,7 +31,7 @@ export default {
 
         {
           title: '阅读数',
-          key: 'views',
+          key: 'counts',
         },
 
         {
@@ -114,6 +114,7 @@ export default {
             return {
               title: article.title,
               uuid: article.uuid,
+              counts: article.counts,
             };
           });
         });

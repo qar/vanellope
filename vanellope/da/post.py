@@ -173,10 +173,15 @@ class PostModel(DataAccess):
                   category,
                   tags,
                   state,
-                  created_at as "created_at [timestamp]",
-                  updated_at
+                  views.counts,
+                  posts.created_at as "created_at [timestamp]",
+                  posts.updated_at
 
-              FROM posts WHERE 1
+              FROM posts 
+
+              INNER JOIN views ON views.post_id = posts.uuid
+
+              WHERE 1
               """
         params = []
 
@@ -190,11 +195,11 @@ class PostModel(DataAccess):
             params += ['%' + tag + '%' for tag in tag_list]
 
         if before_date:
-            sql += " AND created_at <= ?"
+            sql += " AND posts.created_at <= ?"
             params.append(before_date)
 
         if after_date:
-            sql += " AND created_at >= ?"
+            sql += " AND posts.created_at >= ?"
             params.append(after_date)
 
         # https://stackoverflow.com/a/1310001/2609042
@@ -206,7 +211,7 @@ class PostModel(DataAccess):
             sql += " AND category IN (?)"
             params.append(','.join(categories))
 
-        sql += " ORDER BY created_at DESC"
+        sql += " ORDER BY posts.created_at DESC"
 
         if limit:
             sql += " LIMIT ?"
