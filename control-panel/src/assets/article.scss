@@ -1,5 +1,6 @@
 $bg-code: #2d2d2d;
 $color-code: #08e008;
+$font-code: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 
 .article-view {
   padding: 20px 5%;
@@ -13,5 +14,6 @@ $color-code: #08e008;
     background-color: $bg-code;
     font-size: 14px;
     line-height: 8px;
+    font-family: $font-code;
   }
 }

@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import showdown from 'showdown';
 const converter = new showdown.Converter();
 import apis from '@/utils/api';
+import $http from '@/utils/http';
 import toMarkdown from 'to-markdown';
 
 export default {
@@ -28,6 +29,8 @@ export default {
 
         // 自动获取焦点
         autofocus: true,
+
+        dragDrop: true,
       },
 
       // 设置选项
@@ -58,6 +61,11 @@ export default {
 
   // boot-up
   mounted() {
+    window.addEventListener('paste', function(ev) {
+      debugger;
+      this.uploadFile();
+    });
+
     this.editor = new CodeMirror(this.$el, this.options);
     if (this.article) {
       if (this.article.ext === 'html') {
@@ -101,6 +109,12 @@ export default {
   },
 
   methods: {
+    uploadFile(file) {
+      const formData = new FormData();
+      console.log('###### FormData', formData);
+      formData.append(file);
+    },
+
     preview() {
       // hide CodeMirror intance DOM
       const cmEle = this.editor.getWrapperElement();
