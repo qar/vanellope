@@ -376,6 +376,29 @@ class PostModel(DataAccess):
     def get_posts(self):
         return self.find()
 
+    def views_count(self, uuid):
+        """views count
+        """
+        cur = self.conn.cursor()
+
+        update_sql = """ UPDATE views 
+                         SET counts = counts + 1,
+                             updated_at = ?
+                         WHERE post_id = ?
+                     """
+
+        insert_sql = """ INSERT INTO views
+                         (post_id, counts, created_at, updated_at)
+                         VALUES (?, 1, ?, ?)
+                     """
+
+        cur.execute(update_sql, [datetime.datetime.now(), uuid])
+        if not cur.rowcount:
+            cur.execute(insert_sql, [uuid, datetime.datetime.now(), datetime.datetime.now()])
+
+        self.conn.commit()
+
+
     def get_tags(self):
         """Find all tags availabilie
         """

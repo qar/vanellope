@@ -335,6 +335,7 @@ class ArticlePage(BaseHandler):
             return
 
         # add a view count
+        self.posts.views_count(article_id)
 
         # state should be pass
         comments = self.comments.find(post_id=article_id, state="checking")
