@@ -69,10 +69,36 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
     padding-bottom: 1em;
   }
 
+  // table
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      background-color: #eee;
+    }
+
+    th, td {
+      padding: 0.4em;
+    }
+
+    margin-bottom: 1em;
+  }
 
   img {
     max-width: 100%;
     display: block;
     margin: 0 auto;
+
+  }
+
+  P {
+    img + em {
+      // used as picture description
+    }
   }
 }
