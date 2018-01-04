@@ -63,10 +63,10 @@ export default {
   mounted() {
     window.addEventListener('paste', (ev) => {
       if (!ev.clipboardData.files.length) return;
+
       const file = ev.clipboardData.files[0];
       if (!file.type.startsWith('image/')) return;
 
-      ev.preventDefault();
       this.uploadFile(file);
     });
 
@@ -80,6 +80,10 @@ export default {
 
       this.editor.refresh();
     }
+  },
+
+  beforeDestroied() {
+    window.removeEventListener('paste');
   },
 
   computed: {
