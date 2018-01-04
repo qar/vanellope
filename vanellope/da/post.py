@@ -168,13 +168,13 @@ class PostModel(DataAccess):
                   category,
                   tags,
                   state,
-                  views.counts,
+                  IFNULL(views.counts,0) as "counts",
                   posts.created_at as "created_at [timestamp]",
                   posts.updated_at
 
               FROM posts 
 
-              INNER JOIN views ON views.post_id = posts.uuid
+              LEFT JOIN views ON views.post_id = posts.uuid
 
               WHERE 1
               """
