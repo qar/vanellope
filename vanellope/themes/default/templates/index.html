@@ -53,7 +53,6 @@
   --><div class="sub-content">
 
   {% if current_user and current_user['role'] == 'admin' %}
-  {% include "partials/admin-tools.html" %}
   {% include "partials/drafts.html" %}
   {% end %}
 

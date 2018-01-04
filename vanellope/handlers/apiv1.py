@@ -178,9 +178,9 @@ class PostsHandler(BaseHandler):
 
         url_safe_title = '_'.join(title.split())
         if state == 'draft':
-            article_url = '/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
+            article_url = u'/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
         else:
-            article_url = '/article/{0}+{1}'.format(post_uuid, url_safe_title)
+            article_url = u'/article/{0}+{1}'.format(post_uuid, url_safe_title)
 
         self.finish({
             'info': 'success',

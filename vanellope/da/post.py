@@ -43,7 +43,7 @@ class PostModel(DataAccess):
                 u'_'.join(item['title'].split())
             ])
 
-        item['editor-path'] = ''.join(['/controlpanel#/', item['uuid']])
+        item['editor-path'] = ''.join(['/controlpanel#/editor/', item['uuid']])
 
         return item
 
