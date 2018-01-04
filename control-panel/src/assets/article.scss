@@ -16,4 +16,10 @@ $font-code: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bits
     line-height: 8px;
     font-family: $font-code;
   }
+
+  img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
 }
