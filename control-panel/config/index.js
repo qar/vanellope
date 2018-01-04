@@ -13,6 +13,9 @@ module.exports = {
     proxyTable: {
       '/api/v1': {
         target: 'http://localhost:9980',
+      },
+      'uploaded/': {
+        target: 'http://localhost:9980',
       }
     },
 

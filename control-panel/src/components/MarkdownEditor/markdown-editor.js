@@ -30,7 +30,7 @@ export default {
         // 自动获取焦点
         autofocus: true,
 
-        dragDrop: true,
+        dragDrop: false,
       },
 
       // 设置选项
@@ -61,9 +61,13 @@ export default {
 
   // boot-up
   mounted() {
-    window.addEventListener('paste', function(ev) {
-      debugger;
-      this.uploadFile();
+    window.addEventListener('paste', (ev) => {
+      if (!ev.clipboardData.files.length) return;
+      const file = ev.clipboardData.files[0];
+      if (!file.type.startsWith('image/')) return;
+
+      ev.preventDefault();
+      this.uploadFile(file);
     });
 
     this.editor = new CodeMirror(this.$el, this.options);
@@ -111,8 +115,18 @@ export default {
   methods: {
     uploadFile(file) {
       const formData = new FormData();
-      console.log('###### FormData', formData);
-      formData.append(file);
+      formData.append('image', file);
+      $http.post('/api/v1/image', formData).then(res => {
+        const doc = this.editor.getDoc();
+        const cursor = doc.getCursor();
+        var line = doc.getLine(cursor.line);
+        var pos = { // create a new object to avoid mutation of the original selection
+            line: cursor.line,
+            ch: line.length  // set the character position to the end of the line
+        };
+        const mdImage = `![](http://localhost:9980${res.data.url})`;
+        doc.replaceRange('\n' + mdImage + '\n', pos); // adds a new line
+      });
     },
 
     preview() {
