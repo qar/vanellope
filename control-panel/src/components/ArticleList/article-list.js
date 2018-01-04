@@ -87,6 +87,9 @@ export default {
       window.location.href = `/article/${article.uuid}`;
     },
 
+    remove(index) {
+    },
+
     // 跳转到第 n 页
     changePage(n) {
       this.paging.current = n;
@@ -118,12 +121,6 @@ export default {
             };
           });
         });
-    },
-
-    remove(index) {
-    },
-
-    show(index) {
     },
   },
 

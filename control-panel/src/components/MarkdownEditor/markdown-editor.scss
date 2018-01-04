@@ -1,5 +1,5 @@
-$contentFontFamily: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, "Hiragino Sans GB", "PingFang SC", "Heiti SC", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans", sans-serif;
 $codeFont: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+$font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, "Hiragino Sans GB", "PingFang SC", "Heiti SC", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans", sans-serif;
 
 .CodeMirror.hide-cm-instance {
   display: none;
@@ -8,7 +8,7 @@ $codeFont: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitst
 // custom style
 .CodeMirror {
   font-size: 18px;
-  font-family: $contentFontFamily;
+  font-family: $font-content;
   color: #5c5c5c;
   vertical-align: baseline;
 
@@ -28,7 +28,7 @@ $codeFont: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitst
 .article-title {
   width: 60%;
   display: block;
-  font-family: $contentFontFamily;
+  font-family: $font-content;
   border: none;
   outline: none;
   position: relative;
@@ -41,15 +41,6 @@ $codeFont: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitst
   padding-bottom: 16px;
   border-bottom: 1px solid #eee;
   vertical-align: middle;
-}
-
-
-.article-view {
-  font-size: 18px;
-  font-family: $contentFontFamily;
-  color: #5c5c5c;
-  vertical-align: baseline;
-  padding: 0 14%;
 }
 
 .article-tools {
