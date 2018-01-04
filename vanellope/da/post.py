@@ -1,18 +1,12 @@
 # coding=utf-8
 
-import os
-import os.path
 import calendar
-import zipfile
 import datetime
-import random
-import sqlite3
-import string
 import hashlib
 import time
 from vanellope import config
 from vanellope.da import DataAccess
-from tornado.util import ObjectDict
+
 
 class PostModel(DataAccess):
     """
@@ -109,15 +103,11 @@ class PostModel(DataAccess):
 
         params = []
 
-        assert data['ext']
-        assert data['ext'] == 'html'
         params.append(data['ext'])
-
-        assert data['title'] and len(data['title']) > 0
         params.append(data['title'])
-
-        assert data['content'] and len(data['content']) > 0
         params.append(data['content'])
+        params.append(data['source'])
+        print params
 
         if 'category' in data:
             category = data['category']
@@ -138,6 +128,7 @@ class PostModel(DataAccess):
               SET ext = ?,
                   title = ?,
                   content = ?,
+                  source = ?,
                   category = ?,
                   tags = ?,
                   state = ?,
@@ -165,6 +156,7 @@ class PostModel(DataAccess):
                   ext,
                   title,
                   content,
+                  source,
                   category,
                   tags,
                   state,
@@ -172,7 +164,7 @@ class PostModel(DataAccess):
                   posts.created_at as "created_at [timestamp]",
                   posts.updated_at
 
-              FROM posts 
+              FROM posts
 
               LEFT JOIN views ON views.post_id = posts.uuid
 
@@ -381,7 +373,7 @@ class PostModel(DataAccess):
         """
         cur = self.conn.cursor()
 
-        update_sql = """ UPDATE views 
+        update_sql = """ UPDATE views
                          SET counts = counts + 1,
                              updated_at = ?
                          WHERE post_id = ?

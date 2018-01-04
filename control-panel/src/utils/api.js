@@ -10,6 +10,11 @@ function createArticle(args) {
     .then(res => res.data);
 }
 
+function updateArticle(id, args) {
+  return $http.put(`/api/v1/posts/${id}`, args)
+    .then(res => res.data);
+}
+
 function getArticleList(paging) {
   const params = {
     s: ['published', 'draft'],
@@ -27,6 +32,7 @@ function getArticle(id) {
 
 export default {
   createArticle,
+  updateArticle,
   getArticleList,
   getArticle,
   getSettings,

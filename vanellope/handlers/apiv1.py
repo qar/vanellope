@@ -149,7 +149,7 @@ class PostsHandler(BaseHandler):
             'url': article_url
         })
 
-    def put(self):
+    def put(self, post_uuid):
         """
         更新
 
@@ -159,14 +159,15 @@ class PostsHandler(BaseHandler):
         """
         category = self.get_payload_argument('category', '')
         content = self.get_payload_argument('content', '')
-        post_uuid = self.get_payload_argument('uuid', '')
+        source = self.get_payload_argument('source', '')
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'published')
-        ext = 'html'
+        ext = self.get_payload_argument('ext', 'markdown')
 
         self.posts.update(post_uuid, {
             'uuid': post_uuid,
+            'source': source,
             'content': content,
             'title': title,
             'category': category,

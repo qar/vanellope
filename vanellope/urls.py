@@ -44,7 +44,7 @@ routers = [
     (r"/uploaded/(.*)", pages.UploadedFileHandler),
 
     (r"/api/v1/posts", apiv1.PostsHandler),
-    (r"/api/v1/posts/(.*)", apiv1.PostHandler),
+    (r"/api/v1/posts/(.*)", apiv1.PostsHandler),
     (r"/api/v1/article/(.*)", apiv1.ArticleHandler),
     (r"/api/v1/image", apiv1.ImageHandler),
     (r"/api/v1/configuration", apiv1.ConfigurationHandler),

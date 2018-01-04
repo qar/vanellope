@@ -46,6 +46,9 @@ export default {
         // 文章标题
         title: '',
 
+        // 文章 id (可以用来判断是创建还是更新)
+        uuid: '',
+
         select: '',
         radio: 'male',
         checkbox: [],
@@ -74,7 +77,7 @@ export default {
       if (this.article.ext === 'html') {
         this.editor.setValue(toMarkdown(this.article.content));
       } else {
-        this.editor.setValue(this.article.content);
+        this.editor.setValue(this.article.source);
       }
 
       this.editor.refresh();
@@ -97,12 +100,13 @@ export default {
         .then(res => {
           this.article = res;
           this.settings.title = this.article.title;
+          this.settings.uuid = this.article.uuid;
 
           if (this.editor) {
             if (this.article.ext === 'html') {
               this.editor.setValue(toMarkdown(this.article.content));
             } else {
-              this.editor.setValue(this.article.content);
+              this.editor.setValue(this.article.source);
             }
 
             this.editor.refresh();
@@ -173,16 +177,31 @@ export default {
         ext: 'markdown'
       };
 
-      apis.createArticle(params)
-        .then(() => {
-          this.successNotify();
-        })
-        .finally(() => this.isPublishing = false);
+      if (this.settings.uuid) {
+        apis.updateArticle(this.settings.uuid, params)
+          .then(() => {
+            this.updateSucceedNotify();
+          })
+          .finally(() => this.isPublishing = false);
+      } else {
+        apis.createArticle(params)
+          .then(() => {
+            this.publishSucceedNotify();
+          })
+          .finally(() => this.isPublishing = false);
+      }
     },
 
-    successNotify() {
+    publishSucceedNotify() {
       this.$Notice.open({
         title: '新文章已创建',
+        desc: '',
+      });
+    },
+
+    updateSucceedNotify() {
+      this.$Notice.open({
+        title: '文章已更新',
         desc: '',
       });
     },
