@@ -61,15 +61,6 @@ export default {
 
   // boot-up
   mounted() {
-    window.addEventListener('paste', (ev) => {
-      if (!ev.clipboardData.files.length) return;
-
-      const file = ev.clipboardData.files[0];
-      if (!file.type.startsWith('image/')) return;
-
-      this.uploadFile(file);
-    });
-
     this.editor = new CodeMirror(this.$el, this.options);
     if (this.article) {
       if (this.article.ext === 'html') {
@@ -80,10 +71,6 @@ export default {
 
       this.editor.refresh();
     }
-  },
-
-  beforeDestroied() {
-    window.removeEventListener('paste');
   },
 
   computed: {
@@ -112,6 +99,16 @@ export default {
 
             this.editor.refresh();
           }
+
+          this.editor.on('paste', (cm, ev) => {
+            if (!ev.clipboardData.files.length) return;
+            const file = ev.clipboardData.files[0];
+            if (file) {
+              if (!file.type.startsWith('image/')) return;
+              this.uploadFile(file);
+              ev.preventDefault(); // so it won't paste file name
+            }
+          });
         });
     }
   },
