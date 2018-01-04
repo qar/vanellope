@@ -3,7 +3,15 @@ import CodeMirror from 'codemirror';
 window.CodeMirror = CodeMirror;
 import * as _ from 'lodash';
 import showdown from 'showdown';
-const converter = new showdown.Converter();
+const converter = new showdown.Converter({
+  // https://github.com/showdownjs/showdown/wiki/Showdown-options
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tables: true,
+  parseImgDimensions: true,
+  tasklists: true,
+  encodeEmails: true,
+});
 import apis from '@/utils/api';
 import $http from '@/utils/http';
 import toMarkdown from 'to-markdown';
