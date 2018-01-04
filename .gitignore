@@ -14,3 +14,4 @@ reload.sh
 vanellope/uploaded
 dist
 content
+!control-panel/build
