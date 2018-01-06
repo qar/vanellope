@@ -190,6 +190,7 @@ class PostModel(DataAccess):
             params.append(after_date)
 
         # https://stackoverflow.com/a/1310001/2609042
+        print '###### ', states
         if len(states) > 0:
             sql += " AND state IN (%s)" % ','.join('?' * len(states))
             params.extend(states)
@@ -207,7 +208,8 @@ class PostModel(DataAccess):
         if skip:
             sql += " OFFSET ?"
             params.append(skip)
-
+        
+        print sql, params
         cur = self.conn.cursor()
         cur.execute(sql, params)
         return [self.__parse(self.to_dict(cur, p)) for p in cur.fetchall()]

@@ -2,7 +2,7 @@
 import apis from '@/utils/api';
 
 export default {
-  name: 'ArticleList',
+  name: 'TrashCan',
 
   data () {
     return {
@@ -49,7 +49,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.remove(params.row)
+                    this.remove(params.index)
                   }
                 }
               }),
@@ -87,17 +87,7 @@ export default {
       window.location.href = `/article/${article.uuid}`;
     },
 
-    remove(article) {
-      apis.deleteArticle(article.uuid)
-        .then(res => {
-          this.$Notice.open({
-            title: '文章已移如垃圾箱',
-            desc: '',
-          });
-        })
-        .catch(err => {
-          console.log('DEBUG delete article', err);
-        });
+    remove(index) {
     },
 
     // 跳转到第 n 页
@@ -111,19 +101,19 @@ export default {
       this.getArticles(this.paging);
     },
 
-    getArticles(paging) {
+    getTrash(paging) {
       if (!paging) {
         paging = {
           size: 20,
           current: 1,
         };
       }
-      apis.getArticleList(paging)
+      apis.getTrash(paging)
         .then(res => {
           this.paging.total = res.paging.total;
           this.paging.size = res.paging.items_per_page;
 
-          this.rows = res.data.map(article => {
+          this.rows = res.data.articles.map(article => {
             return {
               title: article.title,
               uuid: article.uuid,
@@ -135,6 +125,6 @@ export default {
   },
 
   mounted() {
-    this.getArticles(this.paging);
+    this.getTrash(this.paging);
   },
 };

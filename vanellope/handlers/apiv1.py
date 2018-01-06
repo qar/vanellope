@@ -85,7 +85,7 @@ class PostsHandler(BaseHandler):
         # config.posts_per_page
         current_page = int(self.get_argument(u'p', 1))
         items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
-        states = self.get_arguments(u's')
+        states = self.get_arguments(u's[]')
 
         articles = self.posts.find(
             states=states,
@@ -111,6 +111,7 @@ class PostsHandler(BaseHandler):
             'data': data
         })
 
+    @authenticated
     def post(self):
         """
         创建
@@ -149,6 +150,52 @@ class PostsHandler(BaseHandler):
             'url': article_url
         })
 
+
+class TrashHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ENTRIES_PER_PAGE = 10
+        # config.posts_per_page
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+
+        articles = self.posts.find(
+            states=['deleted'],
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
+
+        total_items = self.posts.count(states=['deleted'])
+
+        data = []
+        for article in articles:
+            article['created_at'] = article['created_at'].strftime('%s')
+            article['updated_at'] = article['updated_at'].strftime('%s')
+            data.append(article)
+
+        self.finish({
+            'info': 'success',
+            'paging': {
+                'total': total_items + 0,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': {
+                'articles': data,
+                'snippets': []
+            }
+        })
+
+
+class PostHandler(BaseHandler):
+    @authenticated
+    def delete(self, entry_id):
+        self.posts.delete(entry_id)
+        self.finish({
+            'msg': 'success'
+        })
+
+    @authenticated
     def put(self, post_uuid):
         """
         更新
@@ -185,15 +232,6 @@ class PostsHandler(BaseHandler):
         self.finish({
             'info': 'success',
             'url': article_url
-        })
-
-
-class PostHandler(BaseHandler):
-    @authenticated
-    def delete(self, entry_id):
-        self.posts.delete(entry_id)
-        self.finish({
-            'msg': 'success'
         })
 
 

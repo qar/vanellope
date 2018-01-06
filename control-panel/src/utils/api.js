@@ -25,6 +25,20 @@ function getArticleList(paging) {
     .then(res => res.data);
 }
 
+function deleteArticle(id) {
+  return $http.delete(`/api/v1/posts/${id}`)
+    .then(res => res.data);
+}
+
+function getTrash(paging) {
+  const params = {
+    p: paging.current,
+    z: paging.size,
+  };
+
+  return $http.get('/api/v1/trash', { params }).then(res => res.data);
+}
+
 function getArticle(id) {
   return $http.get(`/api/v1/article/${id}`)
     .then(res => res.data);
@@ -36,4 +50,6 @@ export default {
   getArticleList,
   getArticle,
   getSettings,
+  getTrash,
+  deleteArticle,
 };
