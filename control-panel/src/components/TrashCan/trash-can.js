@@ -25,16 +25,6 @@ export default {
         },
 
         {
-          title: '评论数',
-          key: 'comments',
-        },
-
-        {
-          title: '阅读数',
-          key: 'counts',
-        },
-
-        {
           title: '操作',
           key: 'action',
           width: 150,
@@ -49,10 +39,24 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.remove(params.index)
+                    this.remove(params.row)
                   }
                 }
               }),
+
+              h('Button', {
+                props: {
+                  icon: 'loop',
+                  type: 'ghost',
+                  size: 'small',
+                },
+                on: {
+                  click: () => {
+                    this.recover(params.row)
+                  }
+                }
+              }),
+
 
               h('Button', {
                 props: {
@@ -87,7 +91,12 @@ export default {
       window.location.href = `/article/${article.uuid}`;
     },
 
-    remove(index) {
+    // Destroy creation
+    remove(item) {
+    },
+
+    // Recover creation
+    recover(item) {
     },
 
     // 跳转到第 n 页

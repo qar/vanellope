@@ -25,11 +25,6 @@ export default {
         },
 
         {
-          title: '评论数',
-          key: 'comments',
-        },
-
-        {
           title: '阅读数',
           key: 'counts',
         },
@@ -97,6 +92,9 @@ export default {
         })
         .catch(err => {
           console.log('DEBUG delete article', err);
+        })
+        .finally(() => {
+          this.getArticles(this.paging);
         });
     },
 
