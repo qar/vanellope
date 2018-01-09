@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import MarkdownEditor from '@/components/MarkdownEditor/markdown-editor.vue';
 import ArticleList from '@/components/ArticleList/article-list.vue';
+import DraftsList from '@/components/DraftsList/drafts-list.vue';
 import Settings from '@/components/Settings/settings.vue';
 import TrashCan from '@/components/TrashCan/trash-can.vue';
 
@@ -40,9 +41,9 @@ export default new Router({
     },
 
     {
-      path: '/draft',
-      name: 'Draft',
-      component: Settings,
+      path: '/drafts',
+      name: 'DraftsList',
+      component: DraftsList,
     },
   ],
 });

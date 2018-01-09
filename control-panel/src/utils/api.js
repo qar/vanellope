@@ -17,7 +17,17 @@ function updateArticle(id, args) {
 
 function getArticleList(paging) {
   const params = {
-    s: ['published', 'draft'],
+    s: ['published'],
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/posts', { params })
+    .then(res => res.data);
+}
+
+function getDraftList(paging) {
+  const params = {
+    s: ['draft'],
     p: paging.current,
     z: paging.size,
   };
@@ -48,6 +58,7 @@ export default {
   createArticle,
   updateArticle,
   getArticleList,
+  getDraftList,
   getArticle,
   getSettings,
   getTrash,
