@@ -13,9 +13,11 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
   vertical-align: baseline;
 
   padding: 0 14%;
+  padding-bottom: 10em;
 
   .CodeMirror-scroll {
     overflow-y: auto !important;
+    overflow-x: hidden !important;
   }
 
   .cm-comment {
@@ -41,6 +43,10 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
   padding-bottom: 16px;
   border-bottom: 1px solid #eee;
   vertical-align: middle;
+}
+
+#preview {
+  padding-bottom: 10em;
 }
 
 .article-tools {
