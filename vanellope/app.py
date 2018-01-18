@@ -11,7 +11,7 @@ from tornado import web
 from tornado import ioloop
 from tornado.options import define, options
 from vanellope.da import create_tables, connection
-from vanellope.da.user import UserModel 
+from vanellope.da.user import UserModel
 from vanellope import config
 from vanellope.urls import routers
 
@@ -24,6 +24,7 @@ ROOT = os.path.abspath(os.path.dirname(__file__))
 
 def get_admin_user():
     return UserModel().get_admin_user()
+
 
 def preflight():
     # check content path existence

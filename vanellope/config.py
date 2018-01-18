@@ -9,6 +9,8 @@ Those can be overide by user specify settings
 import os
 import os.path
 
+content_path = os.environ['VANELLOPE_CONTENT']
+
 # The theme name
 theme = 'default'
 
@@ -16,19 +18,19 @@ theme = 'default'
 posts_per_page = 10
 
 # SQLite3 Settings
-db_path = os.path.join(os.getcwd(), u'content/data.db')
+db_path = os.path.join(content_path, u'data.db')
 
 if not os.path.exists(os.path.dirname(db_path)):
     os.makedirs(os.path.dirname(db_path))
 
 # 数据库备份目录
-backup_path = os.path.join(os.getcwd(), u'content/backups/')
+backup_path = os.path.join(content_path, u'backups/')
 if not os.path.exists(os.path.dirname(backup_path)):
     os.makedirs(os.path.dirname(backup_path))
 
 # 上传文件的存储路径
 # 绝对路径
-uploaded_path = os.path.join(os.getcwd(), u'content/www/')
+uploaded_path = os.path.join(content_path, u'www/')
 
 if not os.path.exists(os.path.dirname(uploaded_path)):
     os.makedirs(os.path.dirname(uploaded_path))

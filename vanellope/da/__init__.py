@@ -2,16 +2,13 @@
 
 import os
 import os.path
-import calendar
 import zipfile
 import datetime
 import random
 import sqlite3
 import string
-import hashlib
-import time
 from vanellope import config
-from tornado.util import ObjectDict
+print '#### ', config.app_settings
 
 create_table_sqls = config.create_table_sqls
 
