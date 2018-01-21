@@ -8,9 +8,9 @@ import random
 import sqlite3
 import string
 from vanellope import config
-print '#### ', config.app_settings
 
 create_table_sqls = config.create_table_sqls
+app_settings = config.app_settings
 
 # Autocommit ON
 connection = sqlite3.connect(
@@ -46,7 +46,7 @@ def create_tables():
 
     # Initialize configurations
     if len(results) == 0:
-        t = config.app_settings.items()
+        t = app_settings.items()
         cur.executemany("INSERT INTO configuration VALUES (?, ?)", t)
 
     # Create posts table

@@ -107,10 +107,14 @@ class BaseHandler(RequestHandler):
             user_agent)
         )
 
-        if (not self.settings['admin'] and
-           self.request.method == 'GET' and
-           self.request.uri != '/welcome'):
-            self.redirect('/welcome')
+        # if the site is just created without a admin user
+        if not self.settings['admin']:
+            if self.request.uri.startswith('/api'):
+                self.set_status(403)
+                self.finish('login first')
+
+            elif self.request.uri != '/welcome':
+                self.redirect('/welcome')
 
     def get_template_namespace(self):
         """Override `tornado.web.RequestHandler.get_template_namespace` static method
