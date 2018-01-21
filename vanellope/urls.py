@@ -15,9 +15,6 @@ routers = [
 
     (r"/snippets", pages.SnippetsPage),
 
-    # 登录
-    (r"/authentication", pages.WelcomePage),
-
     (r"/tags", pages.TagsPage),
     (r"/archives", pages.ArchivesPage),
 
