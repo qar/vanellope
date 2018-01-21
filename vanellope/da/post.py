@@ -107,7 +107,6 @@ class PostModel(DataAccess):
         params.append(data['title'])
         params.append(data['content'])
         params.append(data['source'])
-        print params
 
         if 'category' in data:
             category = data['category']
@@ -190,7 +189,6 @@ class PostModel(DataAccess):
             params.append(after_date)
 
         # https://stackoverflow.com/a/1310001/2609042
-        print '###### ', states
         if len(states) > 0:
             sql += " AND state IN (%s)" % ','.join('?' * len(states))
             params.extend(states)
@@ -208,8 +206,7 @@ class PostModel(DataAccess):
         if skip:
             sql += " OFFSET ?"
             params.append(skip)
-        
-        print sql, params
+
         cur = self.conn.cursor()
         cur.execute(sql, params)
         return [self.__parse(self.to_dict(cur, p)) for p in cur.fetchall()]
@@ -245,7 +242,6 @@ class PostModel(DataAccess):
         if len(states) > 0:
             sql += " AND state IN (%s)" % ','.join('?' * len(states))
             params.extend(states)
-
 
         if len(categories) > 0:
             sql += " AND category IN (?)"
@@ -388,10 +384,13 @@ class PostModel(DataAccess):
 
         cur.execute(update_sql, [datetime.datetime.now(), uuid])
         if not cur.rowcount:
-            cur.execute(insert_sql, [uuid, datetime.datetime.now(), datetime.datetime.now()])
+            cur.execute(insert_sql, [
+                uuid,
+                datetime.datetime.now(),
+                datetime.datetime.now()
+            ])
 
         self.conn.commit()
-
 
     def get_tags(self):
         """Find all tags availabilie
