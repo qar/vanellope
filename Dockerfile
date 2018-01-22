@@ -1,5 +1,7 @@
 FROM python:2.7-alpine
 MAINTAINER Qiao Anran <qiaoanran@gmail.com>
+ENV VANELLOPE_CONTENT /vanellope_content
+VOLUME ["/vanellope_content"]
 COPY . /src
 WORKDIR /src
 RUN pip install -r requirements.txt
