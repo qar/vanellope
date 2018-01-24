@@ -4,7 +4,17 @@
     <ul>
       {% for year in archives.keys() %}
         {% for month in archives[year].keys() %}
-        <li><a href="/archive/{{ year }}/{{ month }}"><span>{{ year }} {{ archives[year][month]['abbr'] }} ({{ archives[year][month]['count'] }})</span></a></li>
+        <li>
+          <a href="/archive/{{ year }}/{{ month }}">
+            <table>
+              <tr>
+                <td class="item-head">{{ year }} {{ archives[year][month]['abbr'] }}</td>
+                <td class="item-dash"></td>
+                <td class="item-tail">({{ archives[year][month]['count'] }})</td>
+              </tr>
+            </table>
+          </a>
+        </li>
         {% end %}
       {% end %}
     </ul>

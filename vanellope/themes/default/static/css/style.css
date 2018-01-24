@@ -447,6 +447,11 @@ input[type="email"].vn-input {
   .banner .banner-content {
     height: 120px;
     position: relative; }
+  @media screen and (max-width: 960px) {
+    .banner {
+      margin-bottom: 0.8rem; }
+    .banner .banner-content {
+      height: 38px; } }
 
 ul.nav {
   position: absolute;
@@ -582,6 +587,20 @@ ul.nav {
     padding: 0;
     box-sizing: border-box;
     font-size: 1.2rem; }
+    .widget .widget-body li table {
+      width: 100%; }
+    .widget .widget-body li .item-head {
+      width: 70px;
+      text-align: left; }
+    .widget .widget-body li .item-tail {
+      width: 30px;
+      text-align: right;
+      font-family: monospace; }
+    .widget .widget-body li .item-dash {
+      border: 0.5px dashed #D2D2D2;
+      display: inline-block;
+      height: 0;
+      width: 100%; }
 
 .widget.admin .buttons {
   width: 100%;
