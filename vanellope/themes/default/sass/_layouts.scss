@@ -8,7 +8,7 @@
     box-sizing: border-box;
 }
 
-.banner {
+.article-banner, .banner {
     margin-bottom: 2rem;
     width: 100%;
     .banner-content {
@@ -26,6 +26,27 @@
             height: 38px;
         }
     }
+}
+
+.article-banner {
+
+  .banner-content {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: $banner-height-lg;
+  }
+
+  // iPhone 7
+  @media screen and (max-width: 960px) {
+    & {
+      margin-bottom: 0.8rem;
+    }
+
+    .banner-content {
+      height: 38px;
+      line-height: 38px;
+    }
+  }
 }
 
 ul.nav {

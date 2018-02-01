@@ -1,0 +1,25 @@
+/*
+Errno::ENOENT: No such file or directory @ rb_sysopen - sass/style.scss
+
+Backtrace:
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/plugin/compiler.rb:454:in `read'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/plugin/compiler.rb:454:in `update_stylesheet'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/plugin/compiler.rb:209:in `each'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/plugin/compiler.rb:294:in `watch'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/plugin.rb:109:in `method_missing'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/exec/sass_scss.rb:360:in `watch_or_update'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/exec/sass_scss.rb:51:in `process_result'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/exec/base.rb:52:in `parse'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/lib/sass/exec/base.rb:19:in `parse!'
+/Users/anran/.rvm/gems/ruby-2.4.1/gems/sass-3.5.1/bin/sass:13:in `<top (required)>'
+/Users/anran/.rvm/gems/ruby-2.4.1/bin/sass:22:in `load'
+/Users/anran/.rvm/gems/ruby-2.4.1/bin/sass:22:in `<main>'
+/Users/anran/.rvm/gems/ruby-2.4.1/bin/ruby_executable_hooks:15:in `eval'
+/Users/anran/.rvm/gems/ruby-2.4.1/bin/ruby_executable_hooks:15:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Errno::ENOENT: No such file or directory @ rb_sysopen - sass/style.scss"; }

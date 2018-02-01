@@ -441,17 +441,28 @@ input[type="email"].vn-input {
   padding-bottom: 120px;
   box-sizing: border-box; }
 
-.banner {
+.article-banner, .banner {
   margin-bottom: 2rem;
   width: 100%; }
-  .banner .banner-content {
+  .article-banner .banner-content, .banner .banner-content {
     height: 120px;
     position: relative; }
   @media screen and (max-width: 960px) {
-    .banner {
+    .article-banner, .banner {
       margin-bottom: 0.8rem; }
-    .banner .banner-content {
+    .article-banner .banner-content, .banner .banner-content {
       height: 38px; } }
+
+.article-banner .banner-content {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 120px; }
+@media screen and (max-width: 960px) {
+  .article-banner {
+    margin-bottom: 0.8rem; }
+  .article-banner .banner-content {
+    height: 38px;
+    line-height: 38px; } }
 
 ul.nav {
   position: absolute;
