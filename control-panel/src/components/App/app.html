@@ -29,6 +29,11 @@
           <router-link :to="{ name: 'DraftsList' }" tag="span" class="layout-text">Draft</router-link>
       </MenuItem>
 
+      <MenuItem name="widgets">
+          <Icon type="document" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'WidgetsPage' }" tag="span" class="layout-text">Widgets</router-link>
+      </MenuItem>
+
       <MenuItem name="4">
           <Icon type="gear-a" :size="iconSize"></Icon>
           <router-link :to="{ name: 'Settings' }" tag="span" class="layout-text">Settings</router-link>

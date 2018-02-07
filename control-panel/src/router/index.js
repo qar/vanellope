@@ -5,6 +5,7 @@ import ArticleList from '@/components/ArticleList/article-list.vue';
 import DraftsList from '@/components/DraftsList/drafts-list.vue';
 import Settings from '@/components/Settings/settings.vue';
 import TrashCan from '@/components/TrashCan/trash-can.vue';
+import WidgetsPage from '@/components/WidgetsPage/widgets-page';
 
 Vue.use(Router);
 
@@ -45,5 +46,13 @@ export default new Router({
       name: 'DraftsList',
       component: DraftsList,
     },
+
+    {
+      path: '/widgets',
+      name: 'WidgetsPage',
+      component: WidgetsPage,
+    },
+
+
   ],
 });
