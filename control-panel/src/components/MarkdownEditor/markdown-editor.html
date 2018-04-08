@@ -1,0 +1,21 @@
+<div>
+  <section v-if="section === 'edit'">
+    <input type="text" class="article-title" v-model="settings.title">
+    <div id="editor" class="editor-instance"></div>
+  </section>
+
+  <section v-if="section === 'preview'">
+    <div class="article-title">{{ settings.title }}</div>
+    <div id="preview" v-html="html" class="article-view"></div>
+  </section>
+
+  <Row class="article-tools">
+    <Col span="24">
+      <ButtonGroup>
+        <Button icon="edit" @click="editing" :type="isInEditMode"></Button>
+        <Button icon="eye" @click="preview" :type="isInPreviewMode"></Button>
+        <Button icon="upload" @click="publish" type="ghost" :loading="isPublishing"></Button>
+      </ButtonGroup>
+    </Col>
+  </Row>
+</div>

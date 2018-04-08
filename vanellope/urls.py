@@ -15,9 +15,6 @@ routers = [
 
     (r"/snippets", pages.SnippetsPage),
 
-    # 登录
-    (r"/authentication", pages.WelcomePage),
-
     (r"/tags", pages.TagsPage),
     (r"/archives", pages.ArchivesPage),
 
@@ -43,6 +40,7 @@ routers = [
 
     (r"/uploaded/(.*)", pages.UploadedFileHandler),
 
+    (r"/api/v1/trash", apiv1.TrashHandler),
     (r"/api/v1/posts", apiv1.PostsHandler),
     (r"/api/v1/posts/(.*)", apiv1.PostHandler),
     (r"/api/v1/article/(.*)", apiv1.ArticleHandler),
@@ -55,11 +53,6 @@ routers = [
     (r"/index.xml", feeds.MainFeed),
 
     # Administrotor URLs
-    (r"/admin", admin.AdminSettingsPage),
-    (r"/admin/drafts", admin.AdminDraftsPage),
-    (r"/admin/trash", admin.AdminTrashPage),
-    (r"/admin/settings", admin.AdminSettingsPage),
-    (r"/admin/edit", admin.AdminEditPage),
-    (r"/admin/edit/(\w{8})\+.*", admin.AdminEditPage),
-    (r"/admin/export", admin.AdminExportData)
+    (r"/admin/export", admin.AdminExportData),
+    (r"/controlpanel", admin.AdminControlPanel)
 ]

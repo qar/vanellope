@@ -61,7 +61,7 @@ class WelcomePage(BaseHandler):
             self.settings['admin'] = admin_user
 
         if not err:
-            self.redirect('/admin')
+            self.redirect('/controlpanel')
         else:
             self.redirect('/welcome')
 
@@ -333,6 +333,9 @@ class ArticlePage(BaseHandler):
         except IndexError:
             self.send_error(404)
             return
+
+        # add a view count
+        self.posts.views_count(article_id)
 
         # state should be pass
         comments = self.comments.find(post_id=article_id, state="checking")

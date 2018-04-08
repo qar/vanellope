@@ -2,11 +2,9 @@
 
 import os.path
 import uuid
-import math
 from tornado.web import authenticated
 from tornado.escape import json_decode
 from vanellope.handlers import BaseHandler
-from vanellope import config
 
 
 class ArticleHandler(BaseHandler):
@@ -83,20 +81,37 @@ class ImageHandler(BaseHandler):
 class PostsHandler(BaseHandler):
     @authenticated
     def get(self):
-        ENTRIES_PER_PAGE = config.posts_per_page
+        ENTRIES_PER_PAGE = 10
+        # config.posts_per_page
         current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+        states = self.get_arguments(u's[]')
 
         articles = self.posts.find(
-            states=['published'],
-            limit=ENTRIES_PER_PAGE,
-            skip=(current_page - 1) * ENTRIES_PER_PAGE
+            states=states,
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
         )
+
+        total_items = self.posts.count(states=states)
+
+        data = []
+        for article in articles:
+            article['created_at'] = article['created_at'].strftime('%s')
+            article['updated_at'] = article['updated_at'].strftime('%s')
+            data.append(article)
 
         self.finish({
             'info': 'success',
-            'data': articles,
+            'paging': {
+                'total': total_items,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': data
         })
 
+    @authenticated
     def post(self):
         """
         创建
@@ -107,6 +122,7 @@ class PostsHandler(BaseHandler):
         """
         category = self.get_payload_argument('category', '')
         content = self.get_payload_argument('content', '')
+        source = self.get_payload_argument('source', '')
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'draft')
@@ -114,6 +130,7 @@ class PostsHandler(BaseHandler):
 
         post_uuid = self.posts.create({
             'content': content,
+            'source': source,
             'title': title,
             'category': category,
             'tags': tags,
@@ -123,51 +140,50 @@ class PostsHandler(BaseHandler):
 
         url_safe_title = '_'.join(title.split())
 
-        if state == 'draft':
-            article_url = '/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
+        if state == u'draft':
+            article_url = u'/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
         else:
-            article_url = '/article/{0}+{1}'.format(post_uuid, url_safe_title)
+            article_url = u'/article/{0}+{1}'.format(post_uuid, url_safe_title)
 
         self.finish({
             'info': 'success',
             'url': article_url
         })
 
-    def put(self):
-        """
-        更新
 
-        提交参数:
-            content
-            title
-        """
-        category = self.get_payload_argument('category', '')
-        content = self.get_payload_argument('content', '')
-        post_uuid = self.get_payload_argument('uuid', '')
-        tags = self.get_payload_argument('tags', '')
-        title = self.get_payload_argument('title', 'default_title')
-        state = self.get_payload_argument('state', 'published')
-        ext = 'html'
+class TrashHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ENTRIES_PER_PAGE = 10
+        # config.posts_per_page
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
 
-        self.posts.update(post_uuid, {
-            'uuid': post_uuid,
-            'content': content,
-            'title': title,
-            'category': category,
-            'tags': tags,
-            'ext': ext,
-            'state': state
-        })
+        articles = self.posts.find(
+            states=['deleted'],
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
 
-        url_safe_title = '_'.join(title.split())
-        if state == 'draft':
-            article_url = '/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
-        else:
-            article_url = '/article/{0}+{1}'.format(post_uuid, url_safe_title)
+        total_items = self.posts.count(states=['deleted'])
+
+        data = []
+        for article in articles:
+            article['created_at'] = article['created_at'].strftime('%s')
+            article['updated_at'] = article['updated_at'].strftime('%s')
+            data.append(article)
 
         self.finish({
             'info': 'success',
-            'url': article_url
+            'paging': {
+                'total': total_items + 0,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': {
+                'articles': data,
+                'snippets': []
+            }
         })
 
 
@@ -177,6 +193,45 @@ class PostHandler(BaseHandler):
         self.posts.delete(entry_id)
         self.finish({
             'msg': 'success'
+        })
+
+    @authenticated
+    def put(self, post_uuid):
+        """
+        更新
+
+        提交参数:
+            content
+            title
+        """
+        category = self.get_payload_argument('category', '')
+        content = self.get_payload_argument('content', '')
+        source = self.get_payload_argument('source', '')
+        tags = self.get_payload_argument('tags', '')
+        title = self.get_payload_argument('title', 'default_title')
+        state = self.get_payload_argument('state', 'published')
+        ext = self.get_payload_argument('ext', 'markdown')
+
+        self.posts.update(post_uuid, {
+            'uuid': post_uuid,
+            'source': source,
+            'content': content,
+            'title': title,
+            'category': category,
+            'tags': tags,
+            'ext': ext,
+            'state': state
+        })
+
+        url_safe_title = '_'.join(title.split())
+        if state == 'draft':
+            article_url = u'/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
+        else:
+            article_url = u'/article/{0}+{1}'.format(post_uuid, url_safe_title)
+
+        self.finish({
+            'info': 'success',
+            'url': article_url
         })
 
 

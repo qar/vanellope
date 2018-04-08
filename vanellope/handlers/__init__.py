@@ -19,11 +19,11 @@ from tornado.escape import json_decode
 from user_agents import parse as ua_parse
 import urlparse
 
-from vanellope.database import ConfigModel
-from vanellope.database import UserModel
-from vanellope.database import PostModel
-from vanellope.database import Session
-from vanellope.database import CommentModel
+from vanellope.da.config import ConfigModel
+from vanellope.da.user import UserModel
+from vanellope.da.post import PostModel
+from vanellope.da.session import Session
+from vanellope.da.comment import CommentModel
 
 
 class Days(object):
@@ -107,10 +107,14 @@ class BaseHandler(RequestHandler):
             user_agent)
         )
 
-        if (not self.settings['admin'] and
-           self.request.method == 'GET' and
-           self.request.uri != '/welcome'):
-            self.redirect('/welcome')
+        # if the site is just created without a admin user
+        if not self.settings['admin']:
+            if self.request.uri.startswith('/api'):
+                self.set_status(403)
+                self.finish('login first')
+
+            elif self.request.uri != '/welcome':
+                self.redirect('/welcome')
 
     def get_template_namespace(self):
         """Override `tornado.web.RequestHandler.get_template_namespace` static method

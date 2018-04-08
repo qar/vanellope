@@ -1,4 +1,5 @@
 {% include "common/header.html" %}
+{% include "common/banner.html" %}
 
 <div class="wrapper">
   <div class="main-content">
@@ -26,7 +27,7 @@
             {% end %}
           </li>
           {% if current_user and current_user['role'] == 'admin' %}
-          <li class=""><a href="{{ article['editor-path'] }}">Edit</a></li>
+          <li class=""><a href="/controlpanel#/editor/{{ article['uuid'] }}">Edit</a></li>
           {% end %}
         </ul>
       </li>
@@ -53,7 +54,6 @@
   --><div class="sub-content">
 
   {% if current_user and current_user['role'] == 'admin' %}
-  {% include "partials/admin-tools.html" %}
   {% include "partials/drafts.html" %}
   {% end %}
 
