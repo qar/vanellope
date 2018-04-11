@@ -15,3 +15,5 @@ vanellope/uploaded
 dist
 content
 !control-panel/build
+.vagrant
+*.log
