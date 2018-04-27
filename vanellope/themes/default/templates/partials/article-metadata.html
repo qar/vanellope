@@ -1,0 +1,25 @@
+<div class="widget">
+  <div class="widget-header">ABOUT</div>
+  <div class="widget-body">
+    <ul class="meta">
+      <li class="timestamp">Posted on {{ article['created_at'].strftime("%Y-%m-%d %H:%M:%S") }}</li>
+
+      {% if article['category'] %}
+        <li class="category">Category: <a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
+      {% end %}
+
+      {% if article['tags'] %}
+      <li class="tags">
+        Tags:
+        {% for tag in article['tags'] %}
+        <a href="/tags/{{ tag }}">{{ tag }}</a>
+        {% end %}
+      </li>
+      {% end %}
+
+      {% if current_user and current_user['role'] == 'admin' %}
+      <li class=""><a href="{{ article['editor-path'] }}">Click here to edit</a></li>
+      {% end %}
+    </ul>
+  </div>
+</div>
