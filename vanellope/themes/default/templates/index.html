@@ -37,14 +37,10 @@
     <div class="pagination">
       {% if next_page > current_page %}
       <a href="/?p={{ next_page }}" class="right buttons">Next Page</a>
-      {% else %}
-      <p class="right labels">No More</p>
       {% end if %}
 
       {% if current_page > 1 %}
       <a href="/?p={{ previous_page }}" class="left buttons">Previous Page</a>
-      {% else %}
-      <p class="left labels">No More</p>
       {% end if %}
     </div>
     {% end %}
