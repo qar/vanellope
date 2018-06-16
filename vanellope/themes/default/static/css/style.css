@@ -512,8 +512,7 @@ ul.nav {
     font-size: 1.3rem;
     letter-spacing: 2px;
     border-bottom: 1px solid #EEE;
-    padding-bottom: 0.4rem;
-    margin-bottom: 2rem; }
+    padding-bottom: 0.4rem; }
     .main-content .main-content-header .normal {
       letter-spacing: 0.06em; }
 
@@ -679,6 +678,7 @@ ul.nav {
   color: #5c5c5c;
   vertical-align: baseline;
   font-smoothing: antialiased;
+  margin-top: 6rem;
   -webkit-font-smoothing: antialiased; }
   .article-view pre > code {
     display: block;
@@ -688,7 +688,9 @@ ul.nav {
     background-color: #2d2d2d;
     font-size: 14px;
     line-height: 21px;
-    font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New; }
+    font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
+    white-space: pre-wrap;
+    word-break: break-all; }
   .article-view p > code {
     padding: 0 10px;
     font-size: 14px;

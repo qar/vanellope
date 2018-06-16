@@ -9,6 +9,7 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
   color: #5c5c5c;
   vertical-align: baseline;
   font-smoothing: antialiased;
+  margin-top: 6rem;
   -webkit-font-smoothing: antialiased;
 
   // code block
@@ -21,6 +22,12 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
     font-size: 14px;
     line-height: 14 * 1.5px;
     font-family: $font-code;
+
+    // those two lines make sure:
+    // 1. white spaces are preserved and lines won't collapse into one
+    // 2. prevent long line scroll.
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 
   // inline code
