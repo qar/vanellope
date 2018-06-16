@@ -767,10 +767,10 @@ ul.nav {
   top: 50%;
   margin-top: -2rem; }
 
-.footer .power-by, .footer .engine {
+.footer .power-by, .footer .engine, .footer .copyright {
   font-size: 12px;
   color: #5d5d5d; }
-.footer .engine {
+.footer .engine, .footer .copyright {
   font-weight: 700; }
 
 /*# sourceMappingURL=style.css.map */
