@@ -27,7 +27,7 @@
             {% end %}
           </li>
           {% if current_user and current_user['role'] == 'admin' %}
-          <li class=""><a href="/controlpanel#/editor/{{ article['uuid'] }}">Edit</a></li>
+          <li class="admin-btn"><a href="/controlpanel#/editor/{{ article['uuid'] }}">EDIT</a></li>
           {% end %}
         </ul>
       </li>

@@ -578,6 +578,15 @@ ul.nav {
   width: 100%;
   font-size: 1.1rem;
   height: 1.32rem; }
+  .meta li {
+    display: inline-block; }
+  .meta .admin-btn {
+    background: #26C1AF;
+    color: white;
+    font-weight: 900;
+    padding: 0 4px;
+    letter-spacing: 1px;
+    border-radius: 3px; }
 
 .widget {
   margin-bottom: 5rem; }

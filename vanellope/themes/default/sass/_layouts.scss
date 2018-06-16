@@ -189,6 +189,18 @@ ul.nav {
     width: 100%;
     font-size: $meta-size;
     height: 1.2 * $meta-size;
+    li {
+      display: inline-block;
+    }
+    .admin-btn {
+      background: #26C1AF;
+      color: white;
+      font-weight: 900;
+      padding: 0 4px;
+      letter-spacing: 1px;
+      border-radius: 3px
+
+    }
     .timestamp {
     }
     .tags {
