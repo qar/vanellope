@@ -14,7 +14,7 @@ module.exports = {
       '/api/v1': {
         target: 'http://localhost:9980',
       },
-      'uploaded/': {
+      '/uploaded/': {
         target: 'http://localhost:9980',
       }
     },

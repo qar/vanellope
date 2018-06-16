@@ -137,7 +137,7 @@ export default {
             line: cursor.line,
             ch: line.length  // set the character position to the end of the line
         };
-        const mdImage = `![](http://localhost:9980${res.data.url})`;
+        const mdImage = `![](${res.data.url})`;
         doc.replaceRange('\n' + mdImage + '\n', pos); // adds a new line
       });
     },
