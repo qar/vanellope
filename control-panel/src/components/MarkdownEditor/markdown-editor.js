@@ -206,4 +206,28 @@ export default {
       });
     },
   },
+
+  watch: {
+    $route(newV, oldV) {
+      if (newV.params.mode === 'new') {
+        this.$Modal.confirm({
+            title: '提醒',
+            content: '当前文字正在编辑，是否保存？',
+            loading: true,
+            onOk: () => {
+              localStorage.setItem('last-edit', JSON.stringify(this.article));
+              localStorage.setItem('last-article-id', oldV.params.articleId);
+              this.article = null;
+              this.editor.setValue('');
+              this.settings.title = '';
+              console.log('####', this.$refs.title);
+              this.$refs.title.focus();
+
+              this.$Modal.remove();
+              this.$Message.info('已保存');
+            }
+        });
+      }
+    },
+  },
 };

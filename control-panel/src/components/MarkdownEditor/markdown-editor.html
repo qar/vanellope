@@ -1,6 +1,6 @@
 <div>
   <section v-if="section === 'edit'">
-    <input type="text" class="article-title" v-model="settings.title">
+    <input type="text" class="article-title" ref="title" v-model="settings.title">
     <div id="editor" class="editor-instance"></div>
   </section>
 

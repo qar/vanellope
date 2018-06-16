@@ -10,7 +10,7 @@
               COMPOSE
           </template>
           <MenuItem name="0-1">
-            <router-link :to="{ name: 'MarkdownEditor' }" tag="span" class="layout-text">New Article</router-link>
+            <router-link :to="{ name: 'MarkdownEditor', params: { mode: 'new' } }" tag="span" class="layout-text">New Article</router-link>
           </MenuItem>
       </Submenu>
 
