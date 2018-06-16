@@ -82,6 +82,16 @@ export default {
 
       this.editor.refresh();
     }
+
+    this.editor.on('paste', (cm, ev) => {
+      if (!ev.clipboardData.files.length) return;
+      const file = ev.clipboardData.files[0];
+      if (file) {
+        if (!file.type.startsWith('image/')) return;
+        this.uploadFile(file);
+        ev.preventDefault(); // so it won't paste file name
+      }
+    });
   },
 
   computed: {
@@ -111,16 +121,6 @@ export default {
 
             this.editor.refresh();
           }
-
-          this.editor.on('paste', (cm, ev) => {
-            if (!ev.clipboardData.files.length) return;
-            const file = ev.clipboardData.files[0];
-            if (file) {
-              if (!file.type.startsWith('image/')) return;
-              this.uploadFile(file);
-              ev.preventDefault(); // so it won't paste file name
-            }
-          });
         });
     }
   },
@@ -220,7 +220,6 @@ export default {
               this.article = null;
               this.editor.setValue('');
               this.settings.title = '';
-              console.log('####', this.$refs.title);
               this.$refs.title.focus();
 
               this.$Modal.remove();
