@@ -3,6 +3,9 @@ import CodeMirror from 'codemirror';
 window.CodeMirror = CodeMirror;
 import * as _ from 'lodash';
 import showdown from 'showdown';
+import youtubeExt from '../../extensions/youtube-md';
+
+showdown.extension('youtube', youtubeExt);
 const converter = new showdown.Converter({
   // https://github.com/showdownjs/showdown/wiki/Showdown-options
   simplifiedAutoLink: true,
@@ -11,6 +14,7 @@ const converter = new showdown.Converter({
   parseImgDimensions: true,
   tasklists: true,
   encodeEmails: true,
+  extensions: ['youtube'],
 });
 import apis from '@/utils/api';
 import $http from '@/utils/http';
