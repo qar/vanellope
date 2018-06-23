@@ -392,6 +392,34 @@ class PostModel(DataAccess):
 
         self.conn.commit()
 
+    def get_categories(self):
+        """Find all categories
+        """
+        cur = self.conn.cursor()
+        sql = """
+        select category from posts where state = 'published'
+        """
+        cur.execute(sql)
+        categories = [c[0] for c in cur.fetchall()]
+        category_count = {}
+
+        for cate in categories:
+            if cate not in category_count:
+                category_count[cate] = 0
+
+            category_count[cate] += 1
+
+
+        result = []
+        for cate, count in category_count.items():
+            result.append({
+                'category': cate,
+                'count': count
+            })
+
+        return result
+
+
     def get_tags(self):
         """Find all tags availabilie
         """

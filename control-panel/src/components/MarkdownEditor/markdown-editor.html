@@ -14,7 +14,18 @@
       <ButtonGroup>
         <Button icon="edit" @click="editing" :type="isInEditMode"></Button>
         <Button icon="eye" @click="preview" :type="isInPreviewMode"></Button>
+        <Button icon="pound" @click="modals.categoryModal = true">{{ settings.category }}</Button>
         <Button icon="upload" @click="publish" type="ghost" :loading="isPublishing"></Button>
+
+        <Modal
+          v-model="modals.categoryModal"
+          title="选择分类">
+          <AutoComplete
+            v-model="settings.category"
+            :data="categories"
+            placeholder="Category">
+          </AutoComplete>
+        </Modal>
       </ButtonGroup>
     </Col>
   </Row>

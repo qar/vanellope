@@ -144,7 +144,7 @@ class BaseHandler(RequestHandler):
 
         namespace['archives'] = self.posts.get_archives()
         namespace['tags'] = self.posts.get_tags()
-        namespace['categories'] = []
+        namespace['categories'] = self.posts.get_categories()
 
         return namespace
 

@@ -45,10 +45,22 @@ export default {
         dragDrop: false,
       },
 
+      modals: {
+        categoryModal: false,
+      },
+
+      categories: [
+        'default',
+        'love',
+      ],
+
       // 设置选项
       settings: {
         // 文章标题
         title: '',
+
+        // 文章分类
+        category: '',
 
         // 文章 id (可以用来判断是创建还是更新)
         uuid: '',
@@ -173,7 +185,7 @@ export default {
       const content = converter.makeHtml(source);
 
       const params = {
-        category: '',
+        category: this.settings.category,
         content,
         source,
         title: this.settings.title,
