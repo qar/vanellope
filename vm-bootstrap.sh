@@ -10,6 +10,6 @@ sudo make install
 sudo ln -s $(which python2.7) /usr/bin/python
 sudo apt-get install python-pip -y
 echo "exoprt LC_ALL=C" >> ~/.bashrc
-sudo mkdir /vanellope_content
+sudo mkdir -p /vanellope_content
 sudo chown -R ubuntu:ubuntu /vanellope_content
 echo "export VANELLOPE_CONTENT=/vanellope_content" >> ~/.bashrc
