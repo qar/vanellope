@@ -251,7 +251,7 @@ class ArchivePage(BaseHandler):
 class CategoryPage(BaseHandler):
     def get(self, cate):
         current_page = int(self.get_argument(u'p', 1))
-        articles = self.posts.find_by_category(cate)
+        articles = self.posts.find_by_category(cate, ["published"])
 
         self.render("category.html",
                     title=self.concat_page_title('Category:{0}'.format(cate)),

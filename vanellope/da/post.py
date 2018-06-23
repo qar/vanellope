@@ -331,9 +331,9 @@ class PostModel(DataAccess):
         except IndexError:
             return None
 
-    def find_by_category(self, cate):
+    def find_by_category(self, cate, states):
         """Find posts with specific category"""
-        return self.find(categories=[cate])
+        return self.find(categories=[cate], states=states)
 
     def gen_uuid(self, title, content):
         """Generate post uuid based on it's content
@@ -400,7 +400,7 @@ class PostModel(DataAccess):
         select category from posts where state = 'published'
         """
         cur.execute(sql)
-        categories = [c[0] for c in cur.fetchall()]
+        categories = [c[0] for c in cur.fetchall() if c[0]]
         category_count = {}
 
         for cate in categories:
