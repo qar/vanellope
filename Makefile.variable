@@ -1,0 +1,10 @@
+SHELL=\bash
+
+VERSION=$(shell git describe --exact-match --tags 2> /dev/null || git rev-parse --short HEAD)
+
+IMAGE=qiaoanran/vanellope
+
+DEV_IMAGE=vanellope_dev
+
+DEV_DATA_DIR=$(shell pwd)/dev_data_dir
+DEV_PORT=9099
