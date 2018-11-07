@@ -123,8 +123,12 @@ class BaseHandler(RequestHandler):
         """
 
         namespace = super(BaseHandler, self).get_template_namespace()
-        namespace['site'] = self.config.read_config()
-        namespace['year'] = datetime.now().year
+        namespace.update({
+            'site': self.config.read_config(),
+            'ctx': {
+                'year': datetime.now().year
+            }
+        })
 
         try:
             user_agent = self.request.headers['User-Agent']
