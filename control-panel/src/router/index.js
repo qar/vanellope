@@ -6,6 +6,7 @@ import DraftsList from '@/components/DraftsList/drafts-list.vue';
 import Settings from '@/components/Settings/settings.vue';
 import TrashCan from '@/components/TrashCan/trash-can.vue';
 import WidgetsPage from '@/components/WidgetsPage/widgets-page';
+import FriendsLinks from '@/components/FriendsLinks/friends-links';
 
 Vue.use(Router);
 
@@ -53,6 +54,10 @@ export default new Router({
       component: WidgetsPage,
     },
 
-
+    {
+      path: '/firends-links',
+      name: 'FriendsLinks',
+      component: FriendsLinks,
+    },
   ],
 });
