@@ -108,17 +108,19 @@ export default {
   },
 
   mounted() {
+    apis.getFriendLinks().then(res => {
+    });
   },
 
   methods: {
     save() {},
 
     ok () {
-        this.$Message.info('Clicked ok');
+      apis.updateFriendLinks(this.site);
     },
+
     cancel () {
-        this.$Message.info('Clicked cancel');
-    }
+    },
   },
 };
 </script>

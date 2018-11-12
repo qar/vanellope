@@ -48,6 +48,7 @@ routers = [
     (r"/api/v1/configuration", apiv1.ConfigurationHandler),
     (r"/api/v1/admin/trash/(.*)", apiv1.AdminTrashHandler),
     (r"/api/v1/comments", apiv1.CommentsHandler),
+    (r"/api/v1/admin/friend-links", admin.FriendLinkHandler),
 
     # Feeds
     (r"/index.xml", feeds.MainFeed),

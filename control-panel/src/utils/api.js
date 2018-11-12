@@ -54,6 +54,15 @@ function getArticle(id) {
     .then(res => res.data);
 }
 
+
+function getFriendLinks() {
+  return $http.get('/api/v1/admin/friend-links').then(res => res.data);
+}
+
+function updateFriendLinks(site) {
+  return $http.put('/api/v1/admin/friend-links', { params: site }).then(res => res.data);
+}
+
 export default {
   createArticle,
   updateArticle,
@@ -63,4 +72,6 @@ export default {
   getSettings,
   getTrash,
   deleteArticle,
+  getFriendLinks,
+  updateFriendLinks,
 };

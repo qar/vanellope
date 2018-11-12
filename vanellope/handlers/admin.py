@@ -24,3 +24,34 @@ class AdminExportData(AdminBaseHandler):
                             'attachment; filename=' + zip_filename)
             self.write(f.read())
             self.finish()
+
+
+class FriendLinkHandler(AdminBaseHandler):
+    @authenticated
+    def get(self):
+        friend_links = self.friendlinks.find_all()
+        self.finish({
+            'info': 'success',
+            'data': friend_links 
+        })
+
+    @authenticated
+    def put(self):
+        """
+        """
+        site_title = self.get_payload_argument(u'site_title', None)
+        site_address = self.get_payload_argument(u'site_address', None)
+        site_notes = self.get_payload_argument(u'site_notes', None)
+        site_uuid = self.get_payload_argument(u'site_uuid', None)
+
+        result = self.friend_links.update(site_uuid, {
+            'title': site_title,
+            'address': site_address,
+            'notes': site_notes,
+        })
+
+        self.finish({
+            'info': 'success',
+            'url': result
+        })
+
