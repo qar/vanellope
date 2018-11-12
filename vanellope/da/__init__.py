@@ -61,6 +61,8 @@ def create_tables():
     # Create comments schema
     cur.execute(create_table_sqls['posts_views_schema'])
 
+    # Create friendlinks schema
+    cur.execute(create_table_sqls['friendlinks_schema'])
 
 def db_backup():
     current_time_str = datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S%ZZ')
