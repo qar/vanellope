@@ -47,6 +47,9 @@ def create_tables():
     # Initialize configurations
     if len(results) == 0:
         t = app_settings.items()
+
+        if 'site_adsense_id' not in t:
+            t['site_adsense_id'] = ''
         cur.executemany("INSERT INTO configuration VALUES (?, ?)", t)
 
     # Create posts table

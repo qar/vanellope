@@ -100,6 +100,9 @@ app_settings = {
     # 网站地址 like 「www.example.com」
     'site_url': '',
 
+    # 广告
+    'site_adsense_id': '',
+
     # 网站统计服务
     'site_tracking': '',  # 'google_analystics'
     'site_tracking_id': '',
