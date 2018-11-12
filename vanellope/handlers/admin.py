@@ -30,28 +30,44 @@ class FriendLinkHandler(AdminBaseHandler):
     @authenticated
     def get(self):
         friend_links = self.friendlinks.find_all()
+
+        data = []
+        for link in friend_links:
+            link['created_at'] = link['created_at'].strftime('%s')
+            link['updated_at'] = link['updated_at'].strftime('%s')
+            data.append(link)
+
         self.finish({
             'info': 'success',
-            'data': friend_links 
+            'data': data
         })
 
     @authenticated
-    def put(self):
+    def post(self):
         """
         """
-        site_title = self.get_payload_argument(u'site_title', None)
-        site_address = self.get_payload_argument(u'site_address', None)
-        site_notes = self.get_payload_argument(u'site_notes', None)
-        site_uuid = self.get_payload_argument(u'site_uuid', None)
+        site_title = self.get_payload_argument(u'title', None)
+        site_address = self.get_payload_argument(u'address', None)
+        site_notes = self.get_payload_argument(u'notes', None)
 
-        result = self.friend_links.update(site_uuid, {
+        result = self.friendlinks.create({
             'title': site_title,
             'address': site_address,
-            'notes': site_notes,
+            'notes': site_notes
         })
 
         self.finish({
             'info': 'success',
             'url': result
         })
+
+    @authenticated
+    def delete(self, uuid):
+        result = self.friendlinks.remove(uuid)
+
+        self.finish({
+            'info': 'success',
+            'url': result
+        })
+
 
