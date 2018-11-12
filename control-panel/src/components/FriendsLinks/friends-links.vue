@@ -4,20 +4,17 @@
       <h1 class="table-title">友链</h1>
       <Table :columns="columns" :data="rows"></Table>
 
-      <Button type="primary" class="add-site" @click="modal1=true">添加站点</Button>
-
-      <Modal
-          v-model="modal1"
-          title="添加站点"
-          @on-ok="ok"
-          @on-cancel="cancel">
-          <Input v-model="site.title" placeholder="站点标题" />
-          <br />
-          <Input v-model="site.address" placeholder="站点地址" />
-          <br />
-          <Input v-model="site.notes" placeholder="备注" />
-      </Modal>
+      <Button type="primary" class="add-site" @click="modal=true">添加站点</Button>
     </div>
+
+    <Modal v-model="modal"
+        title="添加站点"
+        @on-ok="ok"
+        @on-cancel="cancel">
+        <Input class="input-box" v-model="site.title" placeholder="站点标题" />
+        <Input class="input-box" v-model="site.address" placeholder="站点地址" />
+        <Input class="input-box" v-model="site.notes" placeholder="备注" />
+    </Modal>
   </div>
 </template>
 
@@ -35,17 +32,6 @@ export default {
         {
           title: '站点名称',
           key: 'title',
-          render: (h, params) => {
-            return h('div', [
-                h('router-link', {
-                  props: {
-                    to: { name: 'ArticleMarkdownEditor', params: { articleId: params.row.uuid }},
-                  },
-                }, [
-                  h('strong', params.row.title),
-                ]),
-            ]);
-          }
         },
 
         {
@@ -103,29 +89,49 @@ export default {
         notes: '',
       },
 
-      modal1: false,
+      modal: false,
     };
   },
 
   mounted() {
-    apis.getFriendLinks().then(res => {
-    });
+    this.getLinks();
   },
 
   methods: {
-    save() {},
+    getLinks() {
+      apis.getFriendLinks().then(res => {
+        this.rows = res.data;
+      });
+    },
+
+    preview(link) {
+      open(link.address, '_blank');
+    },
+
+    remove(link) {
+      apis.delFriendLink(link.uuid)
+        .then(() => {
+          this.getLinks();
+        });
+    },
 
     ok () {
-      apis.updateFriendLinks(this.site);
+      apis.createFriendLinks(this.site)
+        .then(() => {
+          this.getLinks();
+        });
     },
 
-    cancel () {
-    },
+    cancel () {},
   },
 };
 </script>
 
 <style lang="scss">
+.input-box {
+  margin-bottom: 10px;
+}
+
 .article-list-layout {
   .table-title {
     margin-bottom: 1em;
