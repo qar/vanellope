@@ -3,6 +3,7 @@
 import os
 import os.path
 import uuid
+import datetime
 from vanellope import config
 from vanellope.da import DataAccess
 from tornado.util import ObjectDict
@@ -28,18 +29,17 @@ class FriendLinkModel(DataAccess):
         cur = self.conn.cursor()
 
         sql = """ INSERT INTO friendlinks
-                  (title, address, notes, created_at, uuid)
-                  VALUES (?, ?, ?, ?, ?)
+                  (title, address, notes, created_at, updated_at, uuid)
+                  VALUES (?, ?, ?, ?, ?, ?)
               """
 
         params.append(datetime.datetime.now())
-        link_id = uuid.uuid4()
-        params.append(link_id)
+        params.append(datetime.datetime.now())
+        params.append(str(uuid.uuid4()))
 
         cur.execute(sql, params)
         self.conn.commit()
-
-        return post_id
+        return cur.lastrowid
 
     def update(self, uid, data):
         """Update friendlink by it's id
@@ -68,19 +68,19 @@ class FriendLinkModel(DataAccess):
         params.append(uid)
 
         cur.execute(sql, params)
-        self.conn.commit()
+        return self.conn.commit()
 
     def find_all(self):
 
         sql = """
-              SELECT title, address, notes,
-                  posts.created_at as "created_at [timestamp]",
-                  posts.updated_at
+              SELECT uuid, title, address, notes,
+                  friendlinks.created_at as "created_at [timestamp]",
+                  friendlinks.updated_at as "updated_at [timestamp]"
               FROM friendlinks
               """
         cur = self.conn.cursor()
         cur.execute(sql)
-        return [self.__parse(self.to_dict(cur, p)) for p in cur.fetchall()]
+        return [self.to_dict(cur, p) for p in cur.fetchall()]
 
     def remove(self, uid):
         """Delete from trash. can't be recovered
@@ -91,5 +91,5 @@ class FriendLinkModel(DataAccess):
         sql = """
               DELETE FROM friendlinks WHERE uuid = ?
               """
-        cur.execute(sql, uid)
+        cur.execute(sql, [uid])
         self.conn.commit()
