@@ -90,6 +90,17 @@ create_table_sqls = {
                          state TEXT NOT NULL DEFAULT 'checking',
                          created_at TIMESTAMP NOT NULL
                     )
+                    """,
+
+    "friendlinks_schema": """
+                    CREATE TABLE IF NOT EXISTS friendlinks (
+                         uuid TEXT PRIMARY KEY,
+                         title TEXT,
+                         address TEXT NOT NULL,
+                         notes TEXT,
+                         created_at TIMESTAMP NOT NULL,
+                         updated_at TIMESTAMP NOT NULL
+                    )
                     """
 }
 
