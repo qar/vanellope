@@ -1,0 +1,11 @@
+<div>
+  <div class="trash-can-layout">
+    <h1 class="table-title">回收站</h1>
+
+    <Table :columns="columns" :data="rows"></Table>
+
+    <div class="paging">
+      <Page :total="paging.total" :page-size="paging.size" show-elevator show-sizer @on-change="changePage" @on-page-size-change="changePageSize"></Page>
+    </div>
+  </div>
+</div>

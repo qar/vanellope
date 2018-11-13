@@ -1,0 +1,22 @@
+// Mixins
+@mixin linear-gradient($angle, $fromColor, $toColor) {
+    background: -webkit-linear-gradient($angle, $fromColor, $toColor);
+    background:    -moz-linear-gradient($angle, $fromColor, $toColor);
+    background:      -o-linear-gradient($angle, $fromColor, $toColor);
+    background:         linear-gradient($angle, $fromColor, $toColor);
+}
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+       -moz-transition: $transition-property $transition-time $method;
+        -ms-transition: $transition-property $transition-time $method;
+         -o-transition: $transition-property $transition-time $method;
+            transition: $transition-property $transition-time $method;
+}
+@mixin box-sizing($property) {
+    -webkit-box-sizing: $property;
+       -moz-box-sizing: $property;
+         -o-box-sizing: $property;
+            box-sizing: $property;
+}
+
+

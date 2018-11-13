@@ -5,7 +5,17 @@
     <ul>
 
       {% for tag in sorted(tags, key = lambda x:x['count'], reverse=True)[0:19] %}
-      <li><a href="/tags/{{ tag['tag'] }}"><span>{{ tag['tag'] }} ({{ tag['count'] }})</span></a></li>
+      <li>
+        <a href="/tags/{{ tag['tag'] }}">
+          <table>
+            <tr>
+              <td class="item-head">{{ tag['tag'] }}</td>
+              <td class="item-dash"></td>
+              <td class="item-tail">({{ tag['count'] }})</td>
+            </tr>
+          </table>
+        </a>
+      </li>
       {% end %}
 
     </ul>

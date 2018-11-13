@@ -1,0 +1,215 @@
+// Font
+$postFontColor: #555555;
+$postLinkColor: rgb(33, 103, 250);
+
+// Color
+$title-color: #565656;
+$green: #08B494;
+
+// Mixins
+@mixin linear-gradient($angle, $fromColor, $toColor) {
+    background: -webkit-linear-gradient($angle, $fromColor, $toColor);
+    background:    -moz-linear-gradient($angle, $fromColor, $toColor);
+    background:      -o-linear-gradient($angle, $fromColor, $toColor);
+    background:         linear-gradient($angle, $fromColor, $toColor);
+}
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+       -moz-transition: $transition-property $transition-time $method;
+        -ms-transition: $transition-property $transition-time $method;
+         -o-transition: $transition-property $transition-time $method;
+            transition: $transition-property $transition-time $method;
+}
+@mixin box-sizing($property) {
+    -webkit-box-sizing: $property;
+       -moz-box-sizing: $property;
+         -o-box-sizing: $property;
+            box-sizing: $property;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: serif;
+    // hide scrollbar in webkit-based browsers (Chrom and Safari)
+    &::-webkit-scrollbar {
+      width: 0 !important;
+    }
+    // hide scrollbar in IE10
+    -ms-overflow-style: none;
+}
+
+div {
+  //-webkit-overflow-scrolling: touch;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+.title {
+    color: $title-color;
+    font-size: 1em;
+}
+
+#wrapper {
+    float: left;
+    width: 80%;
+    margin-left: 20%;
+    height: 100%;
+    width: 100%;
+    margin-left: 0;
+    @include box-sizing(border-box);
+    #wrapper-inner {
+        position: relative;
+        float: left;
+        min-height: 100%;
+        height: auto!important;
+        width: 100%;
+    }
+}
+
+#main {
+    float: left;
+    width: 100%;
+    min-height: 100%;
+    margin-bottom: 10em;
+    .meta {
+        color: #9c9c9c;
+    }
+
+    .post {
+        float: left;
+        min-height: 100%;
+        height: auto !important;
+        width: 100%;
+        margin: 0;
+        padding: 2% 15% 0 15%;
+        @media (max-width: 960px) {
+            padding: 2% 5%;
+        }
+        @include box-sizing(border-box);
+    }
+}
+
+ul.items {
+    @include box-sizing(border-box);
+    padding: 0;
+    margin: 0;
+}
+
+ul.items li {
+    @include box-sizing(border-box);
+    border-bottom: 1px solid #EEE;
+    padding: 1em 4%;
+}
+
+#footer {
+    height: 75px;
+    width: 100%;
+
+    #footer-inner {
+        float:left;
+        width: 100%;
+        height: 100%;
+
+        .post-nav {
+            width: 100%;
+            height: 100%;
+            float: left;
+            margin:0;
+            padding: 0;
+            &.index .title {
+                  font-size: 1.4em !important;
+            }
+
+            li {
+                cursor: pointer;
+                width: 50%;
+                height: 100%;
+                float: left;
+                background: white;
+                padding-top: 0.8em;
+                border-top: 1px solid #eee;;
+                opacity: 0.8;
+                @include box-sizing(border-box);
+                @include transition(all, 0.2s, ease-in-out);
+
+                &:hover {
+                    color: white;
+                    opacity: 1;
+                    background:rgb(31, 189, 202) ;
+                    @include transition(all, 0.2s, ease-in-out);
+                }
+
+                .title {
+                    display: block;
+                    height: 60%;
+                    width: 100%;
+                    max-width: 100%;
+                    max-height: 50px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                &:hover .title {
+                    color: white;
+                    @include transition(all, 0.2s, ease-in-out);
+                }
+            }
+            small {
+                font-style: italic;
+                font-size: 0.8em;
+                display: block;
+                width: 100%;
+            }
+
+            .previous, .next {
+                font-size: 1.1em;
+            }
+
+            .previous {
+                text-align: right;
+                padding-right: 2em;
+                @media (max-width: 960px) {
+                    padding-right: 0;
+                }
+            }
+            .next {
+                text-align: left;
+                padding-left: 2em;
+                @media (max-width: 960px) {
+                  padding-left: 0;
+                }
+            }
+        }
+    }
+}
+
+[data-link] {
+    position: relative;
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        background: transparent;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+}

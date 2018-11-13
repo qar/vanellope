@@ -1,5 +1,6 @@
 .DS_Store
 build
+*.egg
 *.egg-info
 .sh
 
@@ -12,3 +13,7 @@ reload.sh
 *.db
 vanellope/uploaded
 dist
+content
+!control-panel/build
+.vagrant
+*.log

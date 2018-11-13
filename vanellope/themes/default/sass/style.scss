@@ -4,17 +4,18 @@
 @import "_resets.scss";
 @import "_components.scss";
 @import "_layouts.scss";
+@import "_article.scss";
 @import "components/_pagination.scss";
 @import "_media.scss";
 
 .site-title {
     margin: 0;
     padding: 0;
-    color: white;
+    color: $theme-color;
     height: 4rem;
     display: inline-block;
     vertical-align: middle;
-    font-weight: 100;
+    font-weight: 200;
     font-size: 3rem;
     position: absolute;
     left: 0;
@@ -22,21 +23,13 @@
     margin-top: -2rem;
 }
 
-/**
- * Overrides
- */
-.simditor {
-    border: none !important;
-}
+.footer {
+  .power-by, .engine, .copyright {
+    font-size: 12px;
+    color: #5d5d5d;
+  }
 
-.simditor .simditor-body  {
-    padding-right: 0;
-    padding-left: 0;
+  .engine, .copyright {
+    font-weight: 700;
+  }
 }
-
-.simditor .simditor-toolbar {
-    ul {
-        padding-left: 0;
-    }
-}
-

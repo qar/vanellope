@@ -33,4 +33,28 @@
   </script>
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
+{% elif site['site_comment'] == '' %}
+
+  <ul class="comments">
+    {% for cmt in comments %}
+    <li>
+      <ul class="cmt-meta">
+          <li class="cmt-name"><strong>{{ cmt['name'] }}</strong></li>
+          <li class="cmt-timestamp">{{ cmt['created_at'].strftime('%Y-%m-%d %H:%M:%S') }}</li>
+      </ul>
+      <p>{{ cmt['content'] }}</p>
+    </li>
+    {% end %}
+  </ul>
+
+  <form action="/api/v1/comments" method="POST" enctype='application/json'>
+    <input class="vn-input" type="text" name="post_id" value="{{ article['uuid'] }}" hidden>
+    <input class="vn-input" type="text" name="name" placeholder="name">
+    <input class="vn-input" type="text" name="email" placeholder="email">
+    <input class="vn-input" type="text" name="website" placeholder="website (optional)">
+    <textarea class="vn-input" name="content">
+    </textarea>
+    <input class="vn-btn btn-primary pull-right" type="submit" value="send">
+  </form>
+
 {% end %}

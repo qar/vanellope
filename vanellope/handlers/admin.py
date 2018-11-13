@@ -2,51 +2,14 @@
 
 from tornado.web import authenticated
 from vanellope.handlers import AdminBaseHandler
-from vanellope.database import db_backup
+from vanellope.da import db_backup
 
 
-class AdminSettingsPage(AdminBaseHandler):
+class AdminControlPanel(AdminBaseHandler):
     @authenticated
     def get(self):
-        self.render("admin.html",
-                    title=self.concat_page_title('Admin'),
-                    page=u'admin/settings')
-
-
-class AdminEditPage(AdminBaseHandler):
-    @authenticated
-    def get(self, article_id=None):
-        article = self.posts.find_by_id(article_id)
-
-        if article_id and article is None:
-            return self.send_error(404)
-
-        self.render("write.html",
-                    title=self.concat_page_title('Editing'),
-                    page=u'admin/edit',
-                    article=article)
-
-
-class AdminDraftsPage(AdminBaseHandler):
-    @authenticated
-    def get(self):
-        articles = self.posts.get_drafts()
-
-        self.render("drafts.html",
-                    title=self.concat_page_title('Drafts'),
-                    page=u'admin/drafts',
-                    articles=articles)
-
-
-class AdminTrashPage(AdminBaseHandler):
-    @authenticated
-    def get(self):
-        articles = self.posts.get_trash()
-
-        self.render("trash.html",
-                    title=self.concat_page_title('Trash'),
-                    page=u'admin/trash',
-                    articles=articles)
+        self.render("controlpanel.html",
+                    title=u"Control Panel")
 
 
 class AdminExportData(AdminBaseHandler):
@@ -61,3 +24,50 @@ class AdminExportData(AdminBaseHandler):
                             'attachment; filename=' + zip_filename)
             self.write(f.read())
             self.finish()
+
+
+class FriendLinkHandler(AdminBaseHandler):
+    @authenticated
+    def get(self):
+        friend_links = self.friendlinks.find_all()
+
+        data = []
+        for link in friend_links:
+            link['created_at'] = link['created_at'].strftime('%s')
+            link['updated_at'] = link['updated_at'].strftime('%s')
+            data.append(link)
+
+        self.finish({
+            'info': 'success',
+            'data': data
+        })
+
+    @authenticated
+    def post(self):
+        """
+        """
+        site_title = self.get_payload_argument(u'title', None)
+        site_address = self.get_payload_argument(u'address', None)
+        site_notes = self.get_payload_argument(u'notes', None)
+
+        result = self.friendlinks.create({
+            'title': site_title,
+            'address': site_address,
+            'notes': site_notes
+        })
+
+        self.finish({
+            'info': 'success',
+            'url': result
+        })
+
+    @authenticated
+    def delete(self, uuid):
+        result = self.friendlinks.remove(uuid)
+
+        self.finish({
+            'info': 'success',
+            'url': result
+        })
+
+

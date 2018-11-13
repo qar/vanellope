@@ -4,19 +4,31 @@
 import re
 import os
 import os.path
+import sys
+sys.path.append(os.getcwd())
 
 from tornado import web
 from tornado import ioloop
 from tornado.options import define, options
+from vanellope.da import create_tables, connection
+from vanellope.da.user import UserModel
 from vanellope import config
-from vanellope.database import create_tables, get_admin_user, connection
 from vanellope.urls import routers
 
 define("port", default=8000, help="run on the given port", type=int)
 define("host", default="127.0.0.1", help="run on the given host", type=str)
 define("debug", default=False, help="debug mode.", type=bool)
 
-ROOT = "/var/www/vanellope/"
+ROOT = os.path.abspath(os.path.dirname(__file__))
+
+
+def get_admin_user():
+    return UserModel().get_admin_user()
+
+
+def preflight():
+    # check content path existence
+    pass
 
 
 class App(web.Application):
@@ -27,7 +39,7 @@ class App(web.Application):
         theme = config.theme
         static_path = os.path.join(ROOT, "themes/%s/static" % theme)
         template_path = os.path.join(ROOT, "themes/%s/templates" % theme)
-        admin_static_path = os.path.join(ROOT, "admin/static")
+        admin_static_path = os.path.join(ROOT, "admin/assets")
         admin_template_path = os.path.join(ROOT, "admin/templates")
         config_keys = config.app_settings.keys()
 
@@ -37,7 +49,7 @@ class App(web.Application):
             "admin_static_path": admin_static_path,
             "admin_template_path": admin_template_path,
             "static_url_prefix": "/static/",
-            "admin_static_url_prefix": "/admin-static/",
+            "admin_static_url_prefix": "/assets/",
             "config_keys": config_keys,
             "uploaded_path": config.uploaded_path,
             "db_path": config.db_path,
@@ -84,4 +96,5 @@ def main():
 
 
 if __name__ == "__main__":
+    preflight()
     main()

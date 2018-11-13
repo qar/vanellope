@@ -1,0 +1,21 @@
+// in case of margin collapsing
+// https://www.w3.org/TR/CSS2/box.html#collapsing-margins
+.layout-logo-left {
+  display: inline-block;
+}
+
+.layout-logo-left img {
+  width: 80%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.layout-logo-left {
+  min-height: 0;
+  height: auto;
+}
+
+.ivu-menu-item, .ivu-menu-submenu {
+  text-align: left;
+}
+
