@@ -1,4 +1,5 @@
 {% include "common/header.html" %}
+{% include "common/banner.html" %}
 
 {% if len(articles) == 0 %}
 
@@ -8,6 +9,13 @@ No articles
 
   <div class="wrapper">
     <div class="main-content">
+
+      <div class="main-content-header">
+        <a href="/">HOME</a> /
+
+        CATEGORY: {{ current_category }}
+      </div>
+
       <ol class="posts">
 
         {% for article in articles %}
@@ -16,7 +24,7 @@ No articles
           <p class="brief">
           </p>
           <ul class="meta">
-            <li class="timestamp">{{ article['created_at'] }}</li>
+            <li class="timestamp">{{ article['created_at'].strftime("%Y/%m/%d") }}</li>
             <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
             <li class="tags">
               {% for tag in article['tags'] %}
@@ -24,7 +32,7 @@ No articles
               {% end %}
             </li>
             {% if current_user and current_user['role'] == 'admin' %}
-            <li class=""><a href="{{ article['editor-path'] }}">Edit</a></li>
+            <li class="admin-btn"><a href="/controlpanel#/editor/{{ article['uuid'] }}">EDIT</a></li>
             {% end %}
           </ul>
         </li>
@@ -36,6 +44,11 @@ No articles
     <!--
 
     --><div class="sub-content">
+  {% include "partials/archives.html" %}
+  {% include "partials/categories.html" %}
+  {% include "partials/tags.html" %}
+  {% include "partials/links.html" %}
+
     </div>
 
 

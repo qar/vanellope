@@ -79,9 +79,39 @@ class ImageHandler(BaseHandler):
 
 
 class PostsHandler(BaseHandler):
+    @authenticated
     def get(self):
-        self.finish()
+        ENTRIES_PER_PAGE = 10
+        # config.posts_per_page
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+        states = self.get_arguments(u's[]')
 
+        articles = self.posts.find(
+            states=states,
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
+
+        total_items = self.posts.count(states=states)
+
+        data = []
+        for article in articles:
+            article['created_at'] = article['created_at'].strftime('%s')
+            article['updated_at'] = article['updated_at'].strftime('%s')
+            data.append(article)
+
+        self.finish({
+            'info': 'success',
+            'paging': {
+                'total': total_items,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': data
+        })
+
+    @authenticated
     def post(self):
         """
         创建
@@ -92,6 +122,7 @@ class PostsHandler(BaseHandler):
         """
         category = self.get_payload_argument('category', '')
         content = self.get_payload_argument('content', '')
+        source = self.get_payload_argument('source', '')
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'draft')
@@ -99,6 +130,7 @@ class PostsHandler(BaseHandler):
 
         post_uuid = self.posts.create({
             'content': content,
+            'source': source,
             'title': title,
             'category': category,
             'tags': tags,
@@ -106,50 +138,52 @@ class PostsHandler(BaseHandler):
             'state': state
         })
 
-        if state == 'draft':
-            article_url = '/drafts/' + post_uuid + '+' + "_".join(title.split())
+        url_safe_title = '_'.join(title.split())
+
+        if state == u'draft':
+            article_url = u'/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
         else:
-            article_url = '/article/' + post_uuid + '+' + "_".join(title.split())
+            article_url = u'/article/{0}+{1}'.format(post_uuid, url_safe_title)
 
         self.finish({
             'info': 'success',
             'url': article_url
         })
 
-    def put(self):
-        """
-        更新
 
-        提交参数:
-            content
-            title
-        """
-        category = self.get_payload_argument('category', '')
-        content = self.get_payload_argument('content', '')
-        post_uuid = self.get_payload_argument('uuid', '')
-        tags = self.get_payload_argument('tags', '')
-        title = self.get_payload_argument('title', 'default_title')
-        state = self.get_payload_argument('state', 'published')
-        ext = 'html'
+class TrashHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ENTRIES_PER_PAGE = 10
+        # config.posts_per_page
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
 
-        self.posts.update(post_uuid, {
-            'uuid': post_uuid,
-            'content': content,
-            'title': title,
-            'category': category,
-            'tags': tags,
-            'ext': ext,
-            'state': state
-        })
+        articles = self.posts.find(
+            states=['deleted'],
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
 
-        if state == 'draft':
-            article_url = '/drafts/' + post_uuid + '+' + "_".join(title.split())
-        else:
-            article_url = '/article/' + post_uuid + '+' + "_".join(title.split())
+        total_items = self.posts.count(states=['deleted'])
+
+        data = []
+        for article in articles:
+            article['created_at'] = article['created_at'].strftime('%s')
+            article['updated_at'] = article['updated_at'].strftime('%s')
+            data.append(article)
 
         self.finish({
             'info': 'success',
-            'url': article_url
+            'paging': {
+                'total': total_items + 0,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': {
+                'articles': data,
+                'snippets': []
+            }
         })
 
 
@@ -161,6 +195,45 @@ class PostHandler(BaseHandler):
             'msg': 'success'
         })
 
+    @authenticated
+    def put(self, post_uuid):
+        """
+        更新
+
+        提交参数:
+            content
+            title
+        """
+        category = self.get_payload_argument('category', '')
+        content = self.get_payload_argument('content', '')
+        source = self.get_payload_argument('source', '')
+        tags = self.get_payload_argument('tags', '')
+        title = self.get_payload_argument('title', 'default_title')
+        state = self.get_payload_argument('state', 'published')
+        ext = self.get_payload_argument('ext', 'markdown')
+
+        self.posts.update(post_uuid, {
+            'uuid': post_uuid,
+            'source': source,
+            'content': content,
+            'title': title,
+            'category': category,
+            'tags': tags,
+            'ext': ext,
+            'state': state
+        })
+
+        url_safe_title = '_'.join(title.split())
+        if state == 'draft':
+            article_url = u'/drafts/{0}+{1}'.format(post_uuid, url_safe_title)
+        else:
+            article_url = u'/article/{0}+{1}'.format(post_uuid, url_safe_title)
+
+        self.finish({
+            'info': 'success',
+            'url': article_url
+        })
+
 
 class AdminTrashHandler(BaseHandler):
     @authenticated
@@ -169,3 +242,32 @@ class AdminTrashHandler(BaseHandler):
         self.finish({
             'msg': 'success'
         })
+
+
+class CommentsHandler(BaseHandler):
+    def post(self):
+        """
+        创建
+
+        提交参数:
+            post_id
+            name
+            email
+            website
+            content
+        """
+        post_id = self.get_argument('post_id', '')
+        name = self.get_argument('name', '')
+        email = self.get_argument('email', '')
+        website = self.get_argument('website', '')
+        content = self.get_argument('content', '')
+
+        self.comments.create({
+            'post_id': post_id,
+            'name': name,
+            'email': email,
+            'website': website,
+            'content': content,
+        })
+
+        self.redirect(self.request.headers['Referer'])

@@ -8,14 +8,45 @@
     box-sizing: border-box;
 }
 
-.banner {
+.article-banner, .banner {
     margin-bottom: 2rem;
     width: 100%;
-    background-color: $theme-green;
     .banner-content {
         height: $banner-height-lg;
         position: relative;
     }
+
+    // iPhone 7
+    @media screen and (max-width: 960px) {
+        & {
+          margin-bottom: 0.8rem;
+        }
+
+        .banner-content {
+            height: 38px;
+        }
+    }
+}
+
+.article-banner {
+
+  .banner-content {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: $banner-height-lg;
+  }
+
+  // iPhone 7
+  @media screen and (max-width: 960px) {
+    & {
+      margin-bottom: 0.8rem;
+    }
+
+    .banner-content {
+      height: 38px;
+      line-height: 38px;
+    }
+  }
 }
 
 ul.nav {
@@ -75,7 +106,6 @@ ul.nav {
         letter-spacing: 2px;
         border-bottom: 1px solid #EEE;
         padding-bottom: 0.4rem;
-        margin-bottom: 2rem;
 
         .normal {
             letter-spacing: 0.06em;
@@ -152,7 +182,7 @@ ul.nav {
 }
 
 .meta {
-    list-style: none;
+    list-style: none !important;
     margin: 0;
     padding: 0;
     color: $meta-color;
@@ -160,67 +190,22 @@ ul.nav {
     font-size: $meta-size;
     height: 1.2 * $meta-size;
     li {
-        float: left;
-        width: auto;
-        margin-right: 1rem;
+      display: inline-block;
     }
+    .admin-btn {
+      background: #26C1AF;
+      color: white;
+      font-weight: 900;
+      padding: 0 4px;
+      letter-spacing: 1px;
+      border-radius: 3px
 
+    }
     .timestamp {
     }
     .tags {
     }
     .category {
-    }
-}
-
-.post {
-    .content {
-        margin: 2rem 0;
-        padding: 2rem 0;
-    }
-
-    img {
-        // overide inline style
-        max-width: 100% !important;
-        height: auto!important;
-
-        box-shadow: 1px 5px 17px #838383;
-    }
-
-    p + img {
-        text-align: center;
-        width: 100%;
-        color: red;
-    }
-
-    blockquote {
-        margin: 0;
-        border-left: 2px solid $theme-green;
-        padding: 0.1rem 3rem;
-        box-sizing: border-box;
-    }
-
-    pre {
-        background-color: #EEE;
-        padding: 2rem;
-        border-radius: 2px;
-        overflow: auto;
-    }
-
-    img {
-        display: block;
-        border-radius: 2px;
-        box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.50);
-        margin: 1rem auto;
-    }
-
-    ol:not(.meta) {
-        list-style: decimal;
-        margin-left: 4rem;
-    }
-    &:not(.post-editing) ul:not(.meta) {
-        list-style: disc;
-        margin-left: 4rem;
     }
 }
 
@@ -240,6 +225,27 @@ ul.nav {
         padding: 0;
         box-sizing: border-box;
         font-size: $widget-body-size;
+
+        li {
+          table {
+            width: 100%;
+          }
+          .item-head {
+            width: 70px;
+            text-align: left;
+          }
+          .item-tail {
+            width: 30px;
+            text-align: right;
+            font-family: monospace;
+          }
+          .item-dash {
+            border: 0.5px dashed #D2D2D2;
+            display: inline-block;
+            height: 0;
+            width: 100%;
+          }
+        }
     }
 }
 
@@ -267,6 +273,31 @@ ul.nav {
     }
 }
 
+// comments list
+.comments {
+    width: 100%;
+    margin-bottom: 10rem;
+
+    & > * {
+        padding-top: 1em;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cmt-meta {
+        width: 100%;
+        & > * {
+            display: inline-block;
+        }
+
+        .cmt-timestamp::before {
+            content: 'on';
+            margin-right: 0.5em;
+            margin-left: 0.5em;
+        }
+    }
+}
+
 #full-editor {
     min-height: 400px;
     border: 1px solid #DDD;
@@ -278,7 +309,7 @@ ul.nav {
     }
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1200px) {
     .wrapper {
         padding-left: 2rem;
         padding-right: 2rem;
@@ -302,4 +333,11 @@ ul.nav {
         height: auto;
         vertical-align: middle;
     }
+}
+
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
 }

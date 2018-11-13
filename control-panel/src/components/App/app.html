@@ -1,0 +1,55 @@
+<div>
+  <!-- nav zone -->
+  <div id="navbar">
+    <Menu active-name="1" theme="dark" width="auto">
+      <div class="layout-logo-left"><img src="/static/img/logo.png"></div>
+
+      <Submenu name="0">
+          <template slot="title">
+              <Icon type="ios-keypad"></Icon>
+              COMPOSE
+          </template>
+          <MenuItem name="0-1">
+            <router-link :to="{ name: 'MarkdownEditor', params: { mode: 'new' } }" tag="span" class="layout-text">New Article</router-link>
+          </MenuItem>
+      </Submenu>
+
+      <MenuItem name="1">
+          <Icon type="coffee" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'ArticleList' }" tag="span" class="layout-text">Articles</router-link>
+      </MenuItem>
+
+      <MenuItem name="2">
+          <Icon type="trash-b" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'Trash' }" tag="span" class="layout-text">Trash</router-link>
+      </MenuItem>
+
+      <MenuItem name="3">
+          <Icon type="document" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'DraftsList' }" tag="span" class="layout-text">Draft</router-link>
+      </MenuItem>
+
+      <MenuItem name="widgets">
+          <Icon type="document" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'WidgetsPage' }" tag="span" class="layout-text">Widgets</router-link>
+      </MenuItem>
+
+      <MenuItem name="friends-links">
+          <Icon type="at" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'FriendsLinks' }" tag="span" class="layout-text">Friends Links</router-link>
+      </MenuItem>
+
+      <MenuItem name="4">
+          <Icon type="gear-a" :size="iconSize"></Icon>
+          <router-link :to="{ name: 'Settings' }" tag="span" class="layout-text">Settings</router-link>
+      </MenuItem>
+    </Menu>
+  </div>
+
+  <!-- main content -->
+  <div id="wrapper">
+    <div id="wrapper-inner">
+      <router-view></router-view>
+    </div><!-- End of #wrapper-inner -->
+  </div><!-- End of #wrapper -->
+</div>

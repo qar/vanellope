@@ -26,6 +26,15 @@ class TestDatabasePostModel(unittest.TestCase):
             'content': '1234'
         }
 
+class TestDatabaseSnippetModel(unittest.TestCase):
+    def setUp(self):
+        self.snippets = database.SnippetModel()
+
+    def test_hello(self):
+        self.assertIs(True, True)
+
+    def test_create(self):
+        pass
 
 
 if __name__ == '__main__':

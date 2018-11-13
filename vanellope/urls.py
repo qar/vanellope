@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import config
-from tornado import web
 
 from vanellope.handlers import pages
 from vanellope.handlers import apiv1
@@ -14,8 +13,7 @@ routers = [
     # Index page
     (r"/", pages.IndexPage),
 
-    # 登录
-    (r"/authentication", pages.WelcomePage),
+    (r"/snippets", pages.SnippetsPage),
 
     (r"/tags", pages.TagsPage),
     (r"/archives", pages.ArchivesPage),
@@ -42,22 +40,21 @@ routers = [
 
     (r"/uploaded/(.*)", pages.UploadedFileHandler),
 
+    (r"/api/v1/trash", apiv1.TrashHandler),
     (r"/api/v1/posts", apiv1.PostsHandler),
     (r"/api/v1/posts/(.*)", apiv1.PostHandler),
     (r"/api/v1/article/(.*)", apiv1.ArticleHandler),
     (r"/api/v1/image", apiv1.ImageHandler),
     (r"/api/v1/configuration", apiv1.ConfigurationHandler),
     (r"/api/v1/admin/trash/(.*)", apiv1.AdminTrashHandler),
+    (r"/api/v1/comments", apiv1.CommentsHandler),
+    (r"/api/v1/admin/friend-links", admin.FriendLinkHandler),
+    (r"/api/v1/admin/friend-links/(.*)", admin.FriendLinkHandler),
 
     # Feeds
     (r"/index.xml", feeds.MainFeed),
 
     # Administrotor URLs
-    (r"/admin", admin.AdminSettingsPage),
-    (r"/admin/drafts", admin.AdminDraftsPage),
-    (r"/admin/trash", admin.AdminTrashPage),
-    (r"/admin/settings", admin.AdminSettingsPage),
-    (r"/admin/edit", admin.AdminEditPage),
-    (r"/admin/edit/(\w{8})\+.*", admin.AdminEditPage),
-    (r"/admin/export", admin.AdminExportData)
+    (r"/admin/export", admin.AdminExportData),
+    (r"/controlpanel", admin.AdminControlPanel)
 ]

@@ -19,10 +19,12 @@ from tornado.escape import json_decode
 from user_agents import parse as ua_parse
 import urlparse
 
-from vanellope.database import ConfigModel
-from vanellope.database import UserModel
-from vanellope.database import PostModel
-from vanellope.database import Session
+from vanellope.da.config import ConfigModel
+from vanellope.da.user import UserModel
+from vanellope.da.post import PostModel
+from vanellope.da.session import Session
+from vanellope.da.comment import CommentModel
+from vanellope.da.friendlinks import FriendLinkModel
 
 
 class Days(object):
@@ -82,6 +84,17 @@ class BaseHandler(RequestHandler):
     posts = PostModel()
     config = ConfigModel()
     session = Session()
+    comments = CommentModel()
+    friendlinks = FriendLinkModel()
+
+    def set_default_headers(self):
+        current_user = self.get_current_user()
+        if not current_user:
+            return
+
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
     def prepare(self):
         try:
@@ -96,8 +109,14 @@ class BaseHandler(RequestHandler):
             user_agent)
         )
 
-        if not self.settings['admin'] and self.request.method == 'GET' and self.request.uri != '/welcome':
-            self.redirect('/welcome')
+        # if the site is just created without a admin user
+        if not self.settings['admin']:
+            if self.request.uri.startswith('/api'):
+                self.set_status(403)
+                self.finish('login first')
+
+            elif self.request.uri != '/welcome':
+                self.redirect('/welcome')
 
     def get_template_namespace(self):
         """Override `tornado.web.RequestHandler.get_template_namespace` static method
@@ -106,7 +125,12 @@ class BaseHandler(RequestHandler):
         """
 
         namespace = super(BaseHandler, self).get_template_namespace()
-        namespace['site'] = self.config.read_config()
+        namespace.update({
+            'site': self.config.read_config(),
+            'ctx': {
+                'year': datetime.now().year
+            }
+        })
 
         try:
             user_agent = self.request.headers['User-Agent']
@@ -126,7 +150,8 @@ class BaseHandler(RequestHandler):
 
         namespace['archives'] = self.posts.get_archives()
         namespace['tags'] = self.posts.get_tags()
-        namespace['categories'] = []
+        namespace['categories'] = self.posts.get_categories()
+        namespace['friendlinks'] = self.friendlinks.find_all()
 
         return namespace
 
@@ -135,24 +160,23 @@ class BaseHandler(RequestHandler):
 
         """
         source = json_decode(self.request.body)
-        if isinstance(source, dict):
-            if name in source:
-                arg = source[name]
-                if isinstance(arg, basestring):
-                    arg = self.decode_argument(arg)
-                    # Get rid of any weird control chars (unless decoding gave
-                    # us bytes, in which case leave it alone)
-                    arg = RequestHandler._remove_control_chars_regex.sub(" ", arg)
-                    if strip:
-                        arg = arg.strip()
+        if not isinstance(source, dict):
+            raise MissingArgumentError(name)
 
-                elif isinstance(arg, list):
-                    arg = filter(lambda item: self.decode_argument(item).strip(), arg)
-                return arg
-            else:
-                return default
+        if name not in source:
+            return default
 
-        raise MissingArgumentError(name)
+        arg = source[name]
+        if isinstance(arg, basestring):
+            arg = self.decode_argument(arg)
+            # Get rid of any weird control chars (unless decoding gave
+            # us bytes, in which case leave it alone)
+            arg = RequestHandler._remove_control_chars_regex.sub(" ", arg)
+            if strip:
+                arg = arg.strip()
+        elif isinstance(arg, list):
+            arg = filter(lambda item: self.decode_argument(item).strip(), arg)
+        return arg
 
     def gravatar(self, email, size=64):
         gravatar_url = ("http://www.gravatar.com/avatar/%s" %

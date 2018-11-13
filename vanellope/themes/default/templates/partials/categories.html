@@ -1,0 +1,24 @@
+{% if len(categories) > 0 %}
+<div class="widget">
+  <div class="widget-header">Category</div>
+  <div class="widget-body">
+    <ul>
+
+      {% for cate in sorted(categories, key = lambda x:x['count'], reverse=True)[0:19] %}
+      <li>
+        <a href="/category/{{ cate['category'] }}">
+          <table>
+            <tr>
+              <td class="item-head">{{ cate['category'] }}</td>
+              <td class="item-dash"></td>
+              <td class="item-tail">({{ cate['count'] }})</td>
+            </tr>
+          </table>
+        </a>
+      </li>
+      {% end %}
+
+    </ul>
+  </div>
+</div>
+{% end %}

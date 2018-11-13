@@ -61,7 +61,7 @@ class WelcomePage(BaseHandler):
             self.settings['admin'] = admin_user
 
         if not err:
-            self.redirect('/admin')
+            self.redirect('/controlpanel')
         else:
             self.redirect('/welcome')
 
@@ -102,6 +102,19 @@ class IndexPage(BaseHandler):
                     pages=pages,
                     drafts=drafts,
                     articles=articles)
+
+
+class SnippetsPage(BaseHandler):
+    def get(self):
+        self.render("snippets.html",
+                    title=self.concat_page_title('Snippets'),
+                    page=u'snippets',
+                    current_page=0,
+                    next_page=0,
+                    previous_page=0,
+                    pages=1,
+                    drafts=[],
+                    articles=[])
 
 
 class TagsPage(BaseHandler):
@@ -238,7 +251,7 @@ class ArchivePage(BaseHandler):
 class CategoryPage(BaseHandler):
     def get(self, cate):
         current_page = int(self.get_argument(u'p', 1))
-        articles = self.posts.find_by_category(cate)
+        articles = self.posts.find_by_category(cate, ["published"])
 
         self.render("category.html",
                     title=self.concat_page_title('Category:{0}'.format(cate)),
@@ -321,6 +334,12 @@ class ArticlePage(BaseHandler):
             self.send_error(404)
             return
 
+        # add a view count
+        self.posts.views_count(article_id)
+
+        # state should be pass
+        comments = self.comments.find(post_id=article_id, state="checking")
+
         if 'tags' not in article:
             article['tags'] = []
 
@@ -331,7 +350,8 @@ class ArticlePage(BaseHandler):
                     page=u'article',
                     related_articles=[],
                     siblings=siblings,
-                    article=article)
+                    article=article,
+                    comments=comments)
 
     def post(self):
         """Create new article"""
