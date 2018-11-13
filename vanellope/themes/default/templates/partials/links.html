@@ -2,7 +2,15 @@
   <div class="widget-header">LINKS</div>
   <div class="widget-body">
     <ul>
+      {% for link in friendlinks %}
+      <li>
+        <a href="{{ link['address'] }}" title="{{ link['title'] }}">{{ link['title']}}</a>
+      </li>
+      {% end %}
+
+      {% if current_user and current_user['role'] == 'admin' %}
       <li><a href="/controlpanel"><span>Management Panel</span></a></li>
+      {% end %}
     </ul>
   </div>
 </div>
