@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict'
 // Template version: 1.2.4
 // see http://vuejs-templates.github.io/webpack for documentation.
@@ -57,7 +58,7 @@ module.exports = {
 
   build: {
     env: require('./prod.env'),
-    assetsRoot: path.resolve(__dirname, '../../vanellope/admin'), // output server static directory
+    assetsRoot: path.resolve(__dirname, '../dist'), // output server static directory
 
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
