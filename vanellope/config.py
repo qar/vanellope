@@ -116,6 +116,9 @@ app_settings = {
     'site_tracking_id': '',
     'site_tracking_enabled': 'yes',
 
+    # Google AdSense
+    'google_adsense': '',
+
     # 网站评论服务
     'site_comment': '',  # 'duoshuo' or 'disqus'
     'site_comment_id': '',

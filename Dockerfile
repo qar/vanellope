@@ -15,6 +15,6 @@ WORKDIR /src
 COPY ./vanellope /src/vanellope
 COPY ./requirements.txt /src/requirements.txt
 RUN pip install -r requirements.txt
-COPY --from=uibuilder /data/dist/assets /data/vanellope/admin/assets
+COPY --from=uibuilder /data/dist/assets /src/vanellope/admin/assets
 EXPOSE 80
 CMD ["python", "vanellope/app.py", "--host=0.0.0.0", "--port=80"]

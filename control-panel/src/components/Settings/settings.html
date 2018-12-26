@@ -32,6 +32,10 @@
             <Input v-model="settings.default_category" placeholder="文章默认分类"></Input>
           </FormItem>
 
+          <FormItem label="Google AdSense">
+            <Input v-model="settings.google_adsense" placeholder="Google AdSense"></Input>
+          </FormItem>
+
           <FormItem>
             <Button type="primary" @click="save">保存</Button>
           </FormItem>
