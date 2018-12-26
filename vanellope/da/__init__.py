@@ -35,8 +35,9 @@ def record_view(post_id):
     # if exist, then update counts
     # if not, insert one,
 
-def create_tables():
-    # Create tables if not exist
+def init_db():
+    """Initialize database or update db tables structure
+    """
     cur = connection.cursor()
 
     # Create configuration table
@@ -48,6 +49,13 @@ def create_tables():
     if len(results) == 0:
         t = app_settings.items()
         cur.executemany("INSERT INTO configuration VALUES (?, ?)", t)
+
+    # Before the first stable release came out, there may be more configuraiton items
+    # add to database
+    incs = set([i[0] for i in app_settings.items()]) - set([i[0] for i in results])
+    if len(incs):
+        params = [(i, app_settings[i]) for i in incs]
+        cur.executemany("INSERT INTO configuration VALUES (?, ?)", params)
 
     # Create posts table
     cur.execute(create_table_sqls['posts_schema'])

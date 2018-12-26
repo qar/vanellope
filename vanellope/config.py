@@ -124,6 +124,7 @@ app_settings = {
     # Post default category
     # 新建文章的默认分类
     'default_category': 'life',
+    'posts_per_page': 10,
 
     # draft url: http://www.example.com/drafts/<uuid>+title
     'draft_base_path': '/drafts/'

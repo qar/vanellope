@@ -1,7 +1,9 @@
 <div>
+  <div class="article-list-layout">
+    <h1 class="table-title">设置</h1>
     <Row>
-      <Col span="12" offset="6">
-        <Form :model="settings" :label-width="80">
+      <Col span="10">
+        <Form :model="settings" :label-width="120">
           <FormItem label="站点标题">
             <Input v-model="settings.site_title" placeholder="站点标题"></Input>
           </FormItem>
@@ -10,10 +12,32 @@
             <Input v-model="settings.site_url" placeholder="站点地址"></Input>
           </FormItem>
 
+          <FormItem label="每页文章数">
+            <Input v-model="settings.posts_per_page" placeholder="每页文章数"></Input>
+          </FormItem>
+
+          <FormItem label="站点统计服务">
+            <Input v-model="settings.site_tracking" placeholder="站点统计服务"></Input>
+          </FormItem>
+
+          <FormItem label="Tracking ID">
+            <Input v-model="settings.site_tracking_id" placeholder="Tracking ID"></Input>
+          </FormItem>
+
+          <FormItem label="启用站点追踪">
+            <Input v-model="settings.enableTracking" placeholder="启用站点追踪"></Input>
+          </FormItem>
+
+          <FormItem label="文章默认分类">
+            <Input v-model="settings.default_category" placeholder="文章默认分类"></Input>
+          </FormItem>
+
           <FormItem>
             <Button type="primary" @click="save">保存</Button>
           </FormItem>
         </Form>
       </Col>
     </Row>
+  </div>
 </div>
+

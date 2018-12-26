@@ -10,7 +10,7 @@ sys.path.append(os.getcwd())
 from tornado import web
 from tornado import ioloop
 from tornado.options import define, options
-from vanellope.da import create_tables, connection
+from vanellope.da import init_db, connection
 from vanellope.da.user import UserModel
 from vanellope import config
 from vanellope.urls import routers
@@ -34,7 +34,7 @@ def preflight():
 class App(web.Application):
     def __init__(self):
 
-        create_tables()
+        init_db()
 
         theme = config.theme
         static_path = os.path.join(ROOT, "themes/%s/static" % theme)
