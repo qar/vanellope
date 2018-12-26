@@ -1,47 +1,47 @@
 <div>
   <!-- nav zone -->
   <div id="navbar">
-    <Menu active-name="1" theme="dark" width="auto">
-      <div class="layout-logo-left"><img src="/static/img/logo.png"></div>
+    <Menu :active-name="activeName" theme="dark" width="auto" @on-select="goToPage">
+      <a class="layout-logo-left" href="/"><img src="/static/img/logo.png"></a>
 
       <Submenu name="0">
           <template slot="title">
               <Icon type="ios-keypad"></Icon>
               COMPOSE
           </template>
-          <MenuItem name="0-1">
-            <router-link :to="{ name: 'MarkdownEditor', params: { mode: 'new' } }" tag="span" class="layout-text">New Article</router-link>
+          <MenuItem name="MarkdownEditor">
+            <span class="layout-text">New Article</span>
           </MenuItem>
       </Submenu>
 
-      <MenuItem name="1">
+      <MenuItem name="ArticleList" >
           <Icon type="coffee" :size="iconSize"></Icon>
-          <router-link :to="{ name: 'ArticleList' }" tag="span" class="layout-text">Articles</router-link>
+          <span class="layout-text">Articles</span>
       </MenuItem>
 
-      <MenuItem name="2">
+      <MenuItem name="Trash">
           <Icon type="trash-b" :size="iconSize"></Icon>
-          <router-link :to="{ name: 'Trash' }" tag="span" class="layout-text">Trash</router-link>
+          <span class="layout-text">Trash</span>
       </MenuItem>
 
-      <MenuItem name="3">
+      <MenuItem name="DraftsList">
           <Icon type="document" :size="iconSize"></Icon>
-          <router-link :to="{ name: 'DraftsList' }" tag="span" class="layout-text">Draft</router-link>
+          <span class="layout-text">Draft</span>
       </MenuItem>
 
-      <MenuItem name="widgets">
+      <MenuItem name="WidgetsPage">
           <Icon type="document" :size="iconSize"></Icon>
-          <router-link :to="{ name: 'WidgetsPage' }" tag="span" class="layout-text">Widgets</router-link>
+          <span class="layout-text">Widgets</span>
       </MenuItem>
 
-      <MenuItem name="friends-links">
+      <MenuItem name="FriendsLinks">
           <Icon type="at" :size="iconSize"></Icon>
-          <router-link :to="{ name: 'FriendsLinks' }" tag="span" class="layout-text">Friends Links</router-link>
+          <span class="layout-text">Friends Links</span>
       </MenuItem>
 
-      <MenuItem name="4">
+      <MenuItem name="Settings">
           <Icon type="gear-a" :size="iconSize"></Icon>
-          <router-link :to="{ name: 'Settings' }" tag="span" class="layout-text">Settings</router-link>
+          <span class="layout-text">Settings</span>
       </MenuItem>
     </Menu>
   </div>

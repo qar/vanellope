@@ -42,9 +42,10 @@ class ConfigurationHandler(BaseHandler):
             if v is not None:
                 configs[k] = v
 
-        self.config.update(configs)
+        result = self.config.update(configs)
         self.finish({
-            'info': 'success'
+            'info': 'success',
+            'data': result
         })
 
 

@@ -5,6 +5,10 @@ function getSettings() {
   return $http.get('/api/v1/configuration').then(res => res.data);
 }
 
+function updateSettings(settings) {
+  return $http.put('/api/v1/configuration', settings).then(res => res.data);
+}
+
 function createArticle(args) {
   return $http.post('/api/v1/posts', args)
     .then(res => res.data);
@@ -69,6 +73,7 @@ function delFriendLink(linkId) {
 export default {
   createArticle,
   updateArticle,
+  updateSettings,
   getArticleList,
   getDraftList,
   getArticle,
