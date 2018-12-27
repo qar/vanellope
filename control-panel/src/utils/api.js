@@ -29,6 +29,21 @@ function getArticleList(paging) {
     .then(res => res.data);
 }
 
+function getCommentList(paging, states=['checking']) {
+  const params = {
+    s: states,
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/comments', { params })
+    .then(res => res.data);
+}
+
+function updateComment(params) {
+  return $http.put('/api/v1/comments', params)
+    .then(res => res.data);
+}
+
 function getDraftList(paging) {
   const params = {
     s: ['draft'],
@@ -75,6 +90,7 @@ export default {
   updateArticle,
   updateSettings,
   getArticleList,
+  getCommentList,
   getDraftList,
   getArticle,
   getSettings,
@@ -83,4 +99,5 @@ export default {
   getFriendLinks,
   createFriendLinks,
   delFriendLink,
+  updateComment,
 };

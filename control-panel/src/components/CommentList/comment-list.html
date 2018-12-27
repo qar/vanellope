@@ -1,0 +1,58 @@
+<div>
+  <Tabs v-model="activeState" @on-click="getComments(null, [activeState])">
+
+    <TabPane label="New" name="checking" icon="quote">
+      <div class="article-list-layout">
+        <h1 class="table-title">新评论</h1>
+
+        <Table :columns="columns" :data="rows"></Table>
+        <div class="paging">
+          <Page
+            :total="paging.total"
+            :page-size="paging.size"
+            show-elevator
+            show-sizer
+            @on-change="changePage"
+            @on-page-size-change="changePageSize">
+          </Page>
+        </div>
+      </div>
+    </TabPane>
+
+    <TabPane label="Approved" name="approved" icon="heart">
+      <div class="article-list-layout">
+        <h1 class="table-title">审核通过的评论</h1>
+
+        <Table :columns="columns" :data="rows"></Table>
+        <div class="paging">
+          <Page
+            :total="paging.total"
+            :page-size="paging.size"
+            show-elevator
+            show-sizer
+            @on-change="changePage"
+            @on-page-size-change="changePageSize">
+          </Page>
+        </div>
+      </div>
+    </TabPane>
+
+    <TabPane label="Banned" name="banned" icon="heart-broken">
+      <div class="article-list-layout">
+        <h1 class="table-title">被禁止的评论</h1>
+
+        <Table :columns="columns" :data="rows"></Table>
+        <div class="paging">
+          <Page
+            :total="paging.total"
+            :page-size="paging.size"
+            show-elevator
+            show-sizer
+            @on-change="changePage"
+            @on-page-size-change="changePageSize">
+          </Page>
+        </div>
+      </div>
+    </TabPane>
+  </Tabs>
+</div>

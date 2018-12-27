@@ -7,6 +7,7 @@ import Settings from '@/components/Settings/settings.vue';
 import TrashCan from '@/components/TrashCan/trash-can.vue';
 import WidgetsPage from '@/components/WidgetsPage/widgets-page';
 import FriendsLinks from '@/components/FriendsLinks/friends-links';
+import CommentList from '@/components/CommentList/comment-list.vue';
 
 Vue.use(Router);
 
@@ -58,6 +59,12 @@ export default new Router({
       path: '/firends-links',
       name: 'FriendsLinks',
       component: FriendsLinks,
+    },
+
+    {
+      path: '/comments',
+      name: 'CommentList',
+      component: CommentList,
     },
   ],
 });
