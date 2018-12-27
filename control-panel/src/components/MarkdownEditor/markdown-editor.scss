@@ -24,6 +24,7 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
   font-family: $font-content;
   color: #5c5c5c;
   vertical-align: baseline;
+  background-color: inherit;
 
   padding: 0 14%;
   padding-bottom: 10em;
@@ -44,6 +45,7 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
   width: 60%;
   display: block;
   font-family: $font-content;
+  background-color: inherit;
   border: none;
   outline: none;
   position: relative;
@@ -66,7 +68,6 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: white;
   z-index: 99999999;
   border-radius: 4px;
 }
