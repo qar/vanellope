@@ -250,6 +250,37 @@ class AdminTrashHandler(BaseHandler):
 
 
 class CommentsHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ENTRIES_PER_PAGE = 10
+        # config.posts_per_page
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+        states = self.get_arguments(u's[]')
+
+        comments = self.comments.find(
+            states=states,
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
+
+        total_items = self.comments.count(states=states)
+
+        data = []
+        for c in comments:
+            c['created_at'] = c['created_at'].strftime('%s')
+            data.append(c)
+
+        self.finish({
+            'info': 'success',
+            'paging': {
+                'total': total_items,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': data
+        })
+
     def post(self):
         """
         创建
@@ -276,3 +307,32 @@ class CommentsHandler(BaseHandler):
         })
 
         self.redirect(self.request.headers['Referer'])
+
+    @authenticated
+    def put(self):
+        """Update comment
+
+        Authentication requred.
+        This handler may be used to update comment check status.
+        """
+        try:
+            comment_id = self.get_payload_argument('uuid', None)
+            state = self.get_payload_argument('state', None)
+
+            if not comment_id:
+                raise Exception('required argument missing: uuid')
+
+            if not state:
+                raise Exception('required argument missing: state')
+
+            self.comments.update(comment_id, {
+                'state': state
+            })
+
+            self.finish({
+                'info': 'success'
+            })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })

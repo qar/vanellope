@@ -338,7 +338,7 @@ class ArticlePage(BaseHandler):
         self.posts.views_count(article_id)
 
         # state should be pass
-        comments = self.comments.find(post_id=article_id, state="checking")
+        comments = self.comments.find(post_id_list=[article_id], states=["approved"])
 
         if 'tags' not in article:
             article['tags'] = []
