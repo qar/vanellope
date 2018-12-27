@@ -1,19 +1,4 @@
-{% if site['site_comment'] == 'duoshuo' %}
-
-  <div class="ds-thread" data-thread-key="{{ article['uuid'] }}" data-title="{{ article['title'] }}" data-url="/article/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}"></div>
-  <script type="text/javascript">
-  var duoshuoQuery = {short_name:"{{ site['site_comment_id'] }}"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-       || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-{% elif site['site_comment'] == 'disqus' %}
+{% if site['site_comment'] == 'disqus' %}
 
   <div id="disqus_thread"></div>
   <script>
