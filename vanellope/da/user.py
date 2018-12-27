@@ -45,6 +45,18 @@ class UserModel(DataAccess):
         self.conn.commit()
         return passwd_hash
 
+    def get_user_by_name(self, username):
+        """Get user by username
+        """
+        cur = self.conn.cursor()
+        sql = """
+            SELECT * FROM users WHERE username = ?
+        """
+        cur.execute(sql, [username])
+        user = self.to_dict(cur, cur.fetchone())
+        return user
+
+
     def get_admin_user(self):
         cur = self.conn.cursor()
         cur.execute("""

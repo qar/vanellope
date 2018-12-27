@@ -208,8 +208,8 @@ class BaseHandler(RequestHandler):
         if not username:
             return None
         else:
-            user = self.user.get_admin_user()
-            return user
+            user = self.user.get_user_by_name(username)
+            return user if user['passwd'] == passwd_hash else None
 
     def striphtml(self, data):
         p = re.compile(r'<.*?>')

@@ -269,7 +269,9 @@ class LoginPage(BaseHandler):
                     page=u'login')
 
     def post(self):
-        """Login"""
+        """Login
+        By design only one user is allowed to register. And the user is Admin
+        """
 
         pwd = self.get_argument('pwd', None)
 
