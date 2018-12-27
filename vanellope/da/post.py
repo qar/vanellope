@@ -64,6 +64,7 @@ class PostModel(DataAccess):
 
         params.append(data['content'])
         params.append(data['source'])
+        params.append(data['summary'])
 
         if 'category' in data:
             category = data['category']
@@ -79,9 +80,9 @@ class PostModel(DataAccess):
         cur = self.conn.cursor()
 
         sql = """ INSERT INTO posts
-                  (ext, title, content, source, category, tags,
+                  (ext, title, content, source, summary, category, tags,
                    state, uuid, created_at, updated_at)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
               """
 
         post_id = self.gen_uuid(data['title'], data['content'])
@@ -107,6 +108,7 @@ class PostModel(DataAccess):
         params.append(data['title'])
         params.append(data['content'])
         params.append(data['source'])
+        params.append(data['summary'])
 
         if 'category' in data:
             category = data['category']
@@ -128,6 +130,7 @@ class PostModel(DataAccess):
                   title = ?,
                   content = ?,
                   source = ?,
+                  summary = ?,
                   category = ?,
                   tags = ?,
                   state = ?,
@@ -156,6 +159,7 @@ class PostModel(DataAccess):
                   title,
                   content,
                   source,
+                  summary,
                   category,
                   tags,
                   state,

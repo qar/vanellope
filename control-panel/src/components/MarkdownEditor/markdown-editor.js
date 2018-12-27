@@ -131,7 +131,7 @@ export default {
           if (this.editor) {
             if (this.article.ext === 'html') {
               this.editor.setValue(toMarkdown(this.article.content));
-            } else {
+            } else { // Markdown
               this.editor.setValue(this.article.source);
             }
 
@@ -184,9 +184,17 @@ export default {
       const source = this.editor.getValue();
       const content = converter.makeHtml(source);
 
+      // use spliter or use first 300 characters as summary content
+      let summary = '';
+      const splitedSource = source.split(/<!--\s+more\s+-->/);
+      const div = document.createElement('div');
+      div.innerHTML = splitedSource.length > 1 ? converter.makeHtml(splitedSource[0]) : content;
+      summary = (div.textContent || div.innerText || '').substring(0, 300);
+
       const params = {
         category: this.settings.category,
         content,
+        summary,
         source,
         title: this.settings.title,
         state: 'published',

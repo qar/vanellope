@@ -72,6 +72,21 @@ def init_db():
     # Create friendlinks schema
     cur.execute(create_table_sqls['friendlinks_schema'])
 
+    fixtures()
+
+def fixtures():
+    """
+    """
+    cur = connection.cursor()
+
+    # Add new field in posts_schema
+    try:
+        cur.execute('ALTER TABLE posts ADD COLUMN summary TEXT DEFAULT ""')
+    except:
+        pass
+
+    connection.commit()
+
 def db_backup():
     current_time_str = datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S%ZZ')
     filename = '.'.join([current_time_str, 'sql'])

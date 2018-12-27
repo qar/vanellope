@@ -127,11 +127,13 @@ class PostsHandler(BaseHandler):
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'draft')
-        ext = 'html'
+        summary = self.get_payload_argument('summary', '')
+        ext = self.get_payload_argument('ext', 'markdown')
 
         post_uuid = self.posts.create({
             'content': content,
             'source': source,
+            'summary': summary,
             'title': title,
             'category': category,
             'tags': tags,
@@ -211,6 +213,7 @@ class PostHandler(BaseHandler):
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'published')
+        summary = self.get_payload_argument('summary', '')
         ext = self.get_payload_argument('ext', 'markdown')
 
         self.posts.update(post_uuid, {
@@ -219,6 +222,7 @@ class PostHandler(BaseHandler):
             'content': content,
             'title': title,
             'category': category,
+            'summary': summary,
             'tags': tags,
             'ext': ext,
             'state': state
