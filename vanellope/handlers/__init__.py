@@ -4,6 +4,7 @@ import urllib
 import string
 import random
 import hashlib
+import uuid
 import re
 import pytz
 
@@ -108,6 +109,29 @@ class BaseHandler(RequestHandler):
             self.request.uri,
             user_agent)
         )
+
+        session_id = self.get_cookie('s')
+
+        if not session_id:
+            session_id = str(uuid.uuid4())
+            # Set session
+            self.set_cookie(name="s", value=session_id)
+
+        self.current_user = self.get_current_user()
+
+        if self.current_user:
+            username = self.current_user['username']
+        else:
+            username = ''
+
+        self.session.record_visitor(session_id, username, self.request.remote_ip, user_agent)
+
+        session_check = self.session.check_visitor(session_id)
+
+        if session_check['requests'] > 5:
+            self.set_status(403)
+            self.finish('Access Denied')
+            return
 
         # if the site is just created without a admin user
         if not self.settings['admin']:

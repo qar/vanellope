@@ -12,6 +12,7 @@ from tornado import ioloop
 from tornado.options import define, options
 from vanellope.da import init_db, connection
 from vanellope.da.user import UserModel
+from vanellope.da.session import Session
 from vanellope import config
 from vanellope.urls import routers
 
@@ -21,10 +22,13 @@ define("debug", default=False, help="debug mode.", type=bool)
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 
+session = Session()
 
 def get_admin_user():
     return UserModel().get_admin_user()
 
+def scan_session_store():
+    session.scan()
 
 def preflight():
     # check content path existence
@@ -92,6 +96,8 @@ def main():
     options.parse_command_line()
     App().listen(options.port, options.host, xheaders=True)
     print "VANELLOPE running on %s:%d" % (options.host, options.port)
+    schedule = ioloop.PeriodicCallback(scan_session_store, 1000 * 5)
+    schedule.start()
     ioloop.IOLoop.instance().start()
 
 
