@@ -81,16 +81,17 @@ class IndexPage(BaseHandler):
         articles = self.posts.find(
             states=['published'],
             limit=ENTRIES_PER_PAGE,
-            skip=(current_page - 1) * ENTRIES_PER_PAGE
+            skip=(current_page - 1) * int(ENTRIES_PER_PAGE)
         )
 
         total_entries = self.posts.count(states=['published'])
 
-        pages = int(math.floor(total_entries / int(ENTRIES_PER_PAGE)))
-        if total_entries > pages * ENTRIES_PER_PAGE:
-            pages += 1
+        pages = int(math.ceil(total_entries / float(ENTRIES_PER_PAGE)))
 
+        # 1 page bigger than currnet page, but not bigger than total pages
         next_page = current_page + 1 if current_page < pages else pages
+
+        # 1 page less than currnet page, but at least page 1
         previous_page = current_page - 1 if current_page > 1 else 1
 
         self.render("index.html",
