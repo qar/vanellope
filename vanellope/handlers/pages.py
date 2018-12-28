@@ -68,8 +68,8 @@ class WelcomePage(BaseHandler):
 
 class IndexPage(BaseHandler):
     def get(self):
-
-        ENTRIES_PER_PAGE = config.posts_per_page
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
         current_page = int(self.get_argument(u'p', 1))
 
         current_user = self.get_current_user()
@@ -86,7 +86,7 @@ class IndexPage(BaseHandler):
 
         total_entries = self.posts.count(states=['published'])
 
-        pages = int(math.floor(total_entries / ENTRIES_PER_PAGE))
+        pages = int(math.floor(total_entries / int(ENTRIES_PER_PAGE)))
         if total_entries > pages * ENTRIES_PER_PAGE:
             pages += 1
 
