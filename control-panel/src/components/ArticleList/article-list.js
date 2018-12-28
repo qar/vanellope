@@ -14,7 +14,7 @@ export default {
           render: (h, params) => {
             return h('a', {
               attrs: {
-                href: `/articles/${params.row.uuid}`,
+                href: `/article/${params.row.uuid}`,
                 title: params.row.title,
                 target: '_blank',
               },
