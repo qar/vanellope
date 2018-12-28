@@ -211,23 +211,18 @@ class BaseHandler(RequestHandler):
         return isinstance(arg, int)
 
     def get_current_user(self):
-        auth = self.get_cookie('vanellope')
-        if not auth:
-            return
+        anonymous_user = { "role": "visotor", "username": "Anonymous" }
 
         try:
+            auth = self.get_cookie('vanellope')
             username, passwd_hash = base64.b64decode(auth).split(':')
-        except:
-            return None
-
-        if not username:
-            return None
-        else:
             user = self.user.get_user_by_name(username)
             if user['passwd'] == passwd_hash:
-                return user;
+                return user
             else:
-                return { "role": "visotor", "username": "Anonymous" }
+                return anonymous_user
+        except Exception, e:
+            return anonymous_user
 
     def striphtml(self, data):
         p = re.compile(r'<.*?>')
