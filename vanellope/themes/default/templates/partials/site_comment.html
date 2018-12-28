@@ -20,6 +20,11 @@
 
 {% elif site['site_comment'] == '' %}
 
+  {% if not len(comments) %}
+    <p class="no-comments">no comments</p>
+  {% else %}
+
+
   <ul class="comments">
     {% for cmt in comments %}
     <li>
@@ -31,6 +36,8 @@
     </li>
     {% end %}
   </ul>
+
+  {% end %}
 
   <form action="/api/v1/comments" method="POST" enctype='application/json'>
     <input class="vn-input" type="text" name="post_id" value="{{ article['uuid'] }}" hidden>
