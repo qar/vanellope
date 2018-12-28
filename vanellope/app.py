@@ -34,7 +34,6 @@ def preflight():
     # check content path existence
     pass
 
-
 class App(web.Application):
     def __init__(self):
 

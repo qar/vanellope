@@ -878,6 +878,19 @@ ul.nav li.active, ul.nav li:hover {
   display: block;
   margin: 0 auto;
 }
+.comment-box {
+  position: relative;
+  margin-top: 16rem;
+}
+.comment-box::before {
+  position: absolute;
+  content: "";
+  top: -1em;
+  width: 100%;
+  height: 1px;
+  background: #EEE;
+}
+
 .pagination {
   width: 100%;
 }

@@ -34,12 +34,11 @@
 
   <form action="/api/v1/comments" method="POST" enctype='application/json'>
     <input class="vn-input" type="text" name="post_id" value="{{ article['uuid'] }}" hidden>
-    <input class="vn-input" type="text" name="name" placeholder="name">
-    <input class="vn-input" type="text" name="email" placeholder="email">
-    <input class="vn-input" type="text" name="website" placeholder="website (optional)">
-    <textarea class="vn-input" name="content">
-    </textarea>
-    <input class="vn-btn btn-primary pull-right" type="submit" value="send">
+    <input class="vn-input" type="text" name="name" placeholder="称呼" required>
+    <input class="vn-input" type="text" name="email" placeholder="邮箱" hidden>
+    <input class="vn-input" type="text" name="website" placeholder="网站 (optional)" hidden>
+    <textarea class="vn-input" name="content" placeholder="评论正文" required></textarea>
+    <input class="vn-btn btn-primary pull-right" type="submit" value="提交">
   </form>
 
 {% end %}

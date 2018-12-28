@@ -36,16 +36,14 @@ class CommentModel(DataAccess):
         assert data['name'] and len(data['name']) > 0
         params.append(data['name'])
 
-        assert data['email'] and len(data['email']) > 0
         params.append(data['email'])
-
         params.append(data['website'])
 
         assert data['content'] and len(data['content']) > 0
         params.append(data['content'])
 
-        # state. possible values: checking, pass, denied
-        params.append('pass')
+        # state. possible values: checking, approved, banned
+        params.append('approved' if data['role'] == 'admin' else 'checking')
 
         cur = self.conn.cursor()
 

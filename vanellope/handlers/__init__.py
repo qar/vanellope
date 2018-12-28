@@ -14,7 +14,7 @@ from dateutil import relativedelta
 
 import base64
 from tornado.web import StaticFileHandler, RequestHandler, MissingArgumentError
-from tornado.log import access_log
+from tornado.log import access_log, gen_log
 from tornado.escape import json_decode
 
 from user_agents import parse as ua_parse
@@ -89,10 +89,6 @@ class BaseHandler(RequestHandler):
     friendlinks = FriendLinkModel()
 
     def set_default_headers(self):
-        current_user = self.get_current_user()
-        if not current_user:
-            return
-
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
@@ -119,19 +115,14 @@ class BaseHandler(RequestHandler):
 
         self.current_user = self.get_current_user()
 
-        if self.current_user:
-            username = self.current_user['username']
-        else:
-            username = ''
+        if self.current_user['username'] is 'Anonymous':
+            self.session.record_visitor(session_id, 'Anonymous', self.request.remote_ip, user_agent)
+            session_check = self.session.check_visitor(session_id)
 
-        self.session.record_visitor(session_id, username, self.request.remote_ip, user_agent)
-
-        session_check = self.session.check_visitor(session_id)
-
-        if session_check['requests'] > 5:
-            self.set_status(403)
-            self.finish('Access Denied')
-            return
+            if session_check['requests'] > 5:
+                self.set_status(403)
+                self.finish('Access Denied')
+                return
 
         # if the site is just created without a admin user
         if not self.settings['admin']:
@@ -233,7 +224,10 @@ class BaseHandler(RequestHandler):
             return None
         else:
             user = self.user.get_user_by_name(username)
-            return user if user['passwd'] == passwd_hash else None
+            if user['passwd'] == passwd_hash:
+                return user;
+            else:
+                return { "role": "visotor", "username": "Anonymous" }
 
     def striphtml(self, data):
         p = re.compile(r'<.*?>')

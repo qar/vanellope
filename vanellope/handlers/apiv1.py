@@ -304,6 +304,7 @@ class CommentsHandler(BaseHandler):
             'email': email,
             'website': website,
             'content': content,
+            'role': self.current_user['role']
         })
 
         self.redirect(self.request.headers['Referer'])
