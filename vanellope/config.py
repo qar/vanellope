@@ -107,6 +107,8 @@ create_table_sqls = {
 app_settings = {
     # 网站标题
     'site_title': 'Life with vanellope',
+    'site_description': 'Life with vanellope',
+    'site_lang': 'zh-CN',
 
     # 网站地址 like 「www.example.com」
     'site_url': '',

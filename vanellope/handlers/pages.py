@@ -97,6 +97,7 @@ class IndexPage(BaseHandler):
         self.render("index.html",
                     title=self.concat_page_title('Home'),
                     page=u'index',
+                    description=site_config['site_description'],
                     current_page=current_page,
                     next_page=next_page,
                     previous_page=previous_page,
@@ -352,6 +353,7 @@ class ArticlePage(BaseHandler):
                     title=article['title'],
                     page=u'article',
                     related_articles=[],
+                    description=article['summary'],
                     siblings=siblings,
                     article=article,
                     comments=comments)

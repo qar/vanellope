@@ -14,7 +14,7 @@ from dateutil import relativedelta
 
 import base64
 from tornado.web import StaticFileHandler, RequestHandler, MissingArgumentError
-from tornado.log import access_log, gen_log
+from tornado.log import access_log
 from tornado.escape import json_decode
 
 from user_agents import parse as ua_parse
