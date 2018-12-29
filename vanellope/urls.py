@@ -23,7 +23,7 @@ routers = [
 
     # Show articles written in a specific date range
     # accept date range from 0000-00-00 to 9999-99-99
-    (r"/archive/([0-9]{4})/?([0-9]{2})?/?([0-9]{2})?", pages.ArchivePage),
+    (r"/archive/([0-9]{4})?/?([0-9]{2})?/?([0-9]{2})?", pages.ArchivePage),
 
     # Articles with one specific category
     (r"/category/(.*)", pages.CategoryPage),

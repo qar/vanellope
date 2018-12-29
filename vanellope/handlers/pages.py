@@ -298,6 +298,7 @@ class CategoryPage(BaseHandler):
                     description=ns['site']['site_description'],
                     previous_page=previous_page,
                     next_page=next_page,
+                    current_uri=self.base_uri(),
                     current_page=current_page,
                     current_category=cate,
                     articles=articles)
