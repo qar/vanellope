@@ -816,9 +816,9 @@ ul.nav li.active, ul.nav li:hover {
 .article-view pre > code {
   display: block;
   padding: 10px;
-  color: #08e008;
+  color: #585858;
   border-radius: 4px;
-  background-color: #2d2d2d;
+  background-color: #e5e9ec;
   font-size: 14px;
   line-height: 21px;
   font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
