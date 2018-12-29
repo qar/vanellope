@@ -88,6 +88,13 @@ class BaseHandler(RequestHandler):
     comments = CommentModel()
     friendlinks = FriendLinkModel()
 
+    def base_uri(self):
+        """Get request.uri but Remove query string
+
+        e.q. `/path/to/path?p=1` to `/path/to/path`
+        """
+        return self.request.uri.rsplit('?', 1)[0]
+
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")

@@ -1,0 +1,28 @@
+<ol class="posts">
+
+  {% for article in articles %}
+  <li class="post">
+    <a href="{{ article['path'] }}"><h3 class="title">{{ article['title'] }}</h3></a>
+
+    {% if article['summary'] %}
+    <p class="brief">{{ article['summary'] }} ...</p>
+    {% end if %}
+
+    <ul class="meta">
+      <li class="timestamp">{{ article['created_at'].strftime("%Y/%m/%d") }}</li>
+      <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
+      <li class="tags">
+        {% for tag in article['tags'] %}
+        <a href="/tags/{{ tag }}">{{ tag }}</a>
+        {% end %}
+      </li>
+      {% if current_user and current_user['role'] == 'admin' %}
+      <li class="admin-btn"><a href="/controlpanel#/editor/{{ article['uuid'] }}">EDIT</a></li>
+      {% end %}
+    </ul>
+
+
+  </li>
+  {% end %}
+
+</ol>
