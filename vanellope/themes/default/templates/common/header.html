@@ -9,17 +9,6 @@
 
   {% include "./favicon.html" %}
 
-  {% if page.startswith('admin') %}
-  <link rel="stylesheet" type="text/css" href="{{ static_url('js/simditor/styles/simditor.css') }}" />
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/jquery.min.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/module.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/hotkeys.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/uploader.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/simditor.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/angular.min.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/application.js') }}"></script>
-  {% end if %}
-
   <link rel="stylesheet" type="text/css" href="{{ static_url('css/style.css') }}" />
 
   {% include "../partials/google_adsense.html" %}

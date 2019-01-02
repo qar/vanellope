@@ -22,11 +22,6 @@
   <!--
 
   --><div class="sub-content">
-  {% if current_user and current_user['role'] == 'admin' %}
-  {% include "partials/drafts.html" %}
-  {% end %}
-
-
   {% include "partials/archives.html" %}
   {% include "partials/categories.html" %}
   {% include "partials/tags.html" %}
