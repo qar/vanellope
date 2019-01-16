@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict'
 const utils = require('./utils')
 const config = require('../config')
@@ -13,7 +14,7 @@ module.exports = {
     extract: isProduction
   }),
   cssSourceMap: sourceMapEnabled,
-  cacheBusting: config.dev.cacheBusting, 
+  cacheBusting: config.dev.cacheBusting,
   transformToRequire: {
     video: 'src',
     source: 'src',
