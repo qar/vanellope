@@ -42,20 +42,9 @@ def init_db():
 
     # Create configuration table
     cur.execute(create_table_sqls['conf_schema'])
-    cur.execute('SELECT * FROM configuration')
-    results = cur.fetchall()
-
     # Initialize configurations
-    if len(results) == 0:
-        t = app_settings.items()
-        cur.executemany("INSERT INTO configuration VALUES (?, ?)", t)
-
-    # Before the first stable release came out, there may be more configuraiton items
-    # add to database
-    incs = set([i[0] for i in app_settings.items()]) - set([i[0] for i in results])
-    if len(incs):
-        params = [(i, app_settings[i]) for i in incs]
-        cur.executemany("INSERT INTO configuration VALUES (?, ?)", params)
+    t = app_settings.items()
+    cur.executemany("INSERT OR IGNORE INTO configuration VALUES (?, ?)", t)
 
     # Create posts table
     cur.execute(create_table_sqls['posts_schema'])
