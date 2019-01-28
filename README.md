@@ -1,4 +1,6 @@
-# VANELLOPE
+<p align="center">
+  <img src="./artworks/logo.png" alt="vanellope" title="A personal blog site solution designed to be deployed with a minimal effort." height="100">
+</p>
 
 > A personal blog site solution designed to be deployed with a minimal effort.
 
