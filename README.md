@@ -2,6 +2,8 @@
 
 > A personal blog site solution designed to be deployed with a minimal effort.
 
+![](https://img.shields.io/docker/pulls/qiaoanran/vanellope.svg?style=popout-square)
+
 ## Setup basic development environment
 
 1. Install the latest version of Docker
