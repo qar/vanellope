@@ -9,7 +9,7 @@ module.exports = {
   env: {
     browser: true,
   },
-  extends: 'airbnb-base',
+  extends: ['airbnb-base', 'plugin:jest/recommended'],
   // required to lint *.vue files
   plugins: [
     'html'
