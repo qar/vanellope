@@ -107,7 +107,10 @@
       "^.+\\.jsx?$": "babel-jest",
       "^.+\\.vue$": "vue-jest"
     },
-    "testRegex": "/src/.*\\.(spec|test)\\.[jt]sx?$"
+    "testRegex": "/src/.*\\.(spec|test)\\.[jt]sx?$",
+    "moduleNameMapper": {
+      "@/(.*)": "<rootDir>/src/$1"
+    }
   },
   "engines": {
     "node": ">= 4.0.0",
