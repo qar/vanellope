@@ -100,7 +100,8 @@
     "coverageDirectory": "./test/unit/coverage",
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
-    }
+    },
+    "testRegex": "/src/.*\\.(spec|test)\\.[jt]sx?$"
   },
   "engines": {
     "node": ">= 4.0.0",
