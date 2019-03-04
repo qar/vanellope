@@ -97,7 +97,10 @@
     "bail": 1,
     "clearMocks": true,
     "collectCoverage": true,
-    "coverageDirectory": "./test/unit/coverage"
+    "coverageDirectory": "./test/unit/coverage",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   },
   "engines": {
     "node": ">= 4.0.0",
