@@ -32,10 +32,10 @@
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.29",
     "autoprefixer": "^7.1.2",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^7.1.1",
     "babel-plugin-istanbul": "^4.1.1",
     "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-preset-env": "^1.3.2",
     "babel-register": "^6.22.0",
     "chai": "^4.2.0",
     "chalk": "^2.4.2",
@@ -83,6 +83,7 @@
     "sinon": "^4.0.0",
     "sinon-chai": "^2.8.0",
     "url-loader": "^0.5.8",
+    "vue-jest": "^3.0.3",
     "vue-loader": "^15.5.1",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.22",
@@ -96,8 +97,14 @@
     "bail": 1,
     "collectCoverage": true,
     "coverageDirectory": "./test/unit/coverage",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.vue$": "vue-jest"
     },
     "testRegex": "/src/.*\\.(spec|test)\\.[jt]sx?$"
   },
