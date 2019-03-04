@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const portfinder = require('portfinder')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -39,6 +40,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new VueLoaderPlugin(),
+    // extract css into its own file
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     // https://github.com/ampedandwired/html-webpack-plugin
