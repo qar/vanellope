@@ -93,9 +93,7 @@
     "webpack-merge": "^4.2.1"
   },
   "jest": {
-    "automock": true,
     "bail": 1,
-    "clearMocks": true,
     "collectCoverage": true,
     "coverageDirectory": "./test/unit/coverage",
     "transform": {
