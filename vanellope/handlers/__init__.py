@@ -122,7 +122,7 @@ class BaseHandler(RequestHandler):
 
         self.current_user = self.get_current_user()
 
-        if self.current_user['username'] is 'Anonymous':
+        if not self.current_user:
             self.session.record_visitor(session_id, 'Anonymous', self.request.remote_ip, user_agent)
             session_check = self.session.check_visitor(session_id)
 
@@ -218,8 +218,6 @@ class BaseHandler(RequestHandler):
         return isinstance(arg, int)
 
     def get_current_user(self):
-        anonymous_user = { "role": "visotor", "username": "Anonymous" }
-
         try:
             auth = self.get_cookie('vanellope')
             username, passwd_hash = base64.b64decode(auth).split(':')
@@ -227,9 +225,9 @@ class BaseHandler(RequestHandler):
             if user['passwd'] == passwd_hash:
                 return user
             else:
-                return anonymous_user
+                return
         except Exception, e:
-            return anonymous_user
+            return
 
     def striphtml(self, data):
         p = re.compile(r'<.*?>')
