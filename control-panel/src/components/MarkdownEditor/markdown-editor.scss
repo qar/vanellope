@@ -86,6 +86,18 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
   vertical-align: baseline;
   padding: 0 14%;
 
+  // link
+  a {
+    color: #5c5c5c;
+    text-decoration: none;
+    border-bottom: 1px solid #a4a4a4;
+    &:hover {
+      color: Black;
+      text-decoration: none;
+      border-bottom: 1px solid black;
+    }
+  }
+
   // code block
   pre > code {
     display: block;
