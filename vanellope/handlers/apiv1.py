@@ -337,3 +337,17 @@ class CommentsHandler(BaseHandler):
         except Exception, e:
             self.set_status(400)
             self.finish({ 'reason': str(e) })
+
+
+class CategoryListHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        """
+        Find all categories
+        """
+        categories = self.posts.get_categories()
+        self.finish({
+            'info': 'success',
+            'data': categories
+            })
+
