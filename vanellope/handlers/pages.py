@@ -293,7 +293,7 @@ class CategoryPage(BaseHandler):
         previous_page = current_page - 1 if current_page > 1 else 1
 
         self.render("category.html",
-                    title=self.concat_page_title('Category:{0}'.format(cate)),
+                    title=self.concat_page_title(u'Category:{0}'.format(cate)),
                     page=u'category',
                     description=ns['site']['site_description'],
                     previous_page=previous_page,
