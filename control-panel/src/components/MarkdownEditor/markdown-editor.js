@@ -49,10 +49,7 @@ export default {
         categoryModal: false,
       },
 
-      categories: [
-        'default',
-        'love',
-      ],
+      categories: [],
 
       // 设置选项
       settings: {
@@ -121,6 +118,8 @@ export default {
   },
 
   created() {
+    this.getCategories();
+
     if (this.$route.params.articleId) {
       apis.getArticle(this.$route.params.articleId)
         .then(res => {
@@ -142,6 +141,13 @@ export default {
   },
 
   methods: {
+    getCategories() {
+      $http.get('/api/v1/categories')
+        .then(res => {
+          this.categories = res.data.data.sort((a, b) => (a.count - b.count)).map(a => a.category);
+        });
+    },
+
     uploadFile(file) {
       const formData = new FormData();
       formData.append('image', file);
