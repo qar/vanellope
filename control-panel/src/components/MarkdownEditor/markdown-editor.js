@@ -4,6 +4,7 @@ window.CodeMirror = CodeMirror;
 import * as _ from 'lodash';
 import showdown from 'showdown';
 import youtubeExt from '../../extensions/youtube-md';
+import VueTagsInput from '@johmun/vue-tags-input';
 
 showdown.extension('youtube', youtubeExt);
 const converter = new showdown.Converter({
@@ -22,6 +23,9 @@ import toMarkdown from 'to-markdown';
 
 export default {
   name: 'MarkdownEditor',
+  components: {
+    VueTagsInput,
+  },
 
   data() {
     return {
@@ -45,11 +49,24 @@ export default {
         dragDrop: false,
       },
 
+      newTag: '',
+
       modals: {
         categoryModal: false,
+        tagsModal: false,
       },
 
       categories: [],
+      tags: [
+        {
+          tag: 'hero',
+          count: 3,
+        },
+        {
+          tag: 'life',
+          count: 2,
+        }
+      ],
 
       // 设置选项
       settings: {
@@ -58,6 +75,9 @@ export default {
 
         // 文章分类
         category: '',
+
+        // 文章标签
+        tags: [],
 
         // 文章 id (可以用来判断是创建还是更新)
         uuid: '',
@@ -108,6 +128,10 @@ export default {
   },
 
   computed: {
+    sortedTags() {
+      return this.tags.sort((a, b) => (a.count - b.count)).map(t => ({ text: t.tag }));
+    },
+
     isInEditMode() {
       return this.section === 'edit' ? 'info' : 'ghost';
     },
@@ -202,6 +226,7 @@ export default {
         content,
         summary,
         source,
+        tags: this.settings.tags.map(t => t.text),
         title: this.settings.title,
         state: 'published',
         ext: 'markdown'
