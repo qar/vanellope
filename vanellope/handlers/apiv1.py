@@ -353,14 +353,69 @@ class CategoryListHandler(BaseHandler):
 
 
 class NotesHandler(BaseHandler):
+    def post(self):
+        try:
+            accessToken = self.request.headers['Access-Token']
+            self.accessToken.validate(accessToken)
+            content = self.get_payload_argument('content', '')
+
+            note_uuid = self.notes.create({
+                'content': content
+                })
+
+            self.finish({
+                'info': 'success'
+                })
+        except KeyError:
+            self.set_status(400)
+            self.finish({ 'reason': 'Access-Token header is required' })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })
+
+
+class AccessTokensHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ENTRIES_PER_PAGE = 10
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+
+        tokens = self.accessToken.find(
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
+
+        total_items = self.accessToken.count()
+
+        data = []
+        for t in tokens:
+            t['created_at'] = t['created_at'].strftime('%s')
+            data.append(t)
+
+        self.finish({
+            'info': 'success',
+            'paging': {
+                'total': total_items,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': data
+        })
+
     @authenticated
     def post(self):
-        content = self.get_payload_argument('content', '')
-
-        note_uuid = self.notes.create({
-            'content': content
-            })
+        self.accessToken.create()
 
         self.finish({
             'info': 'success'
-            })
+        })
+
+    @authenticated
+    def delete(self, token):
+        self.accessToken.remove(token)
+
+        self.finish({
+            'info': 'success'
+        })

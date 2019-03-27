@@ -24,6 +24,7 @@ from vanellope.da.config import ConfigModel
 from vanellope.da.user import UserModel
 from vanellope.da.post import PostModel
 from vanellope.da.notes import NoteModel
+from vanellope.da.accesstoken import AccessTokenModel
 from vanellope.da.session import Session
 from vanellope.da.comment import CommentModel
 from vanellope.da.friendlinks import FriendLinkModel
@@ -89,6 +90,7 @@ class BaseHandler(RequestHandler):
     session = Session()
     comments = CommentModel()
     friendlinks = FriendLinkModel()
+    accessToken = AccessTokenModel()
 
     def base_uri(self):
         """Get request.uri but Remove query string

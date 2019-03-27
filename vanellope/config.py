@@ -110,6 +110,14 @@ create_table_sqls = [
          created_at TIMESTAMP NOT NULL,
          updated_at TIMESTAMP NOT NULL
     )
+    """,
+
+    """
+    CREATE TABLE IF NOT EXISTS tokens (
+         token TEXT PRIMARY KEY,
+         note TEXT,
+         created_at TIMESTAMP NOT NULL
+    )
     """
 ]
 
