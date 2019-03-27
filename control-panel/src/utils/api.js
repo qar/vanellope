@@ -1,6 +1,25 @@
 /* eslint-disable */
 import $http from '@/utils/http';
 
+function getNotes(paging) {
+  const params = {
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/notes', { params })
+    .then(res => res.data);
+}
+
+function deleteNote(id) {
+  return $http.delete(`/api/v1/notes/${id}`)
+    .then(res => res.data);
+}
+
+function addNote(content) {
+  return $http.post('/api/v1/notes', { content })
+    .then(res => res.data);
+}
+
 function getTokens(paging) {
   const params = {
     p: paging.current,
@@ -119,6 +138,9 @@ export default {
   removeToken,
   deleteArticle,
   getFriendLinks,
+  getNotes,
+  addNote,
+  deleteNote,
   createFriendLinks,
   delFriendLink,
   updateComment,

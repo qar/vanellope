@@ -9,6 +9,7 @@ import WidgetsPage from '@/components/WidgetsPage/widgets-page';
 import FriendsLinks from '@/components/FriendsLinks/friends-links';
 import CommentList from '@/components/CommentList/comment-list.vue';
 import TokenList from '@/components/TokenList/token-list';
+import NoteList from '@/components/NoteList/note-list.vue';
 
 Vue.use(Router);
 
@@ -72,6 +73,12 @@ export default new Router({
       path: '/tokens',
       name: 'TokenList',
       component: TokenList,
+    },
+
+    {
+      path: '/notes',
+      name: 'NoteList',
+      component: NoteList,
     },
   ],
 });
