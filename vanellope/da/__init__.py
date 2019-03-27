@@ -40,26 +40,11 @@ def init_db():
     """
     cur = connection.cursor()
 
-    # Create configuration table
-    cur.execute(create_table_sqls['conf_schema'])
+    for sql in create_table_sqls:
+        cur.execute(sql)
+
     # Initialize configurations
-    t = app_settings.items()
-    cur.executemany("INSERT OR IGNORE INTO configuration VALUES (?, ?)", t)
-
-    # Create posts table
-    cur.execute(create_table_sqls['posts_schema'])
-
-    # Create users schema
-    cur.execute(create_table_sqls['users_schema'])
-
-    # Create comments schema
-    cur.execute(create_table_sqls['comments_schema'])
-
-    # Create comments schema
-    cur.execute(create_table_sqls['posts_views_schema'])
-
-    # Create friendlinks schema
-    cur.execute(create_table_sqls['friendlinks_schema'])
+    cur.executemany("INSERT OR IGNORE INTO configuration VALUES (?, ?)", app_settings.items())
 
     fixtures()
 

@@ -419,3 +419,37 @@ class UploadedFileHandler(web.StaticFileHandler):
     def initialize(self):
         uploaded_path = self.settings['uploaded_path']
         return web.StaticFileHandler.initialize(self, uploaded_path)
+
+
+class NotesPage(BaseHandler):
+    def get(self):
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
+        current_page = int(self.get_argument(u'p', 1))
+
+        notes = self.notes.find(
+            limit=ENTRIES_PER_PAGE,
+            skip=(current_page - 1) * int(ENTRIES_PER_PAGE)
+        )
+
+        total_entries = self.notes.count()
+
+        pages = int(math.ceil(total_entries / float(ENTRIES_PER_PAGE)))
+
+        # 1 page bigger than currnet page, but not bigger than total pages
+        next_page = current_page + 1 if current_page < pages else pages
+
+        # 1 page less than currnet page, but at least page 1
+        previous_page = current_page - 1 if current_page > 1 else 1
+
+        self.render("notes.html",
+                    title=self.concat_page_title('Notes'),
+                    page=u'notes',
+                    description=site_config['site_description'],
+                    current_page=current_page,
+                    current_uri=self.base_uri(),
+                    next_page=next_page,
+                    previous_page=previous_page,
+                    pages=pages,
+                    notes=notes)
+

@@ -31,6 +31,9 @@ routers = [
     # GET 查看某篇文章
     (r"/article/(\w{8}).*", pages.ArticlePage),
 
+    # Notes
+    (r"/notes", pages.NotesPage),
+
     # 查看草稿
     (config.app_settings['draft_base_path'] + r"(\w{8}).*", pages.DraftPage),
 
@@ -41,6 +44,7 @@ routers = [
     (r"/uploaded/(.*)", pages.UploadedFileHandler),
 
     (r"/api/v1/trash", apiv1.TrashHandler),
+    (r"/api/v1/notes", apiv1.NotesHandler),
     (r"/api/v1/posts", apiv1.PostsHandler),
     (r"/api/v1/posts/(.*)", apiv1.PostHandler),
     (r"/api/v1/article/(.*)", apiv1.ArticleHandler),

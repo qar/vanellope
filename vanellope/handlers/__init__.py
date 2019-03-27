@@ -23,6 +23,7 @@ import urlparse
 from vanellope.da.config import ConfigModel
 from vanellope.da.user import UserModel
 from vanellope.da.post import PostModel
+from vanellope.da.notes import NoteModel
 from vanellope.da.session import Session
 from vanellope.da.comment import CommentModel
 from vanellope.da.friendlinks import FriendLinkModel
@@ -83,6 +84,7 @@ class Days(object):
 class BaseHandler(RequestHandler):
     user = UserModel()
     posts = PostModel()
+    notes = NoteModel()
     config = ConfigModel()
     session = Session()
     comments = CommentModel()

@@ -351,3 +351,16 @@ class CategoryListHandler(BaseHandler):
             'data': categories
             })
 
+
+class NotesHandler(BaseHandler):
+    @authenticated
+    def post(self):
+        content = self.get_payload_argument('content', '')
+
+        note_uuid = self.notes.create({
+            'content': content
+            })
+
+        self.finish({
+            'info': 'success'
+            })

@@ -1,0 +1,32 @@
+{% include "common/header.html" %}
+{% include "common/banner.html" %}
+
+<div class="wrapper">
+  <div class="main-content">
+
+    <div class="main-content-header">
+      <a href="/">HOME</a>
+    </div>
+
+    {% if len(notes) == 0 %}
+
+      No notes 
+
+    {% else %}
+
+      {% include "partials/notes.html" %}
+      {% include "partials/paging.html" %}
+
+    {% end %}
+  </div>
+  <!--
+
+  --><div class="sub-content">
+  {% include "partials/archives.html" %}
+  {% include "partials/categories.html" %}
+  {% include "partials/tags.html" %}
+  {% include "partials/links.html" %}
+  </div>
+
+</div> <!-- End of .wrapper -->
+{% include "common/footer.html" %}
