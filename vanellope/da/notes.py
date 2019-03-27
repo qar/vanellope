@@ -102,3 +102,14 @@ class NoteModel(DataAccess):
         cur = self.conn.cursor()
         cur.execute(sql, params)
         return cur.fetchone()[0]
+
+    def remove(self, uid):
+        cur = self.conn.cursor()
+
+        sql = """
+              DELETE FROM notes
+              WHERE uuid = ?
+              """
+        cur.execute(sql, [uid])
+        self.conn.commit()
+

@@ -7,22 +7,6 @@ from tornado.escape import json_decode
 from vanellope.handlers import BaseHandler
 
 
-class ArticleHandler(BaseHandler):
-    def get(self, article_id):
-        article = self.posts.find_by_id(article_id)
-
-        if not article:
-            self.send_error(404)
-            return
-
-        if 'tags' not in article:
-            article['tags'] = []
-
-        article['created_at'] = article['created_at'].strftime('%s')  # seconds
-        article['updated_at'] = article['updated_at'].strftime('%s')  # seconds
-        self.finish(article)
-
-
 class ConfigurationHandler(BaseHandler):
     @authenticated
     def get(self):
@@ -353,16 +337,77 @@ class CategoryListHandler(BaseHandler):
 
 
 class NotesHandler(BaseHandler):
+    def get(self):
+        try:
+            if not self.current_user:
+                accessToken = self.request.headers['Access-Token']
+                self.accessToken.validate(accessToken)
+
+            site_config = self.config.read_config()
+            ENTRIES_PER_PAGE = site_config['posts_per_page']
+            items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+            current_page = int(self.get_argument(u'p', 1))
+
+            notes = self.notes.find(
+                limit=items_per_page,
+                skip=(current_page - 1) * int(items_per_page)
+            )
+
+            total_items = self.notes.count()
+
+            data = []
+            for note in notes:
+                note['created_at'] = note['created_at'].strftime('%s')
+                note['updated_at'] = note['updated_at'].strftime('%s')
+                data.append(note)
+
+            self.finish({
+                'info': 'success',
+                'paging': {
+                    'total': total_items,
+                    'items_per_page': items_per_page,
+                    'current_page': current_page,
+                },
+                'data': data
+            })
+        except KeyError:
+            self.set_status(400)
+            self.finish({ 'reason': 'Access-Token header is required' })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })
+
+
     def post(self):
         try:
-            accessToken = self.request.headers['Access-Token']
-            self.accessToken.validate(accessToken)
+            if not self.current_user:
+                accessToken = self.request.headers['Access-Token']
+                self.accessToken.validate(accessToken)
             content = self.get_payload_argument('content', '')
 
             note_uuid = self.notes.create({
                 'content': content
                 })
 
+            self.finish({
+                'info': 'success'
+                })
+        except KeyError:
+            self.set_status(400)
+            self.finish({ 'reason': 'Access-Token header is required' })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })
+
+    def delete(self, uid):
+        try:
+            if not self.current_user:
+                accessToken = self.request.headers['Access-Token']
+                self.accessToken.validate(accessToken)
+
+            self.notes.remove(uid)
             self.finish({
                 'info': 'success'
                 })
