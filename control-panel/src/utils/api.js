@@ -1,6 +1,25 @@
 /* eslint-disable */
 import $http from '@/utils/http';
 
+function getTokens(paging) {
+  const params = {
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/access-tokens', { params })
+    .then(res => res.data);
+}
+
+function addToken() {
+  return $http.post(`/api/v1/access-tokens`)
+    .then(res => res.data);
+}
+
+function removeToken(token) {
+  return $http.delete(`/api/v1/access-tokens/${token}`)
+    .then(res => res.data);
+}
+
 function getSettings() {
   return $http.get('/api/v1/configuration').then(res => res.data);
 }
@@ -86,6 +105,7 @@ function delFriendLink(linkId) {
 }
 
 export default {
+  addToken,
   createArticle,
   updateArticle,
   updateSettings,
@@ -95,6 +115,8 @@ export default {
   getArticle,
   getSettings,
   getTrash,
+  getTokens,
+  removeToken,
   deleteArticle,
   getFriendLinks,
   createFriendLinks,

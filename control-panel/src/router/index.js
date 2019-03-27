@@ -8,6 +8,7 @@ import TrashCan from '@/components/TrashCan/trash-can.vue';
 import WidgetsPage from '@/components/WidgetsPage/widgets-page';
 import FriendsLinks from '@/components/FriendsLinks/friends-links';
 import CommentList from '@/components/CommentList/comment-list.vue';
+import TokenList from '@/components/TokenList/token-list';
 
 Vue.use(Router);
 
@@ -65,6 +66,12 @@ export default new Router({
       path: '/comments',
       name: 'CommentList',
       component: CommentList,
+    },
+
+    {
+      path: '/tokens',
+      name: 'TokenList',
+      component: TokenList,
     },
   ],
 });
