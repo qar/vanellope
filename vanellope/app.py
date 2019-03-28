@@ -15,6 +15,7 @@ from vanellope.da.user import UserModel
 from vanellope.da.session import Session
 from vanellope import config
 from vanellope.urls import routers
+from vanellope.handlers.error import Error404Handler
 
 define("port", default=8000, help="run on the given port", type=int)
 define("host", default="127.0.0.1", help="run on the given host", type=str)
@@ -56,6 +57,9 @@ class App(web.Application):
             "config_keys": config_keys,
             "uploaded_path": config.uploaded_path,
             "db_path": config.db_path,
+
+            # 404 Page
+            "default_handler_class": Error404Handler,
 
             # None or dict object
             # Indicating whether or not the site has a registered admin user
