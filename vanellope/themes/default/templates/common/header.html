@@ -1,24 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ site['site_lang'] }}">
 <head>
+	<title>{{ title }}</title>
 	<meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+
   {% include "./favicon.html" %}
 
-  {% if page.startswith('admin') %}
-  <link rel="stylesheet" type="text/css" href="{{ static_url('js/simditor/styles/simditor.css') }}" />
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/jquery.min.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/module.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/hotkeys.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/uploader.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/simditor/scripts/simditor.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/angular.min.js') }}"></script>
-  <script type="text/javascript" src="{{ static_url('js/application.js') }}"></script>
-  {% end if %}
-
   <link rel="stylesheet" type="text/css" href="{{ static_url('css/style.css') }}" />
+
+  {% include "../partials/google_adsense.html" %}
 </head>
 
 <body>

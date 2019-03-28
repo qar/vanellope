@@ -16,6 +16,9 @@ export default {
   },
 
   methods: {
-    save() {},
+    save() {
+      apis.updateSettings(this.settings);
+    },
   },
 };
+

@@ -8,8 +8,9 @@
     box-sizing: border-box;
 }
 
-.article-banner, .banner {
-    margin-bottom: 2rem;
+.article-banner,
+.banner {
+    margin-bottom: 4rem;
     width: 100%;
     .banner-content {
         height: $banner-height-lg;
@@ -28,52 +29,74 @@
     }
 }
 
-.article-banner {
-
-  .banner-content {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: $banner-height-lg;
+.banner {
+  .brand {
+    float: left;
+    width: auto;
   }
 
-  // iPhone 7
-  @media screen and (max-width: 960px) {
-    & {
-      margin-bottom: 0.8rem;
-    }
+  ul.nav {
+    float: right;
+    width: auto;
+    display: block;
+    height: $banner-height-lg;
 
-    .banner-content {
-      height: 38px;
-      line-height: 38px;
+    & > li {
+      display: inline-block;
+      line-height: $banner-height-lg;
+      width: 5rem;
+      text-align: center;
+      vertical-align: middle;
     }
   }
 }
 
-ul.nav {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    color: white;
-    li {
-        float: left;
-        width: auto;
-        text-align: left;
-        display: inline-block;
-        line-height: 4rem;
-        vertical-align: middle;
-        border-bottom: 4px solid transparent;
-        -webkit-transition: border-bottom 200ms ease;
-        &:not(:last-child) {
-            margin-right: 2rem;
-        }
-        &.active, &:hover {
-            -webkit-transition: border-bottom 200ms ease;
-            border-bottom: 4px solid rgba(255, 255, 255, 1);
-            cursor: pointer;
-        }
-    }
-}
+// .article-banner {
+//
+//   .banner-content {
+//     display: inline-block;
+//     vertical-align: middle;
+//     line-height: $banner-height-lg;
+//   }
+//
+//   // iPhone 7
+//   @media screen and (max-width: 960px) {
+//     & {
+//       margin-bottom: 0.8rem;
+//     }
+//
+//     .banner-content {
+//       height: 38px;
+//       line-height: 38px;
+//     }
+//   }
+// }
+
+// ul.nav {
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     color: white;
+//     li {
+//         float: left;
+//         width: auto;
+//         text-align: left;
+//         display: inline-block;
+//         line-height: 4rem;
+//         vertical-align: middle;
+//         border-bottom: 4px solid transparent;
+//         -webkit-transition: border-bottom 200ms ease;
+//         &:not(:last-child) {
+//             margin-right: 2rem;
+//         }
+//         &.active, &:hover {
+//             -webkit-transition: border-bottom 200ms ease;
+//             border-bottom: 4px solid rgba(255, 255, 255, 1);
+//             cursor: pointer;
+//         }
+//     }
+// }
 
 .wrapper {
     @media screen and (min-width: $large-view) {
@@ -98,6 +121,10 @@ ul.nav {
     padding-top: 2rem;
     padding-right: 2rem;
     box-sizing: border-box;
+
+    &.detail-view {
+      padding-top: 0;
+    }
 
     .main-content-header {
         color: $theme-green;
@@ -202,6 +229,7 @@ ul.nav {
 
     }
     .timestamp {
+      color: #A2A2A2;
     }
     .tags {
     }

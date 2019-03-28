@@ -1,11 +1,10 @@
 {% include "common/header.html" %}
+{% include "common/banner.html" %}
 
   <div class="wrapper">
     <div class="main-content">
 
-      <div class="main-content-header">
-        <a href="/">HOME</a> / ARCHIVES
-      </div>
+      <div class="main-content-header">ARCHIVES</div>
 
       <ol class="posts">
         {% for year in archives.keys() %}
@@ -18,7 +17,6 @@
     </div><!--
 
     --><div class="sub-content">
-      {% include "partials/archives.html" %}
       {% include "partials/tags.html" %}
     </div>
 

@@ -5,21 +5,21 @@ import hashlib
 import base64
 from tornado import web
 from tornado.web import authenticated
-from vanellope.handlers import BaseHandler
+from vanellope.handlers.base import BaseHandler
 from vanellope import config
-from vanellope.handlers import Days
-
+from vanellope.handlers.base import Days
 
 class WelcomePage(BaseHandler):
     def get(self):
-
         admin = self.user.get_admin_user()
+        ns = self.get_template_namespace()
 
         if admin:
             return self.redirect('/')
 
         self.render("welcome.html",
                     title=self.concat_page_title('Welcome'),
+                    description=ns['site']['site_description'],
                     page=u'welcome')
 
     def post(self):
@@ -68,8 +68,8 @@ class WelcomePage(BaseHandler):
 
 class IndexPage(BaseHandler):
     def get(self):
-
-        ENTRIES_PER_PAGE = config.posts_per_page
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
         current_page = int(self.get_argument(u'p', 1))
 
         current_user = self.get_current_user()
@@ -81,22 +81,25 @@ class IndexPage(BaseHandler):
         articles = self.posts.find(
             states=['published'],
             limit=ENTRIES_PER_PAGE,
-            skip=(current_page - 1) * ENTRIES_PER_PAGE
+            skip=(current_page - 1) * int(ENTRIES_PER_PAGE)
         )
 
         total_entries = self.posts.count(states=['published'])
 
-        pages = int(math.floor(total_entries / ENTRIES_PER_PAGE))
-        if total_entries > pages * ENTRIES_PER_PAGE:
-            pages += 1
+        pages = int(math.ceil(total_entries / float(ENTRIES_PER_PAGE)))
 
+        # 1 page bigger than currnet page, but not bigger than total pages
         next_page = current_page + 1 if current_page < pages else pages
+
+        # 1 page less than currnet page, but at least page 1
         previous_page = current_page - 1 if current_page > 1 else 1
 
         self.render("index.html",
                     title=self.concat_page_title('Home'),
                     page=u'index',
+                    description=site_config['site_description'],
                     current_page=current_page,
+                    current_uri=self.base_uri(),
                     next_page=next_page,
                     previous_page=previous_page,
                     pages=pages,
@@ -106,9 +109,11 @@ class IndexPage(BaseHandler):
 
 class SnippetsPage(BaseHandler):
     def get(self):
+        ns = self.get_template_namespace()
         self.render("snippets.html",
                     title=self.concat_page_title('Snippets'),
                     page=u'snippets',
+                    description=ns['site']['site_description'],
                     current_page=0,
                     next_page=0,
                     previous_page=0,
@@ -120,9 +125,11 @@ class SnippetsPage(BaseHandler):
 class TagsPage(BaseHandler):
     def get(self):
         current_page = int(self.get_argument(u'p', 1))
+        ns = self.get_template_namespace()
 
         self.render("tags.html",
                     title=self.concat_page_title('Tags'),
+                    description=ns['site']['site_description'],
                     page=u'tags',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1)
@@ -130,28 +137,39 @@ class TagsPage(BaseHandler):
 
 class TagPage(BaseHandler):
     def get(self, tag):
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
         current_page = int(self.get_argument(u'p', 1))
+        ns = self.get_template_namespace()
 
         articles = self.posts.find_posts_with_tag(tag)
 
         self.render("tag.html",
                     title=self.concat_page_title("Tag:{0}".format(tag)),
+                    description=ns['site']['site_description'],
                     page=u'tag',
+                    current_page=current_page,
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
+                    current_uri=self.base_uri(),
                     current_tag=tag,
                     articles=articles)
 
 
 class ArchivesPage(BaseHandler):
     def get(self):
+        ns = self.get_template_namespace()
         self.render('archives.html',
+                    description=ns['site']['site_description'],
                     title=self.concat_page_title('Archive'),
                     page=u'archives')
 
 
 class ArchivePage(BaseHandler):
     def get(self, year=u'', month=u'', day=u'12345'):
+        ns = self.get_template_namespace()
+        current_page = int(self.get_argument(u'p', 1))
+
         if day is None:
             day = u''
 
@@ -161,7 +179,6 @@ class ArchivePage(BaseHandler):
         if year is None:
             year = u''
 
-        current_page = int(self.get_argument(u'p', 1))
 
         from_date = end_date = None
 
@@ -237,39 +254,71 @@ class ArchivePage(BaseHandler):
                 article['tags'] = []
             articles.append(article)
 
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
+
+        pages = int(math.ceil(len(articles) / float(ENTRIES_PER_PAGE)))
+
+        # 1 page bigger than currnet page, but not bigger than total pages
+        next_page = current_page + 1 if current_page < pages else pages
+
+        # 1 page less than currnet page, but at least page 1
+        previous_page = current_page - 1 if current_page > 1 else 1
+
         self.render("archive.html",
                     title=self.concat_page_title('Archive'),
                     page=u'archive',
+                    description=ns['site']['site_description'],
                     from_date=from_date,
                     end_date=end_date,
-                    current_uri=self.request.uri,
+                    current_uri=self.base_uri(),
+                    current_page=current_page,
                     previous_page=current_page - 1 if current_page > 1 else 1,
-                    next_page=current_page + 1,
+                    next_page=next_page,
                     articles=articles)
 
 
 class CategoryPage(BaseHandler):
     def get(self, cate):
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
+
         current_page = int(self.get_argument(u'p', 1))
         articles = self.posts.find_by_category(cate, ["published"])
+        ns = self.get_template_namespace()
+
+        pages = int(math.ceil(len(articles) / float(ENTRIES_PER_PAGE)))
+
+        # 1 page bigger than currnet page, but not bigger than total pages
+        next_page = current_page + 1 if current_page < pages else pages
+
+        # 1 page less than currnet page, but at least page 1
+        previous_page = current_page - 1 if current_page > 1 else 1
 
         self.render("category.html",
-                    title=self.concat_page_title('Category:{0}'.format(cate)),
+                    title=self.concat_page_title(u'Category:{0}'.format(cate)),
                     page=u'category',
-                    previous_page=current_page - 1 if current_page > 1 else 1,
-                    next_page=current_page + 1,
+                    description=ns['site']['site_description'],
+                    previous_page=previous_page,
+                    next_page=next_page,
+                    current_uri=self.base_uri(),
+                    current_page=current_page,
                     current_category=cate,
                     articles=articles)
 
 
 class LoginPage(BaseHandler):
     def get(self):
+        ns = self.get_template_namespace()
         self.render("login.html",
+                    description=ns['site']['site_description'],
                     title=self.concat_page_title('Login'),
                     page=u'login')
 
     def post(self):
-        """Login"""
+        """Login
+        By design only one user is allowed to register. And the user is Admin
+        """
 
         pwd = self.get_argument('pwd', None)
 
@@ -338,7 +387,7 @@ class ArticlePage(BaseHandler):
         self.posts.views_count(article_id)
 
         # state should be pass
-        comments = self.comments.find(post_id=article_id, state="checking")
+        comments = self.comments.find(post_id_list=[article_id], states=["approved"])
 
         if 'tags' not in article:
             article['tags'] = []
@@ -349,6 +398,7 @@ class ArticlePage(BaseHandler):
                     title=article['title'],
                     page=u'article',
                     related_articles=[],
+                    description=article['summary'],
                     siblings=siblings,
                     article=article,
                     comments=comments)
@@ -372,3 +422,37 @@ class UploadedFileHandler(web.StaticFileHandler):
     def initialize(self):
         uploaded_path = self.settings['uploaded_path']
         return web.StaticFileHandler.initialize(self, uploaded_path)
+
+
+class NotesPage(BaseHandler):
+    def get(self):
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
+        current_page = int(self.get_argument(u'p', 1))
+
+        notes = self.notes.find(
+            limit=ENTRIES_PER_PAGE,
+            skip=(current_page - 1) * int(ENTRIES_PER_PAGE)
+        )
+
+        total_entries = self.notes.count()
+
+        pages = int(math.ceil(total_entries / float(ENTRIES_PER_PAGE)))
+
+        # 1 page bigger than currnet page, but not bigger than total pages
+        next_page = current_page + 1 if current_page < pages else pages
+
+        # 1 page less than currnet page, but at least page 1
+        previous_page = current_page - 1 if current_page > 1 else 1
+
+        self.render("notes.html",
+                    title=self.concat_page_title('Notes'),
+                    page=u'notes',
+                    description=site_config['site_description'],
+                    current_page=current_page,
+                    current_uri=self.base_uri(),
+                    next_page=next_page,
+                    previous_page=previous_page,
+                    pages=pages,
+                    notes=notes)
+

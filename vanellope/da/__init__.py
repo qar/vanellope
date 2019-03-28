@@ -35,34 +35,31 @@ def record_view(post_id):
     # if exist, then update counts
     # if not, insert one,
 
-def create_tables():
-    # Create tables if not exist
+def init_db():
+    """Initialize database or update db tables structure
+    """
     cur = connection.cursor()
 
-    # Create configuration table
-    cur.execute(create_table_sqls['conf_schema'])
-    cur.execute('SELECT * FROM configuration')
-    results = cur.fetchall()
+    for sql in create_table_sqls:
+        cur.execute(sql)
 
     # Initialize configurations
-    if len(results) == 0:
-        t = app_settings.items()
-        cur.executemany("INSERT INTO configuration VALUES (?, ?)", t)
+    cur.executemany("INSERT OR IGNORE INTO configuration VALUES (?, ?)", app_settings.items())
 
-    # Create posts table
-    cur.execute(create_table_sqls['posts_schema'])
+    fixtures()
 
-    # Create users schema
-    cur.execute(create_table_sqls['users_schema'])
+def fixtures():
+    """
+    """
+    cur = connection.cursor()
 
-    # Create comments schema
-    cur.execute(create_table_sqls['comments_schema'])
+    # Add new field in posts_schema
+    try:
+        cur.execute('ALTER TABLE posts ADD COLUMN summary TEXT DEFAULT ""')
+    except:
+        pass
 
-    # Create comments schema
-    cur.execute(create_table_sqls['posts_views_schema'])
-
-    # Create friendlinks schema
-    cur.execute(create_table_sqls['friendlinks_schema'])
+    connection.commit()
 
 def db_backup():
     current_time_str = datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S%ZZ')

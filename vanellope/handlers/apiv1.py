@@ -4,23 +4,7 @@ import os.path
 import uuid
 from tornado.web import authenticated
 from tornado.escape import json_decode
-from vanellope.handlers import BaseHandler
-
-
-class ArticleHandler(BaseHandler):
-    def get(self, article_id):
-        article = self.posts.find_by_id(article_id)
-
-        if not article:
-            self.send_error(404)
-            return
-
-        if 'tags' not in article:
-            article['tags'] = []
-
-        article['created_at'] = article['created_at'].strftime('%s')  # seconds
-        article['updated_at'] = article['updated_at'].strftime('%s')  # seconds
-        self.finish(article)
+from vanellope.handlers.base import BaseHandler
 
 
 class ConfigurationHandler(BaseHandler):
@@ -42,9 +26,10 @@ class ConfigurationHandler(BaseHandler):
             if v is not None:
                 configs[k] = v
 
-        self.config.update(configs)
+        result = self.config.update(configs)
         self.finish({
-            'info': 'success'
+            'info': 'success',
+            'data': result
         })
 
 
@@ -126,11 +111,13 @@ class PostsHandler(BaseHandler):
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'draft')
-        ext = 'html'
+        summary = self.get_payload_argument('summary', '')
+        ext = self.get_payload_argument('ext', 'markdown')
 
         post_uuid = self.posts.create({
             'content': content,
             'source': source,
+            'summary': summary,
             'title': title,
             'category': category,
             'tags': tags,
@@ -210,6 +197,7 @@ class PostHandler(BaseHandler):
         tags = self.get_payload_argument('tags', '')
         title = self.get_payload_argument('title', 'default_title')
         state = self.get_payload_argument('state', 'published')
+        summary = self.get_payload_argument('summary', '')
         ext = self.get_payload_argument('ext', 'markdown')
 
         self.posts.update(post_uuid, {
@@ -218,6 +206,7 @@ class PostHandler(BaseHandler):
             'content': content,
             'title': title,
             'category': category,
+            'summary': summary,
             'tags': tags,
             'ext': ext,
             'state': state
@@ -245,6 +234,37 @@ class AdminTrashHandler(BaseHandler):
 
 
 class CommentsHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ENTRIES_PER_PAGE = 10
+        # config.posts_per_page
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+        states = self.get_arguments(u's[]')
+
+        comments = self.comments.find(
+            states=states,
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
+
+        total_items = self.comments.count(states=states)
+
+        data = []
+        for c in comments:
+            c['created_at'] = c['created_at'].strftime('%s')
+            data.append(c)
+
+        self.finish({
+            'info': 'success',
+            'paging': {
+                'total': total_items,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': data
+        })
+
     def post(self):
         """
         创建
@@ -268,6 +288,179 @@ class CommentsHandler(BaseHandler):
             'email': email,
             'website': website,
             'content': content,
+            'role': self.current_user['role']
         })
 
         self.redirect(self.request.headers['Referer'])
+
+    @authenticated
+    def put(self):
+        """Update comment
+
+        Authentication requred.
+        This handler may be used to update comment check status.
+        """
+        try:
+            comment_id = self.get_payload_argument('uuid', None)
+            state = self.get_payload_argument('state', None)
+
+            if not comment_id:
+                raise Exception('required argument missing: uuid')
+
+            if not state:
+                raise Exception('required argument missing: state')
+
+            self.comments.update(comment_id, {
+                'state': state
+            })
+
+            self.finish({
+                'info': 'success'
+            })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })
+
+
+class CategoryListHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        """
+        Find all categories
+        """
+        categories = self.posts.get_categories()
+        self.finish({
+            'info': 'success',
+            'data': categories
+            })
+
+
+class NotesHandler(BaseHandler):
+    def get(self):
+        try:
+            if not self.current_user:
+                accessToken = self.request.headers['Access-Token']
+                self.accessToken.validate(accessToken)
+
+            site_config = self.config.read_config()
+            ENTRIES_PER_PAGE = site_config['posts_per_page']
+            items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+            current_page = int(self.get_argument(u'p', 1))
+
+            notes = self.notes.find(
+                limit=items_per_page,
+                skip=(current_page - 1) * int(items_per_page)
+            )
+
+            total_items = self.notes.count()
+
+            data = []
+            for note in notes:
+                note['created_at'] = note['created_at'].strftime('%s')
+                note['updated_at'] = note['updated_at'].strftime('%s')
+                data.append(note)
+
+            self.finish({
+                'info': 'success',
+                'paging': {
+                    'total': total_items,
+                    'items_per_page': items_per_page,
+                    'current_page': current_page,
+                },
+                'data': data
+            })
+        except KeyError:
+            self.set_status(400)
+            self.finish({ 'reason': 'Access-Token header is required' })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })
+
+
+    def post(self):
+        try:
+            if not self.current_user:
+                accessToken = self.request.headers['Access-Token']
+                self.accessToken.validate(accessToken)
+            content = self.get_payload_argument('content', '')
+
+            note_uuid = self.notes.create({
+                'content': content
+                })
+
+            self.finish({
+                'info': 'success'
+                })
+        except KeyError:
+            self.set_status(400)
+            self.finish({ 'reason': 'Access-Token header is required' })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })
+
+    def delete(self, uid):
+        try:
+            if not self.current_user:
+                accessToken = self.request.headers['Access-Token']
+                self.accessToken.validate(accessToken)
+
+            self.notes.remove(uid)
+            self.finish({
+                'info': 'success'
+                })
+        except KeyError:
+            self.set_status(400)
+            self.finish({ 'reason': 'Access-Token header is required' })
+
+        except Exception, e:
+            self.set_status(400)
+            self.finish({ 'reason': str(e) })
+
+
+class AccessTokensHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ENTRIES_PER_PAGE = 10
+        current_page = int(self.get_argument(u'p', 1))
+        items_per_page = int(self.get_argument(u'z', ENTRIES_PER_PAGE))
+
+        tokens = self.accessToken.find(
+            limit=items_per_page,
+            skip=(current_page - 1) * items_per_page
+        )
+
+        total_items = self.accessToken.count()
+
+        data = []
+        for t in tokens:
+            t['created_at'] = t['created_at'].strftime('%s')
+            data.append(t)
+
+        self.finish({
+            'info': 'success',
+            'paging': {
+                'total': total_items,
+                'items_per_page': items_per_page,
+                'current_page': current_page,
+            },
+            'data': data
+        })
+
+    @authenticated
+    def post(self):
+        self.accessToken.create()
+
+        self.finish({
+            'info': 'success'
+        })
+
+    @authenticated
+    def delete(self, token):
+        self.accessToken.remove(token)
+
+        self.finish({
+            'info': 'success'
+        })

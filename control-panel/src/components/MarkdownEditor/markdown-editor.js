@@ -4,6 +4,7 @@ window.CodeMirror = CodeMirror;
 import * as _ from 'lodash';
 import showdown from 'showdown';
 import youtubeExt from '../../extensions/youtube-md';
+import VueTagsInput from '@johmun/vue-tags-input';
 
 showdown.extension('youtube', youtubeExt);
 const converter = new showdown.Converter({
@@ -22,6 +23,9 @@ import toMarkdown from 'to-markdown';
 
 export default {
   name: 'MarkdownEditor',
+  components: {
+    VueTagsInput,
+  },
 
   data() {
     return {
@@ -45,13 +49,23 @@ export default {
         dragDrop: false,
       },
 
+      newTag: '',
+
       modals: {
         categoryModal: false,
+        tagsModal: false,
       },
 
-      categories: [
-        'default',
-        'love',
+      categories: [],
+      tags: [
+        {
+          tag: 'hero',
+          count: 3,
+        },
+        {
+          tag: 'life',
+          count: 2,
+        }
       ],
 
       // 设置选项
@@ -61,6 +75,9 @@ export default {
 
         // 文章分类
         category: '',
+
+        // 文章标签
+        tags: [],
 
         // 文章 id (可以用来判断是创建还是更新)
         uuid: '',
@@ -111,6 +128,10 @@ export default {
   },
 
   computed: {
+    sortedTags() {
+      return this.tags.sort((a, b) => (a.count - b.count)).map(t => ({ text: t.tag }));
+    },
+
     isInEditMode() {
       return this.section === 'edit' ? 'info' : 'ghost';
     },
@@ -121,6 +142,8 @@ export default {
   },
 
   created() {
+    this.getCategories();
+
     if (this.$route.params.articleId) {
       apis.getArticle(this.$route.params.articleId)
         .then(res => {
@@ -131,7 +154,7 @@ export default {
           if (this.editor) {
             if (this.article.ext === 'html') {
               this.editor.setValue(toMarkdown(this.article.content));
-            } else {
+            } else { // Markdown
               this.editor.setValue(this.article.source);
             }
 
@@ -142,6 +165,13 @@ export default {
   },
 
   methods: {
+    getCategories() {
+      $http.get('/api/v1/categories')
+        .then(res => {
+          this.categories = res.data.data.sort((a, b) => (a.count - b.count)).map(a => a.category);
+        });
+    },
+
     uploadFile(file) {
       const formData = new FormData();
       formData.append('image', file);
@@ -184,10 +214,19 @@ export default {
       const source = this.editor.getValue();
       const content = converter.makeHtml(source);
 
+      // use spliter or use first 300 characters as summary content
+      let summary = '';
+      const splitedSource = source.split(/<!--\s+more\s+-->/);
+      const div = document.createElement('div');
+      div.innerHTML = splitedSource.length > 1 ? converter.makeHtml(splitedSource[0]) : content;
+      summary = (div.textContent || div.innerText || '').substring(0, 300);
+
       const params = {
         category: this.settings.category,
         content,
+        summary,
         source,
+        tags: this.settings.tags.map(t => t.text),
         title: this.settings.title,
         state: 'published',
         ext: 'markdown'

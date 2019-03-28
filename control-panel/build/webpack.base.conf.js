@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict'
 const path = require('path')
 const utils = require('./utils')
@@ -29,16 +30,16 @@ module.exports = {
   },
   module: {
     rules: [
-      ...(config.dev.useEslint? [{
+      // source code will be linted during bundling and
+      // linting errors and warnings will be shown in the console.
+      // https://github.com/webpack-contrib/eslint-loader
+      {
         test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter'),
-          emitWarning: !config.dev.showEslintErrorsInOverlay
-        }
-      }] : []),
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+        enforce: 'pre' // check source files, not modified by other loaders
+      },
+
       {
         test: /\.vue$/,
         loader: 'vue-loader',

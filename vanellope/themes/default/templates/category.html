@@ -10,35 +10,18 @@ No articles
   <div class="wrapper">
     <div class="main-content">
 
-      <div class="main-content-header">
-        <a href="/">HOME</a> /
+      <div class="main-content-header">CATEGORY: {{ current_category }}</div>
 
-        CATEGORY: {{ current_category }}
-      </div>
+      {% if len(articles) == 0 %}
 
-      <ol class="posts">
+        No articles
 
-        {% for article in articles %}
-        <li class="post">
-          <a href="{{ article['path'] }}"><h3 class="title">{{ article['title'] }}</h3></a>
-          <p class="brief">
-          </p>
-          <ul class="meta">
-            <li class="timestamp">{{ article['created_at'].strftime("%Y/%m/%d") }}</li>
-            <li class="category"><a href="/category/{{ article['category'] }}">{{ article['category'] }}</a></li>
-            <li class="tags">
-              {% for tag in article['tags'] %}
-              <a href="/tags/{{ tag }}">{{ tag }}</a>
-              {% end %}
-            </li>
-            {% if current_user and current_user['role'] == 'admin' %}
-            <li class="admin-btn"><a href="/controlpanel#/editor/{{ article['uuid'] }}">EDIT</a></li>
-            {% end %}
-          </ul>
-        </li>
-        {% end %}
+      {% else %}
 
-      </ol>
+        {% include "partials/article-list.html" %}
+        {% include "partials/paging.html" %}
+
+      {% end %}
     </div>
 {% end %}
     <!--

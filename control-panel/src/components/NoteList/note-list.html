@@ -1,0 +1,33 @@
+<div>
+  <div class="article-list-layout">
+    <h1 class="table-title">随想</h1>
+    <Table :columns="columns" :data="rows"></Table>
+    <Row>
+      <Col span="12">
+        <div style="padding-top: 10px; text-align: left">
+          <Button type="primary" @click="modals.compose = true">记录</Button>
+        </div>
+      </Col>
+
+      <Col span="12">
+        <div class="paging">
+          <Page
+            :total="paging.total"
+            :page-size="paging.size"
+            show-elevator
+            show-sizer
+            @on-change="changePage"
+            @on-page-size-change="changePageSize">
+          </Page>
+        </div>
+      </Col>
+    </Row>
+  </div>
+
+  <Modal
+    v-model="modals.compose"
+    title="撰写"
+    @on-ok="addNote">
+    <Input v-model="content" type="textarea" :rows="6" placeholder="Enter something..." />
+  </Modal>
+</div>

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from vanellope.handlers import BaseHandler
+from vanellope.handlers.base import BaseHandler
 
 
 class MainFeed(BaseHandler):

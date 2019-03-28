@@ -1,26 +1,11 @@
-{% if site['site_comment'] == 'duoshuo' %}
-
-  <div class="ds-thread" data-thread-key="{{ article['uuid'] }}" data-title="{{ article['title'] }}" data-url="/article/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}"></div>
-  <script type="text/javascript">
-  var duoshuoQuery = {short_name:"{{ site['site_comment_id'] }}"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-       || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-{% elif site['site_comment'] == 'disqus' %}
+{% if site['site_comment'] == 'disqus' %}
 
   <div id="disqus_thread"></div>
   <script>
 
   var disqus_config = function () {
-    this.page.url = "http://standfast.me/article/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}"; 
-    this.page.identifier = "{{ article['uuid'] }}"; 
+    this.page.url = "http://standfast.me/article/{{ article['uuid'] }}+{{ u'_'.join(article['title'].split()) }}";
+    this.page.identifier = "{{ article['uuid'] }}";
   };
   (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
@@ -35,6 +20,11 @@
 
 {% elif site['site_comment'] == '' %}
 
+  {% if not len(comments) %}
+    <p class="no-comments">no comments</p>
+  {% else %}
+
+
   <ul class="comments">
     {% for cmt in comments %}
     <li>
@@ -47,14 +37,15 @@
     {% end %}
   </ul>
 
+  {% end %}
+
   <form action="/api/v1/comments" method="POST" enctype='application/json'>
     <input class="vn-input" type="text" name="post_id" value="{{ article['uuid'] }}" hidden>
-    <input class="vn-input" type="text" name="name" placeholder="name">
-    <input class="vn-input" type="text" name="email" placeholder="email">
-    <input class="vn-input" type="text" name="website" placeholder="website (optional)">
-    <textarea class="vn-input" name="content">
-    </textarea>
-    <input class="vn-btn btn-primary pull-right" type="submit" value="send">
+    <input class="vn-input" type="text" name="name" placeholder="称呼" required>
+    <input class="vn-input" type="text" name="email" placeholder="邮箱" hidden>
+    <input class="vn-input" type="text" name="website" placeholder="网站 (optional)" hidden>
+    <textarea class="vn-input" name="content" placeholder="评论正文" required></textarea>
+    <input class="vn-btn btn-primary pull-right" type="submit" value="提交">
   </form>
 
 {% end %}

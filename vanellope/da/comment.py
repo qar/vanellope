@@ -36,16 +36,14 @@ class CommentModel(DataAccess):
         assert data['name'] and len(data['name']) > 0
         params.append(data['name'])
 
-        assert data['email'] and len(data['email']) > 0
         params.append(data['email'])
-
         params.append(data['website'])
 
         assert data['content'] and len(data['content']) > 0
         params.append(data['content'])
 
-        # state. possible values: checking, pass, denied
-        params.append('pass')
+        # state. possible values: checking, approved, banned
+        params.append('approved' if data['role'] == 'admin' else 'checking')
 
         cur = self.conn.cursor()
 
@@ -73,24 +71,119 @@ class CommentModel(DataAccess):
 
         return comment_id
 
-    def find(self, post_id, state):
+    def find(self, post_id_list=[], id_list=[], limit=None, skip=0, states=[]):
         sql = """
               SELECT
-                  uuid,
-                  post_id,
-                  name,
-                  email,
-                  content,
-                  state,
-                  created_at as "created_at [timestamp]"
-              FROM comments WHERE post_id = ? AND state = ?
-              ORDER BY created_at ASC
+                  comments.uuid,
+                  comments.post_id,
+                  posts.title as post_title,
+                  comments.name,
+                  comments.email,
+                  comments.content,
+                  comments.state,
+                  comments.created_at as "created_at [timestamp]"
+              FROM comments
+              LEFT JOIN posts ON posts.uuid = comments.post_id
+              WHERE 1
               """
-        params = [post_id, state]
+
+        id_list = filter(None, id_list)
+        post_id_list = filter(None, post_id_list)
+        states = filter(None, states)
+
+        params = []
+
+        if len(id_list) > 0:
+            sql += " AND comments.uuid IN (?) "
+            params.append(','.join(id_list))
+
+        if len(post_id_list) > 0:
+            sql += " AND posts.uuid IN (?) "
+            params.append(','.join(post_id_list))
+
+        # https://stackoverflow.com/a/1310001/2609042
+        if len(states) > 0:
+            sql += " AND comments.state IN (%s)" % ','.join('?' * len(states))
+            params.extend(states)
+
+        sql += 'ORDER BY comments.created_at ASC'
+
+        if limit:
+            sql += " LIMIT ?"
+            params.append(limit)
+
+        if skip:
+            sql += " OFFSET ?"
+            params.append(skip)
 
         cur = self.conn.cursor()
         cur.execute(sql, params)
         return [self.to_dict(cur, p) for p in cur.fetchall()]
+
+    def count(self,
+              tag_list=[],
+              before_date=None,
+              after_date=None,
+              states=[],
+              categories=[]):
+
+        tag_list = filter(None, tag_list)
+        states = filter(None, states)
+        categories = filter(None, categories)
+
+        sql = " SELECT count(*) as count FROM comments WHERE 1 "
+        params = []
+
+        if len(tag_list) > 0:
+            sql += " AND tags LIKE "
+            sql += ' OR '.join(['?'] * len(tag_list))
+            params += ['%' + tag + '%' for tag in tag_list]
+
+        if before_date:
+            sql += " AND created_at <= ?"
+            params.append(before_date)
+
+        if after_date:
+            sql += " AND created_at >= ?"
+            params.append(after_date)
+
+        # https://stackoverflow.com/a/1310001/2609042
+        if len(states) > 0:
+            sql += " AND state IN (%s)" % ','.join('?' * len(states))
+            params.extend(states)
+
+        if len(categories) > 0:
+            sql += " AND category IN (?)"
+            params.append(','.join(categories))
+
+        sql += " ORDER BY created_at DESC"
+
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        return cur.fetchone()[0]
+
+    def update(self, uid, data):
+        """Update comment by uuid
+        """
+
+        if type(data) is not dict:
+            raise TypeError('parameter `data` must be a dict object')
+
+        params = []
+        params.append(data['state'])
+
+        cur = self.conn.cursor()
+
+        sql = """
+              UPDATE comments
+              SET state = ?
+              WHERE uuid = ?
+              """
+        params.append(uid)
+
+        cur.execute(sql, params)
+        self.conn.commit()
+
 
     def gen_uuid(self, post_id, email, content, timestamp):
         """Generate comment uuid based on conditions

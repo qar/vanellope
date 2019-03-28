@@ -1,8 +1,50 @@
 /* eslint-disable */
 import $http from '@/utils/http';
 
+function getNotes(paging) {
+  const params = {
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/notes', { params })
+    .then(res => res.data);
+}
+
+function deleteNote(id) {
+  return $http.delete(`/api/v1/notes/${id}`)
+    .then(res => res.data);
+}
+
+function addNote(content) {
+  return $http.post('/api/v1/notes', { content })
+    .then(res => res.data);
+}
+
+function getTokens(paging) {
+  const params = {
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/access-tokens', { params })
+    .then(res => res.data);
+}
+
+function addToken() {
+  return $http.post(`/api/v1/access-tokens`)
+    .then(res => res.data);
+}
+
+function removeToken(token) {
+  return $http.delete(`/api/v1/access-tokens/${token}`)
+    .then(res => res.data);
+}
+
 function getSettings() {
   return $http.get('/api/v1/configuration').then(res => res.data);
+}
+
+function updateSettings(settings) {
+  return $http.put('/api/v1/configuration', settings).then(res => res.data);
 }
 
 function createArticle(args) {
@@ -22,6 +64,21 @@ function getArticleList(paging) {
     z: paging.size,
   };
   return $http.get('/api/v1/posts', { params })
+    .then(res => res.data);
+}
+
+function getCommentList(paging, states=['checking']) {
+  const params = {
+    s: states,
+    p: paging.current,
+    z: paging.size,
+  };
+  return $http.get('/api/v1/comments', { params })
+    .then(res => res.data);
+}
+
+function updateComment(params) {
+  return $http.put('/api/v1/comments', params)
     .then(res => res.data);
 }
 
@@ -67,15 +124,24 @@ function delFriendLink(linkId) {
 }
 
 export default {
+  addToken,
   createArticle,
   updateArticle,
+  updateSettings,
   getArticleList,
+  getCommentList,
   getDraftList,
   getArticle,
   getSettings,
   getTrash,
+  getTokens,
+  removeToken,
   deleteArticle,
   getFriendLinks,
+  getNotes,
+  addNote,
+  deleteNote,
   createFriendLinks,
   delFriendLink,
+  updateComment,
 };

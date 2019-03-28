@@ -1,5 +1,5 @@
-$bg-code: #2d2d2d;
-$color-code: #08e008;
+$bg-code: #e5e9ec;
+$color-code: #585858;
 $font-code: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, "Hiragino Sans GB", "PingFang SC", "Heiti SC", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans", sans-serif;
 
@@ -23,6 +23,18 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
     left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  // link
+  a {
+    color: #5c5c5c;
+    text-decoration: none;
+    border-bottom: 1px solid #a4a4a4;
+    &:hover {
+      color: Black;
+      text-decoration: none;
+      border-bottom: 1px solid black;
+    }
   }
 
   // code block
@@ -119,5 +131,16 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
     img + em {
       // used as picture description
     }
+  }
+}
+
+.comment-box {
+  position: relative;
+  margin-top: 16rem;
+
+  .no-comments {
+    width: 100%;
+    text-align: center;
+    margin: 10rem 0;
   }
 }

@@ -1,0 +1,14 @@
+<ol class="posts">
+
+  {% for article in notes %}
+  <li class="post">
+    <p class="brief">{{ article['content'] }}</p>
+
+    <ul class="meta">
+      <li class="timestamp">{{ article['created_at'].strftime("%d %b %Y") }}</li>
+    </ul>
+
+  </li>
+  {% end %}
+
+</ol>

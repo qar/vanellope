@@ -12,16 +12,16 @@ export default {
           title: '标题',
           key: 'title',
           render: (h, params) => {
-            return h('div', [
-                h('router-link', {
-                  props: {
-                    to: { name: 'ArticleMarkdownEditor', params: { articleId: params.row.uuid }}
-                  },
-                }, [
-                  h('strong', params.row.title)
-                ]),
+            return h('a', {
+              attrs: {
+                href: `/article/${params.row.uuid}`,
+                title: params.row.title,
+                target: '_blank',
+              },
+            }, [
+              h('strong', params.row.title),
             ]);
-          }
+          },
         },
 
         {
@@ -51,15 +51,20 @@ export default {
 
               h('Button', {
                 props: {
-                  icon: 'eye',
+                  icon: 'compose',
                   type: 'ghost',
                   size: 'small',
+                  to: { name: 'ArticleMarkdownEditor', params: { articleId: params.row.uuid }}
                 },
+
                 on: {
                   click: () => {
-                    this.preview(params.row)
-                  }
-                }
+                    this.$router.push({
+                      name: 'ArticleMarkdownEditor',
+                      params: { articleId: params.row.uuid }
+                    });
+                  },
+                },
               }),
             ]);
           }
