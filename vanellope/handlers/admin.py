@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from tornado.web import authenticated
-from vanellope.handlers import AdminBaseHandler
+from vanellope.handlers.base import AdminBaseHandler
 from vanellope.da import db_backup
 
 

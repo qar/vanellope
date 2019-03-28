@@ -4,7 +4,7 @@ import os.path
 import uuid
 from tornado.web import authenticated
 from tornado.escape import json_decode
-from vanellope.handlers import BaseHandler
+from vanellope.handlers.base import BaseHandler
 
 
 class ConfigurationHandler(BaseHandler):

@@ -5,10 +5,9 @@ import hashlib
 import base64
 from tornado import web
 from tornado.web import authenticated
-from vanellope.handlers import BaseHandler
+from vanellope.handlers.base import BaseHandler
 from vanellope import config
-from vanellope.handlers import Days
-
+from vanellope.handlers.base import Days
 
 class WelcomePage(BaseHandler):
     def get(self):
@@ -138,6 +137,8 @@ class TagsPage(BaseHandler):
 
 class TagPage(BaseHandler):
     def get(self, tag):
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
         current_page = int(self.get_argument(u'p', 1))
         ns = self.get_template_namespace()
 
@@ -147,8 +148,10 @@ class TagPage(BaseHandler):
                     title=self.concat_page_title("Tag:{0}".format(tag)),
                     description=ns['site']['site_description'],
                     page=u'tag',
+                    current_page=current_page,
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
+                    current_uri=self.base_uri(),
                     current_tag=tag,
                     articles=articles)
 

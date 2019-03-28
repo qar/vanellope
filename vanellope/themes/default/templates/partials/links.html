@@ -1,3 +1,4 @@
+{% if len(friendlinks) > 0 %}
 <div class="widget">
   <div class="widget-header">LINKS</div>
   <div class="widget-body">
@@ -7,10 +8,7 @@
         <a href="{{ link['address'] }}" title="{{ link['title'] }}">{{ link['title']}}</a>
       </li>
       {% end %}
-
-      {% if current_user and current_user['role'] == 'admin' %}
-      <li><a href="/controlpanel"><span>Management Panel</span></a></li>
-      {% end %}
     </ul>
   </div>
 </div>
+{% end if %}
