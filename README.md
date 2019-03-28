@@ -5,6 +5,7 @@
 > A personal blog site solution designed to be deployed with a minimal effort.
 
 ![](https://img.shields.io/docker/pulls/qiaoanran/vanellope.svg?style=popout-square)
+![Docker Build Status](https://img.shields.io/docker/build/qiaoanran/vanellope.svg?style=popout-square)
 
 ## Setup basic development environment
 
