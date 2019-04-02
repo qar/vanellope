@@ -176,6 +176,22 @@ class TrashHandler(BaseHandler):
 
 class PostHandler(BaseHandler):
     @authenticated
+    def get(self, article_id):
+        article = self.posts.find_by_id(article_id)
+
+        if not article:
+            self.send_error(404)
+            return
+
+        if 'tags' not in article:
+            article['tags'] = []
+
+        article['created_at'] = article['created_at'].strftime('%s')  # seconds
+        article['updated_at'] = article['updated_at'].strftime('%s')  # seconds
+        self.finish(article)
+
+
+    @authenticated
     def delete(self, entry_id):
         self.posts.delete(entry_id)
         self.finish({

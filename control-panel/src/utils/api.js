@@ -107,7 +107,7 @@ function getTrash(paging) {
 }
 
 function getArticle(id) {
-  return $http.get(`/api/v1/article/${id}`)
+  return $http.get(`/api/v1/posts/${id}`)
     .then(res => res.data);
 }
 

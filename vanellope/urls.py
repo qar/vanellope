@@ -49,6 +49,7 @@ routers = [
     (r"/api/v1/notes", apiv1.NotesHandler),
     (r"/api/v1/notes/(.*)", apiv1.NotesHandler),
     (r"/api/v1/posts", apiv1.PostsHandler),
+    (r"/api/v1/article/(.*)", apiv1.PostHandler), # deprecated
     (r"/api/v1/posts/(.*)", apiv1.PostHandler),
     (r"/api/v1/image", apiv1.ImageHandler),
     (r"/api/v1/configuration", apiv1.ConfigurationHandler),
