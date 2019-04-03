@@ -24,6 +24,7 @@ routers = [
     (r"/archive/([0-9]{4})?/?([0-9]{2})?/?([0-9]{2})?", pages.ArchivePage),
 
     # Articles with one specific category
+    (r"/categories", pages.CategoriesPage),
     (r"/category/(.*)", pages.CategoryPage),
 
     # GET 查看某篇文章

@@ -292,6 +292,19 @@ class CategoryPage(BaseHandler):
                     articles=articles)
 
 
+class CategoriesPage(BaseHandler):
+    def get(self):
+        current_page = int(self.get_argument(u'p', 1))
+        ns = self.get_template_namespace()
+
+        self.render("categories.html",
+                    title=self.concat_page_title('Categories'),
+                    description=ns['site']['site_description'],
+                    page=u'categories',
+                    previous_page=current_page - 1 if current_page > 1 else 1,
+                    next_page=current_page + 1)
+
+
 class LoginPage(BaseHandler):
     def get(self):
         ns = self.get_template_namespace()
