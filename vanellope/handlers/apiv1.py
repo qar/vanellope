@@ -480,3 +480,14 @@ class AccessTokensHandler(BaseHandler):
         self.finish({
             'info': 'success'
         })
+
+
+class TagsHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        ns = self.get_template_namespace()
+        tags = ns['tags']
+        self.finish({
+            'info': 'success',
+            'data': tags
+            })

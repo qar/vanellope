@@ -45,6 +45,7 @@ routers = [
 
     (r"/api/v1/access-tokens", apiv1.AccessTokensHandler),
     (r"/api/v1/access-tokens/(.*)", apiv1.AccessTokensHandler),
+    (r"/api/v1/tags", apiv1.TagsHandler),
     (r"/api/v1/trash", apiv1.TrashHandler),
     (r"/api/v1/notes", apiv1.NotesHandler),
     (r"/api/v1/notes/(.*)", apiv1.NotesHandler),
