@@ -337,28 +337,6 @@ class Logout(BaseHandler):
         self.redirect('/')
 
 
-class DraftPage(BaseHandler):
-    @authenticated
-    def get(self, article_id):
-        article = self.posts.find_by_id(article_id)
-
-        if not article:
-            self.send_error(404)
-            return
-
-        if 'tags' not in article:
-            article['tags'] = []
-
-        siblings = []
-
-        self.render("article.html",
-                    title=article['title'],
-                    page=u'draft',
-                    related_articles=[],
-                    siblings=siblings,
-                    article=article)
-
-
 class ArticlePage(BaseHandler):
     def get(self, article_id):
         try:

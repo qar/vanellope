@@ -32,9 +32,6 @@ routers = [
     # Notes
     (r"/notes", pages.NotesPage),
 
-    # 查看草稿
-    (config.app_settings['draft_base_path'] + r"(\w{8}).*", pages.DraftPage),
-
     # 登出
     (r"/logout", pages.Logout),
     (r"/login", pages.LoginPage),
