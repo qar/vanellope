@@ -13,8 +13,6 @@ routers = [
     # Index page
     (r"/", pages.IndexPage),
 
-    (r"/snippets", pages.SnippetsPage),
-
     (r"/tags", pages.TagsPage),
     (r"/archives", pages.ArchivesPage),
 

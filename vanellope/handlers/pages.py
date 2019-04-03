@@ -107,21 +107,6 @@ class IndexPage(BaseHandler):
                     articles=articles)
 
 
-class SnippetsPage(BaseHandler):
-    def get(self):
-        ns = self.get_template_namespace()
-        self.render("snippets.html",
-                    title=self.concat_page_title('Snippets'),
-                    page=u'snippets',
-                    description=ns['site']['site_description'],
-                    current_page=0,
-                    next_page=0,
-                    previous_page=0,
-                    pages=1,
-                    drafts=[],
-                    articles=[])
-
-
 class TagsPage(BaseHandler):
     def get(self):
         current_page = int(self.get_argument(u'p', 1))
