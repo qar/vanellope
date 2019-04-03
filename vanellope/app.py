@@ -12,10 +12,12 @@ from tornado import ioloop
 from tornado.options import define, options
 from vanellope.da import init_db, connection
 from vanellope.da.user import UserModel
+from vanellope.da.config import ConfigModel
 from vanellope.da.session import Session
 from vanellope import config
 from vanellope.urls import routers
 from vanellope.handlers.error import Error404Handler
+from vanellope.handlers.static import MyStaticFileHandler
 
 define("port", default=8000, help="run on the given port", type=int)
 define("host", default="127.0.0.1", help="run on the given host", type=str)
@@ -24,6 +26,7 @@ define("debug", default=False, help="debug mode.", type=bool)
 ROOT = os.path.abspath(os.path.dirname(__file__))
 
 session = Session()
+site_config = ConfigModel()
 
 def get_admin_user():
     return UserModel().get_admin_user()
@@ -40,16 +43,21 @@ class App(web.Application):
 
         init_db()
 
-        theme = config.theme
+        # always read theme config from db,
+        # so the changes can apply
+        theme = site_config.read_config()['site_theme']
         static_path = os.path.join(ROOT, "themes/%s/static" % theme)
         template_path = os.path.join(ROOT, "themes/%s/templates" % theme)
         admin_static_path = os.path.join(ROOT, "admin/assets")
         admin_template_path = os.path.join(ROOT, "admin/templates")
         config_keys = config.app_settings.keys()
+        themes_dir = os.path.join(ROOT, "themes")
 
         settings = {
+            "root_path": ROOT,
             "static_path": static_path,
             "template_path": template_path,
+            "themes_dir": themes_dir,
             "admin_static_path": admin_static_path,
             "admin_template_path": admin_template_path,
             "static_url_prefix": "/static/",
@@ -60,6 +68,7 @@ class App(web.Application):
 
             # 404 Page
             "default_handler_class": Error404Handler,
+            "static_handler_class": MyStaticFileHandler,
 
             # None or dict object
             # Indicating whether or not the site has a registered admin user

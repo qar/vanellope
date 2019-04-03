@@ -6,6 +6,7 @@ import random
 import hashlib
 import uuid
 import re
+import os
 import pytz
 
 import itertools
@@ -13,12 +14,14 @@ from datetime import datetime, timedelta
 from dateutil import relativedelta
 
 import base64
-from tornado.web import StaticFileHandler, RequestHandler, MissingArgumentError
+from tornado.web import RequestHandler, MissingArgumentError
 from tornado.log import access_log
 from tornado.escape import json_decode
 
 from user_agents import parse as ua_parse
 import urlparse
+
+from vanellope.handlers.static import MyStaticFileHandler
 
 from vanellope.da.config import ConfigModel
 from vanellope.da.user import UserModel
@@ -241,6 +244,19 @@ class BaseHandler(RequestHandler):
         site_title = self.get_template_namespace()['site']['site_title']
         return site_title + '| ' + page_title
 
+    def get_themes(self):
+        return os.listdir(self.settings['themes_dir'])
+
+    def change_theme(self, theme):
+        root_path = self.settings['root_path']
+
+        self.config.set_value('site_theme', theme)
+        self.settings['theme'] = theme
+        self.settings['theme_config_path'] = os.path.join(root_path, "themes/%s/config.yaml" % theme)
+        self.settings['static_path'] = os.path.join(root_path, "themes/%s/static" % theme)
+        self.settings['template_path'] = os.path.join(root_path, "themes/%s/templates" % theme)
+        MyStaticFileHandler.reset()
+
 
 class AdminBaseHandler(BaseHandler):
     def static_url(self, path, include_host=None, **kwargs):
@@ -248,7 +264,7 @@ class AdminBaseHandler(BaseHandler):
         """
         self.require_setting("admin_static_path", "static_url")
         get_url = self.settings.get("static_handler_class",
-                                    StaticFileHandler).make_static_url
+                                    MyStaticFileHandler).make_static_url
 
         if include_host is None:
             include_host = getattr(self, "include_host", False)

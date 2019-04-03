@@ -11,6 +11,8 @@ class ConfigurationHandler(BaseHandler):
     @authenticated
     def get(self):
         configs = self.config.read_config()
+        configs['themes'] = self.get_themes()
+
         self.finish({
             'msg': 'success',
             'configs': configs
