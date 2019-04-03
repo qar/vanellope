@@ -146,6 +146,7 @@ export default {
           this.settings.title = this.article.title;
           this.settings.uuid = this.article.uuid;
           this.settings.tags = this.article.tags.map(t => ({ text: t }));
+          this.settings.category = this.article.category;
 
           if (this.editor) {
             if (this.article.ext === 'html') {
