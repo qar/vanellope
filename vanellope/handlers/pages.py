@@ -388,20 +388,6 @@ class ArticlePage(BaseHandler):
                     article=article,
                     comments=comments)
 
-    def post(self):
-        """Create new article"""
-        pass
-
-    @authenticated
-    def put(self, article_id=None):
-        """ Update an existing article """
-        pass
-
-    @authenticated
-    def delete(self, article_id):
-        """ Delete article """
-        pass
-
 
 class UploadedFileHandler(web.StaticFileHandler):
     def initialize(self):
