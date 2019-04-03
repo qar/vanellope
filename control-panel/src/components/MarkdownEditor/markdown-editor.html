@@ -35,7 +35,7 @@
               v-model="newTag"
               :tags="settings.tags"
               :autocomplete-items="sortedTags"
-              @tags-changed="newTags => settings.tags = newTags" />
+              @tags-changed="onTagsChanged" />
         </Modal>
       </ButtonGroup>
     </Col>

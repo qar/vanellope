@@ -57,16 +57,7 @@ export default {
       },
 
       categories: [],
-      tags: [
-        {
-          tag: 'hero',
-          count: 3,
-        },
-        {
-          tag: 'life',
-          count: 2,
-        }
-      ],
+      tags: [],
 
       // 设置选项
       settings: {
@@ -143,6 +134,10 @@ export default {
 
   created() {
     this.getCategories();
+    apis.getTags()
+      .then(res => {
+        this.tags = res.data;
+      });
 
     if (this.$route.params.articleId) {
       apis.getArticle(this.$route.params.articleId)
@@ -150,6 +145,7 @@ export default {
           this.article = res;
           this.settings.title = this.article.title;
           this.settings.uuid = this.article.uuid;
+          this.settings.tags = this.article.tags.map(t => ({ text: t }));
 
           if (this.editor) {
             if (this.article.ext === 'html') {
@@ -165,6 +161,11 @@ export default {
   },
 
   methods: {
+    onTagsChanged(newTags) {
+      this.settings.tags = newTags;
+      return this.settings.tags;
+    },
+
     getCategories() {
       $http.get('/api/v1/categories')
         .then(res => {

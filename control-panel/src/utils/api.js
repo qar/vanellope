@@ -123,6 +123,10 @@ function delFriendLink(linkId) {
   return $http.delete(`/api/v1/admin/friend-links/${linkId}`).then(res => res.data);
 }
 
+function getTags() {
+  return $http.get('/api/v1/tags').then(res => res.data);
+}
+
 export default {
   addToken,
   createArticle,
@@ -134,6 +138,7 @@ export default {
   getArticle,
   getSettings,
   getTrash,
+  getTags,
   getTokens,
   removeToken,
   deleteArticle,
