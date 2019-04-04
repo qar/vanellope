@@ -29,6 +29,9 @@ class ConfigurationHandler(BaseHandler):
                 configs[k] = v
 
         result = self.config.update(configs)
+
+        self.change_theme(configs['site_theme'])
+
         self.finish({
             'info': 'success',
             'data': result
