@@ -17,3 +17,6 @@ content
 !control-panel/build
 .vagrant
 *.log
+
+# vanellope dev data directory
+dev_data_dir
