@@ -7,9 +7,21 @@ class MyStaticFileHandler(StaticFileHandler):
     def initialize(self, path, default_filename=None):
         super(StaticFileHandler, self).initialize()
 
-        root_path = self.settings['root_path']
         theme = self.settings['theme']
-        if path.startswith('/src/vanellope/themes'):
-            self.root = os.path.join(root_path, 'themes/%s/static/' % theme)
-        else:
+
+        buildin_themes_dir = self.settings['themes_dir']
+        custom_themes_dir = self.settings['custom_themes_dir']
+
+        buildin_themes = os.listdir(buildin_themes_dir)
+        custom_themes = os.listdir(custom_themes_dir)
+
+        theme_related = theme in buildin_themes or theme in custom_themes
+
+        if not theme_related:
             self.root = path
+            return
+
+        if theme in buildin_themes:
+            self.root = os.path.join(buildin_themes_dir, '%s/static/' % theme)
+        else:
+            self.root = os.path.join(custom_themes_dir, '%s/static/' % theme)

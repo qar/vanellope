@@ -245,16 +245,22 @@ class BaseHandler(RequestHandler):
         return site_title + '| ' + page_title
 
     def get_themes(self):
-        return os.listdir(self.settings['themes_dir'])
+        buildin = os.listdir(self.settings['themes_dir'])
+        custom = os.listdir(self.settings['custom_themes_dir'])
+        return buildin + custom;
 
     def change_theme(self, theme):
-        root_path = self.settings['root_path']
+        buildin_themes_dir = self.settings['themes_dir']
+        custom_themes_dir = self.settings['custom_themes_dir']
+
+        buildin = os.listdir(buildin_themes_dir)
+        root_path = buildin_themes_dir if theme in buildin else custom_themes_dir
 
         self.config.set_value('site_theme', theme)
         self.settings['theme'] = theme
-        self.settings['theme_config_path'] = os.path.join(root_path, "themes/%s/config.yaml" % theme)
-        self.settings['static_path'] = os.path.join(root_path, "themes/%s/static" % theme)
-        self.settings['template_path'] = os.path.join(root_path, "themes/%s/templates" % theme)
+        self.settings['theme_config_path'] = os.path.join(root_path, "%s/config.yaml" % theme)
+        self.settings['static_path'] = os.path.join(root_path, "%s/static" % theme)
+        self.settings['template_path'] = os.path.join(root_path, "%s/templates" % theme)
         MyStaticFileHandler.reset()
 
 

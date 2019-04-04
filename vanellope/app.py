@@ -18,12 +18,17 @@ from vanellope import config
 from vanellope.urls import routers
 from vanellope.handlers.error import Error404Handler
 from vanellope.handlers.static import MyStaticFileHandler
+from tornado.log import access_log
 
 define("port", default=8000, help="run on the given port", type=int)
 define("host", default="127.0.0.1", help="run on the given host", type=str)
 define("debug", default=False, help="debug mode.", type=bool)
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
+CUSTOM_THEMES_ROOT_PATH = os.path.abspath(os.path.join(os.environ.get('VANELLOPE_CONTENT'), 'themes'))
+
+if not os.path.exists(CUSTOM_THEMES_ROOT_PATH):
+    os.mkdir(CUSTOM_THEMES_ROOT_PATH)
 
 session = Session()
 site_config = ConfigModel()
@@ -35,8 +40,7 @@ def scan_session_store():
     session.scan()
 
 def preflight():
-    # check content path existence
-    pass
+    access_log.info('[preflight]')
 
 class App(web.Application):
     def __init__(self):
@@ -46,18 +50,24 @@ class App(web.Application):
         # always read theme config from db,
         # so the changes can apply
         theme = site_config.read_config()['site_theme']
-        static_path = os.path.join(ROOT, "themes/%s/static" % theme)
-        template_path = os.path.join(ROOT, "themes/%s/templates" % theme)
+        themes_dir = os.path.join(ROOT, "themes")
+
+        buildin_themes = os.listdir(themes_dir)
+        theme_root_path = themes_dir if theme in buildin_themes else CUSTOM_THEMES_ROOT_PATH
+
+        static_path = os.path.join(theme_root_path, "%s/static" % theme)
+        template_path = os.path.join(theme_root_path, "%s/templates" % theme)
+
         admin_static_path = os.path.join(ROOT, "admin/assets")
         admin_template_path = os.path.join(ROOT, "admin/templates")
         config_keys = config.app_settings.keys()
-        themes_dir = os.path.join(ROOT, "themes")
 
         settings = {
             "root_path": ROOT,
             "static_path": static_path,
             "template_path": template_path,
             "themes_dir": themes_dir,
+            "custom_themes_dir": CUSTOM_THEMES_ROOT_PATH,
             "admin_static_path": admin_static_path,
             "admin_template_path": admin_template_path,
             "static_url_prefix": "/static/",
@@ -105,7 +115,6 @@ def make_app():
 
 
 def main():
-    options.parse_command_line()
     App().listen(options.port, options.host, xheaders=True)
     print "VANELLOPE running on %s:%d" % (options.host, options.port)
     schedule = ioloop.PeriodicCallback(scan_session_store, 1000 * 5)
@@ -114,5 +123,7 @@ def main():
 
 
 if __name__ == "__main__":
+    options.parse_command_line()
+
     preflight()
     main()
