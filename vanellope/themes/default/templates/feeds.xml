@@ -14,39 +14,23 @@
         hreflang="en" href="{{ req['hostname'] }}"/>
 
   <link rel="self" type="application/atom+xml"
-    href="{{ req['hostname'] + req['path'] }}"/>
+    href="{{ site['site_url'] + req['path'] }}"/>
 
-  <rights>Copyright (c) 2003, Mark Pilgrim</rights>
+  <rights>Copyright (c) {{ ctx['year'] }}, {{ site['site_title'] }}</rights>
 
-  <generator uri="http://vanellope.org" version="0.1">VANELLOPE 1.0</generator>
+  <generator uri="{{ site['site_url'] }}" version="0.1">{{ site['site_title'] }} 1.0</generator>
 
-{% for entry in entries %}
+  {% for entry in entries %}
   <entry>
     <title>{{ entry['title'] }}</title>
-    <link rel="alternate" type="text/html"
-      href="{{ req['hostname'] + entry['long_path'] }}"/>
-    <id>{{ req['hostname'] + entry['short_path'] }}</id>
+    <link rel="alternate" type="text/html" href="{{ site['site_url'] + entry['path'] }}"/>
+    <id>{{ req['hostname'] + entry['path'] }}</id>
     <updated>{{ entry['updated_at'].strftime('%Y-%m-%dT%H:%M:%S%ZZ') }}</updated>
     <published>{{ entry['created_at'].strftime('%Y-%m-%dT%H:%M:%S%ZZ') }}</published>
 
-    <author>
-      <name>Mark Pilgrim</name>
-      <uri>http://example.org/</uri>
-      <email>f8dy@example.com</email>
-    </author>
-    {#
-    <contributor>
-      <name>Sam Ruby</name>
-    </contributor>
-    <contributor>
-      <name>Joe Gregorio</name>
-    </contributor>
-    #}
-
-    <content type="html"  xml:base="{{ req['hostname'] }}/" xml:lang="en">
-        {{ entry['content'] }}
+    <content type="html"  xml:base="{{ site['site_url'] }}/" xml:lang="en">
+        {% raw entry['content'] %}
     </content>
   </entry>
-{% end %}
-
+  {% end %}
 </feed>

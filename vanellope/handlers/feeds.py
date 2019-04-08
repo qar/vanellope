@@ -1,26 +1,30 @@
 # coding=utf-8
 
+import math
 from vanellope.handlers.base import BaseHandler
 
 
 class MainFeed(BaseHandler):
     def get(self):
+        site_config = self.config.read_config()
+        ENTRIES_PER_PAGE = site_config['posts_per_page']
         current_page = int(self.get_argument(u'p', 1))
 
-        _posts = self.posts.get_posts()
+        _posts  = self.posts.find(
+            states=['published'],
+            limit=ENTRIES_PER_PAGE,
+            skip=(current_page - 1) * int(ENTRIES_PER_PAGE)
+        )
 
-        entries = []
+        total_entries = self.posts.count(states=['published'])
 
-        for article in _posts:
-            if 'tags' not in article:
-                article['tags'] = []
+        pages = int(math.ceil(total_entries / float(ENTRIES_PER_PAGE)))
 
-            article['short_path'] = '/article/' + article['uuid']
-            article['long_path'] = ''.join('/article/',
-                                           article['uuid'],
-                                           u'_'.join(article['title'].split()))
-            article['edit_path'] = '/admin/edit/' + article['long_path']
-            entries.append(article)
+        # 1 page bigger than currnet page, but not bigger than total pages
+        next_page = current_page + 1 if current_page < pages else pages
+
+        # 1 page less than currnet page, but at least page 1
+        previous_page = current_page - 1 if current_page > 1 else 1
 
         self.set_header('Content-Type', 'application/atom+xml; charset=UTF-8')
 
@@ -29,5 +33,4 @@ class MainFeed(BaseHandler):
                     page=u'index',
                     previous_page=current_page - 1 if current_page > 1 else 1,
                     next_page=current_page + 1,
-                    entries=entries,
-                    articles=entries)
+                    entries=_posts)
