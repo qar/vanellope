@@ -107,21 +107,6 @@ class IndexPage(BaseHandler):
                     articles=articles)
 
 
-class SnippetsPage(BaseHandler):
-    def get(self):
-        ns = self.get_template_namespace()
-        self.render("snippets.html",
-                    title=self.concat_page_title('Snippets'),
-                    page=u'snippets',
-                    description=ns['site']['site_description'],
-                    current_page=0,
-                    next_page=0,
-                    previous_page=0,
-                    pages=1,
-                    drafts=[],
-                    articles=[])
-
-
 class TagsPage(BaseHandler):
     def get(self):
         current_page = int(self.get_argument(u'p', 1))
@@ -307,6 +292,19 @@ class CategoryPage(BaseHandler):
                     articles=articles)
 
 
+class CategoriesPage(BaseHandler):
+    def get(self):
+        current_page = int(self.get_argument(u'p', 1))
+        ns = self.get_template_namespace()
+
+        self.render("categories.html",
+                    title=self.concat_page_title('Categories'),
+                    description=ns['site']['site_description'],
+                    page=u'categories',
+                    previous_page=current_page - 1 if current_page > 1 else 1,
+                    next_page=current_page + 1)
+
+
 class LoginPage(BaseHandler):
     def get(self):
         ns = self.get_template_namespace()
@@ -352,28 +350,6 @@ class Logout(BaseHandler):
         self.redirect('/')
 
 
-class DraftPage(BaseHandler):
-    @authenticated
-    def get(self, article_id):
-        article = self.posts.find_by_id(article_id)
-
-        if not article:
-            self.send_error(404)
-            return
-
-        if 'tags' not in article:
-            article['tags'] = []
-
-        siblings = []
-
-        self.render("article.html",
-                    title=article['title'],
-                    page=u'draft',
-                    related_articles=[],
-                    siblings=siblings,
-                    article=article)
-
-
 class ArticlePage(BaseHandler):
     def get(self, article_id):
         try:
@@ -402,20 +378,6 @@ class ArticlePage(BaseHandler):
                     siblings=siblings,
                     article=article,
                     comments=comments)
-
-    def post(self):
-        """Create new article"""
-        pass
-
-    @authenticated
-    def put(self, article_id=None):
-        """ Update an existing article """
-        pass
-
-    @authenticated
-    def delete(self, article_id):
-        """ Delete article """
-        pass
 
 
 class UploadedFileHandler(web.StaticFileHandler):

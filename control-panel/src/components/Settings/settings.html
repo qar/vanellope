@@ -36,6 +36,12 @@
             <Input v-model="settings.google_adsense" placeholder="Google AdSense"></Input>
           </FormItem>
 
+          <FormItem label="主题">
+            <Select v-model="settings.site_theme">
+                <Option v-for="item in settings.themes" :value="item" :key="item">{{ item }}</Option>
+            </Select>
+          </FormItem>
+
           <FormItem label="全局站点评论">
             <i-switch v-model="settings.site_comment_enabled" size="large" true-value="yes" false-value="no">
               <span slot="open">开启</span>

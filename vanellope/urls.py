@@ -13,8 +13,6 @@ routers = [
     # Index page
     (r"/", pages.IndexPage),
 
-    (r"/snippets", pages.SnippetsPage),
-
     (r"/tags", pages.TagsPage),
     (r"/archives", pages.ArchivesPage),
 
@@ -26,6 +24,7 @@ routers = [
     (r"/archive/([0-9]{4})?/?([0-9]{2})?/?([0-9]{2})?", pages.ArchivePage),
 
     # Articles with one specific category
+    (r"/categories", pages.CategoriesPage),
     (r"/category/(.*)", pages.CategoryPage),
 
     # GET 查看某篇文章
@@ -33,9 +32,6 @@ routers = [
 
     # Notes
     (r"/notes", pages.NotesPage),
-
-    # 查看草稿
-    (config.app_settings['draft_base_path'] + r"(\w{8}).*", pages.DraftPage),
 
     # 登出
     (r"/logout", pages.Logout),

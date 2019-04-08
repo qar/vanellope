@@ -130,6 +130,8 @@ app_settings = {
     # 网站地址 like 「www.example.com」
     'site_url': '',
 
+    'site_theme': 'default',
+
     # 网站统计服务
     'site_tracking': '',  # 'google_analystics'
     'site_tracking_id': '',
@@ -146,8 +148,5 @@ app_settings = {
     # Post default category
     # 新建文章的默认分类
     'default_category': 'life',
-    'posts_per_page': 10,
-
-    # draft url: http://www.example.com/drafts/<uuid>+title
-    'draft_base_path': '/drafts/'
+    'posts_per_page': 10
 }

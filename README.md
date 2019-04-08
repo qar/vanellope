@@ -25,3 +25,7 @@
 1. Add new table schema in `create_table_sql` in config.py
 2. Restart application will initiate the new table
 3. Add new query interface in `da`, which means `DataAccess`
+
+## Themes
+
+[主题制作的中文文档](./docs/cn/develop-theme.md)

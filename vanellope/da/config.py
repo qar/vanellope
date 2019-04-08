@@ -42,7 +42,7 @@ class ConfigModel(DataAccess):
 
     def set_value(self, k, v):
         sql = """
-            UPDATE config SET value = ? WHERE key = ?
+            UPDATE configuration SET value = ? WHERE key = ?
         """
         cur = self.conn.cursor()
         cur.execute(sql, (v, k))
@@ -51,7 +51,7 @@ class ConfigModel(DataAccess):
 
     def get_value(self, k):
         sql = """
-            SELECT value FROM config WHERE key = ?
+            SELECT value FROM configuration WHERE key = ?
         """
 
         cur = self.conn.cursor()
