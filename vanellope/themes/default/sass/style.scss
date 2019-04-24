@@ -6,13 +6,12 @@
 @import "_layouts.scss";
 @import "_article.scss";
 @import "components/_pagination.scss";
-@import "_media.scss";
 
 .site-title {
     margin: 0;
     padding: 0;
     color: $theme-color;
-    height: 4rem;
+    height: $banner-height-lg;
     display: inline-block;
     vertical-align: middle;
     font-weight: 200;
@@ -33,3 +32,5 @@
     font-weight: 700;
   }
 }
+
+@import "_media.scss";

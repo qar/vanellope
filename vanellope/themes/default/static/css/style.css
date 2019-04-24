@@ -504,7 +504,7 @@ input[type=email].vn-input[hidden] {
 }
 .article-banner .banner-content,
 .banner .banner-content {
-  height: 60px;
+  height: 4rem;
   position: relative;
 }
 @media screen and (max-width: 960px) {
@@ -526,11 +526,12 @@ input[type=email].vn-input[hidden] {
   float: right;
   width: auto;
   display: block;
-  height: 60px;
+  height: 4rem;
 }
 .banner ul.nav > li {
   display: inline-block;
-  line-height: 60px;
+  color: #5D5D5D;
+  line-height: 4rem;
   width: 5rem;
   text-align: center;
   vertical-align: middle;
@@ -906,13 +907,6 @@ input[type=email].vn-input[hidden] {
   float: right;
 }
 
-@media screen and (max-width: 960px) {
-  .main-content, .sub-content {
-    width: 100%;
-    padding-right: 0;
-    padding-left: 0;
-  }
-}
 .site-title {
   margin: 0;
   padding: 0;
@@ -934,6 +928,25 @@ input[type=email].vn-input[hidden] {
 }
 .footer .engine, .footer .copyright {
   font-weight: 700;
+}
+
+@media screen and (max-width: 960px) {
+  .main-content, .sub-content {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .banner ul.nav > li {
+    width: auto;
+  }
+
+  .article-banner, .banner {
+    margin-bottom: 0.8rem;
+  }
+  .article-banner .banner-content, .banner .banner-content {
+    height: 38px;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

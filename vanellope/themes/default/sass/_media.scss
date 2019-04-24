@@ -1,7 +1,20 @@
+// iPhone 7
 @media screen and (max-width: 960px) {
     .main-content, .sub-content {
         width: 100%;
         padding-right: 0;
         padding-left: 0;
+    }
+
+    .banner ul.nav > li {
+        width: auto;
+    }
+
+    .article-banner, .banner {
+        margin-bottom: 0.8rem;
+
+        .banner-content {
+            height: 38px;
+        }
     }
 }
