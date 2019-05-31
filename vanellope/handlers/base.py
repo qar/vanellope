@@ -295,4 +295,4 @@ class AdminBaseHandler(BaseHandler):
 
     def concat_page_title(self, page_title):
         site_title = self.get_template_namespace()['site']['site_title']
-        return site_title + '| ' + page_title
+        return site_title + ' | ' + page_title
