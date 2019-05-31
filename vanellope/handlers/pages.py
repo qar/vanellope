@@ -130,7 +130,7 @@ class TagPage(BaseHandler):
         articles = self.posts.find_posts_with_tag(tag)
 
         self.render("tag.html",
-                    title=self.concat_page_title("Tag:{0}".format(tag)),
+                    title=self.concat_page_title(u'Tag:{0}'.format(tag)),
                     description=ns['site']['site_description'],
                     page=u'tag',
                     current_page=current_page,
