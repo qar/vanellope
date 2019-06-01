@@ -19,15 +19,7 @@ class PostModel(DataAccess):
             tags = item['tags'].split(',')
             item['tags'] = filter(None, [t.strip() for t in tags])
 
-        if item['state'] == 'draft':
-            item['path'] = ''.join([
-                config.app_settings['draft_base_path'],
-                item['uuid'],
-                '+',
-                u'_'.join(item['title'].split())
-            ])
-
-        elif item['state'] == 'published':
+        if item['state'] == 'published':
             item['path'] = ''.join([
                 '/article/',
                 item['uuid'],
