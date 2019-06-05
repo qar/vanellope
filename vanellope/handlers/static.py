@@ -7,6 +7,11 @@ class MyStaticFileHandler(StaticFileHandler):
     def initialize(self, path, default_filename=None):
         super(StaticFileHandler, self).initialize()
 
+        if self.settings.get('admin_static_path'):
+            # Those are admin related file, have nothing to do with themes
+            self.root = path
+            return
+
         theme = self.settings['theme']
 
         buildin_themes_dir = self.settings['themes_dir']
