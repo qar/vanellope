@@ -1,12 +1,15 @@
 .article-list-layout {
-  .table-title {
-    margin-bottom: 1em;
-  }
+  // Override iview table cell style
+  & /deep/ td.tag-list {
+    span {
+      background-color: #EAEAEA;
+      border-radius: 3px;
+      padding: 1px 4px;
+      display: inline-block;
 
-  padding: 40px;
-
-  .paging {
-    padding-top: 10px;
-    text-align: right;
+      &:not(:last-child) {
+        margin-right: 4px;
+      }
+    }
   }
 }

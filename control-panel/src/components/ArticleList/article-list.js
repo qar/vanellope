@@ -25,6 +25,44 @@ export default {
         },
 
         {
+          title: '预览',
+          key: 'summary',
+          ellipsis: true,
+          tooltip: true,
+          size: 'large',
+          className: 'summary-text',
+        },
+
+        {
+          title: '分类',
+          key: 'category',
+          sortable: true,
+          render: (h, params) => {
+            return h('SPAN', params.row.category || '-');
+          },
+        },
+
+        {
+          title: '标签',
+          key: 'tags',
+          className: 'tag-list',
+          render: (h, params) => {
+            const tags = params.row.tags.map(t => h('SPAN', t));
+            return h('P', tags);
+          },
+        },
+
+        {
+          title: '创建时间',
+          key: 'created_at',
+          sortable: true,
+          render: (h, params) => {
+            const ts = new Date(params.row.created_at * 1000).toLocaleString();
+            return h('SPAN', ts);
+          },
+        },
+
+        {
           title: '阅读数',
           key: 'counts',
         },
@@ -125,14 +163,7 @@ export default {
         .then(res => {
           this.paging.total = res.paging.total;
           this.paging.size = res.paging.items_per_page;
-
-          this.rows = res.data.map(article => {
-            return {
-              title: article.title,
-              uuid: article.uuid,
-              counts: article.counts,
-            };
-          });
+          this.rows = res.data;
         });
     },
   },
