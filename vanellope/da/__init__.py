@@ -59,6 +59,11 @@ def fixtures():
     except:
         pass
 
+    try:
+        cur.execute('ALTER TABLE posts ADD COLUMN hero TEXT DEFAULT ""')
+    except:
+        pass
+
     connection.commit()
 
 def db_backup():

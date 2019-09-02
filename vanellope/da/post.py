@@ -48,6 +48,11 @@ class PostModel(DataAccess):
 
         params = []
 
+        try:
+            params.append(data['hero'])
+        except KeyError:
+            params.append(u'')
+
         assert data['ext']
         params.append(data['ext'])
 
@@ -72,9 +77,9 @@ class PostModel(DataAccess):
         cur = self.conn.cursor()
 
         sql = """ INSERT INTO posts
-                  (ext, title, content, source, summary, category, tags,
+                  (hero, ext, title, content, source, summary, category, tags,
                    state, uuid, created_at, updated_at)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
               """
 
         post_id = self.gen_uuid(data['title'], data['content'])
@@ -96,6 +101,7 @@ class PostModel(DataAccess):
 
         params = []
 
+        params.append(data['hero'])
         params.append(data['ext'])
         params.append(data['title'])
         params.append(data['content'])
@@ -118,7 +124,8 @@ class PostModel(DataAccess):
 
         sql = """
               UPDATE posts
-              SET ext = ?,
+              SET hero = ?,
+                  ext = ?,
                   title = ?,
                   content = ?,
                   source = ?,
@@ -147,6 +154,7 @@ class PostModel(DataAccess):
               SELECT
 
                   uuid,
+                  hero,
                   ext,
                   title,
                   content,
