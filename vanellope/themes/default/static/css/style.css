@@ -596,6 +596,14 @@ input[type=email].vn-input[hidden] {
   border-bottom: 1px solid #EEE;
   margin-top: 3rem;
 }
+.posts .post .banner {
+  width: 100%;
+  height: 180px;
+  border-radius: 4px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .posts .title {
   margin-top: 0;
   font-size: 2rem;

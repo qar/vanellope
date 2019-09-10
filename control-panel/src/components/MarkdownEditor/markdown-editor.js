@@ -54,6 +54,7 @@ export default {
       modals: {
         categoryModal: false,
         tagsModal: false,
+        heroImageModal: false,
       },
 
       categories: [],
@@ -61,6 +62,9 @@ export default {
 
       // 设置选项
       settings: {
+        // 文章头图链接
+        hero: '',
+
         // 文章标题
         title: '',
 
@@ -167,6 +171,27 @@ export default {
       return this.settings.tags;
     },
 
+    // 添加文章头图
+    selectHeroImage() {
+      const ele = document.createElement('INPUT');
+      ele.type = 'file';
+      ele.accept = 'image/*';
+      ele.addEventListener('change', (ev) => {
+        if (!ev.path || !ev.path.length || !ev.path[0].files || !ev.path[0].files.length) {
+          return;
+        }
+
+        const f = ev.path[0].files[0];
+        const formData = new FormData();
+        formData.append('image', f);
+        $http.post('/api/v1/image', formData).then(res => {
+          this.settings.hero = res.data.url;
+        });
+      });
+
+      ele.click();
+    },
+
     getCategories() {
       $http.get('/api/v1/categories')
         .then(res => {
@@ -224,6 +249,7 @@ export default {
       summary = (div.textContent || div.innerText || '').substring(0, 300);
 
       const params = {
+        hero: this.settings.hero,
         category: this.settings.category,
         content,
         summary,

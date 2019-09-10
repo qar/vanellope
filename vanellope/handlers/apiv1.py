@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import os
 import os.path
 import uuid
 from tornado.web import authenticated
@@ -36,6 +37,29 @@ class ConfigurationHandler(BaseHandler):
             'info': 'success',
             'data': result
         })
+
+
+class MediaHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        """Get uploaded media files
+        """
+        media_list = os.listdir(self.settings['uploaded_path'])
+        data = [self.concat_url(i) for i in self.filter_filename(media_list)]
+        self.finish({
+            'info': "success",
+            'data': data
+            })
+
+    def concat_url(self, filename):
+        config = self.config.read_config()
+        if config['site_url']:
+            return config['site_url'] + '/uploaded/' + filename
+        else:
+            return '/uploaded/' + filename
+
+    def filter_filename(self, media_list):
+        return media_list
 
 
 class ImageHandler(BaseHandler):

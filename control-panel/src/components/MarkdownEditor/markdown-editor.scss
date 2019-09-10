@@ -196,3 +196,24 @@ $font-content: "Classic Grotesque W01", "Avenir Next", "Segoe UI", "Helvetica Ne
     margin-inline-end: 0px;
   }
 }
+
+.image-add-zone {
+  border: 1px dashed #eee;
+  width: 100%;
+  height: 120px;
+  display: inline-block;
+  line-height: 120px;
+  vertical-align: middle;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+img.image-display-zone {
+  width: 100%;
+}
+
+.image-display-tips:hover {
+  cursor: pointer;
+}

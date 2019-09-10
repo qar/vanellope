@@ -55,6 +55,7 @@ routers = [
     (r"/api/v1/categories", apiv1.CategoryListHandler),
     (r"/api/v1/admin/friend-links", admin.FriendLinkHandler),
     (r"/api/v1/admin/friend-links/(.*)", admin.FriendLinkHandler),
+    (r"/api/v1/media", apiv1.MediaHandler),
 
     # Feeds
     (r"/index.xml", feeds.MainFeed),
