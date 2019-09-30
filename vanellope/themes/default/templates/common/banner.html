@@ -8,9 +8,12 @@
       <ul class="nav">
         <li><a href="/archives">归档</a></li>
         <li><a href="/notes">随想</a></li>
-
         {% if current_user and current_user['role'] == 'admin' %}
-        <li><a href="/controlpanel">管理</a></li>
+          {% if debug %}
+            <li><a href="http://localhost:8080" target="_blank">管理</a></li>
+          {% else %}
+            <li><a href="/controlpanel">管理</a></li>
+          {% end %}
         {% end %}
       </ul>
     </div>

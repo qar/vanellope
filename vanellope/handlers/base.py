@@ -181,6 +181,7 @@ class BaseHandler(RequestHandler):
         namespace['tags'] = self.posts.get_tags()
         namespace['categories'] = self.posts.get_categories()
         namespace['friendlinks'] = self.friendlinks.find_all()
+        namespace['debug'] = self.settings['debug']
 
         return namespace
 
