@@ -29,3 +29,7 @@
 ## Themes
 
 [主题制作的中文文档](./docs/cn/develop-theme.md)
+
+## Documentation
+
+- [中文文档](./docs/cn/index.md)
