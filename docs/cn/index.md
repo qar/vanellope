@@ -17,3 +17,7 @@
 - 监控
   - 支持 Google Analystic
   - 支持 Google AdSense
+
+## 协作规范
+
+- 禁止直接推送代码到 master, dev 分支。新代码在独立分支经过检查合规之后再合并到 dev 分支。
