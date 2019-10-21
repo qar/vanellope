@@ -17,7 +17,7 @@ class PostModel(DataAccess):
     def __parse(self, item):
         if 'tags' in item:
             tags = item['tags'].split(',')
-            item['tags'] = filter(None, [t.strip() for t in tags])
+            item['tags'] = list(filter(None, [t.strip() for t in tags]))
 
         if item['state'] == 'published':
             item['path'] = ''.join([
@@ -145,10 +145,10 @@ class PostModel(DataAccess):
     def find(self, id_list=[], tag_list=[], limit=None, skip=0,
              before_date=None, after_date=None, states=[], categories=[]):
 
-        id_list = filter(None, id_list)
-        tag_list = filter(None, tag_list)
-        states = filter(None, states)
-        categories = filter(None, categories)
+        id_list = list(filter(None, id_list))
+        tag_list = list(filter(None, tag_list))
+        states = list(filter(None, states))
+        categories = list(filter(None, categories))
 
         sql = """
               SELECT
@@ -222,9 +222,9 @@ class PostModel(DataAccess):
               states=[],
               categories=[]):
 
-        tag_list = filter(None, tag_list)
-        states = filter(None, states)
-        categories = filter(None, categories)
+        tag_list = list(filter(None, tag_list))
+        states = list(filter(None, states))
+        categories = list(filter(None, categories))
 
         sql = " SELECT count(*) as count FROM posts WHERE 1 "
         params = []
@@ -440,7 +440,7 @@ class PostModel(DataAccess):
             for t in tags[0].split(','):
                 flat_tags_list.append(t)
 
-        flat_tags_list = filter(None, [t.strip() for t in flat_tags_list])
+        flat_tags_list = list(filter(None, [t.strip() for t in flat_tags_list]))
         tags_count = {}
         for tag in flat_tags_list:
             if tag not in tags_count:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from urlparse import urlparse
+from urllib.parse import urlparse
 from tornado import testing
 from tornado import httpclient
 from vanellope import config

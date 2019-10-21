@@ -116,7 +116,7 @@ def make_app():
 
 def main():
     App().listen(options.port, options.host, xheaders=True)
-    print "VANELLOPE running on %s:%d" % (options.host, options.port)
+    print("VANELLOPE running on %s:%d" % (options.host, options.port))
     schedule = ioloop.PeriodicCallback(scan_session_store, 1000 * 5)
     schedule.start()
     ioloop.IOLoop.instance().start()

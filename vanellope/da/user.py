@@ -33,7 +33,7 @@ class UserModel(DataAccess):
         """
 
         salt = random_string(8)
-        passwd_hash = hashlib.sha256(data['password'] + salt).hexdigest()
+        passwd_hash = hashlib.sha256((data['password'] + salt).encode('utf-8')).hexdigest()
 
         cur.execute(sql, (
             data['username'],

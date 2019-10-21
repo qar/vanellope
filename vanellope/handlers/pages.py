@@ -52,7 +52,7 @@ class WelcomePage(BaseHandler):
             })
 
             self.clear_all_cookies()
-            cookie = base64.b64encode('Admin:' + password_hash)
+            cookie = base64.b64encode((u'Admin:' + password_hash).encode())
             self.set_cookie(name="vanellope",
                             value=cookie,
                             expires_days=90)
@@ -327,10 +327,10 @@ class LoginPage(BaseHandler):
         if not admin_user:
             return self.redirect('/welcome')
 
-        new_hash = hashlib.sha256(pwd + admin_user['salt']).hexdigest()
+        new_hash = hashlib.sha256((pwd + admin_user['salt']).encode('utf-8')).hexdigest()
         if admin_user['passwd'] == new_hash:
             self.clear_all_cookies()
-            cookie = base64.b64encode('Admin:' + new_hash)
+            cookie = base64.b64encode(('Admin:' + new_hash).encode())
             self.set_cookie(name="vanellope",
                             value=cookie,
                             expires_days=90)

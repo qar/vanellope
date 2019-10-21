@@ -87,9 +87,9 @@ class CommentModel(DataAccess):
               WHERE 1
               """
 
-        id_list = filter(None, id_list)
-        post_id_list = filter(None, post_id_list)
-        states = filter(None, states)
+        id_list = list(filter(None, id_list))
+        post_id_list = list(filter(None, post_id_list))
+        states = list(filter(None, states))
 
         params = []
 
@@ -127,9 +127,9 @@ class CommentModel(DataAccess):
               states=[],
               categories=[]):
 
-        tag_list = filter(None, tag_list)
-        states = filter(None, states)
-        categories = filter(None, categories)
+        tag_list = list(filter(None, tag_list))
+        states = list(filter(None, states))
+        categories = list(filter(None, categories))
 
         sql = " SELECT count(*) as count FROM comments WHERE 1 "
         params = []

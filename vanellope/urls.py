@@ -1,7 +1,5 @@
 # coding=utf-8
 
-import config
-
 from vanellope.handlers import pages
 from vanellope.handlers import apiv1
 from vanellope.handlers import admin

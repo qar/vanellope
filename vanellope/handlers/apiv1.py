@@ -369,7 +369,7 @@ class CommentsHandler(BaseHandler):
                 'info': 'success'
             })
 
-        except Exception, e:
+        except Exception as e:
             self.set_status(400)
             self.finish({ 'reason': str(e) })
 
@@ -425,7 +425,7 @@ class NotesHandler(BaseHandler):
             self.set_status(400)
             self.finish({ 'reason': 'Access-Token header is required' })
 
-        except Exception, e:
+        except Exception as e:
             self.set_status(400)
             self.finish({ 'reason': str(e) })
 
@@ -448,7 +448,7 @@ class NotesHandler(BaseHandler):
             self.set_status(400)
             self.finish({ 'reason': 'Access-Token header is required' })
 
-        except Exception, e:
+        except Exception as e:
             self.set_status(400)
             self.finish({ 'reason': str(e) })
 
@@ -466,7 +466,7 @@ class NotesHandler(BaseHandler):
             self.set_status(400)
             self.finish({ 'reason': 'Access-Token header is required' })
 
-        except Exception, e:
+        except Exception as e:
             self.set_status(400)
             self.finish({ 'reason': str(e) })
 

@@ -19,7 +19,7 @@ from tornado.log import access_log
 from tornado.escape import json_decode
 
 from user_agents import parse as ua_parse
-import urlparse
+# import urlparse
 
 from vanellope.handlers.static import MyStaticFileHandler
 
@@ -40,7 +40,7 @@ class Days(object):
     def day(self, day, tz="UTC"):
         """ when we accept the day string, we assume it's in local timezone"""
         # if the 'day' parameter is not specified, return today's beginning
-        if (day and isinstance(day, basestring) and
+        if (day and isinstance(day, str) and
            re.match('^\d{4}-\d{2}-\d{2}$', day)):
 
             self.day = datetime.strptime(day, '%Y-%m-%d')
@@ -169,7 +169,7 @@ class BaseHandler(RequestHandler):
         namespace['req'] = {
 
             # 当前请求路径
-            'path': urlparse.urlparse(self.request.uri).path,
+            'path': urllib.parse.urlparse(self.request.uri).path,
 
             'hostname': self.request.protocol + '://' + self.request.host,
 
@@ -197,7 +197,7 @@ class BaseHandler(RequestHandler):
             return default
 
         arg = source[name]
-        if isinstance(arg, basestring):
+        if isinstance(arg, str):
             arg = self.decode_argument(arg)
             # Get rid of any weird control chars (unless decoding gave
             # us bytes, in which case leave it alone)
@@ -227,14 +227,18 @@ class BaseHandler(RequestHandler):
 
     def get_current_user(self):
         try:
-            auth = self.get_cookie('vanellope')
-            username, passwd_hash = base64.b64decode(auth).split(':')
+            auth = self.get_cookie(u'vanellope')
+            if auth is None:
+                return
+
+            username, passwd_hash = base64.b64decode(auth).decode().split(':')
             user = self.user.get_user_by_name(username)
             if user['passwd'] == passwd_hash:
                 return user
             else:
                 return
-        except Exception, e:
+        except Exception as e:
+            access_log.error(e)
             return
 
     def striphtml(self, data):
