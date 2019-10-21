@@ -3,11 +3,11 @@
 
 from tornado.testing import unittest
 from tornado import gen
-from vanellope import database
+from vanellope.da.post import PostModel
 
 class TestDatabasePostModel(unittest.TestCase):
     def setUp(self):
-        self.posts = database.PostModel()
+        self.posts = PostModel()
 
     def test_get_posts(self):
         posts = self.posts.get_posts()
@@ -25,17 +25,6 @@ class TestDatabasePostModel(unittest.TestCase):
             'title': '1234',
             'content': '1234'
         }
-
-class TestDatabaseSnippetModel(unittest.TestCase):
-    def setUp(self):
-        self.snippets = database.SnippetModel()
-
-    def test_hello(self):
-        self.assertIs(True, True)
-
-    def test_create(self):
-        pass
-
 
 if __name__ == '__main__':
     unittest.main()

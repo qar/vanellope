@@ -75,10 +75,10 @@ class TestPages(testing.AsyncHTTPTestCase):
         pass
 
 
-    def test_admin_page(self):
+    def test_controlpanel_page(self):
         # http://www.tornadoweb.org/en/stable/httpclient.html#tornado.httpclient.HTTPResponse
 
-        target_url = '/admin'
+        target_url = '/controlpanel'
         response = self.fetch(target_url,
             follow_redirects = False
         )

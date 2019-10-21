@@ -31,3 +31,8 @@ run_dev: build_dev
 		$(DEV_IMAGE)
 	sleep 2
 	$(shell open http://localhost:$(DEV_PORT))
+
+tty:
+	docker exec -it $(DEV_IMAGE) sh
+
+.PHONY: all clean
