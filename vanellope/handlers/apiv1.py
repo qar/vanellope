@@ -331,13 +331,15 @@ class CommentsHandler(BaseHandler):
         website = self.get_argument('website', '')
         content = self.get_argument('content', '')
 
+        is_admin = self.current_user and self.current_user['role'] == u'admin'
+
         self.comments.create({
             'post_id': post_id,
             'name': name,
             'email': email,
             'website': website,
             'content': content,
-            'role': self.current_user['role']
+            'is_admin': is_admin
         })
 
         self.redirect(self.request.headers['Referer'])

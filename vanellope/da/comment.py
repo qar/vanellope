@@ -43,7 +43,7 @@ class CommentModel(DataAccess):
         params.append(data['content'])
 
         # state. possible values: checking, approved, banned
-        params.append('approved' if data['role'] == 'admin' else 'checking')
+        params.append('approved' if data['is_admin'] else 'checking')
 
         cur = self.conn.cursor()
 
@@ -61,7 +61,7 @@ class CommentModel(DataAccess):
             data['post_id'],
             data['email'],
             data['content'],
-            created_at.strftime('%Y-%m-%d %H'))
+            created_at.strftime('%Y-%m-%d %H:%M:%S'))
 
         params.append(comment_id)
         params.append(created_at)
