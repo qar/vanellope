@@ -7,7 +7,7 @@ RUN npm run build
 
 ########################################
 
-FROM python:2.7-alpine
+FROM python:3.8.0-slim-buster
 MAINTAINER Qiao Anran <qiaoanran@gmail.com>
 ENV VANELLOPE_CONTENT /vanellope_content
 VOLUME ["/vanellope_content"]
