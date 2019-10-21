@@ -1,0 +1,4 @@
+# For Docker Hub Autotests: https://docs.docker.com/docker-hub/builds/automated-testing/
+sut:
+  build: .
+  command: runtests.sh
