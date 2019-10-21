@@ -28,8 +28,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].js'),
-    chunkFilename: utils.assetsPath('js/[id].js')
+    filename: utils.assetsPath('js/[chunkhash].js'),
+    chunkFilename: utils.assetsPath('js/[chunkhash].js')
   },
   plugins: [
     new VueLoaderPlugin(),
@@ -37,8 +37,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: utils.assetsPath("css/[name].css"),
-      chunkFilename: utils.assetsPath("css/[id].css")
+      filename: utils.assetsPath("css/[chunkhash].css"),
+      chunkFilename: utils.assetsPath("css/[chunkhash].css")
     }),
 
     // Compress extracted CSS. We are using this plugin so that possible
