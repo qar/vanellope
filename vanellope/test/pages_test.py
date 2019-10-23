@@ -14,6 +14,18 @@ class TestPages(testing.AsyncHTTPTestCase):
     def get_app(self):
         return app.make_app()
 
+    def test_welcome_page_as_visitor(self):
+        target_url = '/welcome'
+        response = self.fetch(target_url)
+        parsed_url = urlparse(response.effective_url)
+        self.assertIs(response.code, 200)
+
+    def test_welcome_page_as_admin(self):
+        target_url = '/welcome'
+        response = self.fetch(target_url)
+        parsed_url = urlparse(response.effective_url)
+        self.assertIs(response.code, 200)
+
     def test_login_page(self):
         target_url = '/login'
         response = self.fetch(target_url)

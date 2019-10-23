@@ -3,6 +3,7 @@
 
 from __future__ import absolute_import, division, print_function, with_statement
 
+import logging
 import sys
 from tornado.testing import unittest
 
@@ -28,6 +29,8 @@ class TornadoTextTestRunner(unittest.TextTestRunner):
 
 def main():
     import tornado.testing
+
+    logging.disable(logging.INFO)
 
     kwargs = {}
     kwargs['testRunner'] = TornadoTextTestRunner
