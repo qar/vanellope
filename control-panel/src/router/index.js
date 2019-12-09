@@ -4,6 +4,7 @@ import MarkdownEditor from '@/components/MarkdownEditor/markdown-editor.vue';
 import ArticleList from '@/components/ArticleList/article-list.vue';
 import DraftsList from '@/components/DraftsList/drafts-list.vue';
 import Settings from '@/components/Settings/settings.vue';
+import Profile from '@/components/Profile/profile.vue';
 import TrashCan from '@/components/TrashCan/trash-can.vue';
 import WidgetsPage from '@/components/WidgetsPage/widgets-page';
 import FriendsLinks from '@/components/FriendsLinks/friends-links';
@@ -37,6 +38,12 @@ export default new Router({
       path: '/settings',
       name: 'Settings',
       component: Settings,
+    },
+
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
     },
 
     {

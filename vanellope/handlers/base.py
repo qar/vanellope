@@ -8,15 +8,18 @@ import uuid
 import re
 import os
 import pytz
+import requests
 
 import itertools
 from datetime import datetime, timedelta
 from dateutil import relativedelta
 
 import base64
+from tornado import gen
 from tornado.web import RequestHandler, MissingArgumentError
 from tornado.log import access_log
 from tornado.escape import json_decode
+from tornado.httpclient import HTTPClient, AsyncHTTPClient, HTTPRequest
 
 from user_agents import parse as ua_parse
 # import urlparse
@@ -31,6 +34,34 @@ from vanellope.da.accesstoken import AccessTokenModel
 from vanellope.da.session import Session
 from vanellope.da.comment import CommentModel
 from vanellope.da.friendlinks import FriendLinkModel
+
+
+class MailModel:
+    url = ''
+    auth = ''
+
+    def __init__(self, url, auth):
+        self.url = url
+        self.auth = auth
+        self.mail_from = "NOTIFY <notification@hello.narwalapp.com>"
+
+    # @gen.coroutine
+    async def send(self, params):
+        async_client = AsyncHTTPClient()
+        return await async_client.fetch(HTTPRequest(
+            url=self.url,
+            method="POST",
+            auth_username = "api",
+            auth_password = self.auth,
+            body=u'&'.join(u'%s=%s' % (urllib.parse.quote(k), urllib.parse.quote(v)) for k, v in (
+                [
+                    ('from', params['mail_from']),
+                    ('subject', params['subject']),
+                    ('html', params['body']),
+                    ('to', params['mail_to'])
+                ]
+            )
+        )))
 
 
 class Days(object):
@@ -94,6 +125,8 @@ class BaseHandler(RequestHandler):
     comments = CommentModel()
     friendlinks = FriendLinkModel()
     accessToken = AccessTokenModel()
+    site_config = config.read_config()
+    mail = MailModel('https://api.mailgun.net/v3/hello.narwalapp.com/messages', site_config['mailgun_key']);
 
     def base_uri(self):
         """Get request.uri but Remove query string
