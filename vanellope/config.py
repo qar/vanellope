@@ -64,7 +64,7 @@ create_table_sqls = [
     CREATE TABLE IF NOT EXISTS users (
         username TEXT PRIMARY KEY,
         email TEXT UNIQUE,
-        email_verified TEXT,
+        email_verified TEXT DEFAULT 'no',
         secret_key TEXT,
         passwd TEXT,
         salt TEXT,

@@ -125,8 +125,6 @@ class BaseHandler(RequestHandler):
     comments = CommentModel()
     friendlinks = FriendLinkModel()
     accessToken = AccessTokenModel()
-    site_config = config.read_config()
-    mail = MailModel('https://api.mailgun.net/v3/hello.narwalapp.com/messages', site_config['mailgun_key']);
 
     def base_uri(self):
         """Get request.uri but Remove query string
@@ -300,6 +298,10 @@ class BaseHandler(RequestHandler):
         self.settings['static_path'] = os.path.join(root_path, "%s/static" % theme)
         self.settings['template_path'] = os.path.join(root_path, "%s/templates" % theme)
         MyStaticFileHandler.reset()
+
+    def get_mail_instance(self):
+        site_config = self.config.read_config()
+        mail = MailModel('https://api.mailgun.net/v3/hello.narwalapp.com/messages', site_config['mailgun_key']);
 
 
 class AdminBaseHandler(BaseHandler):
