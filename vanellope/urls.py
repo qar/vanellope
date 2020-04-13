@@ -60,5 +60,7 @@ routers = [
 
     # Administrotor URLs
     (r"/admin/export", admin.AdminExportData),
-    (r"/controlpanel", admin.AdminControlPanel)
+    (r"/controlpanel", admin.AdminControlPanel),
+
+    (r"/ads.txt", pages.AdsHandler)
 ]

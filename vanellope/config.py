@@ -140,6 +140,8 @@ app_settings = {
     # Google AdSense
     'google_adsense': '',
 
+    'ads_txt': '',
+
     # 网站评论服务
     'site_comment': '',  # 'duoshuo' or 'disqus'
     'site_comment_id': '',

@@ -36,6 +36,10 @@
             <Input v-model="settings.google_adsense" placeholder="Google AdSense"></Input>
           </FormItem>
 
+          <FormItem label="Ads.txt">
+            <Input v-model="settings.ads_txt" placeholder="ads.txt"></Input>
+          </FormItem>
+
           <FormItem label="主题">
             <Select v-model="settings.site_theme">
                 <Option v-for="item in settings.themes" :value="item" :key="item">{{ item }}</Option>

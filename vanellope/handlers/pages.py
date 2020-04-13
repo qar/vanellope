@@ -9,6 +9,12 @@ from vanellope.handlers.base import BaseHandler
 from vanellope import config
 from vanellope.handlers.base import Days
 
+
+class AdsHandler(BaseHandler):
+    def get(self):
+        self.render("ads.html",content=u'welcome')
+
+
 class WelcomePage(BaseHandler):
     def get(self):
         admin = self.user.get_admin_user()
