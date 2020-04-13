@@ -3,9 +3,108 @@
 import os
 import os.path
 import uuid
+import datetime
+from tornado import gen
+from tornado.ioloop import IOLoop
 from tornado.web import authenticated
 from tornado.escape import json_decode
+from tornado.log import access_log
 from vanellope.handlers.base import BaseHandler
+
+
+class ProfileHandler(BaseHandler):
+    @authenticated
+    def get(self):
+        data = {
+            "email": self.current_user['email'],
+            "email_verified": self.current_user['email_verified'],
+            "username": self.current_user['username'],
+            "role": self.current_user['role'],
+            "created_at": self.current_user['created_at'],
+            "updated_at": self.current_user['updated_at']
+        }
+
+        self.finish({
+            'msg': 'success',
+            'data': data
+        })
+
+    @authenticated
+    def put(self):
+        """ 更新
+        """
+
+        profile = {
+            "email": self.current_user['email'],
+            "username": self.current_user['username'],
+        }
+
+        for k in profile:
+            v = self.get_payload_argument(k, None)
+            if v is not None:
+                profile[k] = v
+
+        result = self.user.update_user_by_username(profile['username'], profile)
+
+        # self.change_theme(configs['site_theme'])
+
+        self.finish({
+            'info': 'success',
+            'data': result
+        })
+
+
+class EmailVerifyHandler(BaseHandler):
+    @authenticated
+    async def post(self):
+        """
+        Verify user's email address
+        """
+        secret_key = self.user.set_secret_key(self.current_user['username'])
+        verify_msg = '''
+           <h1>验证邮箱</h1>
+           点击此链接或复制链接在浏览器地址栏中打开进行验证<a src="https://qiaoanran.com/verify?t=%s">https://qiaoanran.com/verify?t=%s</a>
+        ''' % (secret_key, secret_key)
+
+        try:
+            await self.mail.send({
+                'mail_from': self.site_config['mail_from'],
+                'mail_to': self.current_user['email'],
+                'subject': '验证一下邮箱',
+                'body': verify_msg
+            })
+        except Exception as e:
+            access_log.info('Failed with exception')
+            access_log.error('Error: %s' % e)
+
+        self.finish({
+            'msg': 'success',
+            'data': ''
+        })
+
+    @authenticated
+    def put(self):
+        """ 更新
+        """
+
+        profile = {
+            "email": self.current_user['email'],
+            "username": self.current_user['username'],
+        }
+
+        for k in profile:
+            v = self.get_payload_argument(k, None)
+            if v is not None:
+                profile[k] = v
+
+        result = self.user.update_user_by_username(profile['username'], profile)
+
+        # self.change_theme(configs['site_theme'])
+
+        self.finish({
+            'info': 'success',
+            'data': result
+        })
 
 
 class ConfigurationHandler(BaseHandler):
@@ -342,6 +441,19 @@ class CommentsHandler(BaseHandler):
             'is_admin': is_admin
         })
 
+        access_log.info(datetime.datetime.now())
+        alert_msg = 'new comment received: ' + content
+        # self.send_comment_alert(alert_msg)
+        IOLoop.current().spawn_callback(self.send_comment_alert, alert_msg)
+        access_log.info(datetime.datetime.now())
+
+        # if not is_admin:
+        #     access_log.info(datetime.datetime.now())
+        #     alert_msg = 'new comment received: ' + content
+        #     self.send_comment_alert(alert_msg)
+        #     # IOLoop.current().spawn_callback(self.send_comment_alert, alert_msg)
+        #     access_log.info(datetime.datetime.now())
+
         self.redirect(self.request.headers['Referer'])
 
     @authenticated
@@ -515,7 +627,6 @@ class AccessTokensHandler(BaseHandler):
         self.finish({
             'info': 'success'
         })
-
 
 class TagsHandler(BaseHandler):
     @authenticated

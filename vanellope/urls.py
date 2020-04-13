@@ -54,6 +54,9 @@ routers = [
     (r"/api/v1/admin/friend-links", admin.FriendLinkHandler),
     (r"/api/v1/admin/friend-links/(.*)", admin.FriendLinkHandler),
     (r"/api/v1/media", apiv1.MediaHandler),
+    (r"/api/v1/profile", apiv1.ProfileHandler),
+    (r"/api/v1/verify/email", apiv1.EmailVerifyHandler),
+    (r"/verify", pages.EmailVerifyHandler),
 
     # Feeds
     (r"/index.xml", feeds.MainFeed),

@@ -39,6 +39,14 @@ function removeToken(token) {
     .then(res => res.data);
 }
 
+function getUserProfile() {
+  return $http.get('/api/v1/profile').then(res => res.data);
+}
+
+function updateUserProfile(profile) {
+  return $http.put('/api/v1/profile', profile).then(res => res.data);
+}
+
 function getSettings() {
   return $http.get('/api/v1/configuration').then(res => res.data);
 }
@@ -127,6 +135,10 @@ function getTags() {
   return $http.get('/api/v1/tags').then(res => res.data);
 }
 
+function sendVerifyLinkToEmail(email) {
+  return $http.post('/api/v1/verify/email', { email })
+}
+
 export default {
   addToken,
   createArticle,
@@ -149,4 +161,7 @@ export default {
   createFriendLinks,
   delFriendLink,
   updateComment,
+  getUserProfile,
+  updateUserProfile,
+  sendVerifyLinkToEmail
 };

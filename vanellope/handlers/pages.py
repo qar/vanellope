@@ -5,6 +5,7 @@ import hashlib
 import base64
 from tornado import web
 from tornado.web import authenticated
+from tornado.log import access_log
 from vanellope.handlers.base import BaseHandler
 from vanellope import config
 from vanellope.handlers.base import Days
@@ -424,3 +425,9 @@ class NotesPage(BaseHandler):
                     pages=pages,
                     notes=notes)
 
+
+class EmailVerifyHandler(BaseHandler):
+    def get(self):
+        token = self.get_argument('t')
+        access_log.info(token)
+        self.user.verify_email(token)

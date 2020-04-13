@@ -1,17 +1,24 @@
 <div>
   <div class="article-list-layout">
-    <h1 class="table-title">设置</h1>
+    <h1 class="table-title">个人信息</h1>
     <Row>
       <Col span="10">
-        <Form :model="settings" :label-width="120">
-          <FormItem label="站点标题">
-            <Input v-model="settings.site_title" placeholder="站点标题"></Input>
+        <Form :model="profile" :label-width="120">
+          <FormItem label="用户名">
+            <Input v-model="profile.username" placeholder="用户名"></Input>
           </FormItem>
 
-          <FormItem label="站点地址">
-            <Input v-model="settings.site_url" placeholder="站点地址"></Input>
+          <FormItem label="邮箱">
+            <Input v-model="profile.email" placeholder="邮箱"></Input>
           </FormItem>
 
+          <FormItem label="邮箱验证">
+            <span>{{ profile.email_verified }}</span>
+
+            <Button type="primary" @click="sendVerifyLinkToEmail(profile.email)" v-if="profile.email_verified === 'no'">验证邮箱</Button>
+          </FormItem>
+
+          <!--
           <FormItem label="每页文章数">
             <Input v-model="settings.posts_per_page" placeholder="每页文章数"></Input>
           </FormItem>
@@ -36,29 +43,10 @@
             <Input v-model="settings.google_adsense" placeholder="Google AdSense"></Input>
           </FormItem>
 
-          <FormItem label="Ads.txt">
-            <Input v-model="settings.ads_txt" placeholder="ads.txt"></Input>
-          </FormItem>
-
           <FormItem label="主题">
             <Select v-model="settings.site_theme">
                 <Option v-for="item in settings.themes" :value="item" :key="item">{{ item }}</Option>
             </Select>
-          </FormItem>
-
-          <FormItem label="Mailgun Key">
-            <Input v-model="settings.mailgun_key" placeholder="Mailgun Key"></Input>
-          </FormItem>
-
-          <FormItem label="Mail Sender">
-            <Input v-model="settings.mail_from" placeholder="Mail From"></Input>
-          </FormItem>
-
-          <FormItem label="启用邮件通知">
-            <i-switch v-model="settings.mailgun_enabled" size="large" true-value="yes" false-value="no">
-              <span slot="open">开启</span>
-              <span slot="close">关闭</span>
-            </i-switch>
           </FormItem>
 
           <FormItem label="全局站点评论">
@@ -67,6 +55,7 @@
               <span slot="close">关闭</span>
             </i-switch>
           </FormItem>
+          -->
 
           <FormItem>
             <Button type="primary" @click="save">保存</Button>

@@ -64,6 +64,16 @@ def fixtures():
     except:
         pass
 
+    try:
+        cur.execute('ALTER TABLE users ADD COLUMN email_verified TEXT DEFAULT "no"')
+    except:
+        pass
+
+    try:
+        cur.execute('ALTER TABLE users ADD COLUMN secret_key TEXT DEFAULT ""')
+    except:
+        pass
+
     connection.commit()
 
 def db_backup():

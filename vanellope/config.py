@@ -64,6 +64,8 @@ create_table_sqls = [
     CREATE TABLE IF NOT EXISTS users (
         username TEXT PRIMARY KEY,
         email TEXT UNIQUE,
+        email_verified TEXT DEFAULT 'no',
+        secret_key TEXT,
         passwd TEXT,
         salt TEXT,
         role TEXT,
@@ -150,5 +152,12 @@ app_settings = {
     # Post default category
     # 新建文章的默认分类
     'default_category': 'life',
-    'posts_per_page': 10
+    'posts_per_page': 10,
+
+    # Mailgun Service
+    'mailgun_key': '',
+    'mailgun_enabled': 'no',
+
+    # Mail
+    'mail_from': ''
 }
