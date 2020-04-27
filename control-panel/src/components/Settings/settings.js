@@ -17,7 +17,13 @@ export default {
 
   methods: {
     save() {
-      apis.updateSettings(this.settings);
+      apis.updateSettings(this.settings)
+        .then(() => {
+          this.$Notice.open({
+            title: '配置已更新',
+            desc: '',
+          });
+        });
     },
   },
 };

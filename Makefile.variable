@@ -6,5 +6,5 @@ IMAGE=qiaoanran/vanellope
 
 DEV_IMAGE=vanellope_dev
 
-DEV_DATA_DIR=$(shell pwd)/dev_data_dir
+DEV_DATA_DIR=$(shell pwd)/dev_data_dir/blog
 DEV_PORT=9099

@@ -130,7 +130,8 @@ class ConfigurationHandler(BaseHandler):
 
         result = self.config.update(configs)
 
-        self.change_theme(configs['site_theme'])
+        if configs['site_theme']:
+            self.change_theme(configs['site_theme'])
 
         self.finish({
             'info': 'success',

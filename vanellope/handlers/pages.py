@@ -13,7 +13,11 @@ from vanellope.handlers.base import Days
 
 class AdsHandler(BaseHandler):
     def get(self):
-        self.render("ads.html",content=u'welcome')
+        site_config = self.config.read_config()
+        if site_config['ads_txt']:
+            self.render("ads.html",content=site_config['ads_txt'])
+        else:
+            self.set_status(404)
 
 
 class WelcomePage(BaseHandler):
