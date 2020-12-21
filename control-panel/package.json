@@ -83,7 +83,7 @@
     "karma-webpack": "^2.0.2",
     "mocha": "^3.2.0",
     "nightwatch": "^0.9.12",
-    "node-notifier": "^5.3.0",
+    "node-notifier": "^8.0.1",
     "phantomjs-prebuilt": "^2.1.14",
     "portfinder": "^1.0.20",
     "selenium-server": "^3.141.59",
